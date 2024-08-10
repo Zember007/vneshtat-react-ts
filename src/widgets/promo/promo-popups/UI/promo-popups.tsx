@@ -14,18 +14,22 @@ const PromoPopups = () => {
     const dispatch = useDispatch();
 
     const createConsultingProposal = async () => {
-        // const formData = new FormData();
-        // formData.append("FullName", fullname);
-        // formData.append("IsCEO", isCeo.toString());
-        // formData.append("CompanyName", companyName);
-        // formData.append("TravelFrequency", travelFrequency);
-        // formData.append("PhoneNumber", phone);
-        // formData.append("Email", email);
-        //
-        // const res = await fetch(import.meta.env.VITE_API_URL + "/api/sign_up/create_consultation_proposal", {
-        //     method: 'POST',
-        //     body: formData,
-        // });
+        const formData = new FormData();
+        formData.append("FullName", fullname);
+        formData.append("IsCEO", isCeo.toString());
+        formData.append("CompanyName", companyName);
+        formData.append("TravelFrequency", travelFrequency);
+        formData.append("PhoneNumber", phone);
+        formData.append("Email", email);
+
+        const res = await fetch(import.meta.env.VITE_API_URL + "/sign_up/create_consultation_proposal", {
+            method: 'POST',
+            body: formData,
+            redirect: 'follow'
+        });
+        console.log(res)
+        const data = await res.json();
+        console.log(data)
         setStatus("success")
     }
 

@@ -50,7 +50,7 @@ const LoginUser = () => {
         formdata.append("Browser", browserName);
 
         try {
-            const res = await fetch("https://vneshtat.com/api/auth/sign_in/auth_token_by_username", {
+            const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/auth_token_by_username", {
                 method: "POST",
                 body: formdata,
                 redirect: "follow"

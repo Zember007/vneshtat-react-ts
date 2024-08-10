@@ -14,7 +14,7 @@ const InputCity = ({extraClass = '', inputClass = '', value, setValue, callback,
                 return;
             }
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/cities/search/?query=${query}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL_DB}/cities/search/?query=${query}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch cities');
             }

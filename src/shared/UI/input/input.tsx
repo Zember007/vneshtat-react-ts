@@ -5,7 +5,7 @@ import CrossImg from "@/assets/icons/cross.svg?react";
 import { InputProps } from "./input.props";
 import {useState, useEffect, ChangeEvent} from "react";
 
-const Input = ({ extraClass, ...rest }: InputProps) => {
+const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState(rest.value || '');
 
@@ -74,12 +74,12 @@ const Input = ({ extraClass, ...rest }: InputProps) => {
     ) : (
         <div className={"relative"}>
             <input
-                className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass)}
+                className={`bg-secondary rounded-primary text-sm py-2 px-2.5 w-full ${extraClass}`}
                 type={rest.type || "text"}
                 {...rest}
                 onChange={handleChange}
             />
-            {inputValue ? (
+            {inputValue && withEraser ? (
                 <button onClick={handleClear} className="absolute right-3 top-1/2 transform -translate-y-1/2">
                     <CrossImg className={"black-fill"}/>
                 </button>

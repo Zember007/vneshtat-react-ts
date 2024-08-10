@@ -24,7 +24,7 @@ const Header = () => {
         {to: "/hotel", img: BedImg, label: "Отели"},
         {to: "/aero", img: WebImg, label: "Аэроэкспресс"},
         {to: "/transfer", img: CarImg, label: "Автомобили"},
-        {to: "/yandex-taxi", img: YandexTaxiImg, label: "Такси"},
+        {to: "/taxi", img: YandexTaxiImg, label: "Такси"},
         {to: "/restaurant", img: RestaurantImg, label: "Места"},
     ];
     const isLinkSelected = links.some(item => item.to === location)

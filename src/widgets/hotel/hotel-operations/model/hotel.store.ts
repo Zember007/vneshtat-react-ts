@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {CheckboxItem} from "@/shared/UI/checkbox/checkbox.props";
-import {City, Range} from "@/shared/types";
+import {City, FilterData, Range} from "@/shared/types";
 import {
     bedType,
     facilities,
@@ -13,11 +13,6 @@ import {
     travelPolitics
 } from "../utils";
 import {changeCheckbox, checkIfChanged} from "@/shared/utils";
-
-export interface FilterData<T> {
-    data: T;
-    isChanged: boolean;
-}
 
 interface HotelState {
     priceRange: FilterData<Range>;

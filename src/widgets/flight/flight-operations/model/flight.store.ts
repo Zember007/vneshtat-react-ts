@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'; // Remove createAsyncThunk
-import { FilterData } from "@/widgets/journey/journey-operations/model/journey.store";
 import { airportsFrom, classes, priceRanges, timeOnWayRanges } from "../utils";
 import { changeCheckbox, checkIfChanged } from "@/shared/utils";
-import { City, Range } from "@/shared/types";
+import {City, FilterData, Range} from "@/shared/types";
 import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
 
 export interface Flight {

@@ -21,6 +21,11 @@ export interface Passenger {
     deleteCountdown: null | number
 }
 
+export interface FilterData<T> {
+    data: T;
+    isChanged: boolean;
+}
+
 export interface TicketOption {
     id: number,
     title: string,

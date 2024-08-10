@@ -14,7 +14,7 @@ export const refreshAccessToken = async () => {
     if (!refreshToken) return false;
     const formdata = new FormData();
     formdata.append("RefreshToken", refreshToken);
-    const res = await fetch("https://vneshtat.com/api/auth/sign_in/auth_token", {
+    const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/auth_token", {
         method: "PATCH",
         body: formdata
     });
@@ -35,7 +35,7 @@ export const refreshAccessToken = async () => {
 export async function getUser() {
     const token = getAccessToken();
     if (token) {
-        const res = await fetch("https://vneshtat.com/api/user/main_info/get_user", {
+        const res = await fetch(import.meta.env.VITE_API_URL + "/user/main_info/get_user", {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -62,7 +62,7 @@ export async function getUserOnline() {
     body.append("EmployeeId", localStorage.getItem("EmployeeId") || "");
 
     async function makeRequest() {
-        const res = await fetch("https://vneshtat.com/api/user/utility/update_last_online", {
+        const res = await fetch(import.meta.env.VITE_API_URL + "/user/utility/update_last_online", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -93,7 +93,7 @@ export async function getUserOnline() {
 
 export async function getUserCompanies() {
     if (getAccessToken()) {
-        const res = await fetch("https://vneshtat.com/api/user/main_info/get_user_companies", {
+        const res = await fetch(import.meta.env.VITE_API_URL + "/user/main_info/get_user_companies", {
             headers: {
                 Authorization: `Bearer ${getAccessToken()}`
             }

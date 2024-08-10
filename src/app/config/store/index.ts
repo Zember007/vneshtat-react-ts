@@ -9,6 +9,7 @@ import transferStore from "@/widgets/transfer/transfer-content/model/transfer.st
 import loginStore from "@/widgets/login/login-user/model/login.store";
 import hotelStore from "@/widgets/hotel/hotel-operations/model/hotel.store";
 import userStore from "@/app/model/user.store";
+import taxiStore from "@/widgets/taxi/taxi-operations/model/taxi.store";
 
 const rootReducer = combineReducers({
     journey: journeyStore,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     promo: promoStore,
     login: loginStore,
     hotel: hotelStore,
+    taxi: taxiStore,
     transfer: transferStore,
     registrationCompany: registrationCompanyStore
 })

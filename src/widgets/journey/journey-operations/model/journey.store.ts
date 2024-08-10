@@ -73,7 +73,7 @@ export const fetchJourneyTickets = createAsyncThunk<any, void, { rejectValue: Fe
         const state = (getState() as { journey: JourneyState }).journey;
         const { timeFrom, timeTo, dateTo, cityFrom, cityTo } = state;
 
-        const url = new URL('https://vneshtat.com/api/search/train/search/');
+        const url = new URL(import.meta.env.VITE_API_URL + '/search/train/search/');
         const params: { [key: string]: any } = {
             CarGrouping: 'DontGroup',
             SpecialPlacesDemand: 'NoValue',
