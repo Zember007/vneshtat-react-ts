@@ -22,27 +22,25 @@ interface Taxi {
         price: number,
         count: number
     }[]
+    dateFrom: Date | null
+    dateTo: Date | null
     isSelected: boolean
 }
 
 interface TaxiInitialState {
-    dateFrom: Date | null
-    dateTo: Date | null
     taxiClass: FilterData<CheckboxItem[]>
     taxis: Taxi[]
 }
 
 const initialState: TaxiInitialState = {
-    dateFrom: null,
-    dateTo: null,
     taxiClass: {
         data: taxiClasses,
         isChanged: false
     },
     taxis: [
-        {id: 1, name: "Иван", surname: "Вознесенский", voyagers: [], isSelected: false},
-        {id: 2, name: "Татьяна", surname: "Соколова", voyagers: [], isSelected: false},
-        {id: 3, name: "Анастасия", surname: "Грибоедова", voyagers: [], isSelected: false}
+        {id: 1, name: "Иван", surname: "Вознесенский", voyagers: [], isSelected: false, dateFrom: null, dateTo: null},
+        {id: 2, name: "Татьяна", surname: "Соколова", voyagers: [], isSelected: false, dateFrom: null, dateTo: null},
+        {id: 3, name: "Анастасия", surname: "Грибоедова", voyagers: [], isSelected: false, dateFrom: null, dateTo: null}
     ]
 }
 
@@ -51,10 +49,22 @@ export const taxiStore = createSlice({
     initialState,
     reducers: {
         setDateFrom: (state, action) => {
-            state.dateFrom = action.payload;
+            const {id, date} = action.payload;
+            state.taxis = state.taxis.map((taxi) => {
+                return {
+                    ...taxi,
+                    dateFrom: id === taxi.id && date
+                }
+            })
         },
         setDateTo: (state, action) => {
-            state.dateTo = action.payload;
+            const {id, date} = action.payload;
+            state.taxis = state.taxis.map((taxi) => {
+                return {
+                    ...taxi,
+                    dateTo: id === taxi.id && date
+                }
+            })
         },
         changeTaxiClass: (state, action) => {
             if (action.payload === "default") {
@@ -65,9 +75,40 @@ export const taxiStore = createSlice({
                 state.taxiClass.data = changeCheckbox(state.taxiClass.data, id, oneChoise);
                 state.taxiClass.isChanged = checkIfChanged(initialState.taxiClass.data, state.taxiClass.data);
             }
+        },
+        changeSelectedTaxi: (state, action) => {
+            state.taxis = state.taxis.map((taxi) => {
+                return {
+                    ...taxi,
+                    isSelected: taxi.id === action.payload && !taxi.isSelected
+                }
+            })
+        },
+        addVoyager: (state, action) => {
+            const { price, id } = action.payload;
+            state.taxis = state.taxis.map((taxi) => {
+                if (taxi.id === id) {
+                    const existingVoyagerIndex = taxi.voyagers.findIndex(voyager => voyager.price === price);
+
+                    if (existingVoyagerIndex !== -1) {
+                        const updatedVoyagers = taxi.voyagers.map((voyager, index) =>
+                            index === existingVoyagerIndex
+                                ? { ...voyager, count: voyager.count + 1 }
+                                : voyager
+                        );
+                        return { ...taxi, voyagers: updatedVoyagers };
+                    } else {
+                        return {
+                            ...taxi,
+                            voyagers: [...taxi.voyagers, { price, count: 1 }]
+                        };
+                    }
+                }
+                return taxi;
+            });
         }
     }
 })
 
-export const {setDateFrom, setDateTo, changeTaxiClass} = taxiStore.actions;
+export const {setDateFrom, setDateTo, changeTaxiClass, addVoyager, changeSelectedTaxi} = taxiStore.actions;
 export default taxiStore.reducer

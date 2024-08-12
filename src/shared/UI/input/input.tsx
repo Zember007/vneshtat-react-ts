@@ -3,7 +3,7 @@ import EyeImg from "@/assets/icons/eye.svg?react";
 import EyeClosedImg from "@/assets/icons/eye-closed.svg?react";
 import CrossImg from "@/assets/icons/cross.svg?react";
 import { InputProps } from "./input.props";
-import {useState, useEffect, ChangeEvent} from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 
 const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +26,14 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
         } else if (!value.startsWith('9')) {
             value = '';
         }
+        setInputValue(value);
+        if (rest.onChange) {
+            rest.onChange({ ...e, target: { ...e.target, value } });
+        }
+    };
+
+    const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, ''); // Удаляем все нецифровые символы
         setInputValue(value);
         if (rest.onChange) {
             rest.onChange({ ...e, target: { ...e.target, value } });
@@ -71,10 +79,18 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
             value={inputValue}
             onChange={handlePhoneChange}
         />
+    ) : rest.type === "number" ? (
+        <input
+            className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass)}
+            {...rest}
+            type="text"
+            value={inputValue}
+            onChange={handleNumberChange}
+        />
     ) : (
         <div className={"relative"}>
             <input
-                className={`bg-secondary rounded-primary text-sm py-2 px-2.5 w-full ${extraClass}`}
+                className={clsx(`bg-secondary rounded-primary text-sm py-2 px-2.5 w-full`, extraClass)}
                 type={rest.type || "text"}
                 {...rest}
                 onChange={handleChange}

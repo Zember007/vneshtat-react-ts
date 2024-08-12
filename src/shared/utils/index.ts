@@ -179,6 +179,8 @@ export const seatsMock: Seat[][] = [[{
     state: "free"
 }],]
 
+export const VAT_RATE = 0.18; // 18% НДС
+
 export const setAccessToken = (token: string) => {
     localStorage.setItem('AccessToken', token);
 };

@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {Input, Popup, Switch} from "@/shared/UI";
 import CrossImg from "@/assets/icons/cross.svg?react";
-import {setIsCeo, setIsOpen, updateInfo} from "@/widgets/promo/promo-popups/model/promo.store";
+import {setIsCeo, setIsOpen, updateInfo} from "../model/promo.store";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
@@ -14,23 +14,26 @@ const PromoPopups = () => {
     const dispatch = useDispatch();
 
     const createConsultingProposal = async () => {
+        console.log(isCeo)
         const formData = new FormData();
         formData.append("FullName", fullname);
-        formData.append("IsCEO", isCeo.toString());
+        formData.append("IsCEO", isCeo ? "1" : "0");
         formData.append("CompanyName", companyName);
         formData.append("TravelFrequency", travelFrequency);
         formData.append("PhoneNumber", phone);
         formData.append("Email", email);
 
-        const res = await fetch(import.meta.env.VITE_API_URL + "/sign_up/create_consultation_proposal", {
+        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/create_consultation_proposal", {
             method: 'POST',
             body: formData,
             redirect: 'follow'
         });
-        console.log(res)
         const data = await res.json();
-        console.log(data)
-        setStatus("success")
+        if (data.status === "success") {
+            setStatus("success")
+        } else {
+            setStatus("error")
+        }
     }
 
     const handleClose = () => {
@@ -184,7 +187,7 @@ const PromoPopups = () => {
                         <div className={"flex justify-end px-2"}>
                             <button
                                 className={"flex justify-center items-center py-3 px-10 h-[42px] rounded-primary bg-[#F5F5F5]"}
-                                onClick={() => setStatus("error")}>
+                                onClick={handleClose}>
                                 <p className={"text-sm text-[#787B86]"}>Отменить</p>
                             </button>
                         </div>

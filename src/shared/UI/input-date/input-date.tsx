@@ -35,7 +35,7 @@ const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortD
     return (
         <div className={`flex flex-col min-h-7`} ref={containerRef} {...rest}>
             <label className="relative flex justify-end items-center w-full cursor-pointer">
-                <div className={`w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5 ${extraClass}`} onClick={() => setIsOpen(prev => !prev)}>
+                <div className={`${extraClass} w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`} onClick={() => setIsOpen(prev => !prev)}>
                     {inputValue && Array.isArray(inputValue) && inputValue.length > 0 ? (
                         inputValue.map(renderDate)
                     ) : inputValue && !Array.isArray(inputValue) ? (
