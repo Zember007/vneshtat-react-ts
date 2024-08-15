@@ -8,12 +8,12 @@ const JourneyRoute = () => {
     const dispatch = useDispatch();
 
     return (
-        <div className={"w-full h-[calc(100vh-300px)]"}>
+        <div className={"w-full h-[calc(100vh-220px)]"}>
             <div className={"flex justify-between items-center"}>
                 <h3>Маршрут</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"max-h-[calc(100vh-350px)] overflow-y-auto scroll py-2.5"}>
+            <div className={"h-[calc(100vh-270px)] overflow-y-auto scroll py-2.5"}>
                 <div className={"flex flex-col gap-4"}>
                     <h4 className={"text-base font-medium"}>Направления</h4>
                     <div className={"flex flex-col gap-2.5"}>

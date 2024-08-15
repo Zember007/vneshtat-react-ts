@@ -1,7 +1,12 @@
 import {RegistrationCompany} from "@/widgets/registration/registration-company";
 import VneshtatImg from "@/assets/icons/vneshtat.svg?react";
+import {useConfirmToken} from "@/shared/hooks/use-confirm-token";
 
 const Registration = () => {
+    const {status, companyName} = useConfirmToken(localStorage.getItem("confirmToken") || "");
+    localStorage.setItem("status", status);
+    localStorage.setItem("companyName", companyName);
+
     return (
         <div className={"px-[100px] h-[100vh]"}>
             <header className={"py-[30px] w-full flex justify-center"}>

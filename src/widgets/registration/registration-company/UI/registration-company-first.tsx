@@ -4,7 +4,6 @@ import contractImg from "@/assets/icons/contract.png";
 import {RootState} from "@/app/config/store";
 import {ChangeEvent} from "react";
 import {
-    setPage,
     updateCompanyState,
     updateUploadedFile,
 } from "@/widgets/registration/registration-company/model/registration-company.store";
@@ -29,6 +28,41 @@ const RegistrationCompanyFirst = () => {
         }
     };
 
+    const handleRegistration = async () => {
+        const formdata = new FormData();
+        formdata.append("LegalName", legalAddress);
+        formdata.append("ShortName", shortName);
+        formdata.append("Inn", inn);
+        formdata.append("Kpp", kpp);
+        formdata.append("LegalAddress", legalAddress);
+        formdata.append("ContractFile", uploadedFile!, "mock.pdf");
+        const token = localStorage.getItem("confirmToken");
+        if (token) {
+            formdata.append("Token", token);
+        }
+
+        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/complete_company_registration", {
+            method: "PATCH",
+            body: formdata
+        })
+        const data = await res.json();
+        if(data.status === "success"){}
+        else {
+            const errorMessages = Object.entries(data.errors)
+                .map(([key, messages]) => {
+                    if (Array.isArray(messages) && messages.every(msg => typeof msg === 'string')) {
+                        return `${key}: ${messages.join(', ')}`;
+                    } else {
+                        return `${key}: Invalid message format`;
+                    }
+                })
+                .join('\n');
+
+            alert(`Ошибка:\n${errorMessages}`);
+        }
+        // dispatch(setPage(2)
+    }
+
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>
             <div className={"flex items-center gap-4"}>
@@ -36,7 +70,7 @@ const RegistrationCompanyFirst = () => {
                     <div className={"p-6 bg-primary rounded-[35px]"}>
                         <div
                             className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
-                            <h2 className={"text-lg text-[#9B9FAD]"}>Альфа Самара</h2>
+                            <h2 className={"text-lg text-[#9B9FAD]"}>{localStorage.getItem("companyName")}</h2>
                             <SuccessImg className={"min-w-6 min-h-6 grey-fill"}/>
                         </div>
                     </div>
@@ -64,12 +98,14 @@ const RegistrationCompanyFirst = () => {
                             <Input
                                 extraClass={"h-[50px] text-center rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                 placeholder={"Инн"}
+                                type={"number"}
                                 value={inn}
                                 onChange={e => dispatch(updateCompanyState({field: "inn", value: e.target.value}))}
                             />
                             <Input
                                 extraClass={"h-[50px] text-center rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                 placeholder={"Кпп"}
+                                type={"number"}
                                 value={kpp}
                                 onChange={e => dispatch(updateCompanyState({field: "kpp", value: e.target.value}))}
                             />
@@ -128,7 +164,7 @@ const RegistrationCompanyFirst = () => {
                     <button
                         className={"transition bg-black py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-full mt-2.5 disabled:cursor-not-allowed disabled:bg-secondary"}
                         disabled={!isCompanyReady || !uploadedFile}
-                        onClick={() => dispatch(setPage(2))}
+                        onClick={() => handleRegistration()}
                     >
                         <h3 className={`text-lg font-medium ${isCompanyReady && uploadedFile ? "text-primary" : "text-[#787B86]"}`}>Зарегистрировать</h3>
                     </button>

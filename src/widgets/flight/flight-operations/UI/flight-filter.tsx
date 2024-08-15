@@ -34,7 +34,7 @@ const FlightFilter = () => {
                 </button>
             </div>
             <hr className="h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"/>
-            <div className="h-[calc(100vh-410px)] overflow-y-auto scroll flex flex-col gap-2.5 py-2.5">
+            <div className="h-[calc(100vh-335px)] overflow-y-auto scroll flex flex-col gap-2.5 py-2.5">
                 <Dropdown
                     isChanged={priceRange.isChanged}
                     title="Стоимость"
@@ -49,6 +49,7 @@ const FlightFilter = () => {
                                 <Input
                                     className={"text-sm font-medium whitespace-nowrap pl-8 pr-6 py-1.5 w-full rounded-[23px] bg-primary flex items-center gap-1 relative"}
                                     value={customPriceRange.min ? customPriceRange.min : ""}
+                                    type={"number"}
                                     disabled
                                 />
                                 <p className={"text-sm font-medium absolute right-2.5"}>₽</p>
@@ -60,11 +61,12 @@ const FlightFilter = () => {
                                 <Input
                                     className={"text-sm font-medium whitespace-nowrap pl-8 pr-6 py-1.5 w-full rounded-[23px] bg-primary flex items-center gap-1 relative"}
                                     value={customPriceRange.max ? customPriceRange.max : ""}
+                                    type={"number"}
                                     onChange={e => {
-                                        const value = e.target.value.replace(/\D/g, '');
+                                        const value = Number(e.target.value)
                                         setCustomPriceRange(prev => ({
                                             ...prev,
-                                            max: Number(value) > prev.min ? Number(value) : prev.max
+                                            max: value > prev.min ? value : prev.max
                                         }));
                                     }}
                                 />

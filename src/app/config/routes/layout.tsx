@@ -7,6 +7,7 @@ const Flight = lazy(() => import("@/pages/flight/flight"));
 const Bus = lazy(() => import("@/pages/bus/bus"));
 const Promo = lazy(() => import("@/pages/promo/promo"));
 const Registration = lazy(() => import("@/pages/registration/registration"));
+const RegistrationConfirm = lazy(() => import("@/pages/registration-confirm/registration-confirm"));
 const Login = lazy(() => import("@/pages/login/login"));
 const Hotel = lazy(() => import("@/pages/hotel/hotel"));
 const Aero = lazy(() => import("@/pages/aero/aero"));
@@ -31,6 +32,7 @@ const Layout = () => {
                 <Route path="/transfer" element={<Transfer/>} />
                 <Route path="/sign-in" element={<Login/>} />
                 <Route path="/sign-up" element={<Registration/>} />
+                <Route path="/registration-confirm" element={<RegistrationConfirm/>} />
             </Routes>
         </Suspense>
     );

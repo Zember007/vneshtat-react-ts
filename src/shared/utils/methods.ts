@@ -98,8 +98,6 @@ export async function getUserCompanies() {
                 Authorization: `Bearer ${getAccessToken()}`
             }
         });
-        const companiesData = await res.json();
-        return companiesData.data.length ? companiesData.data : []
+        return await res.json();
     }
-    return []
 }

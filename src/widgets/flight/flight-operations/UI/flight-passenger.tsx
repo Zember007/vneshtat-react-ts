@@ -76,7 +76,7 @@ const FlightPassenger = () => {
                 <h3>Пассажиры</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"h-[calc(100vh-500px)] overflow-y-auto scroll w-full flex flex-col gap-2.5 py-2.5"}>
+            <div className={"h-[calc(100vh-425px)] overflow-y-auto scroll w-full flex flex-col gap-2.5 py-2.5"}>
                 {passengers.map((passenger) => (
                     <React.Fragment key={passenger.id}>
                         {passenger.id === activePassenger ? (

@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, nanoid} from "@reduxjs/toolkit";
 import {CheckboxItem} from "@/shared/UI/checkbox/checkbox.props";
 import {FilterData} from "@/shared/types";
 import {changeCheckbox, checkIfChanged} from "@/shared/utils";
@@ -14,17 +14,23 @@ export const taxiClasses: CheckboxItem[] = [
     {id: 8, isSelected: false, content: "Premier"},
 ]
 
+interface Voyager {
+    price: number,
+    count: number,
+    isSelected: boolean,
+    id: string,
+    dateFrom: Date | null,
+    dateTo: Date | null
+}
+
 interface Taxi {
     id: number
     name: string,
     surname: string,
-    voyagers: {
-        price: number,
-        count: number
-    }[]
-    dateFrom: Date | null
-    dateTo: Date | null
+    voyagers: Voyager[]
     isSelected: boolean
+    dateFrom: Date | null,
+    dateTo: Date | null
 }
 
 interface TaxiInitialState {
@@ -38,9 +44,9 @@ const initialState: TaxiInitialState = {
         isChanged: false
     },
     taxis: [
-        {id: 1, name: "Иван", surname: "Вознесенский", voyagers: [], isSelected: false, dateFrom: null, dateTo: null},
-        {id: 2, name: "Татьяна", surname: "Соколова", voyagers: [], isSelected: false, dateFrom: null, dateTo: null},
-        {id: 3, name: "Анастасия", surname: "Грибоедова", voyagers: [], isSelected: false, dateFrom: null, dateTo: null}
+        {id: 1, name: "Иван", surname: "Вознесенский", voyagers: [], isSelected: false, dateTo: null, dateFrom: null},
+        {id: 2, name: "Татьяна", surname: "Соколова", voyagers: [], isSelected: false, dateTo: null, dateFrom: null},
+        {id: 3, name: "Анастасия", surname: "Грибоедова", voyagers: [], isSelected: false, dateTo: null, dateFrom: null}
     ]
 }
 
@@ -77,15 +83,21 @@ export const taxiStore = createSlice({
             }
         },
         changeSelectedTaxi: (state, action) => {
-            state.taxis = state.taxis.map((taxi) => {
-                return {
-                    ...taxi,
-                    isSelected: taxi.id === action.payload && !taxi.isSelected
-                }
-            })
+            state.taxis = state.taxis.map(taxi => ({
+                ...taxi,
+                voyagers: taxi.voyagers.map(voyager => ({
+                    ...voyager,
+                    isSelected: false
+                }))
+            }));
+
+            state.taxis = state.taxis.map(taxi => ({
+                ...taxi,
+                isSelected: taxi.id === action.payload && !taxi.isSelected
+            }));
         },
         addVoyager: (state, action) => {
-            const { price, id } = action.payload;
+            const {price, id} = action.payload;
             state.taxis = state.taxis.map((taxi) => {
                 if (taxi.id === id) {
                     const existingVoyagerIndex = taxi.voyagers.findIndex(voyager => voyager.price === price);
@@ -93,22 +105,94 @@ export const taxiStore = createSlice({
                     if (existingVoyagerIndex !== -1) {
                         const updatedVoyagers = taxi.voyagers.map((voyager, index) =>
                             index === existingVoyagerIndex
-                                ? { ...voyager, count: voyager.count + 1 }
+                                ? {...voyager, count: voyager.count + 1}
                                 : voyager
                         );
-                        return { ...taxi, voyagers: updatedVoyagers };
+                        return {...taxi, voyagers: updatedVoyagers};
                     } else {
                         return {
                             ...taxi,
-                            voyagers: [...taxi.voyagers, { price, count: 1 }]
+                            voyagers: [...taxi.voyagers, {
+                                price,
+                                count: 1,
+                                id: nanoid(),
+                                isSelected: false,
+                                dateFrom: taxi.dateFrom,
+                                dateTo: taxi.dateTo
+                            }]
                         };
                     }
                 }
                 return taxi;
             });
+        },
+        deleteVoyager: (state, action) => {
+            const { voyagerId } = action.payload;
+
+            state.taxis = state.taxis.map((taxi) => {
+                const updatedVoyagers = taxi.voyagers.reduce<Voyager[]>((acc, item) => {
+                    if (item.id === voyagerId) {
+                        if (item.count > 1) {
+                            acc.push({
+                                ...item,
+                                count: item.count - 1
+                            });
+                        }
+                    } else {
+                        acc.push(item);
+                    }
+                    return acc;
+                }, []);
+
+                return {
+                    ...taxi,
+                    voyagers: updatedVoyagers
+                };
+            });
+        },
+        selectVoyager: (state, action) => {
+            const {voyagerId} = action.payload;
+
+            state.taxis = state.taxis.map((taxi) => {
+                return {
+                    ...taxi,
+                    isSelected: false,
+                    voyagers: taxi.voyagers.map((item) => ({
+                        ...item,
+                        isSelected: voyagerId === item.id
+                    }))
+                }
+            })
+        },
+        updateVoyager: (state, action) => {
+            const {voyagerId, data} = action.payload;
+
+            state.taxis = state.taxis.map(taxi => {
+                return {
+                    ...taxi,
+                    voyagers: taxi.voyagers.map(voyager => {
+                        if (voyager.id === voyagerId) {
+                            return {
+                                ...voyager,
+                                ...data
+                            }
+                        }
+                        return voyager;
+                    })
+                }
+            });
         }
     }
 })
 
-export const {setDateFrom, setDateTo, changeTaxiClass, addVoyager, changeSelectedTaxi} = taxiStore.actions;
+export const {
+    setDateFrom,
+    setDateTo,
+    changeTaxiClass,
+    updateVoyager,
+    selectVoyager,
+    addVoyager,
+    changeSelectedTaxi,
+    deleteVoyager
+} = taxiStore.actions;
 export default taxiStore.reducer

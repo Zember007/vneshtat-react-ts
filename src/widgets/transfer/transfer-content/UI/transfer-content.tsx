@@ -8,8 +8,18 @@ import PassengerImg from "@/assets/icons/users.svg?react";
 import RouteImg from "@/assets/icons/route.svg?react";
 
 const TransferContent = () => {
-    const {date, time, cityFromName, cityToName} = useSelector((state: RootState) => state.transfer);
+    const {date, time, cityFromName, cityToName, cityFrom, cityTo} = useSelector((state: RootState) => state.transfer);
     const dispatch = useDispatch();
+
+    const swapCities = () => {
+        const temp = cityFromName;
+
+        dispatch(setCityFromName(cityToName));
+        dispatch(setCityToName(temp));
+
+        dispatch(setCityFrom(cityTo));
+        dispatch(setCityTo(cityFrom));
+    };
 
     return (
         <div className={"w-full"}>
@@ -21,16 +31,16 @@ const TransferContent = () => {
                         <p className={"text-xs"}>+0</p>
                     </div>
                     <InputCity
-                        placeholder={"Вылет"}
+                        placeholder={"Выезд"}
                         value={cityFromName}
                         setValue={(str) => dispatch(setCityFromName(str))}
                         callback={(city: City) => dispatch(setCityFrom(city))}
                     />
-                    <button>
+                    <button onClick={swapCities}>
                         <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"}/>
                     </button>
                     <InputCity
-                        placeholder={"Прилет"}
+                        placeholder={"Прибытие"}
                         value={cityToName}
                         setValue={(str) => dispatch(setCityToName(str))}
                         callback={(city: City) => dispatch(setCityTo(city))}

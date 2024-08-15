@@ -99,8 +99,8 @@ const FlightChart = ({showedGraph, setShowedGraph, activeRate}: {
     }, [showedGraph]);
 
     return (
-        <div className={"overflow-y-auto scroll max-h-[calc(100vh-390px)]"}>
-            <div className={"p-9 m-5 rounded-[23px] bg-secondary relative min-h-[calc(100vh-430px)]"}>
+        <div>
+            <div className={"p-9 m-5 rounded-[23px] bg-secondary relative overflow-y-auto scroll hidden-scroll h-[calc(100vh-355px)]"}>
                 <div className={"flex justify-between items-center mb-5"}>
                     <h2 className={"font-medium leading-none"}>{showedGraph === "graph" ? "График цен" : "Таблица цен"}</h2>
                     <div className={"flex items-center gap-2.5"}>

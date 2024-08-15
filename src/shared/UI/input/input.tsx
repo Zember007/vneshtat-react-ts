@@ -19,6 +19,10 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
         }
     }, [rest.type]);
 
+    useEffect(() => {
+        setInputValue(rest.value || "");
+    }, [rest.value])
+
     const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value.replace(/\D/g, '');
         if (value.startsWith('7')) {

@@ -5,7 +5,7 @@ import {Calendar} from "@/shared/UI";
 import {formatDate, getDayOfWeek} from "@/shared/utils";
 import {useClickAway} from "@/shared/hooks/use-click-away";
 
-const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortDate = false, withIcon = true, calendarOpt, placeholder, ...rest}: InputDateProps) => {
+const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortDate = false, withIcon = true, calendarOpt, placeholder, noNeedHandler, ...rest}: InputDateProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     useClickAway(containerRef, () => setIsOpen(false))
@@ -52,7 +52,7 @@ const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortD
             </label>
             {isOpen && (
                 <div
-                    className={`absolute rounded-[23px] p-5 -translate-x-[35%] top-[250px] z-50 ${extraCalendarClass}`}
+                    className={`absolute rounded-[23px] p-5 -translate-x-[35%] top-[250px] z-50 flex flex-col gap-2.5 ${extraCalendarClass}`}
                     style={{
                         background: "rgba(245, 245, 245, 0.82)",
                         boxShadow: "0px 4px 6.5px 0px rgba(0, 0, 0, 0.04)",
@@ -60,6 +60,11 @@ const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortD
                     }}
                 >
                     <Calendar value={inputValue} setter={setter} {...calendarOpt} />
+                    {noNeedHandler ? (
+                        <button className={"bg-primary rounded-primary py-4 w-full"} onClick={noNeedHandler}>
+                            <p className={"text-md leading-none"}>Обратный билет не нужен</p>
+                        </button>
+                    ) : null}
                 </div>
             )}
         </div>

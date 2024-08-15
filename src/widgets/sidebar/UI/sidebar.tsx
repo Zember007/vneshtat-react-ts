@@ -6,12 +6,11 @@ import CopyImg from "@/assets/icons/copy.svg?react";
 import MessageImg from "@/assets/icons/message.svg?react";
 import JobImg from "@/assets/icons/job.svg?react";
 import ScopeImg from "@/assets/icons/scope.svg?react";
-import FilterImg from "@/assets/icons/filter.svg?react";
+import SettingsImg from "@/assets/icons/settings.svg?react";
 import RightImg from "@/assets/icons/arrow-right.svg?react";
 import OptionsImg from "@/assets/icons/options.svg?react"
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
-import {removeAccessToken, removeRefreshToken} from "@/shared/utils";
 import logoAnimation from "@/assets/animation/logo-animation.json"
 import lottie, {AnimationItem} from 'lottie-web';
 
@@ -22,6 +21,8 @@ const Sidebar = () => {
     const location = useLocation().pathname;
     const containerRef = useRef<HTMLAnchorElement | null>(null);
     const animationRef = useRef<AnimationItem | null>(null);
+    const isAnimating = useRef(false);
+    const timeoutId = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         animationRef.current = lottie.loadAnimation({
@@ -32,25 +33,47 @@ const Sidebar = () => {
             animationData: logoAnimation
         });
 
+        animationRef.current.addEventListener('complete', () => {
+            isAnimating.current = false;
+        });
+
         return () => {
             animationRef.current?.destroy();
+            if (timeoutId.current) {
+                clearTimeout(timeoutId.current);
+            }
         };
     }, []);
 
     const handleMouseEnter = () => {
-        if (animationRef.current) {
-            animationRef.current?.goToAndStop(0, true);
-            animationRef.current?.setDirection(1);
-            animationRef.current?.play();
+        if (animationRef.current && !isAnimating.current) {
+            isAnimating.current = true;
+            animationRef.current.goToAndStop(0, true);
+            animationRef.current.setDirection(1);
+            animationRef.current.play();
+        }
+        if (timeoutId.current) {
+            clearTimeout(timeoutId.current);
         }
     };
 
     const handleMouseLeave = () => {
         if (animationRef.current) {
-            animationRef.current?.stop();
-            animationRef.current?.goToAndStop(animationRef.current?.totalFrames - 1, true);
-            animationRef.current?.setDirection(-1);
-            animationRef.current?.play();
+            timeoutId.current = setTimeout(() => {
+                if (isAnimating.current) {
+                    animationRef.current?.addEventListener('complete', () => {
+                        if (animationRef.current) {
+                            animationRef.current.setDirection(-1);
+                            animationRef.current.play();
+                        }
+                    });
+                } else {
+                    if (animationRef.current) {
+                        animationRef.current.setDirection(-1);
+                        animationRef.current.play();
+                    }
+                }
+            }, 1000);
         }
     };
 
@@ -58,7 +81,7 @@ const Sidebar = () => {
         <div
             className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] ${isOpen ? "min-w-[240px] max-w-[240px]" : "min-w-[100px]"}`}>
             <Link to={"/"}
-                  className={`flex items-center ${isOpen ? "w-full" : ""} logo-animation-container`}
+                  className={`flex items-center ${isOpen ? "-translate-x-16" : ""} logo-animation-container`}
                   ref={containerRef}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>
@@ -154,7 +177,7 @@ const Sidebar = () => {
                     <Link to={"/filter"}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
-                            <FilterImg
+                            <SettingsImg
                                 className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/filter" && "blue-fill"}`}/>
                             {isOpen && <p className={`text-sm ${location === "/filter" && "text-blue"}`}>Настройки</p>}
                         </div>
@@ -169,7 +192,7 @@ const Sidebar = () => {
                 <button onClick={() => setIsOpen((prev) => !prev)}
                         onMouseEnter={() => setIsButtonHovered(true)}
                         onMouseLeave={() => setIsButtonHovered(false)}
-                        className={`${isOpen ? "w-full pl-4 mt-5" : "mt-2.5"} flex gap-2.5 items-center`}>
+                        className={`${isOpen ? "w-full pl-2.5 mt-5" : "mt-2.5"} flex gap-2.5 items-center`}>
                     <RightImg
                         className={`blue-fill-hover transition ultra:min-w-8 ultra:min-h-8 ${isButtonHovered && "blue-fill"} ${isOpen ? "rotate-180" : "rotate-0"}`}/>
                     {isOpen && <p className={`text-sm text-[#787B86] ${isButtonHovered && "text-blue"}`}>Свернуть</p>}
@@ -177,9 +200,9 @@ const Sidebar = () => {
             </div>
             {isOpen ? (
                 <div
-                    className={"w-full min-h-16 rounded-[23px] py-3 pl-3 pr-4 flex justify-between items-center bg-black"}>
+                    className={"w-full rounded-[23px] min-h-[65px] py-3 pl-3 pr-4 flex justify-between items-center bg-black"}>
                     <div className={"flex items-center gap-2.5"}>
-                        <div className={"bg-section mt-auto mb-auto rounded-[100%] py-1.5 px-2"}>
+                        <div className={"bg-section h-[40px] w-[40px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
                             <p className={"text-lg tracking-[-0.1em]"}>{fullname.name[0].toUpperCase()}{fullname.surname[0].toUpperCase()}</p>
                         </div>
                         <span className={"flex flex-col"}>
@@ -188,15 +211,15 @@ const Sidebar = () => {
                         </span>
                     </div>
                     <button onClick={() => {
-                        removeAccessToken();
-                        removeRefreshToken();
+                        localStorage.clear();
+                        window.location.replace("/");
                     }}>
                         <OptionsImg/>
                     </button>
                 </div>
             ) : (
-                <div className={"w-full min-h-16 rounded-[23px] flex justify-center items-center bg-black"}>
-                    <div className={"bg-section mt-auto mb-auto rounded-[100%] py-1.5 px-2"}>
+                <div className={"w-full min-h-[65px] rounded-[23px] flex justify-center items-center bg-black"}>
+                    <div className={"bg-section h-[40px] w-[40px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
                         {fullname.name.length && fullname.surname.length ? (
                             <p className={"text-lg tracking-[-0.1em]"}>{fullname.name[0].toUpperCase()}{fullname.surname[0].toUpperCase()}</p>
                         ) : null}

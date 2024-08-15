@@ -17,7 +17,7 @@ import {useState} from "react";
 import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
 
 const JourneyTicketsHeader = () => {
-    const {dateTo, dateBack, cityFromName, cityToName} = useSelector((state: RootState) => state.journey);
+    const {dateTo, dateBack, cityFromName, cityToName, cityTo, cityFrom} = useSelector((state: RootState) => state.journey);
     const [go, setGo] = useState(true);
     const [byQueue, setByQueue] = useState(true);
     const [isChair, setIsChair] = useState(true);
@@ -26,6 +26,16 @@ const JourneyTicketsHeader = () => {
         selectedTags: []
     });
     const dispatch = useDispatch();
+
+    const swapCities = () => {
+        const temp = cityFromName;
+
+        dispatch(setCityFromName(cityToName));
+        dispatch(setCityToName(temp));
+
+        dispatch(setCityFrom(cityTo));
+        dispatch(setCityTo(cityFrom));
+    };
 
     return (
         <div className={"flex flex-col gap-4"}>
@@ -40,7 +50,7 @@ const JourneyTicketsHeader = () => {
                     setValue={(str) => dispatch(setCityFromName(str))}
                     callback={(city) => dispatch(setCityFrom(city))}
                 />
-                <button>
+                <button onClick={swapCities}>
                     <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"}/>
                 </button>
                 <InputCity
@@ -52,10 +62,12 @@ const JourneyTicketsHeader = () => {
                 <InputDate
                     placeholder={"Туда"}
                     extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
+                    extraCalendarClass={"-translate-y-20"}
                     inputValue={dateTo}
                     isShortDate={true}
                     withIcon={false}
                     calendarOpt={{maxDate: dateBack}}
+                    noNeedHandler={() => console.log("")}
                     setter={(date: Date) => {
                         dispatch(setDateTo(date))
                     }}
@@ -63,6 +75,7 @@ const JourneyTicketsHeader = () => {
                 <InputDate
                     placeholder={"Обратно"}
                     extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
+                    extraCalendarClass={"translate-y-"}
                     inputValue={dateBack}
                     isShortDate={true}
                     withIcon={false}

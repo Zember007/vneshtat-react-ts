@@ -13,7 +13,7 @@ const AeroContent = ({selectedTariffId, setSelectedTariffId}: {selectedTariffId:
                     "1 поездка в вагоне Стандартного класса по любому маршруту Аэроэкспресс в течение 30 суток с даты, указанной в билете (выбранной при покупке)." :
                     "Аэроэкспресс — скоростной поезд, связывающий аэропорты Москвы с вокзалами в центральных районах города. Отправление каждые полчаса."}</p>
             </div>
-            <div className={"py-6 px-5 bg-primary h-[calc(100vh-300px)] rounded-[26px] flex flex-col gap-4"}>
+            <div className={"py-6 px-5 bg-primary h-[calc(100vh-220px)] rounded-[26px] flex flex-col gap-4"}>
                 {mockTariff.map(item => (
                     <div key={item.id}
                          className={`transition pt-4 pb-3 px-6 rounded-[26px] flex items-center justify-between ${selectedTariffId === item.id ? "bg-black" : "bg-secondary"}`}

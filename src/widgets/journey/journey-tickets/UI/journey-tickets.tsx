@@ -65,7 +65,7 @@ const JourneyTickets = () => {
     }, []);
 
     return (
-        <div className={"w-full flex flex-col"} ref={scrollRef}>
+        <div className={"w-full flex flex-col h-full"} ref={scrollRef}>
             <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
                 <JourneyTicketsHeader />
                 <hr className={"h-[1px] bg-[#e5e7ea] rounded-[1px] mt-4"} />
@@ -102,10 +102,10 @@ const JourneyTickets = () => {
                         </div>
                     </div>
                 ) : (
-                    <div ref={ticketContainerRef} className="flex flex-col gap-4 px-5 py-5 overflow-y-auto scroll max-h-[calc(100vh-330px)] relative h-full">
+                    <div ref={ticketContainerRef} className="flex flex-col gap-4 px-5 py-5 overflow-y-auto scroll max-h-[calc(100vh-250px)] relative h-full">
                         {showScrollButton && (
                             <button
-                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-6"
+                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10 translate-x-4"
                                 onClick={() => {
                                     handleScrollToTop(ticketContainerRef);
                                     setShowScrollButton(false)

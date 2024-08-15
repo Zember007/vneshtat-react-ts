@@ -6,7 +6,7 @@ import LogoIdImg from "@/assets/icons/logo-id.svg?react";
 import AlphaImg from "@/assets/icons/alpha.svg?react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import ArrowImg from "@/assets/icons/arrow-long.svg?react";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import {updateLoginState, updateRestoreState} from "../model/login.store";
 import {setAccessToken, setRefreshToken} from "@/shared/utils";
 import {useNavigate} from "react-router-dom";
@@ -35,10 +35,12 @@ const LoginUser = () => {
     } = useSelector((state: RootState) => state.login.restore);
     const {companies} = useSelector((state: RootState) => state.user)
     const [isLoginClicked, setIsLoginClicked] = useState(false);
+    const [status, setStatus] = useState<"error" | "success" | null>(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    async function handleLogin() {
+    async function handleLogin(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
         const formdata = new FormData();
         formdata.append("Username", login);
         formdata.append("Password", password);
@@ -56,6 +58,9 @@ const LoginUser = () => {
                 redirect: "follow"
             });
             const data = await res.json();
+            if (data.status === "error") {
+                setStatus("error")
+            }
 
             if (data.status === "success" && data.data) {
                 setAccessToken(data.data.access_token);
@@ -65,11 +70,17 @@ const LoginUser = () => {
 
                 // get companies
                 const companiesData = await getUserCompanies();
-                if (!companiesData.length) navigate("/")
-                else dispatch(setCompanies(companiesData));
+                console.log(companiesData)
+                if (companiesData.status === "success") {
+                    if (!companiesData.data.length) navigate("/")
+                    else dispatch(setCompanies(companiesData.data));
+                    setIsLoginClicked(true)
+                } else {
+                    setStatus("error")
+                }
             }
         } catch (error) {
-            console.error("Error fetching tokens:", error);
+            setStatus("error")
         }
     }
 
@@ -313,7 +324,7 @@ const LoginUser = () => {
                             <div className={"flex justify-center"}>
                                 <LogoIdImg/>
                             </div>
-                            <form className={"flex flex-col gap-2.5"} autoComplete={"on"}>
+                            <form className={"flex flex-col gap-2.5"} autoComplete={"on"} onSubmit={handleLogin}>
                                 <Switch
                                     extraClass={"w-full h-[50px] !bg-[#FAFAFA] border border-solid border-[#E5E7EA]"}
                                     extraChildClass={"py-2.5 h-full w-[50%]"}
@@ -358,21 +369,17 @@ const LoginUser = () => {
                                         <button
                                             className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
                                             disabled={!isLoginReady}
-                                            onClick={() => {
-                                                setIsLoginClicked(true);
-                                                handleLogin();
-                                            }}
+                                            type={"submit"}
                                         >
                                             <p className={`text-lg font-medium text-primary ${!isLoginReady && "!text-[#9B9FAD]"}`}>Войти</p>
                                         </button>
-                                        {phone ? (
+                                        {status === "error" ? (
                                             <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
                                                 привязанного к
                                                 этому номеру не найдено</p>
                                         ) : null}
                                         <button
                                             className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
-                                            onClick={() => navigate("/sign-up")}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
                                         </button>
@@ -400,7 +407,7 @@ const LoginUser = () => {
                                             }))}
                                             autoComplete={"on"}
                                         />
-                                        {login ? (
+                                        {status === "error" ? (
                                             <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта, с
                                                 таким
                                                 ID не найдено</p>
@@ -421,10 +428,7 @@ const LoginUser = () => {
                                         <button
                                             className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
                                             disabled={!isLoginReady}
-                                            onClick={() => {
-                                                setIsLoginClicked(true);
-                                                handleLogin();
-                                            }}
+                                            type={"submit"}
                                         >
                                             <p className={`text-lg font-medium text-primary ${!isLoginReady && "!text-[#9B9FAD]"}`}>Войти</p>
                                         </button>
@@ -438,7 +442,6 @@ const LoginUser = () => {
                                         </button>
                                         <button
                                             className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
-                                            onClick={() => navigate("/sign-up")}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
                                         </button>

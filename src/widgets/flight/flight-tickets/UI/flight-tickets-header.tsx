@@ -34,6 +34,23 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
 
     const {currentItems, nextPage, prevPage} = usePagination(priceData, 6, 1);
 
+    const swapFlightCities = () => {
+        const temp = cityFrom;
+        dispatch(setCityFrom(cityTo));
+        dispatch(setCityTo(temp));
+
+        dispatch(updateFlight({
+            id: firstFlight.id,
+            field: "departureCity",
+            value: cityTo
+        }));
+        dispatch(updateFlight({
+            id: firstFlight.id,
+            field: "arrivalCity",
+            value: temp
+        }));
+    };
+
     return (
         <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
             <div className={"flex flex-col gap-4"}>
@@ -53,7 +70,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                             value: city
                         }))}
                     />
-                    <button>
+                    <button onClick={swapFlightCities}>
                         <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"}/>
                     </button>
                     <InputCity

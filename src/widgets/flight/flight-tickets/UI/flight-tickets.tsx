@@ -86,10 +86,10 @@ const FlightTickets = () => {
                         {tickets ? (
                             <div
                                 ref={ticketContainerRef}
-                                className="flex flex-col gap-4 p-5 overflow-y-auto scroll max-h-[calc(100vh-400px)] relative h-full">
+                                className="flex flex-col gap-4 p-5 overflow-y-auto scroll max-h-[calc(100vh-320px)] relative h-full">
                                 {showScrollButton && (
                                     <button
-                                        className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-6"
+                                        className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10 translate-x-4"
                                         onClick={() => {
                                             handleScrollToTop(ticketContainerRef);
                                             setShowScrollButton(false);

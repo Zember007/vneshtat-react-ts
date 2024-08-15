@@ -13,7 +13,7 @@ const HotelRoute = () => {
                 <h3>Маршрут</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"py-2.5 h-[calc(100vh-420px)] overflow-y-auto scroll"}>
+            <div className={"py-2.5 h-[calc(100vh-340px)] overflow-y-auto scroll"}>
                 <div className={"flex flex-col gap-4"}>
                     <h4 className={"text-base font-medium"}>Город</h4>
                     <InputCity

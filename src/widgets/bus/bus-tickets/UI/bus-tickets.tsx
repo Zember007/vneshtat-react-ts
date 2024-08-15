@@ -17,7 +17,7 @@ import {
 } from "../../bus-operations/model/bus.store";
 
 const BusTickets = () => {
-    const {journeyDate, cityFromName, cityToName } = useSelector((state: RootState) => state.bus);
+    const {journeyDate, cityFromName, cityToName, cityFrom, cityTo } = useSelector((state: RootState) => state.bus);
     const tickets = 1;
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const ticketContainerRef = useRef<HTMLDivElement | null>(null);
@@ -66,6 +66,16 @@ const BusTickets = () => {
         };
     }, []);
 
+    const swapCities = () => {
+        const temp = cityFromName;
+
+        dispatch(setCityFromName(cityToName));
+        dispatch(setCityToName(temp));
+
+        dispatch(setCityFrom(cityTo));
+        dispatch(setCityTo(cityFrom));
+    };
+
     return (
         <div ref={scrollRef} className={"w-full flex flex-col"}>
             <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
@@ -82,7 +92,7 @@ const BusTickets = () => {
                             setValue={(str) => dispatch(setCityFromName(str))}
                             callback={(city) => dispatch(setCityFrom(city))}
                         />
-                        <button>
+                        <button onClick={swapCities}>
                             <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"}/>
                         </button>
                         <InputCity
@@ -126,10 +136,10 @@ const BusTickets = () => {
                 {tickets ? (
                     <div
                         ref={ticketContainerRef}
-                        className="flex flex-col gap-4 px-5 py-5 overflow-y-auto scroll max-h-[calc(100vh-350px)] relative h-full">
+                        className="flex flex-col gap-4 px-5 py-5 overflow-y-auto scroll max-h-[calc(100vh-270px)] relative h-full">
                         {showScrollButton && (
                             <button
-                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-6"
+                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10 translate-x-4"
                                 onClick={() => {
                                     handleScrollToTop(ticketContainerRef);
                                     setShowScrollButton(false)

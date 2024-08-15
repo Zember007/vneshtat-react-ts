@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
-import {changeSelectedTaxi} from "@/widgets/taxi/taxi-operations/model/taxi.store";
+import {changeSelectedTaxi, selectVoyager} from "@/widgets/taxi/taxi-operations/model/taxi.store";
 
 const TaxiContent = () => {
     const {taxis} = useSelector((state: RootState) => state.taxi);
@@ -40,8 +40,10 @@ const TaxiContent = () => {
                                     {taxi.voyagers.map((item, i) => (
                                         <button
                                             key={i}
-                                            className={"h-9 pl-4 pr-1 py-1 rounded-primary bg-primary flex items-center gap-2.5"}>
-                                            <p className={"text-md font-medium leading-none"}>{item.price} ₽</p>
+                                            className={`transition h-9 pl-4 pr-1 py-1 rounded-primary ${item.isSelected ? "bg-black" : "bg-primary"} flex items-center gap-2.5`}
+                                            onClick={() => dispatch(selectVoyager({voyagerId: item.id}))}
+                                        >
+                                            <p className={`text-md font-medium leading-none ${item.isSelected ? "text-primary" : "text-black"}`}>{item.price.toFixed(2)} ₽</p>
                                             <div
                                                 className={"py-1 px-2.5 rounded-secondary bg-secondary h-7 flex items-center justify-center"}>
                                                 <p className={"text-sm font-medium leading-none"}>{item.count}</p>

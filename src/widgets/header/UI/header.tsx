@@ -16,6 +16,7 @@ import {RootState} from "@/app/config/store";
 const Header = () => {
     const location = useLocation().pathname;
     const {companies} = useSelector((state: RootState) => state.user)
+    console.log(companies)
     const selectedCompany = companies?.find(item => item.EmployeeId.toString() === localStorage.getItem("EmployeeId"))
     const links = [
         {to: "/flight", img: PlaneImg, label: "Самолёт"},

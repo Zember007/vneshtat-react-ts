@@ -20,7 +20,7 @@ const Admin = () => {
 
     const getStatusText = (status: UserStatus): string => {
         if (status === "in_queue") return "В очереди ожидания";
-        if (status === "in_progress") return "В процессе";
+        if (status === "in_progress") return "В процессе заполнения";
         if (status === "completed") return "Регистрация завершена, подключение к компании";
         return "Неизвестный статус";
     };

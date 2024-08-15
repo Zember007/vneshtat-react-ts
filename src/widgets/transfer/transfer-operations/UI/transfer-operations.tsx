@@ -35,14 +35,27 @@ const TransferOperations = () => {
                 {activeOperation === "decor" && <TransferDecor/>}
             </div>
             {activeOperation === "passengers" && (
-                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4"}>
+                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4 h-[50px]"}>
                     <h1 className={"text-lg text-[#fff]"}>Поиск!</h1>
                 </button>
             )}
             {activeOperation === "route" && (
-                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4"}>
-                    <h1 className={"text-lg text-[#fff]"}>Выбрать пассажиров</h1>
+                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4 h-[50px]"}>
+                    <h1 className={"text-base text-[#fff]"}>Выбрать пассажиров</h1>
                 </button>
+            )}
+            {activeOperation === "decor" && (
+                <div>
+                    <button className={"w-full flex justify-center items-center py-2 rounded-primary bg-[#DCE0E5] mt-4 h-[35px]"}>
+                        <h1 className={"text-base font-medium"}>1100,00 ₽</h1>
+                    </button>
+                    <div className={"flex items-center justify-center"}>
+                        <hr className={"bg-[#C0C7D1] rounded-[1px] h-[1px] w-[50px] my-2.5"}/>
+                    </div>
+                    <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black h-[50px]"}>
+                        <h1 className={"text-base text-[#fff]"}>Забронировать</h1>
+                    </button>
+                </div>
             )}
         </aside>
     )

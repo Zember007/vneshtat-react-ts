@@ -36,11 +36,6 @@ const InputRange: React.FC<InputRangeProps> = ({
     };
 
     useEffect(() => {
-        setLeft(minVal);
-        setRight(maxVal);
-    }, [minVal, maxVal]);
-
-    useEffect(() => {
         const minPercent = getPercent(left);
         const maxPercent = getPercent(right);
 

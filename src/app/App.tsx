@@ -29,7 +29,7 @@ function App() {
 
             const setUserCompanies = async () => {
                 const companiesData = await getUserCompanies();
-                dispatch(setCompanies(companiesData))
+                dispatch(setCompanies(companiesData.data))
             }
             setUserCompanies();
             const intervalId = setInterval(() => {
@@ -44,7 +44,7 @@ function App() {
         return <div></div>;
     }
 
-    if (["/promo", "/sign-up", "/sign-in", "/try"].includes(location)) {
+    if (["/promo", "/sign-up", "/sign-in", "/try", "/admin"].includes(location)) {
         if (isAuthorized) return null;
         else return <Layout/>;
     }

@@ -71,12 +71,12 @@ const JourneyPassenger = () => {
     };
 
     return (
-        <div className={"w-full h-[calc(100vh-380px)]"}>
+        <div className={"w-full h-[calc(100vh-300px)]"}>
             <div className={"flex justify-between items-center"}>
                 <h3>Пассажиры</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"h-[calc(100vh-510px)] overflow-y-auto scroll w-full flex flex-col gap-2.5 py-2.5"}>
+            <div className={"h-[calc(100vh-420px)] overflow-y-auto scroll w-full flex flex-col gap-2.5 py-2.5"}>
                 {passengers.map((passenger) => (
                     <React.Fragment key={passenger.id}>
                         {passenger.id === activePassenger ? (
