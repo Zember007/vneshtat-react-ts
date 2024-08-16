@@ -7,6 +7,7 @@ interface User {
     id: number
     CompanyName: string
     Email: string
+    PhoneNumber: string
     FullName: string
     IsCEO: boolean
     Processed: boolean
@@ -52,9 +53,9 @@ const Admin = () => {
     }, [])
 
     return (
-        <div className={"flex flex-col gap-5 overflow-y-scroll hidden-scroll"}>
+        <div className={"grid grid-cols-2 p-5 px-8 gap-5 overflow-y-scroll hidden-scroll"}>
             {users.map((user) => (
-                <div key={user.id} className={"p-5 bg-primary rounded-[26px] flex justify-between"}>
+                <div key={user.id} className={"w-full p-5 bg-primary rounded-[26px] flex justify-between"}>
                     <div className={"flex flex-col gap-2"}>
                         <span className={"flex items-center gap-5"}>
                         <h1 className={"text-xl leading-none text-[#9B9FAD]"}>#:</h1>
@@ -67,6 +68,10 @@ const Admin = () => {
                         <span className={"flex items-center gap-5"}>
                         <h1 className={"text-xl leading-none text-[#9B9FAD]"}>Почта:</h1>
                         <h6 className={"text-lg leading-none font-medium"}>{user.Email}</h6>
+                    </span>
+                        <span className={"flex items-center gap-5"}>
+                        <h1 className={"text-xl leading-none text-[#9B9FAD]"}>Номер телефона:</h1>
+                        <h6 className={"text-lg leading-none font-medium"}>{user.PhoneNumber}</h6>
                     </span>
                         <span className={"flex items-center gap-5"}>
                         <h1 className={"text-xl leading-none text-[#9B9FAD]"}>Полное имя:</h1>

@@ -71,7 +71,7 @@ const PromoPopups = () => {
                             />
                         </div>
                         <div className={"flex flex-col gap-2.5"}>
-                            <div className="relative">
+                            <label className="relative">
                                 <Input
                                     extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
                                     placeholder="Как к вам обращаться?"
@@ -83,8 +83,8 @@ const PromoPopups = () => {
                                         Иван
                                     </span>
                                 )}
-                            </div>
-                            <div className="relative">
+                            </label>
+                            <label className="relative">
                                 <Input
                                     extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
                                     placeholder={"Название компании"}
@@ -99,8 +99,8 @@ const PromoPopups = () => {
                                         Альфа
                                     </span>
                                 )}
-                            </div>
-                            <div className="relative">
+                            </label>
+                            <label className="relative">
                                 <Input
                                     extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
                                     placeholder={"Кол-во командировок"}
@@ -115,8 +115,8 @@ const PromoPopups = () => {
                                         Более 100 в месяц
                                     </span>
                                 )}
-                            </div>
-                            <div className="relative">
+                            </label>
+                            <label className="relative">
                                 <Input
                                     extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
                                     placeholder={"Номер телефона"}
@@ -129,8 +129,8 @@ const PromoPopups = () => {
                                         +7 (___) ___ - __ -__
                                     </span>
                                 )}
-                            </div>
-                            <div className="relative">
+                            </label>
+                            <label className="relative">
                                 <Input
                                     extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
                                     type={"email"}
@@ -143,8 +143,7 @@ const PromoPopups = () => {
                                         johndoe@gmail.com
                                     </span>
                                 )}
-                            </div>
-
+                            </label>
                         </div>
                         <button
                             className={"w-full flex justify-center items-center py-3 h-[42px] rounded-primary bg-black"}

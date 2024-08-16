@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { refreshAccessToken, decodeJWT } from "@/shared/utils/methods";
-import { getAccessToken, getRefreshToken } from "@/shared/utils";
+import {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {refreshAccessToken, decodeJWT} from "@/shared/utils/methods";
+import {getAccessToken, getRefreshToken, publicRoutes} from "@/shared/utils";
 
 export const useVerifyToken = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState(false);
+    const location = useLocation().pathname;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,7 +15,7 @@ export const useVerifyToken = () => {
         const verifyToken = async () => {
             const token = getAccessToken();
             if (token) {
-                const { exp } = decodeJWT(token) as { exp: number };
+                const {exp} = decodeJWT(token) as { exp: number };
                 const currentTime = Math.floor(Date.now() / 1000);
                 const isTokenExpired = exp - 10 < currentTime;
 
@@ -22,7 +23,9 @@ export const useVerifyToken = () => {
                     const isTokenRefreshed = await refreshAccessToken();
                     if (!isTokenRefreshed) {
                         setIsAuthorized(false);
-                        navigate("/promo");
+                        if (!publicRoutes.includes(location)) {
+                            navigate("/promo");
+                        }
                     } else {
                         setIsAuthorized(true);
                         scheduleTokenRefresh(exp, currentTime);
@@ -36,16 +39,20 @@ export const useVerifyToken = () => {
                     const isTokenRefreshed = await refreshAccessToken();
                     if (isTokenRefreshed) {
                         setIsAuthorized(true);
-                        const { exp } = decodeJWT(getAccessToken() as string) as { exp: number };
+                        const {exp} = decodeJWT(getAccessToken() as string) as { exp: number };
                         const currentTime = Math.floor(Date.now() / 1000);
                         scheduleTokenRefresh(exp, currentTime);
                     } else {
                         setIsAuthorized(false);
-                        navigate("/promo");
+                        if (!publicRoutes.includes(location)) {
+                            navigate("/promo");
+                        }
                     }
                 } else {
                     setIsAuthorized(false);
-                    navigate("/promo");
+                    if (!publicRoutes.includes(location)) {
+                        navigate("/promo");
+                    }
                 }
             }
             setIsLoading(false);
@@ -78,5 +85,5 @@ export const useVerifyToken = () => {
         };
     }, []);
 
-    return { isLoading, isAuthorized };
+    return {isLoading, isAuthorized};
 };
