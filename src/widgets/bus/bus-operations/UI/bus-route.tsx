@@ -43,6 +43,7 @@ const BusRoute = () => {
                             extraCalendarClass={"right-[210px]"}
                             setter={(value: Date) => dispatch(setJourneyDate(value))}
                             inputValue={journeyDate}
+                            viewValue={journeyDate}
                             placeholder={"Туда"}
                         />
                     </div>

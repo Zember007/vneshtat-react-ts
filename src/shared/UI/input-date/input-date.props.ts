@@ -1,9 +1,10 @@
 import {InputHTMLAttributes} from "react";
 
 export interface InputDateProps extends InputHTMLAttributes<HTMLInputElement>{
+    viewValue: Date | Date[] | null
     inputValue: Date | Date[] | null
     setter: any
-    noNeedHandler?: () => void;
+    noNeedButton?: boolean;
     isShortDate?: boolean
     withIcon?: boolean
     calendarOpt?: any

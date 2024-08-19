@@ -35,6 +35,7 @@ const HotelMap = () => {
         isSelected: false,
         content: "Бесплатная отмена",
     }])
+    const [dates, setDates] = useState<Date[]>([]);
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const ticketContainerRef = useRef<HTMLDivElement | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -82,6 +83,32 @@ const HotelMap = () => {
         };
     }, [])
 
+    useEffect(() => {
+        if (dateTo) setDates(prev => [dateTo, prev[1] && prev[1]]);
+        if (dateBack) setDates(prev => [prev[0] && prev[0], dateBack]);
+    }, [dateTo, dateBack]);
+
+    const handleDateClick = (date: Date) => {
+        let updatedDates = dates.filter(d => d !== undefined);
+
+        if (updatedDates.length === 2) {
+            updatedDates = [];
+            setDates([]);
+            dispatch(setDateTo(null))
+            dispatch(setDateBack(null))
+        }
+        if (!dateTo || updatedDates.length === 0) {
+            dispatch(setDateTo(date));
+            updatedDates = [date];
+        } else {
+            updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
+            dispatch(setDateTo(updatedDates[0]))
+            dispatch(setDateBack(updatedDates[1]))
+        }
+
+        setDates(updatedDates);
+    };
+
     return (
         <div className={"w-full flex flex-col"} ref={scrollRef}>
             <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
@@ -105,23 +132,37 @@ const HotelMap = () => {
                         <InputDate
                             placeholder={"Заезд"}
                             extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
-                            inputValue={dateTo}
+                            extraCalendarClass={"-translate-y-20"}
+                            noNeedButton={dates.length !== 2}
+                            inputValue={dates}
+                            viewValue={dateTo}
                             isShortDate={true}
                             withIcon={false}
-                            calendarOpt={{maxDate: dateBack}}
-                            setter={(date: Date) => {
-                                dispatch(setDateTo(date))
+                            calendarOpt={{
+                                onClickDay: handleDateClick,
+                                allowPartialOptions: true,
+                                selectRange: true
+                            }}
+                            setter={(dates: Date[]) => {
+                                setDates(dates);
                             }}
                         />
                         <InputDate
                             placeholder={"Выезд"}
                             extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
-                            inputValue={dateBack}
+                            extraCalendarClass={"-translate-y-20"}
+                            noNeedButton={dates.length !== 2}
+                            inputValue={dates}
+                            viewValue={dateBack}
                             isShortDate={true}
                             withIcon={false}
-                            calendarOpt={{minDate: dateTo}}
-                            setter={(date: Date) => {
-                                dispatch(setDateBack(date))
+                            calendarOpt={{
+                                onClickDay: handleDateClick,
+                                allowPartialOptions: true,
+                                selectRange: true
+                            }}
+                            setter={(dates: Date[]) => {
+                                setDates(dates);
                             }}
                         />
                     </div>

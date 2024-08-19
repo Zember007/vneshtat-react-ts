@@ -54,7 +54,7 @@ const Admin = () => {
 
     return (
         <div className={"grid grid-cols-2 p-5 px-8 gap-5 overflow-y-scroll hidden-scroll"}>
-            {users.map((user) => (
+            {users.length ? users.map((user) => (
                 <div key={user.id} className={"w-full p-5 bg-primary rounded-[26px] flex justify-between"}>
                     <div className={"flex flex-col gap-2"}>
                         <span className={"flex items-center gap-5"}>
@@ -108,7 +108,9 @@ const Admin = () => {
                         </button>
                     </div>
                 </div>
-            ))}
+            )) : (
+                <h1>Нет пользователей для просмотра</h1>
+            )}
         </div>
     )
 };

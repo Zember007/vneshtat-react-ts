@@ -1,5 +1,5 @@
 import {Link, useLocation} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import HomeImg from "@/assets/icons/home.svg?react";
 import SwapImg from "@/assets/icons/swap.svg?react";
 import CopyImg from "@/assets/icons/copy.svg?react";
@@ -14,8 +14,7 @@ import {RootState} from "@/app/config/store";
 import logoAnimation from "@/assets/animation/logo-animation.json"
 import lottie, {AnimationItem} from 'lottie-web';
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetStateAction<boolean>>}) => {
     const {fullname} = useSelector((state: RootState) => state.user);
     const [isButtonHovered, setIsButtonHovered] = useState(false);
     const location = useLocation().pathname;
@@ -79,7 +78,7 @@ const Sidebar = () => {
 
     return (
         <div
-            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] ${isOpen ? "min-w-[240px] max-w-[240px]" : "min-w-[100px]"}`}>
+            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "min-w-[240px] max-w-[240px] absolute z-10" : "min-w-[100px]"}`}>
             <Link to={"/"}
                   className={`flex items-center ${isOpen ? "-translate-x-16" : ""} logo-animation-container`}
                   ref={containerRef}
@@ -87,7 +86,7 @@ const Sidebar = () => {
                   onMouseLeave={handleMouseLeave}>
             </Link>
             <div
-                className={`h-full w-full flex flex-col items-center gap-2.5 py-8 px-2.5 ultra:gap-10 bg-primary rounded-primary`}>
+                className={`h-full flex flex-col items-center gap-2.5 py-[15px] px-2.5 ultra:gap-10 bg-primary rounded-primary`}>
                 <div className={`w-full flex flex-col gap-2.5 ultra:gap-12`}>
                     <Link to={"/"}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>

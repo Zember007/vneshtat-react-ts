@@ -47,7 +47,10 @@ function App() {
     }
 
     if (publicRoutes.includes(location)) {
-        if (isAuthorized) navigate("/");
+        if (isAuthorized) {
+            if (location === "/admin") return <BasicLayout component={<Layout/>}/>
+            else navigate("/")
+        }
         else return <Layout/>
     }
 

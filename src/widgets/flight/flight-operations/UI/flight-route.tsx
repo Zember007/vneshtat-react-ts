@@ -121,6 +121,7 @@ const FlightRouteItem = ({ flight, index, onRemove }: FlightRouteItemProps) => {
                 <InputDate
                     setter={(value: Date) => handleInputChange('flightDate', value)}
                     inputValue={flightDate}
+                    viewValue={flightDate}
                     calendarOpt={calendarOptions}
                     extraCalendarClass={"right-[180px] -translate-y-[200px]"}
                     placeholder={"Дата"}

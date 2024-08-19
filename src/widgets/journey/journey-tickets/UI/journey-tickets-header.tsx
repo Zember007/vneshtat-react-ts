@@ -1,4 +1,4 @@
-import { InputCity, InputDate, Switch, TagFilter} from "@/shared/UI";
+import {InputCity, InputDate, Switch, TagFilter} from "@/shared/UI";
 import BurgerImg from "@/assets/icons/burger.svg?react";
 import HeartImg from "@/assets/icons/heart.svg?react";
 import ChairExistsImg from "@/assets/icons/chair-exists.svg?react";
@@ -13,19 +13,32 @@ import {
 } from "../../journey-operations/model/journey.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
 
 const JourneyTicketsHeader = () => {
-    const {dateTo, dateBack, cityFromName, cityToName, cityTo, cityFrom} = useSelector((state: RootState) => state.journey);
+    const {
+        dateTo,
+        dateBack,
+        cityFromName,
+        cityToName,
+        cityTo,
+        cityFrom
+    } = useSelector((state: RootState) => state.journey);
     const [go, setGo] = useState(true);
     const [byQueue, setByQueue] = useState(true);
     const [isChair, setIsChair] = useState(true);
+    const [dates, setDates] = useState<Date[]>([]);
     const [tags, setTags] = useState<Tag>({
         tags: ["Дешевле", "Быстрее"],
         selectedTags: []
     });
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (dateTo) setDates(prev => [dateTo, prev[1] && prev[1]]);
+        if (dateBack) setDates(prev => [prev[0] && prev[0], dateBack]);
+    }, [dateTo, dateBack]);
 
     const swapCities = () => {
         const temp = cityFromName;
@@ -35,6 +48,27 @@ const JourneyTicketsHeader = () => {
 
         dispatch(setCityFrom(cityTo));
         dispatch(setCityTo(cityFrom));
+    };
+
+    const handleDateClick = (date: Date) => {
+        let updatedDates = dates.filter(d => d !== undefined);
+
+        if (updatedDates.length === 2) {
+            updatedDates = [];
+            setDates([]);
+            dispatch(setDateTo(null))
+            dispatch(setDateBack(null))
+        }
+        if (!dateTo || updatedDates.length === 0) {
+            dispatch(setDateTo(date));
+            updatedDates = [date];
+        } else {
+            updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
+            dispatch(setDateTo(updatedDates[0]))
+            dispatch(setDateBack(updatedDates[1]))
+        }
+
+        setDates(updatedDates);
     };
 
     return (
@@ -63,25 +97,36 @@ const JourneyTicketsHeader = () => {
                     placeholder={"Туда"}
                     extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
                     extraCalendarClass={"-translate-y-20"}
-                    inputValue={dateTo}
+                    inputValue={dates}
+                    viewValue={dateTo}
+                    noNeedButton={dates.length !== 2}
                     isShortDate={true}
                     withIcon={false}
-                    calendarOpt={{maxDate: dateBack}}
-                    noNeedHandler={() => console.log("")}
-                    setter={(date: Date) => {
-                        dispatch(setDateTo(date))
+                    calendarOpt={{
+                        onClickDay: handleDateClick,
+                        allowPartialOptions: true,
+                        selectRange: true
+                    }}
+                    setter={(dates: Date[]) => {
+                        setDates(dates);
                     }}
                 />
                 <InputDate
                     placeholder={"Обратно"}
                     extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
-                    extraCalendarClass={"translate-y-"}
-                    inputValue={dateBack}
+                    extraCalendarClass={"-translate-y-20"}
+                    inputValue={dates}
+                    viewValue={dateBack}
+                    noNeedButton={dates.length !== 2}
                     isShortDate={true}
                     withIcon={false}
-                    calendarOpt={{minDate: dateTo}}
-                    setter={(date: Date) => {
-                        dispatch(setDateBack(date))
+                    calendarOpt={{
+                        onClickDay: handleDateClick,
+                        allowPartialOptions: true,
+                        selectRange: true
+                    }}
+                    setter={(dates: Date[]) => {
+                        setDates(dates);
                     }}
                 />
             </div>

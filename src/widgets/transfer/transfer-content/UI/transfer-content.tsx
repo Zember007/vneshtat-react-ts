@@ -48,7 +48,9 @@ const TransferContent = () => {
                     <InputDate
                         placeholder={"Туда"}
                         extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
+                        extraCalendarClass={"-translate-y-20"}
                         inputValue={date}
+                        viewValue={date}
                         isShortDate={true}
                         withIcon={false}
                         setter={(date: Date) => {

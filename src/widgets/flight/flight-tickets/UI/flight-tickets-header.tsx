@@ -1,6 +1,6 @@
 import {InputCity, InputDate, Switch, TagFilter} from "@/shared/UI";
 import {addFlight, setCityFrom, setCityTo, updateFlight} from "@/widgets/flight/flight-operations/model/flight.store";
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
@@ -28,11 +28,26 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
     const [byQueue, setByQueue] = useState(true);
     const [isChair, setIsChair] = useState(true);
     const [tags, setTags] = useState<Tag>({tags: ["Только прямые", "Дешевле", "Быстрее"], selectedTags: []});
-    const dispatch = useDispatch();
     const firstFlight = flights[0];
     const secondFlight = flights[1];
-
+    const [dates, setDates] = useState<Date[]>([]);
+    const dispatch = useDispatch();
     const {currentItems, nextPage, prevPage} = usePagination(priceData, 6, 1);
+
+    useEffect(() => {
+        if (firstFlight.flightDate) {
+            const updatedDates = [];
+            updatedDates.push(firstFlight.flightDate);
+            if(secondFlight?.flightDate) updatedDates.push(secondFlight.flightDate)
+            setDates(updatedDates);
+        }
+        if (secondFlight.flightDate) {
+            const updatedDates = [];
+            if(firstFlight.flightDate) updatedDates.push(firstFlight.flightDate);
+            updatedDates.push(secondFlight.flightDate)
+            setDates(updatedDates);
+        }
+    }, [firstFlight.flightDate, secondFlight?.flightDate]);
 
     const swapFlightCities = () => {
         const temp = cityFrom;
@@ -50,6 +65,28 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
             value: temp
         }));
     };
+
+    const handleDateClick = (date: Date) => {
+        let updatedDates = dates.filter(d => d !== undefined);
+
+        if (updatedDates.length === 2) {
+            updatedDates = [];
+            setDates([]);
+            dispatch(updateFlight({id: firstFlight.id, field: "flightDate", value: null}));
+            dispatch(updateFlight({id: secondFlight?.id, field: "flightDate", value: null}));
+        }
+        if (!firstFlight.flightDate || updatedDates.length === 0) {
+            dispatch(updateFlight({id: firstFlight.id, field: "flightDate", value: date}));
+            if (!secondFlight) dispatch(addFlight());
+            updatedDates = [date];
+        } else {
+            updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
+            dispatch(updateFlight({id: firstFlight.id, field: "flightDate", value: updatedDates[0]}));
+            dispatch(updateFlight({id: secondFlight?.id, field: "flightDate", value: updatedDates[1]}));
+        }
+
+        setDates(updatedDates);
+    }
 
     return (
         <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
@@ -86,31 +123,39 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                     <InputDate
                         placeholder={"Туда"}
                         extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
-                        inputValue={firstFlight.flightDate}
+                        extraCalendarClass={"-translate-y-20"}
+                        inputValue={dates}
+                        viewValue={firstFlight.flightDate}
+                        noNeedButton={dates.length !== 2}
                         isShortDate={true}
                         withIcon={false}
-                        calendarOpt={{maxDate: secondFlight && secondFlight.flightDate}}
-                        setter={(date: Date) => {
-                            dispatch(updateFlight({id: firstFlight.id, field: "flightDate", value: date}));
+                        calendarOpt={{
+                            onClickDay: handleDateClick,
+                            allowPartialOptions: true,
+                            selectRange: true
+                        }}
+                        setter={(dates: Date[]) => {
+                            setDates(dates);
                         }}
                     />
-                    <div onClick={() => {
-                        if (!secondFlight) {
-                            dispatch(addFlight());
-                        }
-                    }}>
-                        <InputDate
-                            placeholder={"Обратно"}
-                            extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
-                            isShortDate={true}
-                            withIcon={false}
-                            inputValue={secondFlight ? secondFlight.flightDate : null}
-                            calendarOpt={{minDate: firstFlight.flightDate}}
-                            setter={(date: Date) => {
-                                dispatch(updateFlight({id: secondFlight.id, field: "flightDate", value: date}));
-                            }}
-                        />
-                    </div>
+                    <InputDate
+                        placeholder={"Обратно"}
+                        extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
+                        extraCalendarClass={"-translate-y-20"}
+                        inputValue={dates}
+                        viewValue={secondFlight?.flightDate}
+                        noNeedButton={dates.length !== 2}
+                        isShortDate={true}
+                        withIcon={false}
+                        calendarOpt={{
+                            onClickDay: handleDateClick,
+                            allowPartialOptions: true,
+                            selectRange: true
+                        }}
+                        setter={(dates: Date[]) => {
+                            setDates(dates);
+                        }}
+                    />
                 </div>
                 <div className={"flex flex-row items-center gap-2.5"}>
                     <Switch

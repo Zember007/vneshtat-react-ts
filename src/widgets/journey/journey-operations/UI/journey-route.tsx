@@ -42,13 +42,16 @@ const JourneyRoute = () => {
                         <InputDate
                             extraCalendarClass={"right-[210px]"}
                             setter={(value: Date) => dispatch(setDateTo(value))}
+                            calendarOpt={{maxDate: dateBack}}
                             inputValue={dateTo}
+                            viewValue={dateTo}
                             placeholder={"Туда"}
                         />
                         <InputDate
                             extraCalendarClass={"right-[210px]"}
                             setter={(value: Date) => dispatch(setDateBack(value))}
                             inputValue={dateBack}
+                            viewValue={dateBack}
                             placeholder={"Обратно"}
                             calendarOpt={{minDate: dateTo}}
                         />

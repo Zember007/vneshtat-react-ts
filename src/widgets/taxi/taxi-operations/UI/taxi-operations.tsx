@@ -3,7 +3,7 @@ import TrashImg from "@/assets/icons/trash.svg?react";
 import {Checkbox, Dropdown, Input, InputDate} from "@/shared/UI";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
-import {addVoyager, changeTaxiClass, deleteVoyager, setDateFrom, setDateTo, updateVoyager} from "../model/taxi.store";
+import {addVoyager, changeTaxiClass, deleteVoyager, setDateBack, setDateTo, updateVoyager} from "../model/taxi.store";
 import {ChangeEvent, useState} from "react";
 import {VAT_RATE} from "@/shared/utils";
 
@@ -31,9 +31,9 @@ const TaxiOperations = () => {
         }
     };
 
-    const handleDateFromChange = (date: Date) => {
+    const handleDateBackChange = (date: Date) => {
         if (activeVoyager) {
-            dispatch(updateVoyager({voyagerId: activeVoyager.id, data: {dateFrom: date}}));
+            dispatch(updateVoyager({voyagerId: activeVoyager.id, data: {dateBack: date}}));
         }
     };
 
@@ -91,9 +91,10 @@ const TaxiOperations = () => {
                             <Dropdown title={"Даты"}>
                                 <div className={"flex items-center gap-2"}>
                                     <InputDate
-                                        inputValue={activeTaxi?.dateFrom}
+                                        inputValue={activeTaxi?.dateBack}
+                                        viewValue={activeTaxi?.dateBack}
                                         calendarOpt={{maxDate: activeTaxi?.dateTo}}
-                                        setter={(date: Date) => dispatch(setDateFrom({id: activeTaxi?.id, date}))}
+                                        setter={(date: Date) => dispatch(setDateBack({id: activeTaxi?.id, date}))}
                                         placeholder={"От"}
                                         extraClass={"w-full !bg-primary min-w-[110px] h-[26px]"}
                                         isShortDate
@@ -101,7 +102,8 @@ const TaxiOperations = () => {
                                     />
                                     <InputDate
                                         inputValue={activeTaxi?.dateTo}
-                                        calendarOpt={{minDate: activeTaxi?.dateFrom}}
+                                        viewValue={activeTaxi?.dateTo}
+                                        calendarOpt={{minDate: activeTaxi?.dateBack}}
                                         setter={(date: Date) => dispatch(setDateTo({id: activeTaxi?.id, date}))}
                                         placeholder={"До"}
                                         extraClass={"w-full !bg-primary min-w-[110px] h-[26px]"}
@@ -153,9 +155,10 @@ const TaxiOperations = () => {
                             <Dropdown title={"Даты"}>
                                 <div className={"flex items-center gap-2"}>
                                     <InputDate
-                                        inputValue={activeVoyager?.dateFrom ?? null}
+                                        inputValue={activeVoyager?.dateBack ?? null}
+                                        viewValue={activeVoyager?.dateBack ?? null}
                                         calendarOpt={{ maxDate: activeVoyager?.dateTo ?? undefined }}
-                                        setter={(date: Date) => handleDateFromChange(date)}
+                                        setter={(date: Date) => handleDateBackChange(date)}
                                         placeholder={"От"}
                                         extraClass={"w-full !bg-primary min-w-[110px] h-[26px]"}
                                         isShortDate
@@ -163,7 +166,8 @@ const TaxiOperations = () => {
                                     />
                                     <InputDate
                                         inputValue={activeVoyager?.dateTo ?? null}
-                                        calendarOpt={{ minDate: activeVoyager?.dateFrom ?? undefined }}
+                                        viewValue={activeVoyager?.dateTo ?? null}
+                                        calendarOpt={{ minDate: activeVoyager?.dateBack ?? undefined }}
                                         setter={(date: Date) => handleDateToChange(date)}
                                         placeholder={"До"}
                                         extraClass={"w-full !bg-primary min-w-[110px] h-[26px]"}
@@ -202,7 +206,7 @@ const TaxiOperations = () => {
                         dispatch(addVoyager({id: activeTaxi?.id, price}));
                         setPrice(0);
                     }}
-                    disabled={!activeTaxi || !price || !activeTaxi.dateFrom}>
+                    disabled={!activeTaxi || !price || !activeTaxi.dateBack}>
                     <p className={`transition text-base leading-none ${activeTaxi ? "text-primary" : "text-black"}`}>Оформить</p>
                 </button>
             )}

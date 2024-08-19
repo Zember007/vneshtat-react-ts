@@ -1,7 +1,7 @@
 import {getAccessToken, getRefreshToken, setAccessToken} from "@/shared/utils/index";
 import {jwtDecode} from "jwt-decode";
 
-async function delay(ms: number) {
+export async function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 

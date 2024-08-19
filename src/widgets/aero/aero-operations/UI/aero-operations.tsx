@@ -91,6 +91,7 @@ const AeroOperations = ({selectedTariffId}: {
                                 <h6 className={"text-md leading-none font-medium"}>Дата</h6>
                                 <InputDate
                                     inputValue={date}
+                                    viewValue={date}
                                     setter={(date: Date) => setDate(date)}
                                     placeholder={"Выберите дату"}
                                     extraCalendarClass={"right-[210px]"}

@@ -19,7 +19,7 @@ interface Voyager {
     count: number,
     isSelected: boolean,
     id: string,
-    dateFrom: Date | null,
+    dateBack: Date | null,
     dateTo: Date | null
 }
 
@@ -29,7 +29,7 @@ interface Taxi {
     surname: string,
     voyagers: Voyager[]
     isSelected: boolean
-    dateFrom: Date | null,
+    dateBack: Date | null,
     dateTo: Date | null
 }
 
@@ -44,9 +44,9 @@ const initialState: TaxiInitialState = {
         isChanged: false
     },
     taxis: [
-        {id: 1, name: "Иван", surname: "Вознесенский", voyagers: [], isSelected: false, dateTo: null, dateFrom: null},
-        {id: 2, name: "Татьяна", surname: "Соколова", voyagers: [], isSelected: false, dateTo: null, dateFrom: null},
-        {id: 3, name: "Анастасия", surname: "Грибоедова", voyagers: [], isSelected: false, dateTo: null, dateFrom: null}
+        {id: 1, name: "Иван", surname: "Вознесенский", voyagers: [], isSelected: false, dateTo: null, dateBack: null},
+        {id: 2, name: "Татьяна", surname: "Соколова", voyagers: [], isSelected: false, dateTo: null, dateBack: null},
+        {id: 3, name: "Анастасия", surname: "Грибоедова", voyagers: [], isSelected: false, dateTo: null, dateBack: null}
     ]
 }
 
@@ -54,12 +54,12 @@ export const taxiStore = createSlice({
     name: "taxi",
     initialState,
     reducers: {
-        setDateFrom: (state, action) => {
+        setDateBack: (state, action) => {
             const {id, date} = action.payload;
             state.taxis = state.taxis.map((taxi) => {
                 return {
                     ...taxi,
-                    dateFrom: id === taxi.id && date
+                    dateBack: id === taxi.id && date
                 }
             })
         },
@@ -117,7 +117,7 @@ export const taxiStore = createSlice({
                                 count: 1,
                                 id: nanoid(),
                                 isSelected: false,
-                                dateFrom: taxi.dateFrom,
+                                dateBack: taxi.dateBack,
                                 dateTo: taxi.dateTo
                             }]
                         };
@@ -186,7 +186,7 @@ export const taxiStore = createSlice({
 })
 
 export const {
-    setDateFrom,
+    setDateBack,
     setDateTo,
     changeTaxiClass,
     updateVoyager,

@@ -11,6 +11,8 @@ interface CalendarProps {
 
 const Calendar = ({value, setter, ...opt}: CalendarProps) => {
     // if provide date[] it will be multiple, but just date it will be a single-selectable
+    // @ts-ignore
+    const allowPartialOptions = opt.allowPartialOptions ?? false;
     const tileContent = (tile: { view: string }) => {
         if (tile.view === 'month') {
             return <p className="tile-text">5439</p>;
@@ -21,6 +23,7 @@ const Calendar = ({value, setter, ...opt}: CalendarProps) => {
     const classes = {
         dayTile: "dayTile",
         activeDay: "activeDay",
+        includedDay: "includedDay",
     };
 
     const dateAlreadyClicked = (dates: Date[], date: Date): boolean => {
@@ -53,9 +56,6 @@ const Calendar = ({value, setter, ...opt}: CalendarProps) => {
 
         return classNames.join(' ');
     };
-
-    // @ts-ignore
-    const allowPartialOptions = opt.allowPartialOptions ?? false;
 
     return (
         // @ts-ignore

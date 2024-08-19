@@ -34,7 +34,14 @@ const TransferRoute = () => {
                 <div className={"flex flex-col gap-4"}>
                     <h4 className={"text-base font-medium"}>Дата и время</h4>
                     <div className={"flex items-center gap-2.5"}>
-                        <InputDate inputValue={date} setter={(date: Date) => dispatch(setDate(date))} extraClass={"min-w-[170px]"} placeholder={"Дата"} extraCalendarClass={"right-[210px]"}/>
+                        <InputDate
+                            inputValue={date}
+                            viewValue={date}
+                            setter={(date: Date) => dispatch(setDate(date))}
+                            extraClass={"min-w-[170px]"}
+                            placeholder={"Дата"}
+                            extraCalendarClass={"right-[210px]"}
+                        />
                         <InputTime time={time} extraClass={"max-h-7"}/>
                     </div>
                 </div>

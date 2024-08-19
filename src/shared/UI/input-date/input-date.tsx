@@ -5,13 +5,25 @@ import {Calendar} from "@/shared/UI";
 import {formatDate, getDayOfWeek} from "@/shared/utils";
 import {useClickAway} from "@/shared/hooks/use-click-away";
 
-const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortDate = false, withIcon = true, calendarOpt, placeholder, noNeedHandler, ...rest}: InputDateProps) => {
+const InputDate = ({
+                       extraClass,
+                       extraCalendarClass,
+                       inputValue,
+                       viewValue,
+                       setter,
+                       isShortDate = false,
+                       withIcon = true,
+                       calendarOpt,
+                       placeholder,
+                       noNeedButton = false,
+                       ...rest
+                   }: InputDateProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     useClickAway(containerRef, () => setIsOpen(false))
 
     useEffect(() => {
-        if(inputValue) setIsOpen(false)
+        if (inputValue && !Array.isArray(inputValue)) setIsOpen(false)
     }, [inputValue])
 
     const renderDate = (date: Date) => {
@@ -35,18 +47,20 @@ const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortD
     return (
         <div className={`flex flex-col min-h-7`} ref={containerRef} {...rest}>
             <label className="relative flex justify-end items-center w-full cursor-pointer">
-                <div className={`${extraClass} w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`} onClick={() => setIsOpen(prev => !prev)}>
-                    {inputValue && Array.isArray(inputValue) && inputValue.length > 0 ? (
-                        inputValue.map(renderDate)
-                    ) : inputValue && !Array.isArray(inputValue) ? (
-                        renderDate(inputValue)
+                <div
+                    className={`${extraClass} w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}
+                    onClick={() => setIsOpen(prev => !prev)}>
+                    {viewValue && Array.isArray(viewValue) && viewValue.length ? (
+                        viewValue.map(renderDate)
+                    ) : viewValue && !Array.isArray(viewValue) ? (
+                        renderDate(viewValue)
                     ) : (
                         <p className="text-xs text-[#787B86]">{placeholder}</p>
                     )}
                 </div>
                 {withIcon ? (
                     <button className="absolute pr-1.5" onClick={() => setIsOpen(prev => !prev)}>
-                        <CalendarImg className="w-[24px] h-[24px]" />
+                        <CalendarImg className="w-[24px] h-[24px]"/>
                     </button>
                 ) : null}
             </label>
@@ -60,8 +74,8 @@ const InputDate = ({extraClass, extraCalendarClass, inputValue, setter, isShortD
                     }}
                 >
                     <Calendar value={inputValue} setter={setter} {...calendarOpt} />
-                    {noNeedHandler ? (
-                        <button className={"bg-primary rounded-primary py-4 w-full"} onClick={noNeedHandler}>
+                    {noNeedButton ? (
+                        <button className={"bg-primary rounded-primary py-4 w-full"} onClick={() => setIsOpen(false)}>
                             <p className={"text-md leading-none"}>Обратный билет не нужен</p>
                         </button>
                     ) : null}
