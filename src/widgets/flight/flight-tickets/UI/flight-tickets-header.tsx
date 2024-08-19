@@ -41,7 +41,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
             if(secondFlight?.flightDate) updatedDates.push(secondFlight.flightDate)
             setDates(updatedDates);
         }
-        if (secondFlight.flightDate) {
+        if (secondFlight?.flightDate) {
             const updatedDates = [];
             if(firstFlight.flightDate) updatedDates.push(firstFlight.flightDate);
             updatedDates.push(secondFlight.flightDate)
