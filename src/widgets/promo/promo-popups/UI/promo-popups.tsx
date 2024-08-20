@@ -14,7 +14,6 @@ const PromoPopups = () => {
     const dispatch = useDispatch();
 
     const createConsultingProposal = async () => {
-        console.log(isCeo)
         const formData = new FormData();
         formData.append("FullName", fullname);
         formData.append("IsCEO", isCeo ? "1" : "0");

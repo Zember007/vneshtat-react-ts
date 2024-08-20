@@ -70,7 +70,6 @@ const LoginUser = () => {
 
                 // get companies
                 const companiesData = await getUserCompanies();
-                console.log(companiesData)
                 if (companiesData.status === "success") {
                     if (!companiesData.data.length) navigate("/")
                     else dispatch(setCompanies(companiesData.data));
@@ -380,6 +379,7 @@ const LoginUser = () => {
                                         ) : null}
                                         <button
                                             className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                            type={"button"}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
                                         </button>
@@ -436,12 +436,15 @@ const LoginUser = () => {
                                             onClick={() => dispatch(updateLoginState({
                                                 field: "isRestore",
                                                 value: true
-                                            }))}>
+                                            }))}
+                                            type={"button"}
+                                        >
                                             <p className={"text-[#9B9FAD] text-base font-medium leading-none"}>Восстановить
                                                 пароль</p>
                                         </button>
                                         <button
                                             className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                            type={"button"}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
                                         </button>

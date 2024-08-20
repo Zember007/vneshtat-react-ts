@@ -24,7 +24,6 @@ export const refreshAccessToken = async () => {
         setAccessToken(data.data.access_token);
         return true;
     } else if (data.message === "error_while_refreshing_token") {
-        console.log(data)
         localStorage.clear();
         return false;
     } else {
