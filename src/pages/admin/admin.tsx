@@ -41,7 +41,7 @@ const Admin = () => {
 
             try {
                 const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/sign_in/auth_token_by_phone?PhoneNumber=${data.phoneNumber}&ReCaptchaResponse=${data.ReCaptchaResponse}`
+                    `${import.meta.env.VITE_API_URL}/auth/sign_in/auth_token_by_phone?PhoneNumber=${data.phoneNumber}&ReCaptchaResponse=${data.ReCaptchaResponse}`
                 );
                 const responseData = await response.json();
                 console.log("data", responseData);

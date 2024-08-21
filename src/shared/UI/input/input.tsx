@@ -55,10 +55,10 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
         const value = e.target.value;
         const cleanedValue = value.replace(/\D/g, '');
 
-        if (cleanedValue === '') {
-            setInputValue('');
+        if (cleanedValue === '' || cleanedValue === '7') {
+            setInputValue('+7');
             if (rest.onChange) {
-                rest.onChange({ ...e, target: { ...e.target, value: '' } });
+                rest.onChange({ ...e, target: { ...e.target, value: '+7' } });
             }
             return;
         }
