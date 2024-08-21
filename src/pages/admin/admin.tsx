@@ -1,5 +1,7 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {getDayOfWeek} from "@/shared/utils";
+import {Input} from "@/shared/UI";
+import ReCAPTCHA from "react-google-recaptcha";
 
 type UserStatus = "in_queue" | "in_progress" | "completed";
 
@@ -18,39 +20,87 @@ interface User {
 
 const Admin = () => {
     const [users, setUsers] = useState<User[]>([]);
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+    const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-    const getStatusText = (status: UserStatus): string => {
-        if (status === "in_queue") return "В очереди ожидания";
-        if (status === "in_progress") return "В процессе заполнения";
-        if (status === "completed") return "Регистрация завершена, подключение к компании";
-        return "Неизвестный статус";
+    const handleCaptchaChange = (token: string | null) => {
+        setCaptchaToken(token);
     };
 
-    const getDate = (date: string) => {
+    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPhoneNumber(e.target.value);
+    };
+
+    const handleSubmit = async () => {
+        if (captchaToken && phoneNumber) {
+            const data = {
+                phoneNumber: phoneNumber,
+                ReCaptchaResponse: captchaToken
+            };
+
+            try {
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/sign_in/auth_token_by_phone?PhoneNumber=${data.phoneNumber}&ReCaptchaResponse=${data.ReCaptchaResponse}`
+                );
+                const responseData = await response.json();
+                console.log("data", responseData);
+                console.log("Успех:", response);
+            } catch (error) {
+                console.error("Ошибка при отправке данных:", error);
+            }
+
+            if (recaptchaRef.current) {
+                recaptchaRef.current?.reset();
+            }
+            setCaptchaToken(null);
+        } else {
+            alert("Пожалуйста, введите номер телефона и подтвердите капчу.");
+        }
+    };
+
+    const getStatusText = (status: UserStatus): string => {
+        switch (status) {
+            case "in_queue":
+                return "В очереди ожидания";
+            case "in_progress":
+                return "В процессе заполнения";
+            case "completed":
+                return "Регистрация завершена, подключение к компании";
+            default:
+                return "Неизвестный статус";
+        }
+    };
+
+    const getDate = (date: string): string => {
         const newDate = new Date(date);
-        return `${newDate.getDate()}/${String(newDate.getMonth() + 1).padStart(2, "0")}/${newDate.getFullYear()} в ${newDate.getHours()}:${newDate.getMinutes()}, ${getDayOfWeek(newDate)}`
-    }
+        return `${newDate.getDate()}/${String(newDate.getMonth() + 1).padStart(2, "0")}/${newDate.getFullYear()} в ${newDate.getHours()}:${newDate.getMinutes()}, ${getDayOfWeek(newDate)}`;
+    };
 
     const handleApprove = async (id: number) => {
         const formdata = new FormData();
-        formdata.append("id", id.toString())
-        const res = await fetch(import.meta.env.VITE_API_URL + "/admin/temp_app/control_consultation_proposals", {
+        formdata.append("id", id.toString());
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/temp_app/control_consultation_proposals`, {
             method: "POST",
-            body: formdata
-        })
+            body: formdata,
+        });
         const data = await res.json();
-        if (data.status === "success") setUsers(prev => prev.filter((user) => user.id !== id))
-    }
+        if (data.status === "success") {
+            setUsers((prev) => prev.filter((user) => user.id !== id));
+        }
+    };
 
     useEffect(() => {
         const getConsultationProposal = async () => {
-            const res = await fetch(import.meta.env.VITE_API_URL + "/admin/temp_app/control_consultation_proposals");
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/temp_app/control_consultation_proposals`);
             const data = await res.json();
-            if (data.status === "success") setUsers(data.data)
-        }
+            if (data.status === "success") {
+                setUsers(data.data);
+            }
+        };
 
-        getConsultationProposal()
-    }, [])
+        getConsultationProposal();
+    }, []);
 
     return (
         <div className={"grid grid-cols-2 p-5 px-8 gap-5 overflow-y-scroll hidden-scroll"}>
@@ -111,6 +161,15 @@ const Admin = () => {
             )) : (
                 <h1>Нет пользователей для просмотра</h1>
             )}
+            <div className={"flex items-center flex-col gap-4"}>
+                <Input placeholder={"Номер телефона"} type={"phone"} value={phoneNumber} onChange={handlePhoneNumberChange}/>
+                <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={import.meta.env.VITE_RECAPTHCA}
+                    onChange={handleCaptchaChange}
+                />
+                <button className={"px-8 py-2 bg-black rounded-primary text-primary"} onClick={handleSubmit}>Отправить</button>
+            </div>
         </div>
     )
 };
