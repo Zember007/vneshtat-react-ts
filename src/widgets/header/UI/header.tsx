@@ -23,7 +23,7 @@ const Header = () => {
         {to: "/bus", img: BusImg, label: "Автобусы"},
         {to: "/hotel", img: BedImg, label: "Отели"},
         {to: "/aero", img: WebImg, label: "Аэроэкспресс"},
-        {to: "/transfer", img: CarImg, label: "Автомобили"},
+        {to: "/transfer", img: CarImg, label: "Трансфер"},
         {to: "/taxi", img: YandexTaxiImg, label: "Такси"},
         {to: "/restaurant", img: RestaurantImg, label: "Места"},
     ];
@@ -62,8 +62,8 @@ const Header = () => {
                 </div>
                 {location === "/" || location === "/all-journeys" ? (
                     <button
-                        className="bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition hover:bg-[#DCE0E5]">
-                        <p className="text-blue text-base">Создать поездку</p>
+                        className="bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue">
+                        Создать поездку
                     </button>
                 ) : null}
             </div>

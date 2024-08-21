@@ -55,7 +55,7 @@ const InputDate = ({
                     ) : viewValue && !Array.isArray(viewValue) ? (
                         renderDate(viewValue)
                     ) : (
-                        <p className="text-xs text-[#787B86]">{placeholder}</p>
+                        <p className="text-sm text-[#787B86]">{placeholder}</p>
                     )}
                 </div>
                 {withIcon ? (

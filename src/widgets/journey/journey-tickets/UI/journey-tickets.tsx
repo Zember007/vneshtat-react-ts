@@ -105,7 +105,7 @@ const JourneyTickets = () => {
                     <div ref={ticketContainerRef} className="flex flex-col gap-4 px-5 py-5 overflow-y-auto scroll max-h-[calc(100vh-250px)] relative h-full">
                         {showScrollButton && (
                             <button
-                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10 translate-x-4"
+                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10"
                                 onClick={() => {
                                     handleScrollToTop(ticketContainerRef);
                                     setShowScrollButton(false)

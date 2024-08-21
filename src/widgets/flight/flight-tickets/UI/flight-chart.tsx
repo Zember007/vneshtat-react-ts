@@ -8,6 +8,8 @@ import {ShowedGraph} from "./flight-tickets";
 import {DayData, generateBoardMonthData, MonthData, months, PriceData} from "../utils";
 import {getDayOfWeekMock} from "@/shared/utils";
 import {usePagination} from "@/shared/hooks/use-pagination";
+import {useSelector} from "react-redux";
+import {RootState} from "@/app/config/store";
 
 interface TooltipProps {
     active?: boolean;
@@ -45,7 +47,7 @@ const CustomTooltip = ({active, payload, label}: TooltipProps) => {
     if (active && payload && payload.length) {
         return (
             <div className="custom-tooltip">
-                <p className="label">{`${label} ${payload[0].payload.name} - ${payload[0].value}`}</p>
+                <p className="top-0 !bottom-10">{`${label} ${payload[0].payload.name} - ${payload[0].value}`}</p>
             </div>
         );
     }
@@ -62,6 +64,7 @@ const FlightChart = ({showedGraph, setShowedGraph, activeRate}: {
     const [displayedData, setDisplayedData] = useState(data.slice(startIndex, endIndex));
     const {min, max} = findMinMax(data);
     const [activePrice, setActivePrice] = useState<number | null>(null);
+    const { flights } = useSelector((state: RootState) => state.flight);
     const {displayedDays} = generateBoardMonthData();
     const {
         currentItems: horizDays,
@@ -101,7 +104,7 @@ const FlightChart = ({showedGraph, setShowedGraph, activeRate}: {
     return (
         <div>
             <div className={"p-9 m-5 rounded-[23px] bg-secondary relative overflow-y-auto scroll hidden-scroll h-[calc(100vh-355px)]"}>
-                <div className={"flex justify-between items-center mb-5"}>
+                <div className={"flex justify-between items-center mb-5 mt-2"}>
                     <h2 className={"font-medium leading-none"}>{showedGraph === "graph" ? "График цен" : "Таблица цен"}</h2>
                     <div className={"flex items-center gap-2.5"}>
                         <button
@@ -112,6 +115,7 @@ const FlightChart = ({showedGraph, setShowedGraph, activeRate}: {
                         </button>
                         <button
                             onClick={() => setShowedGraph("dashboard")}
+                            disabled={flights.length < 2}
                             className={`transition p-3 w-9 h-9 flex justify-center items-center rounded-[10px] ${showedGraph === "dashboard" ? "bg-black" : "bg-primary"} cursor-pointer mr-4`}>
                             <DashboardImg
                                 className={`min-h-[20px] min-w-[20px] ${showedGraph === "dashboard" ? "white-fill" : "grey-fill"}`}/>
@@ -181,7 +185,7 @@ const FlightChart = ({showedGraph, setShowedGraph, activeRate}: {
                                 />
                             </BarChart>
                         </ResponsiveContainer>
-                        <ResponsiveContainer width="100%" height={80} className={"absolute top-[215px]"}>
+                        <ResponsiveContainer width="100%" height={80} className={"absolute top-[220px]"}>
                             <LineChart data={uniqueData} margin={{top: 20, right: 100, left: 40}}>
                                 <XAxis
                                     dataKey="name"

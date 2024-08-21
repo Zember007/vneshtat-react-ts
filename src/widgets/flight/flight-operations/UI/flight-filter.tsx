@@ -84,7 +84,7 @@ const FlightFilter = () => {
                 </Dropdown>
                 <Dropdown
                     isChanged={timeFrom.isChanged}
-                    title="Время отправления"
+                    title="Время вылета"
                     onErase={() => dispatch(setTimeFrom(timeOnWayRanges))}>
                     <InputRange
                         min={timeOnWayRanges.min}
@@ -97,7 +97,7 @@ const FlightFilter = () => {
                 </Dropdown>
                 <Dropdown
                     isChanged={timeTo.isChanged}
-                    title="Время прибытия"
+                    title="Время прилета"
                     onErase={() => dispatch(setTimeTo(timeOnWayRanges))}>
                     <InputRange
                         min={timeOnWayRanges.min}
@@ -110,7 +110,7 @@ const FlightFilter = () => {
                 </Dropdown>
                 <Dropdown
                     isChanged={airportFrom.isChanged}
-                    title="Вокзал отправления"
+                    title="Аэропорт вылета"
                     onErase={() => dispatch(setAirportFrom("default"))}>
                     <Checkbox
                         items={airportFrom.data}
@@ -119,7 +119,7 @@ const FlightFilter = () => {
                 </Dropdown>
                 <Dropdown
                     isChanged={airportTo.isChanged}
-                    title="Вокзал прибытия"
+                    title="Аэропорт прилета"
                     onErase={() => dispatch(setAirportTo("default"))}>
                     <Checkbox
                         items={airportTo.data}

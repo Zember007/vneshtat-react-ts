@@ -21,6 +21,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
     const containerRef = useRef<HTMLAnchorElement | null>(null);
     const animationRef = useRef<AnimationItem | null>(null);
     const isAnimating = useRef(false);
+    let completedCount = useRef(0);
     const timeoutId = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
@@ -33,6 +34,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
         });
 
         animationRef.current.addEventListener('complete', () => {
+            completedCount.current += 1;
             isAnimating.current = false;
         });
 
@@ -45,7 +47,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
     }, []);
 
     const handleMouseEnter = () => {
-        if (animationRef.current && !isAnimating.current) {
+        if (animationRef.current && !isAnimating.current && completedCount.current % 2 === 0) {
             isAnimating.current = true;
             animationRef.current.goToAndStop(0, true);
             animationRef.current.setDirection(1);
@@ -201,7 +203,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 <div
                     className={"w-full rounded-[23px] min-h-[65px] ultra:min-h-[92px] py-3 pl-3 pr-4 flex justify-between items-center bg-black"}>
                     <div className={"flex items-center gap-2.5"}>
-                        <div className={"bg-section h-[40px] w-[40px] ultra:h-[60px] ultra:w-[60px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
+                        <div className={"bg-section h-[39px] w-[39px] ultra:h-[60px] ultra:w-[60px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
                             <p className={"text-lg tracking-[-0.1em]"}>{fullname.name[0].toUpperCase()}{fullname.surname[0].toUpperCase()}</p>
                         </div>
                         <span className={"flex flex-col"}>
@@ -219,7 +221,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 </div>
             ) : (
                 <div className={"w-full min-h-[65px] ultra:min-h-[92px] rounded-[23px] flex justify-center items-center bg-black"}>
-                    <div className={"bg-section h-[40px] w-[40px] ultra:h-[60px] ultra:w-[60px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
+                    <div className={"bg-section h-[39px] w-[39px] ultra:h-[60px] ultra:w-[60px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
                         {fullname.name.length && fullname.surname.length ? (
                             <p className={"text-lg tracking-[-0.1em]"}>{fullname.name[0].toUpperCase()}{fullname.surname[0].toUpperCase()}</p>
                         ) : null}

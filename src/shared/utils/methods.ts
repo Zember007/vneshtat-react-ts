@@ -33,21 +33,31 @@ export const refreshAccessToken = async () => {
 
 export async function getUser() {
     const token = getAccessToken();
-    if (token) {
-        const res = await fetch(import.meta.env.VITE_API_URL + "/user/main_info/get_user", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
+    const name = localStorage.getItem("name");
+    const surname = localStorage.getItem("surname")
+    if (!token) return;
+    if (name && surname) {
+        return {
+            name,
+            surname
+        }
+    }
+    const res = await fetch(import.meta.env.VITE_API_URL + "/user/main_info/get_user", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
 
-        if (res.ok) {
-            const data = await res.json()
+    if (res.ok) {
+        const data = await res.json()
 
-            if (data.status === "success") {
-                return {
-                    name: data.data.Name,
-                    surname: data.data.Surname
-                }
+        if (data.status === "success") {
+            localStorage.setItem("name", data.data.Name);
+            localStorage.setItem("surname", data.data.Surname);
+
+            return {
+                name: data.data.Name,
+                surname: data.data.Surname
             }
         }
     }

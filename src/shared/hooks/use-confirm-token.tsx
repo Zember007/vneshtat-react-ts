@@ -8,7 +8,7 @@ const useConfirmToken = (token: string) => {
 
     useEffect(() => {
         if(!token){
-            navigate("/promo")
+            navigate("/try")
             return;
         }
 
@@ -23,7 +23,7 @@ const useConfirmToken = (token: string) => {
                 if (data.data.Status === "completed") navigate("/sign-in");
             } else {
                 alert(`Возникла ошибка: ${data.message}. Повторите позже или повторите заявку`);
-                navigate("/promo");
+                navigate("/try");
             }
         }
 

@@ -127,7 +127,7 @@ const LoginUser = () => {
                             <div className={"flex justify-center"}>
                                 <h2 className={"text-[25px] text-center leading-7"}>Восстановление</h2>
                             </div>
-                            <form className={"flex flex-col gap-2.5"} autoComplete={"on"}>
+                            <form className={"flex flex-col gap-2.5"} autoComplete={"on"} onSubmit={handleLogin}>
                                 {isSubmitted ? (
                                     <>
                                         <button className={"absolute -left-12 top-6"}
@@ -379,6 +379,7 @@ const LoginUser = () => {
                                         ) : null}
                                         <button
                                             className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                            onClick={() => navigate("/sign-up")}
                                             type={"button"}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
@@ -444,6 +445,7 @@ const LoginUser = () => {
                                         </button>
                                         <button
                                             className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                            onClick={() => navigate("/sign-up")}
                                             type={"button"}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>

@@ -3,12 +3,18 @@ import {PromoPopups} from "@/widgets/promo/promo-popups";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {setIsOpen} from "@/widgets/promo/promo-popups/model/promo.store";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 const Promo = () => {
-    const isOpen = useSelector((store: RootState) => store.promo.isOpen)
+    const isOpen = useSelector((store: RootState) => store.promo.isOpen);
+    const isTryPage = useLocation().pathname === "/try"
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isTryPage) dispatch(setIsOpen(isTryPage))
+    })
 
     const handleTryClick = () => {
         dispatch(setIsOpen(true));
@@ -31,7 +37,7 @@ const Promo = () => {
                         <p className={"text-[17px] text-[#9B9FAD]"}>Войти</p>
                     </button>
                     <button className={"h-10 px-10 py-2 flex items-center justify-center rounded-[14px] bg-[#292933]"}
-                            onClick={() => handleTryClick()}>
+                            onClick={handleTryClick}>
                         <p className={"text-[17px] text-primary"}>Попробовать</p>
                     </button>
                 </div>

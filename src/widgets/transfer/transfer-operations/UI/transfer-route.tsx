@@ -40,7 +40,7 @@ const TransferRoute = () => {
                             setter={(date: Date) => dispatch(setDate(date))}
                             extraClass={"min-w-[170px]"}
                             placeholder={"Дата"}
-                            extraCalendarClass={"right-[210px]"}
+                            extraCalendarClass={"right-[250px]"}
                         />
                         <InputTime time={time} extraClass={"max-h-7"}/>
                     </div>

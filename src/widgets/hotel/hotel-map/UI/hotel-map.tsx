@@ -12,7 +12,6 @@ import {useEffect, useRef, useState} from "react";
 import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
 import {Checkbox, InputCity, InputDate, TagFilter} from "@/shared/UI";
 import { handleScrollToTop} from "@/shared/utils";
-import {CheckboxItem} from "@/shared/UI/checkbox/checkbox.props";
 import {
     setCity,
     setCityName, setDateBack,
@@ -30,11 +29,12 @@ const HotelMap = () => {
         tags: ["Без звёзд", "2 звезды", "3 звезды", "4 звезды", "5 звёзд"],
         selectedTags: []
     })
-    const [isFreeCancel, setIsFreeCancel] = useState<CheckboxItem[]>([{
+    const isFreeCancel = useSelector((state: RootState) => state.hotel.isFreeCancel);
+    const isFreeCancelOption = [{
         id: 1,
-        isSelected: false,
         content: "Бесплатная отмена",
-    }])
+        isSelected: isFreeCancel
+    }]
     const [dates, setDates] = useState<Date[]>([]);
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const ticketContainerRef = useRef<HTMLDivElement | null>(null);
@@ -172,16 +172,8 @@ const HotelMap = () => {
                         <TagFilter tags={stars} setter={setStars} extraClass={"max-h-8"}/>
                         <span className={"h-7 bg-[#E5E7EA] w-[1px] rounded-[1px]"}/>
                         <Checkbox
-                            items={isFreeCancel}
-                            onChange={() => {
-                            setIsFreeCancelFilter(!isFreeCancel[0].isSelected)
-                            setIsFreeCancel(prev => {
-                                return [{
-                                    ...prev[0],
-                                    isSelected: !prev[0].isSelected
-                                }]
-                                })
-                            }}
+                            items={isFreeCancelOption}
+                            onChange={() => dispatch(setIsFreeCancelFilter(!isFreeCancel))}
                             childClass={"bg-secondary py-[6px] px-3 max-h-8"}
                         />
                     </div>

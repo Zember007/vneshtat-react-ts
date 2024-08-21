@@ -2,10 +2,38 @@ import clsx from "clsx";
 import EyeImg from "@/assets/icons/eye.svg?react";
 import EyeClosedImg from "@/assets/icons/eye-closed.svg?react";
 import CrossImg from "@/assets/icons/cross.svg?react";
-import { InputProps } from "./input.props";
-import { useState, useEffect, ChangeEvent } from "react";
+import {InputProps} from "./input.props";
+import {useState, useEffect, ChangeEvent} from "react";
 
-const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
+const formatPhoneNumber = (value: string): string => {
+    let cleaned = value.replace(/\D/g, '');
+
+    if (cleaned.startsWith('8')) {
+        cleaned = '7' + cleaned.slice(1);
+    }
+
+    if (cleaned.startsWith('7')) {
+        cleaned = '7' + cleaned.slice(1);
+    }
+
+    let formatted = '+7';
+    if (cleaned.length > 1) {
+        formatted += ` (${cleaned.substring(1, 4)}`;
+    }
+    if (cleaned.length >= 5) {
+        formatted += `) ${cleaned.substring(4, 7)}`;
+    }
+    if (cleaned.length >= 8) {
+        formatted += `-${cleaned.substring(7, 9)}`;
+    }
+    if (cleaned.length >= 10) {
+        formatted += `-${cleaned.substring(9, 11)}`;
+    }
+
+    return formatted;
+};
+
+const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState(rest.value || '');
 
@@ -24,29 +52,35 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
     }, [rest.value])
 
     const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.startsWith('7')) {
-            value = '+7' + value.slice(1);
-        } else if (!value.startsWith('9')) {
-            value = '';
+        const value = e.target.value;
+        const cleanedValue = value.replace(/\D/g, '');
+
+        if (cleanedValue === '') {
+            setInputValue('');
+            if (rest.onChange) {
+                rest.onChange({ ...e, target: { ...e.target, value: '' } });
+            }
+            return;
         }
-        setInputValue(value);
+
+        const formattedValue = formatPhoneNumber(cleanedValue);
+        setInputValue(formattedValue);
         if (rest.onChange) {
-            rest.onChange({ ...e, target: { ...e.target, value } });
+            rest.onChange({ ...e, target: { ...e.target, value: formattedValue } });
         }
     };
 
     const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.replace(/\D/g, ''); // Удаляем все нецифровые символы
+        let value = e.target.value.replace(/\D/g, '');
         setInputValue(value);
         if (rest.onChange) {
-            rest.onChange({ ...e, target: { ...e.target, value } });
+            rest.onChange({...e, target: {...e.target, value}});
         }
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
-        if(rest.onChange){
+        if (rest.onChange) {
             rest.onChange(e);
         }
     }
@@ -54,12 +88,12 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
     const handleClear = () => {
         setInputValue("");
         if (rest.onChange) {
-            rest.onChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
+            rest.onChange({target: {value: ""}} as ChangeEvent<HTMLInputElement>);
         }
     };
 
     return rest.type === "password" ? (
-        <div className="relative">
+        <label className="relative">
             <input
                 className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass)}
                 {...rest}
@@ -69,12 +103,14 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
+                    tabIndex={-1}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 >
-                    {isOpen ? <EyeClosedImg className={"transition blue-fill-hover"}/> : <EyeImg className={"transition blue-fill-hover"}/>}
+                    {isOpen ? <EyeClosedImg className={"transition blue-fill-hover"}/> :
+                        <EyeImg className={"transition blue-fill-hover"}/>}
                 </button>
             )}
-        </div>
+        </label>
     ) : rest.type === "phone" ? (
         <input
             className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5", extraClass)}
@@ -92,7 +128,7 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
             onChange={handleNumberChange}
         />
     ) : (
-        <div className={"relative"}>
+        <label className={"relative"}>
             <input
                 className={clsx(`bg-secondary rounded-primary text-sm py-2 px-2.5 w-full`, extraClass)}
                 type={rest.type || "text"}
@@ -100,12 +136,16 @@ const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
                 onChange={handleChange}
             />
             {inputValue && withEraser ? (
-                <button onClick={handleClear} className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <button
+                    onClick={handleClear}
+                    type={"button"}
+                    tabIndex={-1}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2">
                     <CrossImg className={"black-fill"}/>
                 </button>
             ) : null}
-        </div>
+        </label>
     );
 };
 
-export { Input };
+export {Input};

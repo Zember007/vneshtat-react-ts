@@ -11,7 +11,6 @@ import ChairExistsImg from "@/assets/icons/chair-exists.svg?react";
 import ChairAwayImg from "@/assets/icons/chair-away.svg?react";
 import PassengerImg from "@/assets/icons/users.svg?react";
 import CopyImg from "@/assets/icons/copy.svg?react";
-import ArrowTopImg from "@/assets/icons/arrow-top.svg?react";
 import ArrowLeftImg from "@/assets/icons/arrow-left.svg?react";
 import GraphImg from "@/assets/icons/graph.svg?react";
 import {ShowedGraph} from "./flight-tickets";
@@ -38,12 +37,12 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
         if (firstFlight.flightDate) {
             const updatedDates = [];
             updatedDates.push(firstFlight.flightDate);
-            if(secondFlight?.flightDate) updatedDates.push(secondFlight.flightDate)
+            if (secondFlight?.flightDate) updatedDates.push(secondFlight.flightDate)
             setDates(updatedDates);
         }
         if (secondFlight?.flightDate) {
             const updatedDates = [];
-            if(firstFlight.flightDate) updatedDates.push(firstFlight.flightDate);
+            if (firstFlight.flightDate) updatedDates.push(firstFlight.flightDate);
             updatedDates.push(secondFlight.flightDate)
             setDates(updatedDates);
         }
@@ -179,19 +178,19 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                     </div>
                     <TagFilter tags={tags} setter={setTags} extraClass={"max-h-9"}/>
                     <div
-                        className={"px-2.5 py-2 max-h-9 flex items-center justify-between gap-4 bg-secondary rounded-primary cursor-pointer ml-auto"}
+                        className={`px-2.5 py-2 max-h-9 flex items-center justify-between gap-1 rounded-primary cursor-pointer ml-auto ${showedGraph ? "bg-secondary" : "bg-primary border-solid border-secondary border-[1px]"}`}
                         onClick={() => setShowedGraph(prev => prev ? null : "graph")}>
-                        <span className={"flex items-center gap-1"}>
-                            <GraphImg className={"min-w-5 min-h-5"}/>
-                            <p className={"text-xs"}>График цен</p>
-                        </span>
-                        <ArrowTopImg className={`min-w-5 min-h-5 ${!showedGraph && "rotate-180"}`}/>
+                        <GraphImg className={"min-w-5 min-h-5"}/>
+                        <p className={"text-xs select-none"}>График цен</p>
                     </div>
                 </div>
                 {showedGraph ? (
                     <div className={"flex gap-2.5"}>
                         <button
-                            onClick={() => setShowedGraph("graph")}
+                            onClick={() => {
+                                if (showedGraph !== "graph") setShowedGraph("graph");
+                                else if (flights.length > 1) setShowedGraph("dashboard");
+                            }}
                             className={`transition p-3 rounded-[18px] ${showedGraph === "graph" ? "bg-black" : "bg-secondary"} cursor-pointer`}>
                             <GraphImg
                                 className={`min-h-[26px] min-w-[26px] ${showedGraph === "graph" ? "white-fill" : "black-fill"}`}/>

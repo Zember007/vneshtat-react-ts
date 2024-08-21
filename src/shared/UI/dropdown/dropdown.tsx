@@ -15,11 +15,11 @@ const Dropdown = ({ isChanged = false, onErase = () => {}, title, selectedText, 
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className={`p-3 rounded-[13px] bg-secondary flex flex-col cursor-pointer ${extraClass}`}>
+        <div className={`p-3 rounded-[18px] bg-secondary flex flex-col cursor-pointer ${extraClass}`}>
             <div className={"flex flex-row justify-between items-center"} onClick={() => setIsOpen(prev => !prev)}>
-                <div className={"flex flex-row items-center gap-1"}>
-                    {isChanged && <span className={"h-[5px] w-[5px] rounded-[100%] bg-red mb-3"}/>}
-                    <h6 className={"text-base font-medium whitespace-nowrap"}>{title}</h6>
+                <div className={"flex flex-row items-center gap-1 relative"}>
+                    {isChanged && <span className={"absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3"}/>}
+                    <h6 className={"text-base font-medium whitespace-nowrap ml-2"}>{title}</h6>
                     {selectedText && <p className={"text-xs font-medium whitespace-nowrap text-[#9B9FAD]"}>{selectedText}</p>}
                     {isChanged && (
                         <button onClick={(e) => {

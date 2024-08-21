@@ -331,7 +331,8 @@ a {
         transition: background-color 0.3s ease;
 
         &:hover {
-            background-color: #e5e7ea;
+            width: 10px;
+            background-color: red;
         }
     }
 
@@ -341,4 +342,7 @@ a {
         background-clip: content-box;
         border: 6px solid transparent;
     }
+}
+.scroll:hover::-webkit-scrollbar {
+    width: 17px;
 }

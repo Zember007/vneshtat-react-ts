@@ -64,7 +64,7 @@ const TaxiOperations = () => {
                                 onErase={() => dispatch(changeTaxiClass("default"))}
                             >
                                 <Checkbox items={taxiClass.data}
-                                          onChange={(id: number) => dispatch(changeTaxiClass({id, oneChoise: true}))}/>
+                                          onChange={(id: number) => dispatch(changeTaxiClass({id, oneChoise: false}))}/>
                             </Dropdown>
                             <Dropdown title={"Расходы в поездке"}>
                                 <div className={"flex flex-col gap-2.5"}>

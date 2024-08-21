@@ -209,15 +209,6 @@ const HotelFilter = () => {
                         onChange={(id: number) => dispatch(setPaymentCondition({id, oneChoise: false}))}
                     />
                 </Dropdown>
-                <div
-                    className={"pl-5 py-4 pr-4 rounded-[15px] h-10 bg-secondary flex items-center justify-between cursor-pointer"}
-                    onClick={() => dispatch(setIsFreeCancelFilter(!isFreeCancel))}>
-                    <div className={"flex items-center gap-1"}>
-                        {isFreeCancel && <span className={"h-[5px] w-[5px] rounded-[100%] bg-red mb-3"}/>}
-                        <h6 className={"text-base font-medium"}>Бесплатная отмена</h6>
-                    </div>
-                    <SuccessImg className={`${isFreeCancel ? "black-fill" : "grey-fill"} min-w-7 min-h-7`}/>
-                </div>
                 <Dropdown
                     isChanged={travelPolitic.isChanged}
                     title="Тревел-политика"
@@ -228,13 +219,22 @@ const HotelFilter = () => {
                     />
                 </Dropdown>
                 <div
-                    className={"pl-5 py-4 pr-4 rounded-[15px] h-10 bg-secondary flex items-center justify-between cursor-pointer"}
-                    onClick={() => dispatch(setForTrips(!forTrips))}>
-                    <div className={"flex items-center gap-1"}>
-                        {forTrips && <span className={"h-[5px] w-[5px] rounded-[100%] bg-red mb-4"}/>}
-                        <h6 className={"text-base font-medium leading-none"}>Рекомендовано для командировок</h6>
+                    className={"h-12 pl-3 py-4 pr-1 rounded-[18px] bg-secondary flex items-center justify-between cursor-pointer"}
+                    onClick={() => dispatch(setIsFreeCancelFilter(!isFreeCancel))}>
+                    <div className={"flex items-center gap-1 relative"}>
+                        {isFreeCancel && <span className={"absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3"}/>}
+                        <h6 className={"text-base font-medium ml-2"}>Бесплатная отмена</h6>
                     </div>
-                    <SuccessImg className={`${forTrips ? "black-fill" : "grey-fill"} min-w-7 min-h-7`}/>
+                    <SuccessImg className={`transition ${isFreeCancel ? "black-fill" : "grey-fill"} min-w-7 min-h-7`}/>
+                </div>
+                <div
+                    className={"h-12 pl-3 py-4 pr-1 rounded-[18px] bg-secondary flex items-center justify-between cursor-pointer"}
+                    onClick={() => dispatch(setForTrips(!forTrips))}>
+                    <div className={"flex items-center gap-1 relative"}>
+                        {forTrips && <span className={"absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-4"}/>}
+                        <h6 className={"text-base font-medium ml-2 leading-none"}>Рекомендовано для командировок</h6>
+                    </div>
+                    <SuccessImg className={`transition ${forTrips ? "black-fill" : "grey-fill"} min-w-7 min-h-7`}/>
                 </div>
             </div>
         </div>

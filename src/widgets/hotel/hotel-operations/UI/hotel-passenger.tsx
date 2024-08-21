@@ -120,7 +120,7 @@ const HotelPassenger = () => {
                                                             )
                                                         }
                                                         className={
-                                                            "w-full bg-secondary rounded-primary flex items-center justify-between gap-1 py-2 px-2.5"
+                                                            "w-full h-7 bg-secondary rounded-primary flex items-center justify-between gap-1 py-2 px-2.5"
                                                         }
                                                     >
                                                         <h3 className={"text-xs font-medium whitespace-nowrap"}>

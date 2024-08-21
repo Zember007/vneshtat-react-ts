@@ -31,7 +31,7 @@ const FlightTicket = () => {
                 <div className={"w-full flex gap-2.5"}>
                     <div className={"flex items-center gap-2.5 mb-5"}>
                         <button>
-                            <VariationImg/>
+                            <VariationImg className={"transition-all blue-stroke-hover"}/>
                         </button>
                         <button>
                             <AvialogoImg/>
@@ -59,9 +59,13 @@ const FlightTicket = () => {
                             <h4 className={"text-sm text-end"}>21.09 пн</h4>
                         </div>
                     </div>
-                    <div className={"flex gap-2.5 ml-4"}>
-                        <HandLuggageImg/>
-                        <LuggageImg/>
+                    <div className={"flex items-start gap-2.5 ml-4"}>
+                        <button>
+                            <HandLuggageImg className={"transition grey-fill blue-fill-hover"}/>
+                        </button>
+                        <button>
+                            <LuggageImg className={"transition grey-fill blue-fill-hover"}/>
+                        </button>
                     </div>
                 </div>
                 <div className={"w-full flex gap-2.5 mt-7"}>
@@ -95,9 +99,13 @@ const FlightTicket = () => {
                             <h4 className={"text-sm text-end"}>22.09 пн</h4>
                         </div>
                     </div>
-                    <div className={"flex gap-2.5 ml-4"}>
-                        <HandLuggageImg/>
-                        <LuggageImg/>
+                    <div className={"flex items-start gap-2.5 ml-4"}>
+                        <button>
+                            <HandLuggageImg className={"transition grey-fill blue-fill-hover"}/>
+                        </button>
+                        <button>
+                            <LuggageImg className={"transition grey-fill blue-fill-hover"}/>
+                        </button>
                     </div>
                 </div>
                 <div className={"flex items-center justify-end gap-2.5 mt-7"}>
