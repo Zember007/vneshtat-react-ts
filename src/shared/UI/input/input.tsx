@@ -2,8 +2,8 @@ import clsx from "clsx";
 import EyeImg from "@/assets/icons/eye.svg?react";
 import EyeClosedImg from "@/assets/icons/eye-closed.svg?react";
 import CrossImg from "@/assets/icons/cross.svg?react";
-import {InputProps} from "./input.props";
-import {useState, useEffect, ChangeEvent} from "react";
+import { InputProps } from "./input.props";
+import { useState, useEffect, ChangeEvent } from "react";
 
 const formatPhoneNumber = (value: string): string => {
     let cleaned = value.replace(/\D/g, '');
@@ -33,40 +33,35 @@ const formatPhoneNumber = (value: string): string => {
     return formatted;
 };
 
-const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
+const cleanPhoneNumber = (formattedValue: string): string => {
+    return formattedValue.replace(/[^+\d]/g, '');
+};
+
+const Input = ({ extraClass, withEraser = true, ...rest }: InputProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState(rest.value || '');
 
     useEffect(() => {
         if (rest.type === "phone") {
-            let formattedValue: string = inputValue as string;
-            if (formattedValue.startsWith('7')) {
-                formattedValue = '+7' + formattedValue.slice(1);
-            }
-            setInputValue(formattedValue);
+            const cleanedValue = cleanPhoneNumber(String(inputValue));
+            setInputValue(formatPhoneNumber(cleanedValue));
         }
     }, [rest.type]);
 
     useEffect(() => {
-        setInputValue(rest.value || "");
-    }, [rest.value])
+        if (rest.value) {
+            const cleanedValue = cleanPhoneNumber(String(inputValue));
+            setInputValue(formatPhoneNumber(cleanedValue));
+        }
+    }, [rest.value]);
 
     const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const cleanedValue = value.replace(/\D/g, '');
+        const cleanedValue = cleanPhoneNumber(value);
 
-        if (cleanedValue === '' || cleanedValue === '7') {
-            setInputValue('+7');
-            if (rest.onChange) {
-                rest.onChange({ ...e, target: { ...e.target, value: '+7' } });
-            }
-            return;
-        }
-
-        const formattedValue = formatPhoneNumber(cleanedValue);
-        setInputValue(formattedValue);
+        setInputValue(formatPhoneNumber(cleanedValue));
         if (rest.onChange) {
-            rest.onChange({ ...e, target: { ...e.target, value: formattedValue } });
+            rest.onChange({ ...e, target: { ...e.target, value: cleanedValue } });
         }
     };
 
@@ -74,7 +69,7 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
         let value = e.target.value.replace(/\D/g, '');
         setInputValue(value);
         if (rest.onChange) {
-            rest.onChange({...e, target: {...e.target, value}});
+            rest.onChange({ ...e, target: { ...e.target, value } });
         }
     };
 
@@ -88,7 +83,7 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
     const handleClear = () => {
         setInputValue("");
         if (rest.onChange) {
-            rest.onChange({target: {value: ""}} as ChangeEvent<HTMLInputElement>);
+            rest.onChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
         }
     };
 
@@ -99,15 +94,15 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
                 {...rest}
                 type={isOpen ? "text" : "password"}
             />
-            {rest.value && (
+            {inputValue && (
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
                     tabIndex={-1}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 >
-                    {isOpen ? <EyeClosedImg className={"transition blue-fill-hover"}/> :
-                        <EyeImg className={"transition blue-fill-hover"}/>}
+                    {isOpen ? <EyeClosedImg className={"transition blue-fill-hover"} /> :
+                        <EyeImg className={"transition blue-fill-hover"} />}
                 </button>
             )}
         </label>
@@ -141,11 +136,11 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
                     type={"button"}
                     tabIndex={-1}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <CrossImg className={"black-fill"}/>
+                    <CrossImg className={"black-fill"} />
                 </button>
             ) : null}
         </label>
     );
 };
 
-export {Input};
+export { Input };
