@@ -8,15 +8,11 @@ import { useState, useEffect, ChangeEvent } from "react";
 const formatPhoneNumber = (value: string): string => {
     let cleaned = value.replace(/\D/g, '');
 
-    if (cleaned.startsWith('8')) {
-        cleaned = '7' + cleaned.slice(1);
+    if (!cleaned.startsWith('7') && cleaned.length > 0) {
+        cleaned = '7' + cleaned;
     }
 
-    if (cleaned.startsWith('7')) {
-        cleaned = '7' + cleaned.slice(1);
-    }
-
-    let formatted = '+7';
+    let formatted = cleaned.length > 0 ? '+7' : '';
     if (cleaned.length > 1) {
         formatted += ` (${cleaned.substring(1, 4)}`;
     }

@@ -31,7 +31,7 @@ const initialState: LoginState = {
     restore: {
         isLoginReady: false,
         isSubmitted: false,
-        withPhone: true,
+        withPhone: false,
         phone: "",
         sms: "",
         email: "",
@@ -54,7 +54,7 @@ const loginStore = createSlice({
             }
 
             const {withPhone, phone, sms, login, password} = state;
-            state.isLoginReady = withPhone ? !!phone && !!sms : !!login && !!password;
+            state.isLoginReady = !withPhone ? !!phone && !!sms : !!login && !!password;
         },
         updateRestoreState: <K extends keyof LoginState["restore"]>(
             state: LoginState,

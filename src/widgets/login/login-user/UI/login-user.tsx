@@ -6,12 +6,13 @@ import LogoIdImg from "@/assets/icons/logo-id.svg?react";
 import AlphaImg from "@/assets/icons/alpha.svg?react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import ArrowImg from "@/assets/icons/arrow-long.svg?react";
-import {FormEvent, useState} from "react";
+import {FormEvent, useRef, useState} from "react";
 import {updateLoginState, updateRestoreState} from "../model/login.store";
 import {setAccessToken, setRefreshToken} from "@/shared/utils";
 import {useNavigate} from "react-router-dom";
 import {setCompanies, setUser} from "@/app/model/user.store";
 import {getUser, getUserCompanies} from "@/shared/utils/methods";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const LoginUser = () => {
     const {
@@ -35,19 +36,28 @@ const LoginUser = () => {
     } = useSelector((state: RootState) => state.login.restore);
     const {companies} = useSelector((state: RootState) => state.user)
     const [isLoginClicked, setIsLoginClicked] = useState(false);
-    const [status, setStatus] = useState<"error" | "success" | null>(null);
+    const [phoneStatus, setPhoneStatus] = useState<"error" | "success" | null>(null);
+    const [loginStatus, setLoginStatus] = useState<"error" | "success" | null>(null);
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+    const [smsToken, setSmsToken] = useState<string | null>(null);
+    const recaptchaRef = useRef<ReCAPTCHA | null>(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const getDeviceAndBrowserInfo = () => {
+        const parser = new UAParser();
+        const result = parser.getResult();
+        const deviceName = result.device.model || result.os.name || "Unknown";
+        const browserName = result.browser.name || "Unknown";
+        return {deviceName, browserName};
+    };
 
     async function handleLogin(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const formdata = new FormData();
         formdata.append("Username", login);
         formdata.append("Password", password);
-        const parser = new UAParser();
-        const result = parser.getResult();
-        const deviceName = result.device.model || result.os.name || "Unknown";
-        const browserName = result.browser.name || "Unknown";
+        const {browserName, deviceName} = getDeviceAndBrowserInfo();
         formdata.append("DeviceName", deviceName);
         formdata.append("Browser", browserName);
 
@@ -59,7 +69,7 @@ const LoginUser = () => {
             });
             const data = await res.json();
             if (data.status === "error") {
-                setStatus("error")
+                setLoginStatus("error")
             }
 
             if (data.status === "success" && data.data) {
@@ -68,20 +78,88 @@ const LoginUser = () => {
                 const user = await getUser();
                 dispatch(setUser(user));
 
-                // get companies
                 const companiesData = await getUserCompanies();
                 if (companiesData.status === "success") {
                     if (!companiesData.data.length) navigate("/")
                     else dispatch(setCompanies(companiesData.data));
                     setIsLoginClicked(true)
                 } else {
-                    setStatus("error")
+                    setLoginStatus("error")
                 }
             }
         } catch (error) {
-            setStatus("error")
+            setLoginStatus("error")
         }
     }
+
+    console.log(smsToken)
+
+    const sendSMScode = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formdata = new FormData();
+        if (smsToken) formdata.append("Token", smsToken);
+        formdata.append("SMSCode", sms);
+        const {browserName, deviceName} = getDeviceAndBrowserInfo();
+        formdata.append("DeviceName", deviceName);
+        formdata.append("Browser", browserName);
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/auth_token_by_phone", {
+                method: "POST",
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                setPhoneStatus("error")
+            }
+
+            if (data.status === "success" && data.data) {
+                setAccessToken(data.data.access_token);
+                setRefreshToken(data.data.refresh_token);
+                const user = await getUser();
+                dispatch(setUser(user));
+
+                const companiesData = await getUserCompanies();
+                if (companiesData.status === "success") {
+                    if (!companiesData.data.length) navigate("/")
+                    else dispatch(setCompanies(companiesData.data));
+                    setIsLoginClicked(true)
+                } else {
+                    setPhoneStatus("error")
+                }
+            }
+        } catch (error) {
+            setPhoneStatus("error")
+        }
+    }
+
+    const getSMScode = async () => {
+        if (captchaToken && phone) {
+            try {
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/auth/sign_in/auth_token_by_phone?PhoneNumber=${encodeURIComponent(phone)}&ReCaptchaResponse=${encodeURIComponent(captchaToken)}`
+                );
+                const data = await response.json();
+                console.log(data)
+                if (data.status === "success") {
+                    setSmsToken(data.data.token);
+                }
+            } catch (error) {
+                console.error("Ошибка при отправке данных:", error);
+            }
+
+            if (recaptchaRef.current) {
+                recaptchaRef.current?.reset();
+            }
+            setCaptchaToken(null);
+        } else {
+            alert("Пожалуйста, введите номер телефона и подтвердите капчу.");
+        }
+    };
+
+    const handleCaptchaChange = (token: string | null) => {
+        setCaptchaToken(token);
+    };
 
     return (
         <div className={"h-[calc(100vh-54px)] flex justify-center items-center"}>
@@ -120,7 +198,7 @@ const LoginUser = () => {
                         Личном кабинете</p>
                 </div>
             ) : (
-                <div className={"w-[320px] flex flex-col gap-6"}>
+                <div className={"w-[350px] flex flex-col gap-6"}>
                     <h1 className={"text-[30px] text-center"}>Войти в аккаунт</h1>
                     {isRestore ? (
                         <div className={"flex flex-col bg-primary gap-5 p-6 rounded-[35px] h-[520px] relative"}>
@@ -319,20 +397,24 @@ const LoginUser = () => {
                             </form>
                         </div>
                     ) : (
-                        <div className={"flex flex-col bg-primary gap-5 p-6 rounded-[35px] h-[520px] relative"}>
+                        <div className={"flex flex-col bg-primary gap-5 p-6 rounded-[35px] relative"}>
                             <div className={"flex justify-center"}>
                                 <LogoIdImg/>
                             </div>
-                            <form className={"flex flex-col gap-2.5"} autoComplete={"on"} onSubmit={handleLogin}>
+                            <form className={"flex flex-col gap-2.5"} autoComplete={"on"}
+                                  onSubmit={!withPhone ? sendSMScode : handleLogin}>
                                 <Switch
                                     extraClass={"w-full h-[50px] !bg-[#FAFAFA] border border-solid border-[#E5E7EA]"}
                                     extraChildClass={"py-2.5 h-full w-[50%]"}
                                     selectedBg={"#ECEEF1"}
                                     unselectedBg={"#FAFAFA"}
                                     firstChild={<p
-                                        className={`font-medium text-base ${withPhone ? "text-[#121212]" : "text-[#9B9FAD]"}`}>Телефон</p>}
-                                    secondChild={<p
-                                        className={`font-medium text-base ${withPhone ? "text-[#9B9FAD]" : "text-[#121212]"}`}>Логин</p>}
+                                        className={`font-medium text-base ${withPhone ? "text-[#9B9FAD]" : "text-[#121212]"}`}>Логин</p>
+                                    }
+                                    secondChild={
+                                        <p
+                                            className={`font-medium text-base ${withPhone ? "text-[#121212]" : "text-[#9B9FAD]"}`}>Телефон</p>
+                                    }
                                     isSelected={withPhone}
                                     setter={(value) => dispatch(updateLoginState({
                                         field: "withPhone",
@@ -342,53 +424,7 @@ const LoginUser = () => {
                                 {withPhone ? (
                                     <>
                                         <Input
-                                            extraClass={"!text-lg !font-medium h-[50px] rounded-[16px] text-center border border-solid border-[#E5E7EA] !bg-primary"}
-                                            placeholder={"+7 (___) ___ - __ -__"}
-                                            type={"phone"}
-                                            value={phone}
-                                            onChange={e => dispatch(updateLoginState({
-                                                field: "phone",
-                                                value: e.target.value
-                                            }))}
-                                        />
-                                        <Input
-                                            extraClass={"!text-lg !font-medium text-blue text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
-                                            placeholder={"Введите код из СМС"}
-                                            value={sms}
-                                            onChange={e => dispatch(updateLoginState({
-                                                field: "sms",
-                                                value: e.target.value
-                                            }))}
-                                        />
-                                        <button
-                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                                            disabled={!!sms}>
-                                            <p className={`text-lg font-medium text-primary ${sms && "!text-[#9B9FAD]"}`}>{sms ? "Отправить повторно 0:59" : "Получить код"}</p>
-                                        </button>
-                                        <button
-                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                                            disabled={!isLoginReady}
-                                            type={"submit"}
-                                        >
-                                            <p className={`text-lg font-medium text-primary ${!isLoginReady && "!text-[#9B9FAD]"}`}>Войти</p>
-                                        </button>
-                                        {status === "error" ? (
-                                            <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
-                                                привязанного к
-                                                этому номеру не найдено</p>
-                                        ) : null}
-                                        <button
-                                            className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
-                                            onClick={() => navigate("/sign-up")}
-                                            type={"button"}
-                                        >
-                                            <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Input
-                                            extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] text-blue !bg-primary first-letter-black`}
+                                            extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] ${loginStatus === "error" ? "#FF64A3" : "text-blue"} !bg-primary first-letter-black`}
                                             placeholder="Логин"
                                             value={login ? `@${login}` : ""}
                                             onChange={e => dispatch(updateLoginState({
@@ -408,7 +444,7 @@ const LoginUser = () => {
                                             }))}
                                             autoComplete={"on"}
                                         />
-                                        {status === "error" ? (
+                                        {loginStatus === "error" ? (
                                             <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта, с
                                                 таким
                                                 ID не найдено</p>
@@ -425,7 +461,8 @@ const LoginUser = () => {
                                              <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>1#!</p>
                                              <p className={"text-xs text-[#787B86]"}>Цифры и другие символы</p>
                                         </span>
-                                        </div>}
+                                        </div>
+                                        }
                                         <button
                                             className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
                                             disabled={!isLoginReady}
@@ -444,11 +481,58 @@ const LoginUser = () => {
                                                 пароль</p>
                                         </button>
                                         <button
-                                            className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                            className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
                                             onClick={() => navigate("/sign-up")}
                                             type={"button"}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Input
+                                            extraClass={"!text-lg !font-medium h-[50px] rounded-[16px] text-center border border-solid border-[#E5E7EA] !bg-primary"}
+                                            placeholder={"+7 (___) ___ - __ -__"}
+                                            type={"phone"}
+                                            value={phone}
+                                            onChange={e => dispatch(updateLoginState({
+                                                field: "phone",
+                                                value: e.target.value
+                                            }))}
+                                        />
+                                        <ReCAPTCHA
+                                            ref={recaptchaRef}
+                                            sitekey={import.meta.env.VITE_RECAPTHCA}
+                                            onChange={handleCaptchaChange}
+                                        />
+                                        <Input
+                                            extraClass={"!text-lg !font-medium text-blue text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
+                                            placeholder={"Введите код из СМС"}
+                                            value={sms}
+                                            onChange={e => dispatch(updateLoginState({
+                                                field: "sms",
+                                                value: e.target.value
+                                            }))}
+                                        />
+                                        <button
+                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
+                                            type={"button"}
+                                            disabled={!phone || !captchaToken}
+                                            onClick={getSMScode}
+                                        >
+                                            <p className={`text-lg font-medium text-primary ${!sms && !captchaToken && "!text-[#9B9FAD]"}`}>{sms && captchaToken ? "Отправить повторно 0:59" : "Получить код"}</p>
+                                        </button>
+                                        {phoneStatus === "error" ? (
+                                            <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
+                                                привязанного к
+                                                этому номеру не найдено</p>
+                                        ) : null}
+                                        <button
+                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
+                                            disabled={!isLoginReady}
+                                            type={"submit"}
+                                        >
+                                            <p className={`text-lg font-medium text-primary ${!isLoginReady && "!text-[#9B9FAD]"}`}>Войти</p>
                                         </button>
                                     </>
                                 )}

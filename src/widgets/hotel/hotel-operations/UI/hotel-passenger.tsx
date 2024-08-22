@@ -9,14 +9,16 @@ import {CountdownCircle} from "@/shared/UI";
 
 const HotelPassenger = () => {
     const [activePassenger, setActivePassenger] = useState<number | null>(null);
-    const [rooms, setRooms] = useState([
+    const [rooms, setRooms] = useState<{ id: number; passengers: number[]; deleteCountdown: number | null; }[]>([
         {
             id: 1,
-            passengers: [1, 2, 3]
+            passengers: [1, 2, 3],
+            deleteCountdown: null,
         },
         {
             id: 2,
-            passengers: [3]
+            passengers: [3],
+            deleteCountdown: null,
         }
     ]);
     const [passengers, setPassengers] = useState<Passenger[]>([
@@ -54,13 +56,18 @@ const HotelPassenger = () => {
                     : passenger
             );
 
-            const remainingPassengers = updatedPassengers.filter((passenger) => passenger.deleteCountdown !== 0);
+            const updatedRooms = rooms.map((room) =>
+                room.deleteCountdown !== null && room.deleteCountdown > 0
+                    ? {...room, deleteCountdown: room.deleteCountdown - 1}
+                    : room
+            );
 
-            setPassengers(remainingPassengers);
+            setPassengers(updatedPassengers.filter((passenger) => passenger.deleteCountdown !== 0));
+            setRooms(updatedRooms.filter((room) => room.deleteCountdown !== 0));
         }, 1000);
 
         return () => clearInterval(countdownInterval);
-    }, [passengers]);
+    }, [passengers, rooms]);
 
     const handleDelete = (passengerId: number) => {
         const updatedPassengers = passengers.map((passenger) =>
@@ -80,11 +87,23 @@ const HotelPassenger = () => {
         setPassengers(updatedPassengers);
     };
 
+    const cancelRoomDelete = (id: number) => {
+        const updatedRooms = rooms.map((room) =>
+            room.id === id
+                ? {...room, deleteCountdown: null}
+                : room
+        );
+        setRooms(updatedRooms);
+    };
+
     const removeRoom = (id: number) => {
-        setRooms(prev => {
-            return prev.filter((room) => room.id !== id)
-        })
-    }
+        const updatedRooms = rooms.map((room) =>
+            room.id === id
+                ? {...room, deleteCountdown: 5}
+                : room
+        );
+        setRooms(updatedRooms);
+    };
 
     return (
         <div className={"w-full"}>
@@ -93,15 +112,32 @@ const HotelPassenger = () => {
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
             <div className={"w-full h-[calc(100vh-395px)] overflow-y-auto scroll flex flex-col gap-4 py-2.5"}>
-                {rooms.map((room) => (
+                {rooms.map((room, i) => (
                     <div key={room.id} className={"flex flex-col"}>
-                        {room.id !== 1 && <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] my-2.5"}/>}
+                        {i === 1 && <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] my-2.5"}/>}
                         <div className={"flex items-center gap-1"}>
-                            <p className={"text-sm font-medium"}>{room.id} номер</p>
-                            <p className={"text-sm font-medium text-[#9B9FAD]"}>{room.passengers.length} гостя</p>
-                            <button onClick={() => removeRoom(room.id)}>
-                                <TrashImg className={"transition black-fill-hover black-stroke-hover"}/>
-                            </button>
+                            {room.deleteCountdown ? (
+                                <button onClick={() => cancelRoomDelete(room.id)}>
+                                    <p className={"text-[#FF64A3] text-sm font-medium leading-none"}>Отменить удаление</p>
+                                </button>
+                            ) : (
+                                <>
+                                    <p className={"text-sm font-medium"}>{room.id} номер</p>
+                                    <p className={"text-sm font-medium text-[#9B9FAD]"}>{room.passengers.length} гостя</p>
+                                </>
+                            )}
+                            {room.deleteCountdown ? (
+                                <div className={"flex items-center gap-1"}>
+                                    <CountdownCircle
+                                        countdown={room.deleteCountdown}
+                                        onCancel={() => cancelRoomDelete(room.id)}
+                                    />
+                                </div>
+                            ) : (
+                                <button onClick={() => removeRoom(room.id)}>
+                                    <TrashImg className={"transition black-fill-hover black-stroke-hover"}/>
+                                </button>
+                            )}
                         </div>
                         <div className={"flex flex-col gap-2.5 mt-4"}>
                             {room.passengers.map((passengerId) => {
@@ -120,7 +156,7 @@ const HotelPassenger = () => {
                                                             )
                                                         }
                                                         className={
-                                                            "w-full h-7 bg-secondary rounded-primary flex items-center justify-between gap-1 py-2 px-2.5"
+                                                            "w-full h-9 bg-secondary rounded-primary flex items-center justify-between gap-1 py-2 px-2.5"
                                                         }
                                                     >
                                                         <h3 className={"text-xs font-medium whitespace-nowrap"}>
@@ -128,7 +164,8 @@ const HotelPassenger = () => {
                                                         </h3>
                                                         <ArrowTop className={"min-w-5 min-h-5"}/>
                                                     </div>
-                                                    <div className={"w-full bg-secondary rounded-primary py-4 px-5 mt-2.5"}>
+                                                    <div
+                                                        className={"w-full bg-secondary rounded-primary py-4 px-5 mt-2.5"}>
                                                         <div className={"flex justify-between items-center"}>
                                                             <h3 className={"text-base font-medium"}>Документы</h3>
                                                             <InfoImg className={"min-w-6 min-h-6 black-fill-hover"}/>
@@ -160,7 +197,7 @@ const HotelPassenger = () => {
                                             ) : (
                                                 <div className={"flex items-center gap-2.5"}>
                                                     <div
-                                                        className={"w-7 h-7 py-2 px-2.5 flex justify-center items-center rounded-full bg-secondary"}
+                                                        className={"w-9 h-9 py-2 px-2.5 flex justify-center items-center rounded-full bg-secondary"}
                                                     >
                                                         <h3 className={"text-xs font-medium uppercase"}>
                                                             {passenger.surname[0] + passenger.name[1]}
@@ -173,14 +210,14 @@ const HotelPassenger = () => {
                                                                 : setActivePassenger(passenger.id)
                                                         }
                                                         className={
-                                                            "w-full h-7 bg-secondary min-w-[150px] rounded-primary flex items-center justify-between gap-1 py-2 px-2.5 cursor-pointer"
+                                                            "w-full h-9 bg-secondary min-w-[150px] rounded-primary flex items-center justify-between gap-1 py-2 px-2.5 cursor-pointer"
                                                         }
                                                     >
                                                         {passenger.deleteCountdown ? (
                                                             <div className={"flex items-center gap-1"}>
                                                                 <h3
                                                                     className={
-                                                                        "text-xs font-medium whitespace-nowrap text-[#FF64A3] overflow-hidden text-ellipsis"
+                                                                        "text-xs font-medium whitespace-nowrap text-[#FF64A3] overflow-hidden text-ellipsis leading-none"
                                                                     }
                                                                 >
                                                                     Отменить удаление

@@ -43,11 +43,20 @@ const uniqueData = uniqueMonths.map(month => ({
     uv: data.find(d => d.name === month)?.uv || 0
 }));
 
-const CustomTooltip = ({active, payload, label}: TooltipProps) => {
-    if (active && payload && payload.length) {
+const CustomTooltip = ({active, payload, label, coordinate}: TooltipProps & {
+    coordinate?: { x: number; y: number }
+}) => {
+    if (active && payload && payload.length && coordinate) {
+        const {x, y} = coordinate;
         return (
-            <div className="custom-tooltip">
-                <p className="top-0 !bottom-10">{`${label} ${payload[0].payload.name} - ${payload[0].value}`}</p>
+            <div className="custom-tooltip flex"
+                 style={{
+                     position: 'absolute',
+                     left: `${x}px`,
+                     top: `${y - 40}px`,
+                     transform: 'translateX(-50%)',
+                 }}>
+                <p className="whitespace-nowrap">{`${label} ${payload[0].payload.name} - ${payload[0].value}`}</p>
             </div>
         );
     }
@@ -64,7 +73,7 @@ const FlightChart = ({showedGraph, setShowedGraph, activeRate}: {
     const [displayedData, setDisplayedData] = useState(data.slice(startIndex, endIndex));
     const {min, max} = findMinMax(data);
     const [activePrice, setActivePrice] = useState<number | null>(null);
-    const { flights } = useSelector((state: RootState) => state.flight);
+    const {flights} = useSelector((state: RootState) => state.flight);
     const {displayedDays} = generateBoardMonthData();
     const {
         currentItems: horizDays,
@@ -103,7 +112,8 @@ const FlightChart = ({showedGraph, setShowedGraph, activeRate}: {
 
     return (
         <div>
-            <div className={"p-9 m-5 rounded-[23px] bg-secondary relative overflow-y-auto scroll hidden-scroll h-[calc(100vh-355px)]"}>
+            <div
+                className={"p-9 m-5 rounded-[23px] bg-secondary relative overflow-y-auto scroll hidden-scroll h-[calc(100vh-355px)]"}>
                 <div className={"flex justify-between items-center mb-5 mt-2"}>
                     <h2 className={"font-medium leading-none"}>{showedGraph === "graph" ? "График цен" : "Таблица цен"}</h2>
                     <div className={"flex items-center gap-2.5"}>

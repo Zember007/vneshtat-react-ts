@@ -1,7 +1,5 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {getDayOfWeek} from "@/shared/utils";
-import {Input} from "@/shared/UI";
-import ReCAPTCHA from "react-google-recaptcha";
 
 type UserStatus = "in_queue" | "in_progress" | "completed";
 
@@ -20,44 +18,6 @@ interface User {
 
 const Admin = () => {
     const [users, setUsers] = useState<User[]>([]);
-    const [phoneNumber, setPhoneNumber] = useState<string>('');
-    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-    const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-
-    const handleCaptchaChange = (token: string | null) => {
-        setCaptchaToken(token);
-    };
-
-    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhoneNumber(e.target.value);
-    };
-
-    const handleSubmit = async () => {
-        if (captchaToken && phoneNumber) {
-            const data = {
-                phoneNumber: phoneNumber,
-                ReCaptchaResponse: captchaToken
-            };
-
-            try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/auth/sign_in/auth_token_by_phone?PhoneNumber=${encodeURIComponent(data.phoneNumber)}&ReCaptchaResponse=${encodeURIComponent(data.ReCaptchaResponse)}`
-                );
-                const responseData = await response.json();
-                console.log("data", responseData);
-                console.log("Успех:", response);
-            } catch (error) {
-                console.error("Ошибка при отправке данных:", error);
-            }
-
-            if (recaptchaRef.current) {
-                recaptchaRef.current?.reset();
-            }
-            setCaptchaToken(null);
-        } else {
-            alert("Пожалуйста, введите номер телефона и подтвердите капчу.");
-        }
-    };
 
     const getStatusText = (status: UserStatus): string => {
         switch (status) {
@@ -161,15 +121,6 @@ const Admin = () => {
             )) : (
                 <h1>Нет пользователей для просмотра</h1>
             )}
-            <div className={"flex items-center flex-col gap-4"}>
-                <Input placeholder={"Номер телефона"} type={"phone"} value={phoneNumber} onChange={handlePhoneNumberChange}/>
-                <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={import.meta.env.VITE_RECAPTHCA}
-                    onChange={handleCaptchaChange}
-                />
-                <button className={"px-8 py-2 bg-black rounded-primary text-primary"} onClick={handleSubmit}>Отправить</button>
-            </div>
         </div>
     )
 };

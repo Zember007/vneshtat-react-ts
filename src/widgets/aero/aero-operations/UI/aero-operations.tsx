@@ -156,7 +156,7 @@ const AeroOperations = ({selectedTariffId}: {
                                             ) : (
                                                 <div className={"flex items-center gap-2.5"}>
                                                     <div
-                                                        className={"w-7 h-7 py-2 px-2.5 flex justify-center items-center rounded-full bg-secondary"}
+                                                        className={"w-9 h-9 py-2 px-2.5 flex justify-center items-center rounded-full bg-secondary"}
                                                     >
                                                         <h3 className={"text-xs font-medium uppercase"}>
                                                             {passenger.surname[0] + passenger.name[1]}
@@ -169,14 +169,14 @@ const AeroOperations = ({selectedTariffId}: {
                                                                 : setActivePassenger(passenger.id)
                                                         }
                                                         className={
-                                                            "w-full h-7 bg-secondary min-w-[150px] rounded-primary flex items-center justify-between gap-1 py-2 px-2.5 cursor-pointer"
+                                                            "w-full h-9 bg-secondary min-w-[150px] rounded-primary flex items-center justify-between gap-1 py-2 px-2.5 cursor-pointer"
                                                         }
                                                     >
                                                         {passenger.deleteCountdown ? (
                                                             <div className={"flex items-center gap-1"}>
                                                                 <h3
                                                                     className={
-                                                                        "text-xs font-medium whitespace-nowrap text-[#FF64A3] overflow-hidden text-ellipsis"
+                                                                        "text-xs font-medium whitespace-nowrap text-[#FF64A3] overflow-hidden text-ellipsis leading-none"
                                                                     }
                                                                 >
                                                                     Отменить удаление
