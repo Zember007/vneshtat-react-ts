@@ -33,8 +33,8 @@ export const refreshAccessToken = async () => {
 
 export async function getUser() {
     const token = getAccessToken();
-    const name = localStorage.getItem("name");
-    const surname = localStorage.getItem("surname")
+    const name = localStorage.getItem("Name");
+    const surname = localStorage.getItem("Surname")
     if (!token) return;
     if (name && surname) {
         return {
@@ -52,8 +52,8 @@ export async function getUser() {
         const data = await res.json()
 
         if (data.status === "success") {
-            localStorage.setItem("name", data.data.Name);
-            localStorage.setItem("surname", data.data.Surname);
+            localStorage.setItem("Name", data.data.Name);
+            localStorage.setItem("Surname", data.data.Surname);
 
             return {
                 name: data.data.Name,

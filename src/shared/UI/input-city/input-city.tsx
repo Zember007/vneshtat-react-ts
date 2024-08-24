@@ -27,7 +27,7 @@ const InputCity = ({extraClass = '', inputClass = '', value, setValue, callback,
     return (
         <div className={`min-w-[255px] relative ${extraClass}`}>
             <Input
-                className={`py-3 px-2.5 text-sm h-9 rounded-secondary bg-secondary w-full ${inputClass}`}
+                className={`py-3 px-2.5 text-sm h-11 rounded-[16px] bg-secondary w-full ${inputClass}`}
                 value={value}
                 onChange={(e) => {
                     const newValue = e.target.value;

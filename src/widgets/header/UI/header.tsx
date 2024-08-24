@@ -10,13 +10,9 @@ import YandexTaxiImg from "@/assets/icons/yandex-taxi.svg?react";
 import RestaurantImg from "@/assets/icons/restaurant.svg?react";
 import BurgerImg from "@/assets/icons/burger.svg?react";
 import LockImg from "@/assets/icons/lock.svg?react";
-import {useSelector} from "react-redux";
-import {RootState} from "@/app/config/store";
 
 const Header = () => {
     const location = useLocation().pathname;
-    const {companies} = useSelector((state: RootState) => state.user)
-    const selectedCompany = companies?.find(item => item.EmployeeId.toString() === localStorage.getItem("EmployeeId"))
     const links = [
         {to: "/flight", img: PlaneImg, label: "Самолёт"},
         {to: "/journey", img: TrainImg, label: "Поезд"},
@@ -33,7 +29,7 @@ const Header = () => {
         <div className="flex flex-row justify-between items-center py-2.5">
             <div className={"flex items-center gap-2.5"}>
                 <button className="flex items-center bg-primary py-2.5 px-4 rounded-primary gap-1 h-[45px]">
-                    <p className={"text-base leading-none font-medium"}>{selectedCompany?.CompanyName}</p>
+                    <p className={"text-base leading-none font-medium"}>{localStorage.getItem("CompanyName")}</p>
                     <LockImg className={"min-h-[18px] min-w-[18px]"}/>
                 </button>
                 <button className="flex items-center bg-primary p-2.5 rounded-primary h-[45px]">

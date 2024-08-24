@@ -294,43 +294,10 @@ a {
     }
 }
 
-.recaptcha-container {
-    max-width: 200px;
-    margin: 0 auto;
-}
-
-.recaptcha-container > div {
-    transform: scale(0.77);
-    transform-origin: 0 0;
-    -webkit-transform: scale(0.77);
-    -webkit-transform-origin: 0 0;
-}
-
-.recaptcha-container iframe {
-    max-width: 200px;
-    width: 100%;
-    height: auto;
-}
-
 .animate-countdown {
     transform-origin: left;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
-}
-
-@keyframes colorWave {
-    0% {
-        background-position: 0% 0%;
-    }
-    100% {
-        background-position: 100% 100%;
-    }
-}
-
-.wave {
-    animation: colorWave 2s linear infinite;
-    background: linear-gradient(-45deg, #bebebe, #d1d1d1, #e8e8e8, #d1d1d1, #c9c9c9);
-    background-size: 400% 400%;
 }
 
 .scroll {
@@ -343,15 +310,10 @@ a {
     &::-webkit-scrollbar-thumb {
         border-radius: 100px;
         width: 5px;
-        background-color: #e5e7ea;
+        background-color: #E5E7EA;
         border: 6px solid transparent;
         background-clip: content-box;
         transition: background-color 0.3s ease;
-
-        &:hover {
-            width: 10px;
-            background-color: red;
-        }
     }
 
     &::-webkit-scrollbar-track {
@@ -360,7 +322,4 @@ a {
         background-clip: content-box;
         border: 6px solid transparent;
     }
-}
-.scroll:hover::-webkit-scrollbar {
-    width: 17px;
 }

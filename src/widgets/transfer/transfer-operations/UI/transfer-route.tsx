@@ -14,7 +14,7 @@ const TransferRoute = () => {
                 <h3>Маршрут</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"h-[calc(100vh-409px)] overflow-y-auto scroll pb-2.5"}>
+            <div className={"h-[calc(100vh-417px)] overflow-y-auto scroll pb-2.5"}>
                 <div className={"flex flex-col py-2.5 gap-4"}>
                     <h4 className={"text-base font-medium"}>Адрес отправления</h4>
                     <Input

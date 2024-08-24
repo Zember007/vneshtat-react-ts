@@ -18,7 +18,7 @@ const useConfirmToken = (token: string) => {
             if (data.status === "success") {
                 setStatus(data.data.Status);
                 setCompanyName(data.data.CompanyName);
-                localStorage.setItem("confirmToken", token);
+                localStorage.setItem("ConfirmToken", token);
                 if (data.data.Status === "in_progress") navigate("/sign-up");
                 if (data.data.Status === "completed") navigate("/sign-in");
             } else {

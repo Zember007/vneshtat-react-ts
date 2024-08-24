@@ -36,7 +36,7 @@ const TransferDecor = () => {
 
     return (
         <div>
-            <div className={"flex flex-col gap-2.5 h-[calc(100vh-340px)] overflow-y-auto scroll"}>
+            <div className={"flex flex-col gap-2.5 h-[calc(100vh-348px)] overflow-y-auto scroll"}>
                 <Dropdown title={"Тариф"}>
                     <div className={"flex flex-col gap-2.5"}>
                         <div className={"rounded-primary bg-primary p-2.5"}>

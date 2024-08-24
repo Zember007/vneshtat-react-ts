@@ -82,7 +82,7 @@ const BusTickets = () => {
                 <div className={"flex flex-col gap-4"}>
                     <div className={"flex flex-row items-center gap-2.5"}>
                         <div
-                            className={"flex flex-row items-center py-3 px-2.5 gap-2 max-h-9 rounded-primary bg-secondary"}>
+                            className={"flex flex-row items-center py-3 px-2.5 gap-2 h-11 rounded-[16px] bg-secondary"}>
                             <PassengerImg/>
                             <p className={"text-xs"}>+0</p>
                         </div>
@@ -103,8 +103,8 @@ const BusTickets = () => {
                         />
                         <InputDate
                             placeholder={"Дата"}
-                            extraClass={"py-3 px-2.5 h-9 min-w-[100px] max-w-[100px] rounded-primary"}
-                            extraCalendarClass={"-translate-y-20"}
+                            extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
+                            extraCalendarClass={"-translate-y-[72px]"}
                             inputValue={journeyDate}
                             viewValue={journeyDate}
                             isShortDate={true}

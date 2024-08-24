@@ -50,7 +50,7 @@ const JourneyFilter = () => {
                 </button>
             </div>
             <hr className="h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"/>
-            <div className="max-h-[calc(100vh-335px)] overflow-y-auto scroll flex flex-col py-2.5 gap-2.5">
+            <div className="max-h-[calc(100vh-343px)] overflow-y-auto scroll flex flex-col py-2.5 gap-2.5">
                 <Dropdown
                     isChanged={priceRange.isChanged}
                     title="Стоимость"

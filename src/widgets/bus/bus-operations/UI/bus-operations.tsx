@@ -16,18 +16,18 @@ const BusOperations = () => {
                 <div className={"flex flex-row gap-[10px]"}>
                     <button
                         onClick={() => setActiveOperation("route")}
-                        className={`${activeOperation === "route" ? "bg-black" : "bg-section"} transition p-2 rounded-secondary w-9 h-9 flex justify-center items-center`}>
-                        <RouteImg className={activeOperation === "route" ? "white-fill" : undefined}/>
+                        className={`${activeOperation === "route" ? "bg-black" : "bg-section"} transition p-2 rounded-primary w-11 h-11 flex justify-center items-center`}>
+                        <RouteImg className={`${activeOperation === "route" ? "white-fill" : undefined} min-h-5 min-w-5`}/>
                     </button>
                     <button
                         onClick={() => setActiveOperation("passengers")}
-                        className={`${activeOperation === "passengers" ? "bg-black" : "bg-section"} transition p-2 rounded-secondary w-9 h-9 flex justify-center items-center`}>
-                        <PassengersImg className={activeOperation === "passengers" ? "white-fill" : undefined}/>
+                        className={`${activeOperation === "passengers" ? "bg-black" : "bg-section"} transition p-2 rounded-primary w-11 h-11 flex justify-center items-center`}>
+                        <PassengersImg className={`${activeOperation === "passengers" ? "white-fill" : undefined} min-h-5 min-w-5`}/>
                     </button>
                     <button
                         onClick={() => setActiveOperation("decor")}
-                        className={`${activeOperation === "decor" ? "bg-black" : "bg-section"} transition p-2 rounded-secondary w-9 h-9 flex justify-center items-center`}>
-                        <TicketImg className={activeOperation === "decor" ? "white-fill" : undefined}/>
+                        className={`${activeOperation === "decor" ? "bg-black" : "bg-section"} transition p-2 rounded-primary w-11 h-11 flex justify-center items-center`}>
+                        <TicketImg className={`${activeOperation === "decor" ? "white-fill" : undefined} min-h-5 min-w-5`}/>
                     </button>
                 </div>
                 {activeOperation === "route" && <BusRoute/>}

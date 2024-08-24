@@ -30,8 +30,12 @@ function App() {
             setUserOnline();
 
             const setUserCompanies = async () => {
-                const companiesData = await getUserCompanies();
-                dispatch(setCompanies(companiesData.data))
+                const employeeId = localStorage.getItem("EmployeeId");
+                const companyName = localStorage.getItem("CompanyName")
+                if (!employeeId || !companyName) {
+                    const companiesData = await getUserCompanies();
+                    dispatch(setCompanies(companiesData.data))
+                }
             }
             setUserCompanies();
             const intervalId = setInterval(() => {
@@ -50,8 +54,7 @@ function App() {
         if (isAuthorized) {
             if (location === "/admin") return <BasicLayout component={<Layout/>}/>
             else navigate("/")
-        }
-        else return <Layout/>
+        } else return <Layout/>
     }
 
     return <BasicLayout component={<Layout/>}/>;

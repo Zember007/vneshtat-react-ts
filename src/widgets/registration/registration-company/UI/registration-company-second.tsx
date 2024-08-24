@@ -25,7 +25,7 @@ const RegistrationCompanySecond = () => {
                         </button>
                         <div
                             className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
-                            <h2 className={"text-lg text-[#9B9FAD]"}>Альфа Самара</h2>
+                            <h2 className={"text-lg text-[#9B9FAD]"}>{localStorage.getItem("RegistrationCompanyName")}</h2>
                             <SuccessImg className={"min-w-6 min-h-6 blue-fill"}/>
                         </div>
                     </div>

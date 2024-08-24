@@ -111,7 +111,7 @@ const HotelPassenger = () => {
                 <h3>Выбор гостей</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"w-full h-[calc(100vh-395px)] overflow-y-auto scroll flex flex-col gap-4 py-2.5"}>
+            <div className={"w-full h-[calc(100vh-403px)] overflow-y-auto scroll flex flex-col gap-4 py-2.5"}>
                 {rooms.map((room, i) => (
                     <div key={room.id} className={"flex flex-col"}>
                         {i === 1 && <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] my-2.5"}/>}

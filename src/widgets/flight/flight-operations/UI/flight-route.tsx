@@ -151,7 +151,7 @@ const FlightRoute = () => {
                 <h3>Маршрут</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"h-[calc(100vh-420px)] overflow-y-auto scroll py-2.5"}>
+            <div className={"h-[calc(100vh-428px)] overflow-y-auto scroll py-2.5"}>
                 <Dropdown title={"Класс"} selectedText={activeClass && activeClass.content} extraClass={"py-2"}>
                     <Checkbox items={classes} onChange={(id: number) => dispatch(setClass({id, oneChoise: true}))}/>
                 </Dropdown>

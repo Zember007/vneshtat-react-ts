@@ -4,6 +4,7 @@ import contractImg from "@/assets/icons/contract.png";
 import {RootState} from "@/app/config/store";
 import {ChangeEvent} from "react";
 import {
+    setPage,
     updateCompanyState,
     updateUploadedFile,
 } from "@/widgets/registration/registration-company/model/registration-company.store";
@@ -36,7 +37,7 @@ const RegistrationCompanyFirst = () => {
         formdata.append("Kpp", kpp);
         formdata.append("LegalAddress", legalAddress);
         formdata.append("ContractFile", uploadedFile!, "mock.pdf");
-        const token = localStorage.getItem("confirmToken");
+        const token = localStorage.getItem("ConfirmToken");
         if (token) {
             formdata.append("Token", token);
         }
@@ -46,8 +47,9 @@ const RegistrationCompanyFirst = () => {
             body: formdata
         })
         const data = await res.json();
-        if(data.status === "success"){}
-        else {
+        if(data.status === "success"){
+            dispatch(setPage(2))
+        } else {
             const errorMessages = Object.entries(data.errors)
                 .map(([key, messages]) => {
                     if (Array.isArray(messages) && messages.every(msg => typeof msg === 'string')) {
@@ -60,7 +62,6 @@ const RegistrationCompanyFirst = () => {
 
             alert(`Ошибка:\n${errorMessages}`);
         }
-        // dispatch(setPage(2)
     }
 
     return (
@@ -70,7 +71,7 @@ const RegistrationCompanyFirst = () => {
                     <div className={"p-6 bg-primary rounded-[35px]"}>
                         <div
                             className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
-                            <h2 className={"text-lg text-[#9B9FAD]"}>{localStorage.getItem("companyName")}</h2>
+                            <h2 className={"text-lg text-[#9B9FAD]"}>{localStorage.getItem("RegistrationCompanyName")}</h2>
                             <SuccessImg className={"min-w-6 min-h-6 grey-fill"}/>
                         </div>
                     </div>
@@ -99,6 +100,7 @@ const RegistrationCompanyFirst = () => {
                                 extraClass={"h-[50px] text-center rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                 placeholder={"Инн"}
                                 type={"number"}
+                                maxLength={12}
                                 value={inn}
                                 onChange={e => dispatch(updateCompanyState({field: "inn", value: e.target.value}))}
                             />
@@ -106,6 +108,7 @@ const RegistrationCompanyFirst = () => {
                                 extraClass={"h-[50px] text-center rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                 placeholder={"Кпп"}
                                 type={"number"}
+                                maxLength={9}
                                 value={kpp}
                                 onChange={e => dispatch(updateCompanyState({field: "kpp", value: e.target.value}))}
                             />

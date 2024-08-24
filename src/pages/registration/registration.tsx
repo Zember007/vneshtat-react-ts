@@ -3,9 +3,10 @@ import VneshtatImg from "@/assets/icons/vneshtat.svg?react";
 import {useConfirmToken} from "@/shared/hooks/use-confirm-token";
 
 const Registration = () => {
-    const {status, companyName} = useConfirmToken(localStorage.getItem("confirmToken") || "");
-    localStorage.setItem("status", status);
-    localStorage.setItem("companyName", companyName);
+    const {status, companyName} = useConfirmToken(localStorage.getItem("ConfirmToken") || "");
+    localStorage.setItem("Status", status);
+    localStorage.setItem("RegistrationCompanyName", companyName);
+    console.log(status, companyName)
 
     return (
         <div className={"px-[100px] h-[100vh]"}>

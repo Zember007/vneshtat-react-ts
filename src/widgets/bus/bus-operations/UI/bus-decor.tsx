@@ -43,7 +43,7 @@ const BusDecor = () => {
                 </button>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"flex flex-col gap-2.5 h-[calc(100vh-270px)] py-2.5 overflow-y-auto scroll"}>
+            <div className={"flex flex-col gap-2.5 h-[calc(100vh-278px)] py-2.5 overflow-y-auto scroll"}>
                 <Dropdown title={"Тариф"}>
                     <div className={"flex flex-col gap-2.5"}>
                         <div className={"rounded-primary bg-primary p-2.5"}>

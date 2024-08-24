@@ -1,13 +1,90 @@
 import {Input} from "@/shared/UI";
-import {updateCredentialsState} from "../model/registration-company.store";
+import {setPage, updateCredentialsState} from "../model/registration-company.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {Dispatch, SetStateAction} from "react";
 
 const RegistrationCompanyCredentials = ({setHasAccount}: { setHasAccount: Dispatch<SetStateAction<boolean>> }) => {
+    const {name, surname, middlename, birthday} = useSelector((state: RootState) => state.registrationCompany.info);
     const {email, phone, login, password} = useSelector((state: RootState) => state.registrationCompany.credentials);
     const {isInfoReady, isCredentialsReady} = useSelector((state: RootState) => state.registrationCompany);
     const dispatch = useDispatch();
+
+    const handleCheckCredentials = async () => {
+        const formdata = new FormData();
+        formdata.append("Email", email);
+        formdata.append("PhoneNumber", phone);
+        formdata.append("Username", name);
+
+        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/check_vneshtat_id_credentials_available", {
+            method: "GET",
+            body: formdata
+        })
+        const data = await res.json();
+        console.log(data, "check")
+        return data;
+    }
+
+    const handleSendInformation = async () => {
+        const formdata = new FormData();
+        formdata.append("Name", name);
+        formdata.append("Surname", surname);
+        formdata.append("MiddleName", middlename);
+        formdata.append("BirthDate", birthday);
+        const token = localStorage.getItem("ConfirmToken");
+        if (token) {
+            formdata.append("Token", token);
+        }
+
+        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/connect_vheshtat_id_and_create_company", {
+            method: "POST",
+            body: formdata
+        })
+        const data = await res.json();
+        console.log(data, "info")
+        return data;
+    }
+
+    const handleSendCredentials = async () => {
+        const formdata = new FormData();
+        formdata.append("Email", email);
+        formdata.append("PhoneNumber", phone);
+        formdata.append("Username", name);
+        formdata.append("Password", password);
+
+        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/create_vheshtat_id", {
+            method: "POST",
+            body: formdata
+        })
+        const data = await res.json();
+        console.log(data, "credentials")
+        if (data.status === "success") {
+            dispatch(setPage(4))
+        } else {
+            const errorMessages = Object.entries(data.errors)
+                .map(([key, messages]) => {
+                    if (Array.isArray(messages) && messages.every(msg => typeof msg === 'string')) {
+                        return `${key}: ${messages.join(', ')}`;
+                    } else {
+                        return `${key}: Invalid message format`;
+                    }
+                })
+                .join('\n');
+
+            alert(`Ошибка:\n${errorMessages}`);
+        }
+    }
+
+    const handleRegistration = async () => {
+        console.log("yes")
+        const checkCredentialsData = await handleCheckCredentials();
+        if (checkCredentialsData.status === "success") {
+            const sendInformationData = await handleSendInformation();
+            if (sendInformationData.status === "success") {
+                await handleSendCredentials();
+            }
+        }
+    }
 
     return (
         <>
@@ -69,6 +146,7 @@ const RegistrationCompanyCredentials = ({setHasAccount}: { setHasAccount: Dispat
             <button
                 className={"transition bg-black py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-full mt-4 disabled:cursor-not-allowed disabled:bg-secondary"}
                 disabled={!isInfoReady || !isCredentialsReady}
+                onClick={handleRegistration}
             >
                 <h3 className={`text-lg font-medium ${isInfoReady && isCredentialsReady ? "text-primary" : "text-black"}`}>Создать
                     аккаунт</h3>

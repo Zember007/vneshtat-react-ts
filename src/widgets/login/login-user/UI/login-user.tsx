@@ -13,6 +13,7 @@ import {useNavigate} from "react-router-dom";
 import {setCompanies, setUser} from "@/app/model/user.store";
 import {getUser, getUserCompanies} from "@/shared/utils/methods";
 import ReCAPTCHA from "react-google-recaptcha";
+import {useTimer} from "@/shared/hooks/use-timer";
 
 const LoginUser = () => {
     const {
@@ -38,6 +39,8 @@ const LoginUser = () => {
     const [isLoginClicked, setIsLoginClicked] = useState(false);
     const [phoneStatus, setPhoneStatus] = useState<"error" | "success" | null>(null);
     const [loginStatus, setLoginStatus] = useState<"error" | "success" | null>(null);
+    const [startTimer, setStartTimer] = useState(false);
+    const second = useTimer(60, startTimer);
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const [smsToken, setSmsToken] = useState<string | null>(null);
     const recaptchaRef = useRef<ReCAPTCHA | null>(null);
@@ -92,8 +95,6 @@ const LoginUser = () => {
         }
     }
 
-    console.log(smsToken)
-
     const sendSMScode = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formdata = new FormData();
@@ -140,20 +141,19 @@ const LoginUser = () => {
                     `${import.meta.env.VITE_API_URL}/auth/sign_in/auth_token_by_phone?PhoneNumber=${encodeURIComponent(phone)}&ReCaptchaResponse=${encodeURIComponent(captchaToken)}`
                 );
                 const data = await response.json();
-                console.log(data)
                 if (data.status === "success") {
+                    setStartTimer(true);
                     setSmsToken(data.data.token);
                 }
             } catch (error) {
-                console.error("Ошибка при отправке данных:", error);
+                setStartTimer(false);
+                setPhoneStatus("error")
             }
 
             if (recaptchaRef.current) {
                 recaptchaRef.current?.reset();
             }
             setCaptchaToken(null);
-        } else {
-            alert("Пожалуйста, введите номер телефона и подтвердите капчу.");
         }
     };
 
@@ -185,6 +185,7 @@ const LoginUser = () => {
                                     className={"w-full flex justify-center items-center py-3 mt-2.5 h-[50px] rounded-primary bg-[#292933]"}
                                     onClick={() => {
                                         localStorage.setItem("EmployeeId", item.EmployeeId.toString());
+                                        localStorage.setItem("CompanyName", item.CompanyName.toString());
                                         navigate("/")
                                     }}
                                 >
@@ -500,11 +501,13 @@ const LoginUser = () => {
                                                 value: e.target.value
                                             }))}
                                         />
-                                        <ReCAPTCHA
-                                            ref={recaptchaRef}
-                                            sitekey={import.meta.env.VITE_RECAPTHCA}
-                                            onChange={handleCaptchaChange}
-                                        />
+                                        {!captchaToken ? (
+                                            <ReCAPTCHA
+                                                ref={recaptchaRef}
+                                                sitekey={import.meta.env.VITE_RECAPTHCA}
+                                                onChange={handleCaptchaChange}
+                                            />
+                                        ) : null}
                                         <Input
                                             extraClass={"!text-lg !font-medium text-blue text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                             placeholder={"Введите код из СМС"}
@@ -520,7 +523,7 @@ const LoginUser = () => {
                                             disabled={!phone || !captchaToken}
                                             onClick={getSMScode}
                                         >
-                                            <p className={`text-lg font-medium text-primary ${!sms && !captchaToken && "!text-[#9B9FAD]"}`}>{sms && captchaToken ? "Отправить повторно 0:59" : "Получить код"}</p>
+                                            <p className={`text-lg font-medium text-primary ${!phone || !captchaToken && "!text-[#9B9FAD]"}`}>{phone && captchaToken && !startTimer ? "Получить код" : `Отправить повторно 0:${second}`}</p>
                                         </button>
                                         {phoneStatus === "error" ? (
                                             <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,

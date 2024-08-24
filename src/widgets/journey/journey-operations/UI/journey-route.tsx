@@ -8,7 +8,7 @@ const JourneyRoute = () => {
     const dispatch = useDispatch();
 
     return (
-        <div className={"w-full h-[calc(100vh-220px)]"}>
+        <div className={"w-full h-[calc(100vh-228px)]"}>
             <div className={"flex justify-between items-center"}>
                 <h3>Маршрут</h3>
             </div>
