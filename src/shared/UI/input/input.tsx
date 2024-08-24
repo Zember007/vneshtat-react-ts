@@ -122,7 +122,7 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
     ) : (
         <label className={"relative"}>
             <input
-                className={clsx(`bg-secondary rounded-primary text-sm py-2 pl-2.5 pr-8 w-full`, extraClass)}
+                className={clsx(`bg-secondary rounded-primary text-sm py-2 pl-2.5 ${inputValue && withEraser ? "pr-8" : "pr-2.5"} w-full`, extraClass)}
                 type={rest.type || "text"}
                 {...rest}
                 onChange={handleChange}

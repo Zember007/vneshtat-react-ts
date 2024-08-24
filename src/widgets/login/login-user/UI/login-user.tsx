@@ -137,23 +137,22 @@ const LoginUser = () => {
     const getSMScode = async () => {
         if (captchaToken && phone) {
             try {
+                setStartTimer(true);
                 const response = await fetch(
                     `${import.meta.env.VITE_API_URL}/auth/sign_in/auth_token_by_phone?PhoneNumber=${encodeURIComponent(phone)}&ReCaptchaResponse=${encodeURIComponent(captchaToken)}`
                 );
                 const data = await response.json();
                 if (data.status === "success") {
-                    setStartTimer(true);
                     setSmsToken(data.data.token);
                 }
             } catch (error) {
                 setStartTimer(false);
-                setPhoneStatus("error")
+                setPhoneStatus("error");
+                if (recaptchaRef.current) {
+                    recaptchaRef.current?.reset();
+                }
+                setCaptchaToken(null);
             }
-
-            if (recaptchaRef.current) {
-                recaptchaRef.current?.reset();
-            }
-            setCaptchaToken(null);
         }
     };
 
@@ -523,7 +522,9 @@ const LoginUser = () => {
                                             disabled={!phone || !captchaToken}
                                             onClick={getSMScode}
                                         >
-                                            <p className={`text-lg font-medium text-primary ${!phone || !captchaToken && "!text-[#9B9FAD]"}`}>{phone && captchaToken && !startTimer ? "Получить код" : `Отправить повторно 0:${second}`}</p>
+                                            <p className={`text-lg font-medium ${!phone || !captchaToken ? "!text-[#9B9FAD]" : "text-primary"}`}>
+                                                {startTimer && second ? `Отправить повторно ${second === 60 ? "60" : `0:${second}`}` : "Получить код"}
+                                            </p>
                                         </button>
                                         {phoneStatus === "error" ? (
                                             <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
