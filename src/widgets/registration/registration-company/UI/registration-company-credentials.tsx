@@ -8,18 +8,19 @@ const RegistrationCompanyCredentials = ({setHasAccount}: { setHasAccount: Dispat
     const {name, surname, middlename, birthday} = useSelector((state: RootState) => state.registrationCompany.info);
     const {email, phone, login, password} = useSelector((state: RootState) => state.registrationCompany.credentials);
     const {isInfoReady, isCredentialsReady} = useSelector((state: RootState) => state.registrationCompany);
+    const isEmailDisabled = Boolean(phone) || Boolean(login);
+    const isPhoneDisabled = Boolean(email) || Boolean(login);
+    const isLoginDisabled = Boolean(email) || Boolean(phone);
     const dispatch = useDispatch();
 
     const handleCheckCredentials = async () => {
-        const formdata = new FormData();
-        formdata.append("Email", email);
-        formdata.append("PhoneNumber", phone);
-        formdata.append("Username", name);
-
-        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/check_vneshtat_id_credentials_available", {
-            method: "GET",
-            body: formdata
-        })
+        const queryParams = new URLSearchParams({
+            Email: email,
+            PhoneNumber: phone,
+            Username: name
+        });
+        const url = `${import.meta.env.VITE_API_URL}/auth/sign_up/check_vneshtat_id_credentials_available?${queryParams.toString()}`;
+        const res = await fetch(url)
         const data = await res.json();
         console.log(data, "check")
         return data;
@@ -78,6 +79,7 @@ const RegistrationCompanyCredentials = ({setHasAccount}: { setHasAccount: Dispat
     const handleRegistration = async () => {
         console.log("yes")
         const checkCredentialsData = await handleCheckCredentials();
+        console.log(checkCredentialsData)
         if (checkCredentialsData.status === "success") {
             const sendInformationData = await handleSendInformation();
             if (sendInformationData.status === "success") {
@@ -94,6 +96,7 @@ const RegistrationCompanyCredentials = ({setHasAccount}: { setHasAccount: Dispat
                     placeholder={"Email"}
                     value={email}
                     type={"email"}
+                    disabled={isEmailDisabled}
                     onChange={e => dispatch(updateCredentialsState({
                         field: "email",
                         value: e.target.value
@@ -104,6 +107,7 @@ const RegistrationCompanyCredentials = ({setHasAccount}: { setHasAccount: Dispat
                     placeholder={"Телефон"}
                     type={"phone"}
                     value={phone}
+                    disabled={isPhoneDisabled}
                     onChange={e => dispatch(updateCredentialsState({
                         field: "phone",
                         value: e.target.value
@@ -113,6 +117,7 @@ const RegistrationCompanyCredentials = ({setHasAccount}: { setHasAccount: Dispat
                     extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] text-blue !bg-primary first-letter-black`}
                     placeholder="Логин"
                     value={login ? `@${login}` : ""}
+                    disabled={isLoginDisabled}
                     onChange={e => dispatch(updateCredentialsState({
                         field: "login",
                         value: e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value

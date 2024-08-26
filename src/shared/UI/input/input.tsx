@@ -38,16 +38,11 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
     const [inputValue, setInputValue] = useState(rest.value || '');
 
     useEffect(() => {
-        if (rest.type === "phone") {
-            const cleanedValue = cleanPhoneNumber(String(inputValue));
-            setInputValue(formatPhoneNumber(cleanedValue));
-        }
-    }, [rest.type, inputValue]);
-
-    useEffect(() => {
         if (rest.type === "phone" && rest.value) {
             const cleanedValue = cleanPhoneNumber(String(rest.value));
             setInputValue(formatPhoneNumber(cleanedValue));
+        } else {
+            setInputValue(rest.value || '');
         }
     }, [rest.value, rest.type]);
 
@@ -55,9 +50,12 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
         const value = e.target.value;
         const cleanedValue = cleanPhoneNumber(value);
 
-        setInputValue(formatPhoneNumber(cleanedValue));
-        if (rest.onChange) {
-            rest.onChange({...e, target: {...e.target, value: cleanedValue}});
+        const formattedValue = cleanedValue.length === 0 ? "" : formatPhoneNumber(cleanedValue);
+        setInputValue(formattedValue);
+
+        if( rest.onChange){
+            if(formattedValue === "+7") rest.onChange({ ...e, target: { ...e.target, value: "" } });
+            else rest.onChange({ ...e, target: { ...e.target, value: cleanedValue } });
         }
     };
 

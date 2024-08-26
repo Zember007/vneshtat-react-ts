@@ -19,7 +19,7 @@ const Dropdown = ({ isChanged = false, onErase = () => {}, title, selectedText, 
             <div className={"flex flex-row justify-between items-center"} onClick={() => setIsOpen(prev => !prev)}>
                 <div className={"flex flex-row items-center gap-1 relative"}>
                     {isChanged && <span className={"absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3"}/>}
-                    <h6 className={"text-base font-medium whitespace-nowrap ml-2"}>{title}</h6>
+                    <h6 className={"text-xs font-medium whitespace-nowrap ml-2"}>{title}</h6>
                     {selectedText && <p className={"text-xs font-medium whitespace-nowrap text-[#9B9FAD]"}>{selectedText}</p>}
                     {isChanged && (
                         <button onClick={(e) => {

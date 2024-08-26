@@ -40,6 +40,8 @@ const PromoPopups = () => {
         navigate("/promo")
     }
 
+    console.log(phone)
+
     return (
         <Popup isCentered withShadow extraClass={"h-full flex items-center gap-[18px] py-24"}>
             {status === null ? (
@@ -72,20 +74,20 @@ const PromoPopups = () => {
                         <div className={"flex flex-col gap-2.5"}>
                             <label className="relative">
                                 <Input
-                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
+                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-md"}
                                     placeholder="Как к вам обращаться?"
                                     value={fullname}
                                     onChange={(e) => dispatch(updateInfo({field: "fullname", value: e.target.value}))}
                                 />
                                 {!fullname && (
-                                    <span className="absolute right-6 top-2.5 text-[#9B9FAD] text-sm font-medium">
+                                    <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
                                         Иван
                                     </span>
                                 )}
                             </label>
                             <label className="relative">
                                 <Input
-                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
+                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-md"}
                                     placeholder={"Название компании"}
                                     value={companyName}
                                     onChange={(e) => dispatch(updateInfo({
@@ -94,14 +96,14 @@ const PromoPopups = () => {
                                     }))}
                                 />
                                 {!companyName && (
-                                    <span className="absolute right-6 top-2.5 text-[#9B9FAD] text-sm font-medium">
+                                    <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
                                         Альфа
                                     </span>
                                 )}
                             </label>
                             <label className="relative">
                                 <Input
-                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
+                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-md"}
                                     placeholder={"Кол-во командировок"}
                                     value={travelFrequency}
                                     onChange={(e) => dispatch(updateInfo({
@@ -110,35 +112,35 @@ const PromoPopups = () => {
                                     }))}
                                 />
                                 {!travelFrequency && (
-                                    <span className="absolute right-6 top-2.5 text-[#9B9FAD] text-sm font-medium">
+                                    <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
                                         Более 100 в месяц
                                     </span>
                                 )}
                             </label>
                             <label className="relative">
                                 <Input
-                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
+                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium py-3 !pl-3 placeholder:text-md"}
                                     placeholder={"Номер телефона"}
                                     type={"phone"}
                                     value={phone}
                                     onChange={(e) => dispatch(updateInfo({field: "phone", value: e.target.value}))}
                                 />
                                 {!phone && (
-                                    <span className="absolute right-6 top-2.5 text-[#9B9FAD] text-sm font-medium">
+                                    <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
                                         +7 (___) ___ - __ -__
                                     </span>
                                 )}
                             </label>
                             <label className="relative">
                                 <Input
-                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-base"}
+                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-md"}
                                     type={"email"}
                                     placeholder={"Email"}
                                     value={email}
                                     onChange={(e) => dispatch(updateInfo({field: "email", value: e.target.value}))}
                                 />
                                 {!email && (
-                                    <span className="absolute right-6 top-2.5 text-[#9B9FAD] text-sm font-medium">
+                                    <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
                                         johndoe@gmail.com
                                     </span>
                                 )}

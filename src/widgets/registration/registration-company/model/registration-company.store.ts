@@ -138,17 +138,17 @@ const registrationCompanyStore = createSlice({
                 value: RegistrationCompanyStoreState["credentials"][keyof RegistrationCompanyStoreState["credentials"]];
             }>
         ) => {
-            const {field, value} = action.payload;
-            if(field in state.credentials){
-                (state.credentials as any)[field] = value
+            const { field, value } = action.payload;
+            if (field in state.credentials) {
+                (state.credentials as any)[field] = value;
             }
-
-            const {email, login, phone, password} = state.credentials;
-            const isCredentialsReady = !!email && !!login && !!phone && !!password;
+            const { email, login, phone, password } = state.credentials;
+            const isCredentialsReady = !!password && (!!email || !!login || !!phone);
 
             if (isCredentialsReady && !state.isCredentialsReady) {
                 state.progress += 1;
             }
+
             state.isCredentialsReady = isCredentialsReady;
         },
         updateAccountState: <K extends keyof RegistrationCompanyStoreState["account"]>(
