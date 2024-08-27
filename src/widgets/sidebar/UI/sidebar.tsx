@@ -80,7 +80,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
 
     return (
         <div
-            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "min-w-[240px] max-w-[240px] absolute z-10" : "min-w-[100px]"}`}>
+            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "w-[235px] max-w-[235px] absolute z-10" : "min-w-[100px]"}`}>
             <Link to={"/"}
                   className={`flex items-center ${isOpen ? "-translate-x-16" : ""} logo-animation-container`}
                   ref={containerRef}

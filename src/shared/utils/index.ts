@@ -1,5 +1,6 @@
 import {Seat} from "@/shared/types";
 import {CheckboxItem} from "@/shared/UI/checkbox/checkbox.props";
+import UAParser from "ua-parser-js";
 
 export const seatsMock: Seat[][] = [[{
     order: 45,
@@ -267,6 +268,14 @@ export const changeCheckbox = (items: CheckboxItem[], id: number, oneChoise: boo
     });
 
     return updatedItems;
+};
+
+export const getDeviceAndBrowserInfo = () => {
+    const parser = new UAParser();
+    const result = parser.getResult();
+    const deviceName = result.device.model || result.os.name || "Unknown";
+    const browserName = result.browser.name || "Unknown";
+    return {deviceName, browserName};
 };
 
 export const handleScrollToTop = (ref: any) => {

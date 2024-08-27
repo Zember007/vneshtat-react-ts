@@ -99,7 +99,7 @@ const FlightRouteItem = ({ flight, index, onRemove }: FlightRouteItemProps) => {
                 <InputCity
                     placeholder={"Город вылета"}
                     extraClass={"min-w-full"}
-                    inputClass={"rounded-[13px] max-h-8"}
+                    inputClass={"rounded-primary max-h-9"}
                     value={isFirstFlight ? cityFrom : departureCity}
                     setValue={(value) => {
                         if (isFirstFlight) dispatch(setCityFrom(value))
@@ -110,7 +110,7 @@ const FlightRouteItem = ({ flight, index, onRemove }: FlightRouteItemProps) => {
                 <InputCity
                     placeholder={"Город прилета"}
                     extraClass={"min-w-full"}
-                    inputClass={"rounded-[13px] max-h-8"}
+                    inputClass={"rounded-primary max-h-9"}
                     value={isFirstFlight ? cityTo : arrivalCity}
                     setValue={(value) => {
                         if (isFirstFlight) dispatch(setCityTo(value))

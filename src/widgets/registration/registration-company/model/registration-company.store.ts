@@ -143,7 +143,7 @@ const registrationCompanyStore = createSlice({
                 (state.credentials as any)[field] = value;
             }
             const { email, login, phone, password } = state.credentials;
-            const isCredentialsReady = !!password && (!!email || !!login || !!phone);
+            const isCredentialsReady = !!password && !!email && !!login && !!phone
 
             if (isCredentialsReady && !state.isCredentialsReady) {
                 state.progress += 1;

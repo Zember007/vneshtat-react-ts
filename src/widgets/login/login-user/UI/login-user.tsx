@@ -1,4 +1,3 @@
-import UAParser from 'ua-parser-js';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {Input, Switch} from "@/shared/UI";
@@ -8,7 +7,7 @@ import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import ArrowImg from "@/assets/icons/arrow-long.svg?react";
 import {FormEvent, useRef, useState} from "react";
 import {updateLoginState, updateRestoreState} from "../model/login.store";
-import {setAccessToken, setRefreshToken} from "@/shared/utils";
+import {getDeviceAndBrowserInfo, setAccessToken, setRefreshToken} from "@/shared/utils";
 import {useNavigate} from "react-router-dom";
 import {setCompanies, setUser} from "@/app/model/user.store";
 import {getUser, getUserCompanies} from "@/shared/utils/methods";
@@ -46,14 +45,6 @@ const LoginUser = () => {
     const recaptchaRef = useRef<ReCAPTCHA | null>(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const getDeviceAndBrowserInfo = () => {
-        const parser = new UAParser();
-        const result = parser.getResult();
-        const deviceName = result.device.model || result.os.name || "Unknown";
-        const browserName = result.browser.name || "Unknown";
-        return {deviceName, browserName};
-    };
 
     async function handleLogin(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
