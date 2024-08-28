@@ -53,17 +53,17 @@ const JourneyOperations = () => {
                 {activeOperation === "add" && <JourneyAdd/>}
             </div>
             {activeOperation === "passengers" && (
-                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4"}>
-                    <h1 className={"text-lg text-[#fff]"}>Поиск!</h1>
+                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
+                    <p className={"text-lg text-[#fff] leading-none"}>Поиск!</p>
                 </button>
             )}
             {activeOperation === "filter" && (
-                <div className={"flex flex-row gap-4 mt-4"}>
-                    <button className={"h-12 px-3 bg-[#dce0e5] rounded-[18px]"}>
+                <div className={"h-[50px] flex flex-row gap-4 mt-4"}>
+                    <button className={"h-full px-3 bg-[#dce0e5] rounded-[21px]"}>
                         <RadarImg/>
                     </button>
                     <button
-                        className={"flex flex-row items-center justify-center bg-[#dce0e5] rounded-[18px] gap-1 w-full h-12"}>
+                        className={"flex flex-row items-center justify-center bg-[#dce0e5] rounded-[21px] gap-1 w-full h-full"}>
                         <ReloadImg/>
                         <p className={"text-base"}>Обновить</p>
                     </button>

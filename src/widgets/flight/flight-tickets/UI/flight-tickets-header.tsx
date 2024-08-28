@@ -1,5 +1,11 @@
 import {InputCity, InputDate, Switch, TagFilter} from "@/shared/UI";
-import {addFlight, setCityFrom, setCityTo, updateFlight} from "@/widgets/flight/flight-operations/model/flight.store";
+import {
+    addFlight,
+    removeFlight,
+    setCityFrom,
+    setCityTo,
+    updateFlight
+} from "@/widgets/flight/flight-operations/model/flight.store";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
 import {useDispatch, useSelector} from "react-redux";
@@ -126,6 +132,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                         inputValue={dates}
                         viewValue={firstFlight.flightDate}
                         noNeedButton={dates.length !== 2}
+                        noNeedHandler={() => dispatch(removeFlight(2))}
                         isShortDate={true}
                         withIcon={false}
                         calendarOpt={{
@@ -144,6 +151,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                         inputValue={dates}
                         viewValue={secondFlight?.flightDate}
                         noNeedButton={dates.length !== 2}
+                        noNeedHandler={() => dispatch(removeFlight(2))}
                         isShortDate={true}
                         withIcon={false}
                         calendarOpt={{

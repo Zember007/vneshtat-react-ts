@@ -191,23 +191,23 @@ const TaxiOperations = () => {
                 <div className={"flex items-center gap-4"}>
                     <button
                         onClick={() => dispatch(deleteVoyager({voyagerId: activeVoyager.id}))}
-                        className={`py-3 h-[50px] min-w-[50px] rounded-[18px] flex items-center justify-center mt-4 bg-[#DCE0E5]`}>
+                        className={`py-3 h-[50px] min-w-[50px] rounded-[21px] flex items-center justify-center mt-4 bg-[#DCE0E5]`}>
                         <TrashImg className={"transition min-h-6 min-w-6 black-fill-hover black-stroke-hover"}/>
                     </button>
                     <button
-                        className={`py-4 transition h-[50px] rounded-[18px] w-full flex items-center justify-center mt-4 bg-[#DCE0E5]`}>
+                        className={`py-4 transition h-[50px] rounded-[21px] w-full flex items-center justify-center mt-4 bg-[#DCE0E5]`}>
                         <p className={`transition text-base leading-none text-black`}>Оформлено</p>
                     </button>
                 </div>
             ) : (
                 <button
-                    className={`py-4 transition h-[50px] bg-black rounded-[18px] w-full flex items-center justify-center mt-4 disabled:bg-[#DCE0E5]`}
+                    className={`py-4 transition h-[50px] bg-black rounded-[21px] w-full flex items-center justify-center mt-4 disabled:bg-[#DCE0E5]`}
                     onClick={() => {
                         dispatch(addVoyager({id: activeTaxi?.id, price}));
                         setPrice(0);
                     }}
                     disabled={!activeTaxi || !price || !activeTaxi.dateBack}>
-                    <p className={`transition text-base leading-none ${activeTaxi ? "text-primary" : "text-black"}`}>Оформить</p>
+                    <p className={`transition text-base leading-none ${activeTaxi && price && activeTaxi.dateBack ? "text-primary" : "text-black"}`}>Оформить</p>
                 </button>
             )}
         </aside>

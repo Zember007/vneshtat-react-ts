@@ -53,22 +53,22 @@ const FlightOperations = () => {
                 {activeOperation === "add" && <FlightAdd/>}
             </div>
             {activeOperation === "route" && (
-                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4"}>
-                    <h1 className={"text-lg text-[#fff]"}>Выбрать пассажиров</h1>
+                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
+                    <p className={"text-lg text-[#fff] leading-none"}>Выбрать пассажиров</p>
                 </button>
             )}
             {activeOperation === "passengers" && (
-                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4"}>
-                    <h1 className={"text-lg text-[#fff]"}>Поиск!</h1>
+                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
+                    <p className={"text-lg text-[#fff]"}>Поиск!</p>
                 </button>
             )}
             {activeOperation === "filter" && (
-                <div className={"flex flex-row gap-4 mt-4"}>
-                    <button className={"h-12 px-3 bg-[#dce0e5] rounded-[18px]"}>
+                <div className={"h-[50px] flex flex-row gap-4 mt-4"}>
+                    <button className={"h-full w-[50px] px-3 bg-[#dce0e5] rounded-[21px]"}>
                         <RadarImg/>
                     </button>
                     <button
-                        className={"flex flex-row items-center justify-center bg-[#dce0e5] rounded-[18px] gap-1 w-full h-12"}>
+                        className={"h-full w-full flex flex-row items-center justify-center bg-[#dce0e5] rounded-[21px] gap-1"}>
                         <ReloadImg/>
                         <p className={"text-base"}>Обновить</p>
                     </button>

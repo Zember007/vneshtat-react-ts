@@ -5,6 +5,7 @@ export interface InputDateProps extends InputHTMLAttributes<HTMLInputElement>{
     inputValue: Date | Date[] | null
     setter: any
     noNeedButton?: boolean;
+    noNeedHandler?: () => void;
     isShortDate?: boolean
     withIcon?: boolean
     calendarOpt?: any

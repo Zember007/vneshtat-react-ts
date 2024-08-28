@@ -23,7 +23,6 @@ const Calendar = ({value, setter, ...opt}: CalendarProps) => {
     const classes = {
         dayTile: "dayTile",
         activeDay: "activeDay",
-        includedDay: "includedDay",
     };
 
     const dateAlreadyClicked = (dates: Date[], date: Date): boolean => {

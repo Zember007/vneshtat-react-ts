@@ -6,6 +6,19 @@
     line-height: 1.125em;
 }
 
+.react-calendar__tile--hover{
+    background: #ECEEF1 !important;
+
+    > abbr {
+        color: #000000;
+        font-weight: 400;
+    }
+
+    .tile-text {
+        color: #787B86;
+    }
+}
+
 .react-calendar--doubleView {
     width: 700px;
 }

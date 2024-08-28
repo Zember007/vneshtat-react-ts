@@ -16,6 +16,7 @@ const InputDate = ({
                        calendarOpt,
                        placeholder,
                        noNeedButton = false,
+                       noNeedHandler,
                        ...rest
                    }: InputDateProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -75,7 +76,10 @@ const InputDate = ({
                 >
                     <Calendar value={inputValue} setter={setter} {...calendarOpt} />
                     {noNeedButton ? (
-                        <button className={"bg-primary rounded-primary py-4 w-full"} onClick={() => setIsOpen(false)}>
+                        <button className={"bg-primary rounded-primary py-4 w-full"} onClick={() => {
+                            noNeedHandler && noNeedHandler();
+                            setIsOpen(false)
+                        }}>
                             <p className={"text-md leading-none"}>Обратный билет не нужен</p>
                         </button>
                     ) : null}

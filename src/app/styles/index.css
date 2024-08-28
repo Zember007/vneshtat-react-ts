@@ -300,6 +300,39 @@ a {
     animation-fill-mode: forwards;
 }
 
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+.logo-text {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.logo-text.open {
+    opacity: 1;
+    transform: translateX(0);
+}
+
 .scroll {
     &::-webkit-scrollbar {
         width: 15px;

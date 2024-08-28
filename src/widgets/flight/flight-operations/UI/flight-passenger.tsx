@@ -87,7 +87,7 @@ const FlightPassenger = () => {
                 <h3>Пассажиры</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className="h-[calc(100vh-433px)] overflow-y-auto scroll w-full flex flex-col py-2.5">
+            <div className="h-[calc(100vh-423px)] overflow-y-auto scroll w-full flex flex-col py-2.5">
                 {passengers.map((passenger, i) => (
                     <React.Fragment key={passenger.id}>
                         <div className={`flex gap-2.5 ${i !== 0 && "mt-2.5"}`}>

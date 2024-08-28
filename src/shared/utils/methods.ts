@@ -65,10 +65,12 @@ export async function getUser() {
 
 export async function getUserOnline() {
     const token = getAccessToken();
+    const employeeId = localStorage.getItem("EmployeeId");
+    if (!employeeId || !token) return;
     let failures = 0;
     const maxRetries = 3;
     const body = new FormData();
-    body.append("EmployeeId", localStorage.getItem("EmployeeId") || "");
+    body.append("EmployeeId", employeeId || "");
 
     async function makeRequest() {
         const res = await fetch(import.meta.env.VITE_API_URL + "/user/utility/update_last_online", {

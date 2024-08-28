@@ -10,6 +10,7 @@ import SettingsImg from "@/assets/icons/settings.svg?react";
 import RightImg from "@/assets/icons/arrow-right.svg?react";
 import OptionsImg from "@/assets/icons/options.svg?react"
 import {useSelector} from "react-redux";
+import LogoText from "@/assets/icons/vneshtat.svg?react";
 import {RootState} from "@/app/config/store";
 import logoAnimation from "@/assets/animation/logo-animation.json"
 import lottie, {AnimationItem} from 'lottie-web';
@@ -46,6 +47,21 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
         };
     }, []);
 
+    useEffect(() => {
+        if (isOpen && animationRef.current) {
+            // Если сайдбар открыт, запускаем анимацию вверх
+            isAnimating.current = true;
+            animationRef.current.goToAndStop(0, true);
+            animationRef.current.setDirection(1);
+            animationRef.current.play();
+        } else if (!isOpen && animationRef.current) {
+            // Если сайдбар закрыт, запускаем анимацию вниз
+            isAnimating.current = true;
+            animationRef.current.setDirection(-1);
+            animationRef.current.play();
+        }
+    }, [isOpen]);
+
     const handleMouseEnter = () => {
         if (animationRef.current && !isAnimating.current && completedCount.current % 2 === 0) {
             isAnimating.current = true;
@@ -80,21 +96,28 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
 
     return (
         <div
-            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "w-[235px] max-w-[235px] absolute z-10" : "min-w-[100px]"}`}>
-            <Link to={"/"}
-                  className={`flex items-center ${isOpen ? "-translate-x-16" : ""} logo-animation-container`}
-                  ref={containerRef}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}>
-            </Link>
+            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "min-w-[235px] w-[235px] max-w-[235px] absolute z-10" : "min-w-[100px]"}`}>
+            <div className="flex items-center justify-center relative">
+                <Link to={"/"}
+                      className={`flex items-center ${isOpen ? "-translate-x-[85px]" : ""} logo-animation-container`}
+                      ref={containerRef}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}>
+                </Link>
+                <div className={`absolute ${isOpen ? "-left-12" : "left-3"} w-[140px] h-[18px] mb-3 overflow-hidden`}>
+                    <div className={`flex ${isOpen ? "justify-end" : "justify-start"}`}>
+                        <LogoText className={`logo-text h-full w-[125px] ${isOpen ? "open" : ""}`} />
+                    </div>
+                </div>
+            </div>
             <div
-                className={`w-full h-full flex flex-col items-center gap-2.5 py-[15px] px-2.5 ultra:gap-7 bg-primary rounded-primary`}>
-                <div className={`w-full flex flex-col gap-2.5 ultra:gap-9`}>
+                className={`transition w-full h-full flex flex-col items-center gap-2.5 py-5 px-2.5 ultra:gap-7 bg-primary ${isOpen ? "rounded-[26px]" : "rounded-primary"}`}>
+                <div className={`w-full flex flex-col gap-2.5 ultra:gap-7`}>
                     <Link to={"/"}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <HomeImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/" && "blue-fill"}`}/>
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/" && "blue-fill"}`}/>
                             {isOpen && <p className={`text-sm ${location === "/" && "text-blue"}`}>Пульс</p>}
                         </div>
                         {isOpen && (
@@ -107,7 +130,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <SwapImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/swap" && "blue-fill"}`}/>
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/swap" && "blue-fill"}`}/>
                             {isOpen && <p className={`text-sm ${location === "/swap" && "text-blue"}`}>Поездка</p>}
                         </div>
                         {isOpen && (
@@ -120,7 +143,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <CopyImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/copy" && "blue-fill"}`}/>
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/copy" && "blue-fill"}`}/>
                             {isOpen && <p className={`text-sm ${location === "/copy" && "text-blue"}`}>Шаблоны</p>}
                         </div>
                         {isOpen && (
@@ -131,12 +154,12 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                     </Link>
                 </div>
                 <hr className={"h-[1px] w-full bg-[#e5e7ea]"}/>
-                <div className={`w-full flex flex-col gap-2.5 ultra:gap-12`}>
+                <div className={`w-full flex flex-col gap-2.5 ultra:gap-7`}>
                     <Link to={"/messages"}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <MessageImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/messages" && "blue-fill"}`}/>
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/messages" && "blue-fill"}`}/>
                             {isOpen &&
                                 <p className={`text-sm ${location === "/messages" && "text-blue"}`}>Мессенджер</p>}
                         </div>
@@ -150,7 +173,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <JobImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/jobs" && "blue-fill"}`}/>
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/jobs" && "blue-fill"}`}/>
                             {isOpen && <p className={`text-sm ${location === "/jobs" && "text-blue"}`}>Компания</p>}
                         </div>
                         {isOpen && (
@@ -161,12 +184,12 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                     </Link>
                 </div>
                 <hr className={"h-[1px] w-full bg-[#e5e7ea]"}/>
-                <div className={`w-full flex flex-col gap-2.5 ultra:gap-12`}>
+                <div className={`w-full flex flex-col gap-2.5 ultra:gap-7`}>
                     <Link to={"/scope"}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <ScopeImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/scope" && "blue-fill"}`}/>
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/scope" && "blue-fill"}`}/>
                             {isOpen && <p className={`text-sm ${location === "/scope" && "text-blue"}`}>Учебник</p>}
                         </div>
                         {isOpen && (
@@ -179,7 +202,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <SettingsImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-8 ultra:min-h-8 ${location === "/filter" && "blue-fill"}`}/>
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/filter" && "blue-fill"}`}/>
                             {isOpen && <p className={`text-sm ${location === "/filter" && "text-blue"}`}>Настройки</p>}
                         </div>
                         {isOpen && (
@@ -193,9 +216,9 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 <button onClick={() => setIsOpen((prev) => !prev)}
                         onMouseEnter={() => setIsButtonHovered(true)}
                         onMouseLeave={() => setIsButtonHovered(false)}
-                        className={`${isOpen ? "w-full pl-2.5 mt-5 ultra:pl-5" : "mt-2.5"} flex gap-2.5 items-center`}>
+                        className={`${isOpen ? "w-full pl-2.5 mt-4 ultra:pl-5 ultra:mt-10" : "mt-2.5"} flex gap-2.5 items-center`}>
                     <RightImg
-                        className={`blue-fill-hover transition ultra:min-w-8 ultra:min-h-8 ${isButtonHovered && "blue-fill"} ${isOpen ? "rotate-180" : "rotate-0"}`}/>
+                        className={`blue-fill-hover transition ultra:min-w-7 ultra:min-h-7 ${isButtonHovered && "blue-fill"} ${isOpen ? "rotate-180" : "rotate-0"}`}/>
                     {isOpen && <p className={`text-sm text-[#787B86] ${isButtonHovered && "text-blue"}`}>Свернуть</p>}
                 </button>
             </div>

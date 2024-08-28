@@ -35,13 +35,13 @@ const BusOperations = () => {
                 {activeOperation === "decor" && <BusDecor/>}
             </div>
             {activeOperation === "passengers" && (
-                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4"}>
-                    <h1 className={"text-lg text-[#fff]"}>Поиск!</h1>
+                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
+                    <p className={"text-lg text-[#fff] leading-none"}>Поиск!</p>
                 </button>
             )}
             {activeOperation === "route" && (
-                <button className={"w-full flex justify-center items-center py-4 rounded-[18px] bg-black mt-4"}>
-                    <h1 className={"text-lg text-[#fff]"}>Выбрать пассажиров</h1>
+                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
+                    <p className={"text-lg text-[#fff] leading-none"}>Выбрать пассажиров</p>
                 </button>
             )}
         </aside>

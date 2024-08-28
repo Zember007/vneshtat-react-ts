@@ -81,7 +81,7 @@ const JourneyPassenger = () => {
     };
 
     return (
-        <div className={"w-full h-[calc(100vh-308px)]"}>
+        <div className={"w-full h-[calc(100vh-298px)]"}>
             <div className={"flex justify-between items-center"}>
                 <h3>Пассажиры</h3>
             </div>
