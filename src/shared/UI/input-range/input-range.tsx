@@ -22,14 +22,26 @@ const InputRange: React.FC<InputRangeProps> = ({
         const percent = getPercent(val);
         let leftValue;
 
-        if (percent < 20) {
-            leftValue = `calc(${percent}% + 5px)`;
-        } else if (percent > 50) {
-            leftValue = `calc(${percent}% - 10px)`;
-        } else if (percent > 80) {
-            leftValue = `calc(${percent}% - 15px)`;
+        if (percent < 10) {
+            leftValue = `calc(${percent}% + 10px)`;
+        } else if (percent < 20) {
+            leftValue = `calc(${percent}% + 8px)`;
+        } else if (percent < 30) {
+            leftValue = `calc(${percent}% + 6px)`;
+        } else if (percent < 40) {
+            leftValue = `calc(${percent}% + 4px)`;
+        } else if (percent < 50) {
+            leftValue = `calc(${percent}% + 2px)`;
+        } else if (percent < 60) {
+            leftValue = `calc(${percent}% - 2px)`;
+        } else if (percent < 70) {
+            leftValue = `calc(${percent}% - 4px)`;
+        } else if (percent < 80) {
+            leftValue = `calc(${percent}% - 6px)`;
+        } else if (percent < 90) {
+            leftValue = `calc(${percent}% - 8px)`;
         } else {
-            leftValue = `${percent}%`;
+            leftValue = `calc(${percent}% - 12px)`;
         }
 
         return leftValue;

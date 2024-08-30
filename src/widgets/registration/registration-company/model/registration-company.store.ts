@@ -35,6 +35,7 @@ interface RegistrationCompanyStoreState {
         phone: string,
         sms: string,
         login: string
+        password: string
     }
 }
 
@@ -72,7 +73,8 @@ const initialState: RegistrationCompanyStoreState = {
         withPhone: true,
         phone: "",
         sms: "",
-        login: ""
+        login: "",
+        password: ""
     }
 };
 
@@ -160,8 +162,8 @@ const registrationCompanyStore = createSlice({
                 (state.account as any)[field] = value
             }
 
-            const {withPhone, login, phone, sms} = state.account;
-            const isAccountReady = withPhone ? !!phone && !!sms : !!login && !!sms;
+            const {withPhone, login, phone, sms, password} = state.account;
+            const isAccountReady = withPhone ? !!phone && !!sms : !!login && !!password;
 
             if (isAccountReady && !state.isAccountReady) {
                 state.progress += 1;

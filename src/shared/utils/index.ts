@@ -289,13 +289,17 @@ export const debounce = <T extends (...args: any[]) => any>(
     waitFor: number
 ) => {
     let timeout: ReturnType<typeof setTimeout>;
-    return (...args: Parameters<T>): ReturnType<T> => {
-        let result: any;
-        timeout && clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            result = callback(...args);
-        }, waitFor);
-        return result;
+    return (...args: Parameters<T>): Promise<ReturnType<T>> => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+
+        return new Promise((resolve) => {
+            timeout = setTimeout(async () => {
+                const result = await callback(...args);
+                resolve(result);
+            }, waitFor);
+        });
     };
 };
 

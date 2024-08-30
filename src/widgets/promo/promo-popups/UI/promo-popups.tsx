@@ -13,6 +13,15 @@ const PromoPopups = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const resetInformation = () => {
+        dispatch(setIsCeo(true));
+        dispatch(updateInfo({field: "fullname", value: ""}))
+        dispatch(updateInfo({field: "companyName", value: ""}))
+        dispatch(updateInfo({field: "travelFrequency", value: ""}))
+        dispatch(updateInfo({field: "phone", value: ""}))
+        dispatch(updateInfo({field: "email", value: ""}))
+    }
+
     const createConsultingProposal = async () => {
         const formData = new FormData();
         formData.append("FullName", fullname);
@@ -28,19 +37,18 @@ const PromoPopups = () => {
             redirect: 'follow'
         });
         const data = await res.json();
+        if(!res.ok || !(data.status === "success")) setStatus("error")
         if (data.status === "success") {
             setStatus("success")
-        } else {
-            setStatus("error")
         }
+
+        resetInformation();
     }
 
     const handleClose = () => {
         dispatch(setIsOpen(false))
         navigate("/promo")
     }
-
-    console.log(phone)
 
     return (
         <Popup isCentered withShadow extraClass={"h-full flex items-center gap-[18px] py-24"}>

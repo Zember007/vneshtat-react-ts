@@ -67,7 +67,7 @@ const RegistrationCompanyFirst = () => {
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>
             <div className={"flex items-center gap-4"}>
-                <div className={"flex flex-col gap-4 w-[320px] h-[520px]"}>
+                <div className={"flex flex-col gap-4 w-[350px] h-[620px]"}>
                     <div className={"p-6 bg-primary rounded-[35px]"}>
                         <div
                             className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
@@ -124,7 +124,7 @@ const RegistrationCompanyFirst = () => {
                         </div>
                     </div>
                 </div>
-                <div className={"w-[320px] h-[520px] p-6 bg-primary rounded-[35px] flex flex-col justify-between"}>
+                <div className={"w-[320px] h-[620px] p-6 bg-primary rounded-[35px] flex flex-col justify-between"}>
                     <div>
                         <div
                             className={`${isCompanyReady ? "p-6" : "px-5 py-16"} border border-solid border-[#ECEEF1] rounded-[16px]`}>

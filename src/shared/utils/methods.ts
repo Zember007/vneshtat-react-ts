@@ -109,6 +109,11 @@ export async function getUserCompanies() {
                 Authorization: `Bearer ${getAccessToken()}`
             }
         });
-        return await res.json();
+        const data = await res.json();
+        if(!data.data.length){
+            localStorage.clear();
+        } else {
+            return data;
+        }
     }
 }

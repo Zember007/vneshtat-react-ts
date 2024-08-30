@@ -6,7 +6,6 @@ const Registration = () => {
     const {status, companyName} = useConfirmToken(localStorage.getItem("ConfirmToken") || "");
     localStorage.setItem("Status", status);
     localStorage.setItem("RegistrationCompanyName", companyName);
-    console.log(status, companyName)
 
     return (
         <div className={"px-[100px] h-[100vh]"}>
