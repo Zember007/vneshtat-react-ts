@@ -1,14 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
-import {Input, Popup, Switch} from "@/shared/UI";
+import {Checkbox, Dropdown, Input, Popup, Switch} from "@/shared/UI";
 import CrossImg from "@/assets/icons/cross.svg?react";
-import {setIsCeo, setIsOpen, updateInfo} from "../model/promo.store";
+import {changeTravelFrequency, setIsCeo, setIsOpen, updateInfo} from "../model/promo.store";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 const PromoPopups = () => {
     const isCeo = useSelector((store: RootState) => store.promo.isCeo);
     const {fullname, companyName, travelFrequency, phone, email} = useSelector((store: RootState) => store.promo.info);
+    const activeTravelFrequency = travelFrequency.find((item) => item.isSelected);
     const [status, setStatus] = useState<"success" | "error" | null>(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -17,9 +18,9 @@ const PromoPopups = () => {
         dispatch(setIsCeo(true));
         dispatch(updateInfo({field: "fullname", value: ""}))
         dispatch(updateInfo({field: "companyName", value: ""}))
-        dispatch(updateInfo({field: "travelFrequency", value: ""}))
         dispatch(updateInfo({field: "phone", value: ""}))
         dispatch(updateInfo({field: "email", value: ""}))
+        dispatch(changeTravelFrequency(2))
     }
 
     const createConsultingProposal = async () => {
@@ -27,7 +28,7 @@ const PromoPopups = () => {
         formData.append("FullName", fullname);
         formData.append("IsCEO", isCeo ? "1" : "0");
         formData.append("CompanyName", companyName);
-        formData.append("TravelFrequency", travelFrequency);
+        if(activeTravelFrequency) formData.append("TravelFrequency", activeTravelFrequency.content);
         formData.append("PhoneNumber", phone);
         formData.append("Email", email);
 
@@ -37,7 +38,7 @@ const PromoPopups = () => {
             redirect: 'follow'
         });
         const data = await res.json();
-        if(!res.ok || !(data.status === "success")) setStatus("error")
+        if (!res.ok || !(data.status === "success")) setStatus("error")
         if (data.status === "success") {
             setStatus("success")
         }
@@ -49,6 +50,8 @@ const PromoPopups = () => {
         dispatch(setIsOpen(false))
         navigate("/promo")
     }
+
+    console.log(travelFrequency)
 
     return (
         <Popup isCentered withShadow extraClass={"h-full flex items-center gap-[18px] py-24"}>
@@ -110,15 +113,17 @@ const PromoPopups = () => {
                                 )}
                             </label>
                             <label className="relative">
-                                <Input
-                                    extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-md"}
-                                    placeholder={"Кол-во командировок"}
-                                    value={travelFrequency}
-                                    onChange={(e) => dispatch(updateInfo({
-                                        field: "travelFrequency",
-                                        value: e.target.value
-                                    }))}
-                                />
+                                <Dropdown
+                                    title={"Кол-во командировок"}
+                                    selectedText={activeTravelFrequency?.content}
+                                    extraClass={"h-11 rounded-primary pl-1 pr-5"}
+                                    isAbsoluteDrop={true}
+                                >
+                                    <Checkbox
+                                        items={travelFrequency}
+                                        onChange={(id: number) => dispatch(changeTravelFrequency(id))}
+                                    />
+                                </Dropdown>
                                 {!travelFrequency && (
                                     <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
                                         Более 100 в месяц

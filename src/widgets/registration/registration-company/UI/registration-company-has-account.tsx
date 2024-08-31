@@ -115,9 +115,9 @@ const RegistrationCompanyHasAccount = ({isLoginClicked, setIsLoginClicked, setHa
         }
     };
 
-    const handleCaptchaChange = (token: string | null) => {
-        setCaptchaToken(token);
-    };
+    // const handleCaptchaChange = (token: string | null) => {
+    //     setCaptchaToken(token);
+    // };
 
     return isLoginClicked ? (
         <div className={"h-full flex flex-col justify-between"}>
@@ -179,13 +179,6 @@ const RegistrationCompanyHasAccount = ({isLoginClicked, setIsLoginClicked, setHa
                             value: e.target.value
                         }))}
                     />
-                    {!captchaToken ? (
-                        <ReCAPTCHA
-                            ref={recaptchaRef}
-                            sitekey={import.meta.env.VITE_RECAPTHCA}
-                            onChange={handleCaptchaChange}
-                        />
-                    ) : null}
                     <Input
                         extraClass={"!text-lg !font-medium text-blue h-[50px] text-center rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                         placeholder={"Введите код из СМС"}
@@ -221,11 +214,18 @@ const RegistrationCompanyHasAccount = ({isLoginClicked, setIsLoginClicked, setHa
             )}
             <button
                 className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                disabled={!phone || !captchaToken}
-                onClick={getSMScode}
+                disabled={!phone || startTimer}
+                onClick={async () => {
+                    if (!captchaToken && recaptchaRef.current) {
+                        const token = await recaptchaRef.current.executeAsync();
+                        console.log(token)
+                        setCaptchaToken(token);
+                    }
+                    await getSMScode();
+                }}
                 type={"button"}
             >
-                <p className={`text-lg font-medium ${!phone || !captchaToken ? "!text-[#9B9FAD]" : "text-primary"}`}>
+                <p className={`text-lg font-medium ${!phone || startTimer ? "!text-[#9B9FAD]" : "text-primary"}`}>
                     {startTimer && second ? `Отправить повторно ${second === 60 ? "60" : `0:${second}`}` : "Получить код"}
                 </p>
             </button>

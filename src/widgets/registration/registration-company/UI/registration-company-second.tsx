@@ -100,7 +100,7 @@ const RegistrationCompanySecond = () => {
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>
             <div className={"flex items-center gap-4"}>
-                <div className={"flex flex-col gap-4 w-[350px] h-[620px]"}>
+                <div className={"flex flex-col gap-4 w-[320px] h-[620px]"}>
                     <div className={"p-6 bg-primary rounded-[35px] relative"}>
                         <button className={"absolute right-[366px] top-[30%]"} onClick={() => dispatch(setPage(1))}>
                             <ArrowImg/>
@@ -156,7 +156,7 @@ const RegistrationCompanySecond = () => {
                             в личном кабинете сервиса</p>
                     </div>
                 </div>
-                <div className={"w-[350px] h-[620px] p-6 bg-primary rounded-[35px] flex flex-col"}>
+                <div className={"w-[320px] h-[620px] p-6 bg-primary rounded-[35px] flex flex-col"}>
                     <div className={"flex justify-center"}>
                         <LogoId/>
                     </div>

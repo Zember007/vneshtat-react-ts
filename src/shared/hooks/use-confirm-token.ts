@@ -16,6 +16,7 @@ const useConfirmToken = (token: string) => {
             const res = await fetch(import.meta.env.VITE_API_URL + `/auth/sign_up/check_company_registration?Token=${token}`);
             const data = await res.json();
             if (data.status === "success") {
+                localStorage.clear();
                 setStatus(data.data.Status);
                 setCompanyName(data.data.CompanyName);
                 localStorage.setItem("ConfirmToken", token);

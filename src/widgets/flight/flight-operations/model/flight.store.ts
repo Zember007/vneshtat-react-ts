@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'; // Remove createAsyncThunk
+import { createSlice } from '@reduxjs/toolkit';
 import { airportsFrom, classes, priceRanges, timeOnWayRanges } from "../utils";
 import { changeCheckbox, checkIfChanged } from "@/shared/utils";
 import {City, FilterData, Range} from "@/shared/types";

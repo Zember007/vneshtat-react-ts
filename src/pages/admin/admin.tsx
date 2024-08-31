@@ -40,6 +40,7 @@ const Admin = () => {
     const handleApprove = async (id: number) => {
         const formdata = new FormData();
         formdata.append("id", id.toString());
+        formdata.append("action", "accept");
         const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/temp_app/control_consultation_proposals`, {
             method: "POST",
             body: formdata,
@@ -49,6 +50,20 @@ const Admin = () => {
             setUsers((prev) => prev.filter((user) => user.id !== id));
         }
     };
+
+    const handleCancel = async (id: number) => {
+        const formdata = new FormData();
+        formdata.append("id", id.toString());
+        formdata.append("action", "decline");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/temp_app/control_consultation_proposals`, {
+            method: "POST",
+            body: formdata,
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+            setUsers((prev) => prev.filter((user) => user.id !== id));
+        }
+    }
 
     useEffect(() => {
         const getConsultationProposal = async () => {
@@ -109,7 +124,8 @@ const Admin = () => {
                     </span>
                     </div>
                     <div className={"flex items-end justify-end gap-4"}>
-                        <button className={"py-2 px-6 h-9 bg-[#FF64A3] rounded-primary"}>
+                        <button className={"py-2 px-6 h-9 bg-[#FF64A3] rounded-primary"}
+                                onClick={() => handleCancel(user.id)}>
                             <p className={"text-primary leading-none"}>Отклонить</p>
                         </button>
                         <button className={"py-2 px-6 h-9 bg-black rounded-primary"}
