@@ -4,7 +4,7 @@ import contractImg from "@/assets/icons/contract.png";
 import {RootState} from "@/app/config/store";
 import {ChangeEvent} from "react";
 import {
-    setPage,
+    setPage, setProgress,
     updateCompanyState,
     updateUploadedFile,
 } from "@/widgets/registration/registration-company/model/registration-company.store";
@@ -20,6 +20,7 @@ const RegistrationCompanyFirst = () => {
         inn,
         uploadedFile
     } = useSelector((state: RootState) => state.registrationCompany.company);
+    const {progress} = useSelector((state: RootState) => state.registrationCompany);
     const dispatch = useDispatch();
 
     const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +49,8 @@ const RegistrationCompanyFirst = () => {
         })
         const data = await res.json();
         if(data.status === "success"){
-            dispatch(setPage(2))
+            dispatch(setProgress(progress + 1))
+            dispatch(setPage(2));
         } else {
             const errorMessages = Object.entries(data.errors)
                 .map(([key, messages]) => {

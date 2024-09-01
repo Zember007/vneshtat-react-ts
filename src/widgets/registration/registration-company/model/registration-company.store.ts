@@ -90,17 +90,12 @@ const registrationCompanyStore = createSlice({
             }>
         ) => {
             const {field, value} = action.payload;
-            if(field in state.company){
+            if (field in state.company) {
                 (state.company as any)[field] = value
             }
 
             const {legalName, legalAddress, shortName, kpp, inn} = state.company;
-            const isCompanyReady = !!legalName && !!legalAddress && !!shortName && !!kpp && !!inn;
-
-            if (isCompanyReady && !state.isCompanyReady) {
-                state.progress += 1;
-            }
-            state.isCompanyReady = isCompanyReady;
+            state.isCompanyReady = !!legalName && !!legalAddress && !!shortName && !!kpp && !!inn;
         },
         updateUploadedFile: (
             state,
@@ -108,9 +103,11 @@ const registrationCompanyStore = createSlice({
         ) => {
             state.company.uploadedFile = action.payload;
 
-            if (state.company.uploadedFile && !state.uploadedFileReady) {
-                state.progress += 1;
-                state.uploadedFileReady = true;
+            if (state.company.uploadedFile) {
+                if (!state.uploadedFileReady) state.uploadedFileReady = true;
+                state.progress += 1
+            } else {
+                state.progress -= 1
             }
         },
         updateInfoState: (
@@ -121,17 +118,18 @@ const registrationCompanyStore = createSlice({
             }>
         ) => {
             const {field, value} = action.payload;
-            if(field in state.info){
+            const wasAllFieldsFilled = state.isInfoReady;
+
+            if (field in state.info) {
                 (state.info as any)[field] = value
             }
 
             const {name, surname, middlename, birthday} = state.info;
-            const isInfoReady = !!name && !!surname && !!middlename && !!birthday;
-
-            if (isInfoReady && !state.isInfoReady) {
-                state.progress += 1;
+            const isAllFieldsFilled = !!name && !!surname && !!middlename && !!birthday;
+            if (isAllFieldsFilled !== wasAllFieldsFilled) {
+                state.isInfoReady = isAllFieldsFilled;
+                state.progress += isAllFieldsFilled ? 1 : -1;
             }
-            state.isInfoReady = isInfoReady;
         },
         updateCredentialsState: (
             state,
@@ -140,35 +138,30 @@ const registrationCompanyStore = createSlice({
                 value: RegistrationCompanyStoreState["credentials"][keyof RegistrationCompanyStoreState["credentials"]];
             }>
         ) => {
-            const { field, value } = action.payload;
+            const {field, value} = action.payload;
+            const wasAllFieldsFilled = state.isCredentialsReady;
+
             if (field in state.credentials) {
                 (state.credentials as any)[field] = value;
             }
-            const { email, login, phone, password } = state.credentials;
-            const isCredentialsReady = !!password && !!email && !!login && !!phone
-
-            if (isCredentialsReady && !state.isCredentialsReady) {
-                state.progress += 1;
+            const {email, login, phone, password} = state.credentials;
+            const isAllFieldsFilled = !!email && !!login && !!phone && !!password;
+            if (wasAllFieldsFilled !== isAllFieldsFilled) {
+                state.isCredentialsReady = isAllFieldsFilled;
+                state.progress += isAllFieldsFilled ? 1 : -1;
             }
-
-            state.isCredentialsReady = isCredentialsReady;
         },
         updateAccountState: <K extends keyof RegistrationCompanyStoreState["account"]>(
             state: any,
             action: PayloadAction<{ field: K; value: RegistrationCompanyStoreState["account"][K] }>
         ) => {
             const {field, value} = action.payload;
-            if(field in state.account){
+            if (field in state.account) {
                 (state.account as any)[field] = value
             }
 
             const {withPhone, login, phone, sms, password} = state.account;
-            const isAccountReady = withPhone ? !!phone && !!sms : !!login && !!password;
-
-            if (isAccountReady && !state.isAccountReady) {
-                state.progress += 1;
-            }
-            state.isAccountReady = isAccountReady;
+            state.isAccountReady = withPhone ? !!phone && !!sms : !!login && !!password;
         },
         setPage: (state, action) => {
             state.page = action.payload;

@@ -9,8 +9,8 @@ import {ChangeEvent, useState} from "react";
 import {RegistrationCompanyHasAccount} from "./registration-company-has-account";
 import {RegistrationCompanyCredentials} from "./registration-company-credentials";
 import {getAccessToken} from "@/shared/utils";
-import {getUserCompanies} from "@/shared/utils/methods";
-import {setCompanies} from "@/app/model/user.store";
+import {getUser, getUserCompanies} from "@/shared/utils/methods";
+import {setCompanies, setUser} from "@/app/model/user.store";
 import {useNavigate} from "react-router-dom";
 
 const formatDisplayDate = (value: string): string => {
@@ -52,6 +52,9 @@ const convertToInternalDate = (displayValue: string): string | null => {
 const RegistrationCompanySecond = () => {
     const [hasAccount, setHasAccount] = useState(false);
     const [isLoginClicked, setIsLoginClicked] = useState(false);
+    const [isEmailAvailable, setIsEmailAvailable] = useState<boolean | null>(null);
+    const [isPhoneAvailable, setIsPhoneAvailable] = useState<boolean | null>(null);
+    const [isLoginAvailable, setIsLoginAvailable] = useState<boolean | null>(null);
     const {name, surname, middlename, birthday} = useSelector((state: RootState) => state.registrationCompany.info);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -93,6 +96,8 @@ const RegistrationCompanySecond = () => {
             localStorage.removeItem("ConfirmToken");
             const companiesData = await getUserCompanies();
             dispatch(setCompanies(companiesData.data))
+            const user = await getUser();
+            dispatch(setUser(user));
             navigate("/")
         }
     };
@@ -168,7 +173,16 @@ const RegistrationCompanySecond = () => {
                             handleSendInformation={handleSendInformation}
                         />
                     ) : (
-                        <RegistrationCompanyCredentials setHasAccount={setHasAccount} handleSendInformation={handleSendInformation}/>
+                        <RegistrationCompanyCredentials
+                            setHasAccount={setHasAccount}
+                            handleSendInformation={handleSendInformation}
+                            isEmailAvailable={isEmailAvailable}
+                            setIsEmailAvailable={setIsEmailAvailable}
+                            isPhoneAvailable={isPhoneAvailable}
+                            setIsPhoneAvailable={setIsPhoneAvailable}
+                            isLoginAvailable={isLoginAvailable}
+                            setIsLoginAvailable={setIsLoginAvailable}
+                        />
                     )}
                 </div>
             </div>

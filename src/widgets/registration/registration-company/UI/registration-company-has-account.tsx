@@ -218,7 +218,6 @@ const RegistrationCompanyHasAccount = ({isLoginClicked, setIsLoginClicked, setHa
                 onClick={async () => {
                     if (!captchaToken && recaptchaRef.current) {
                         const token = await recaptchaRef.current.executeAsync();
-                        console.log(token)
                         setCaptchaToken(token);
                     }
                     await getSMScode();

@@ -6,11 +6,17 @@ import {changeTravelFrequency, setIsCeo, setIsOpen, updateInfo} from "../model/p
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
+interface ProposalResult {
+    ConsultationProposalId: number
+    SecretKey: string
+}
+
 const PromoPopups = () => {
     const isCeo = useSelector((store: RootState) => store.promo.isCeo);
     const {fullname, companyName, travelFrequency, phone, email} = useSelector((store: RootState) => store.promo.info);
     const activeTravelFrequency = travelFrequency.find((item) => item.isSelected);
-    const [status, setStatus] = useState<"success" | "error" | null>(null);
+    const [proposalResult, setProposalResult] = useState<ProposalResult | null>(null);
+    const [status, setStatus] = useState<"success" | "error" | "revoked" | null>(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -28,7 +34,7 @@ const PromoPopups = () => {
         formData.append("FullName", fullname);
         formData.append("IsCEO", isCeo ? "1" : "0");
         formData.append("CompanyName", companyName);
-        if(activeTravelFrequency) formData.append("TravelFrequency", activeTravelFrequency.content);
+        if (activeTravelFrequency) formData.append("TravelFrequency", activeTravelFrequency.content);
         formData.append("PhoneNumber", phone);
         formData.append("Email", email);
 
@@ -41,6 +47,28 @@ const PromoPopups = () => {
         if (!res.ok || !(data.status === "success")) setStatus("error")
         if (data.status === "success") {
             setStatus("success")
+            setProposalResult(data.data)
+        }
+
+        resetInformation();
+    }
+
+    const revokeConsultingProposal = async () => {
+        const formData = new FormData();
+        if (proposalResult) {
+            formData.append("ConsultationProposalId", proposalResult.ConsultationProposalId.toString());
+            formData.append("SecretKey", proposalResult.SecretKey);
+        }
+
+        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/revoke_consultation_proposal", {
+            method: 'DELETE',
+            body: formData,
+            redirect: 'follow'
+        });
+        const data = await res.json();
+        if (!res.ok || !(data.status === "success")) setStatus("error")
+        if (data.status === "success") {
+            setStatus("revoked")
         }
 
         resetInformation();
@@ -50,8 +78,6 @@ const PromoPopups = () => {
         dispatch(setIsOpen(false))
         navigate("/promo")
     }
-
-    console.log(travelFrequency)
 
     return (
         <Popup isCentered withShadow extraClass={"h-full flex items-center gap-[18px] py-24"}>
@@ -200,7 +226,7 @@ const PromoPopups = () => {
                         <div className={"flex justify-end px-2"}>
                             <button
                                 className={"flex justify-center items-center py-3 px-10 h-[42px] rounded-primary bg-[#F5F5F5]"}
-                                onClick={handleClose}>
+                                onClick={revokeConsultingProposal}>
                                 <p className={"text-sm text-[#787B86]"}>Отменить</p>
                             </button>
                         </div>
@@ -211,6 +237,29 @@ const PromoPopups = () => {
                             руководством подключение вашей компании к Внештату , мы готовы с этим помочь. Прочитайте
                             статью о том, как именно мы можем это сделать.</p>
                         <div className={"rounded-primary bg-secondary mt-[25px] h-full w-full"}/>
+                    </div>
+                </>
+            ) : status === "revoked" ? (
+                <>
+                    <div
+                        className={"h-[542px] pt-7 px-7 pb-9 bg-primary flex flex-col rounded-[35px] w-[440px] justify-between"}>
+                        <div className={"flex justify-end"}>
+                            <button onClick={handleClose}>
+                                <CrossImg className={"grey-fill min-h-6 min-w-6"}/>
+                            </button>
+                        </div>
+                        <div className={"flex flex-col gap-[14px] px-2"}>
+                            <h1 className={"text-2xl text-[#007BFB]"}>Форма отозвана!</h1>
+                            <p className={"text-sm text-[#787B86]"}>Заявка отозвана, теперь она не будет показываться в
+                                списке запросов. Вы всегда можете оставить запрос на консультацию!</p>
+                        </div>
+                        <div className={"flex justify-end px-2"}>
+                            <button
+                                className={"flex justify-center items-center py-3 px-10 h-[42px] rounded-primary bg-[#F5F5F5]"}
+                                onClick={handleClose}>
+                                <p className={"text-sm text-[#787B86]"}>Закрыть</p>
+                            </button>
+                        </div>
                     </div>
                 </>
             ) : (
@@ -231,7 +280,7 @@ const PromoPopups = () => {
                             <button
                                 className={"flex justify-center items-center py-3 px-10 h-[42px] rounded-primary bg-[#F5F5F5]"}
                                 onClick={handleClose}>
-                                <p className={"text-sm text-[#787B86]"}>Отменить</p>
+                                <p className={"text-sm text-[#787B86]"}>Закрыть</p>
                             </button>
                         </div>
                     </div>

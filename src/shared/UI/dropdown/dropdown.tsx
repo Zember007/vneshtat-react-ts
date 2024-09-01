@@ -21,7 +21,7 @@ const Dropdown = ({
     return (
         <div
             className={`relative p-3 rounded-[18px] bg-secondary flex flex-col justify-center cursor-pointer min-h-9 ${extraClass}`}>
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-between items-center" onClick={() => setIsOpen((prev) => !prev)}>
                 <div
                     className="flex flex-row items-center gap-1 relative"
                     onClick={() => setIsOpen((prev) => !prev)}

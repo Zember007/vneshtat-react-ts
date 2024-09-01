@@ -1,11 +1,21 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import "./input-range.css";
-import { InputRangeProps } from "./input-range.props";
-import { formatTime, parseTime } from "@/shared/utils";
+import {InputRangeProps} from "./input-range.props";
+import {formatTime, parseTime} from "@/shared/utils";
 
 const InputRange: React.FC<InputRangeProps> = ({
-                                                   extraClass, min, max, minVal, maxVal, onChangeValue = () => { },
-                                                   isTime = false, leftElem, rightElem, isLeftFixed = false, isRightFixed = false
+                                                   extraClass,
+                                                   min,
+                                                   max,
+                                                   minVal,
+                                                   maxVal,
+                                                   onChangeValue = () => {
+                                                   },
+                                                   isTime = false,
+                                                   leftElem,
+                                                   rightElem,
+                                                   isLeftFixed = false,
+                                                   isRightFixed = false
                                                }: InputRangeProps) => {
     const [left, setLeft] = useState<number>(minVal);
     const [right, setRight] = useState<number>(maxVal);
@@ -64,9 +74,9 @@ const InputRange: React.FC<InputRangeProps> = ({
 
     useEffect(() => {
         if (isTime) {
-            onChangeValue && onChangeValue({ min: parseTime(formatTime(left)), max: parseTime(formatTime(right)) });
+            onChangeValue && onChangeValue({min: parseTime(formatTime(left)), max: parseTime(formatTime(right))});
         } else {
-            onChangeValue && onChangeValue({ min: left, max: right });
+            onChangeValue && onChangeValue({min: left, max: right});
         }
     }, [left, right, isTime]);
 
@@ -105,6 +115,11 @@ const InputRange: React.FC<InputRangeProps> = ({
         addThumbEventListeners(thumbRight, 'right');
     }, []);
 
+    useEffect(() => {
+        setLeft(minVal);
+        setRight(maxVal)
+    }, [minVal, maxVal])
+
     return (
         <div className="container-wrapper">
             <div className={`container ${extraClass}`}>
@@ -120,10 +135,10 @@ const InputRange: React.FC<InputRangeProps> = ({
                         }
                     }}
                     className="thumb thumb--left"
-                    style={{ zIndex: left > max - 100 ? "5" : "4" }}
+                    style={{zIndex: left > max - 100 ? "5" : "4"}}
                     disabled={isLeftFixed}
                 />
-                {!isLeftFixed && <div ref={thumbLeft} className="thumb-indicator" style={{ left: getLeftValue(left) }} />}
+                {!isLeftFixed && <div ref={thumbLeft} className="thumb-indicator" style={{left: getLeftValue(left)}}/>}
 
                 <input
                     type="range"
@@ -139,11 +154,12 @@ const InputRange: React.FC<InputRangeProps> = ({
                     className="thumb thumb--right"
                     disabled={isRightFixed}
                 />
-                {!isRightFixed && <div ref={thumbRight} className="thumb-indicator" style={{ left: getLeftValue(right) }} />}
+                {!isRightFixed &&
+                    <div ref={thumbRight} className="thumb-indicator" style={{left: getLeftValue(right)}}/>}
 
                 <div className="slider">
-                    <div className="slider__track" />
-                    <div ref={range as React.MutableRefObject<HTMLDivElement>} className="slider__range" />
+                    <div className="slider__track"/>
+                    <div ref={range as React.MutableRefObject<HTMLDivElement>} className="slider__range"/>
                 </div>
             </div>
             <div className="flex items-center justify-between">
@@ -154,4 +170,4 @@ const InputRange: React.FC<InputRangeProps> = ({
     );
 };
 
-export { InputRange };
+export {InputRange};

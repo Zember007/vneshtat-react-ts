@@ -3,15 +3,31 @@ import {updateCredentialsState} from "../model/registration-company.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {Dispatch, SetStateAction, useState} from "react";
-import {getDeviceAndBrowserInfo, setAccessToken, setRefreshToken} from "@/shared/utils";
-import {getUser} from "@/shared/utils/methods";
-import {setUser} from "@/app/model/user.store";
+import {getDeviceAndBrowserInfo, setAccessToken, setRefreshToken, validateEmail} from "@/shared/utils";
 
-const RegistrationCompanyCredentials = ({setHasAccount, handleSendInformation}: { setHasAccount: Dispatch<SetStateAction<boolean>>, handleSendInformation: () => void }) => {
+interface RegistrationCompanyCredentialsProps {
+    setHasAccount: Dispatch<SetStateAction<boolean>>;
+    handleSendInformation: () => void;
+    isEmailAvailable: boolean | null;
+    isPhoneAvailable: boolean | null;
+    isLoginAvailable: boolean | null;
+    setIsEmailAvailable: Dispatch<SetStateAction<boolean | null>>;
+    setIsPhoneAvailable: Dispatch<SetStateAction<boolean | null>>;
+    setIsLoginAvailable: Dispatch<SetStateAction<boolean | null>>;
+}
+
+const RegistrationCompanyCredentials = ({
+                                            setHasAccount,
+                                            handleSendInformation,
+                                            isEmailAvailable,
+                                            isPhoneAvailable,
+                                            isLoginAvailable,
+                                            setIsEmailAvailable,
+                                            setIsPhoneAvailable,
+                                            setIsLoginAvailable
+                                        }: RegistrationCompanyCredentialsProps) => {
     const {email, phone, login, password} = useSelector((state: RootState) => state.registrationCompany.credentials);
-    const [isEmailAvailable, setIsEmailAvailable] = useState<boolean | null>(null);
-    const [isPhoneAvailable, setIsPhoneAvailable] = useState<boolean | null>(null);
-    const [isLoginAvailable, setIsLoginAvailable] = useState<boolean | null>(null);
+
     const {isInfoReady, isCredentialsReady} = useSelector((state: RootState) => state.registrationCompany);
     const [hasCreatedAccount, setHasCreatedAccount] = useState(false);
     const isReadyToLogin = isInfoReady && isCredentialsReady && isEmailAvailable && isPhoneAvailable && isLoginAvailable;
@@ -35,8 +51,6 @@ const RegistrationCompanyCredentials = ({setHasAccount, handleSendInformation}: 
             if (data.status === "success" && data.data) {
                 setAccessToken(data.data.access_token);
                 setRefreshToken(data.data.refresh_token);
-                const user = await getUser();
-                dispatch(setUser(user));
             }
         } catch (error) {
         }
@@ -54,6 +68,10 @@ const RegistrationCompanyCredentials = ({setHasAccount, handleSendInformation}: 
     const handleInputChange = async (field: string, value: string) => {
         const upperField = field === "email" ? "Email" : field === "phone" ? "PhoneNumber" : field === "login" ? "Username" : "";
         dispatch(updateCredentialsState({field, value} as any));
+
+        if (field === "email") {
+            if (!validateEmail(value)) return;
+        }
 
         const availability = await handleCheckCredentials(upperField, value);
         if (availability.status === "success") {
@@ -184,6 +202,7 @@ const RegistrationCompanyCredentials = ({setHasAccount, handleSendInformation}: 
             </button>
             <button
                 className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center mt-2.5 w-full"}
+                type={"button"}
                 onClick={() => setHasAccount(true)}
             >
                 <h3 className={`text-lg font-medium`}>Уже есть аккаунт</h3>
