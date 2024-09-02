@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {getDayOfWeek} from "@/shared/utils";
+import {UserStatus} from "@/shared/types";
 
-type UserStatus = "in_queue" | "in_progress" | "completed";
 
 interface User {
     id: number

@@ -3,7 +3,7 @@ import {RootState} from "@/app/config/store";
 import {Checkbox, Dropdown, Input, Popup, Switch} from "@/shared/UI";
 import CrossImg from "@/assets/icons/cross.svg?react";
 import {changeTravelFrequency, setIsCeo, setIsOpen, updateInfo} from "../model/promo.store";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 interface ProposalResult {
@@ -78,6 +78,20 @@ const PromoPopups = () => {
         dispatch(setIsOpen(false))
         navigate("/promo")
     }
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Enter") {
+                createConsultingProposal();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
 
     return (
         <Popup isCentered withShadow extraClass={"h-full flex items-center gap-[18px] py-24"}>

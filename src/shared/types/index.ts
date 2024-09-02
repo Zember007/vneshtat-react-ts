@@ -2,6 +2,8 @@ export type ActiveOperation = "filter" | "decor" | "route" | "passengers" | "rad
 
 export type SeatState = "cheap" | "irrevocable" | "free" | "selected"
 
+export type UserStatus = "in_queue" | "in_progress" | "completed";
+
 export interface Seat {
     order: number,
     isBooked: boolean,

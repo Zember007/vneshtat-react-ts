@@ -36,7 +36,7 @@ const Dropdown = ({
                         {title}
                     </h6>
                     {selectedText && (
-                        <p className="text-xs font-medium whitespace-nowrap text-[#9B9FAD]">
+                        <p className="text-xs font-medium whitespace-nowrap text-[#9B9FAD]" onClick={() => setIsOpen((prev) => !prev)}>
                             {selectedText}
                         </p>
                     )}
@@ -46,12 +46,13 @@ const Dropdown = ({
                                 e.stopPropagation();
                                 onErase && onErase();
                             }}
+                            type={"button"}
                         >
                             <EraserImg className="transition hover:brightness-50"/>
                         </button>
                     )}
                 </div>
-                <button onClick={() => setIsOpen((prev) => !prev)}>
+                <button onClick={() => setIsOpen((prev) => !prev)} type={"button"}>
                     <ArrowImg
                         className={`transform transition-transform duration-300 ${!isOpen ? "rotate-180" : ""}`}
                     />

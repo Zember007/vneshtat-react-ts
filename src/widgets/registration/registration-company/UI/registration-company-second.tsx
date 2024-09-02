@@ -107,9 +107,11 @@ const RegistrationCompanySecond = () => {
             <div className={"flex items-center gap-4"}>
                 <div className={"flex flex-col gap-4 w-[320px] h-[620px]"}>
                     <div className={"p-6 bg-primary rounded-[35px] relative"}>
-                        <button className={"absolute right-[366px] top-[30%]"} onClick={() => dispatch(setPage(1))}>
-                            <ArrowImg/>
-                        </button>
+                        {localStorage.getItem("Status") !== "completed" && (
+                            <button className={"absolute right-[366px] top-[30%]"} onClick={() => dispatch(setPage(1))}>
+                                <ArrowImg/>
+                            </button>
+                        )}
                         <div
                             className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
                             <h2 className={"text-lg text-[#9B9FAD]"}>{localStorage.getItem("RegistrationCompanyName")}</h2>

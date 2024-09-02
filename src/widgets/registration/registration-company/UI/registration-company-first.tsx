@@ -2,13 +2,14 @@ import {useDispatch, useSelector} from "react-redux";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import contractImg from "@/assets/icons/contract.png";
 import {RootState} from "@/app/config/store";
-import {ChangeEvent} from "react";
+import {ChangeEvent, useEffect} from "react";
 import {
     setPage, setProgress,
     updateCompanyState,
     updateUploadedFile,
 } from "@/widgets/registration/registration-company/model/registration-company.store";
 import {Input} from "@/shared/UI";
+import {UserStatus} from "@/shared/types";
 
 const RegistrationCompanyFirst = () => {
     const {isCompanyReady} = useSelector((state: RootState) => state.registrationCompany);
@@ -48,7 +49,7 @@ const RegistrationCompanyFirst = () => {
             body: formdata
         })
         const data = await res.json();
-        if(data.status === "success"){
+        if (data.status === "success") {
             dispatch(setProgress(progress + 1))
             dispatch(setPage(2));
         } else {
@@ -65,6 +66,14 @@ const RegistrationCompanyFirst = () => {
             alert(`Ошибка:\n${errorMessages}`);
         }
     }
+
+    useEffect(() => {
+        const status: UserStatus | null = localStorage.getItem("Status") as UserStatus;
+        if (status === "completed") {
+            dispatch(setProgress(2));
+            dispatch(setPage(2))
+        }
+    }, [])
 
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>
@@ -169,7 +178,7 @@ const RegistrationCompanyFirst = () => {
                     <button
                         className={"transition bg-black py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-full mt-2.5 disabled:cursor-not-allowed disabled:bg-secondary"}
                         disabled={!isCompanyReady || !uploadedFile}
-                        onClick={() => handleRegistration()}
+                        onClick={progress === 1 ? handleRegistration : () => setPage(2)}
                     >
                         <h3 className={`text-lg font-medium ${isCompanyReady && uploadedFile ? "text-primary" : "text-[#787B86]"}`}>Зарегистрировать</h3>
                     </button>

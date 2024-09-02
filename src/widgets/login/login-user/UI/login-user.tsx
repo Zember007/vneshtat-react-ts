@@ -117,12 +117,10 @@ const LoginUser = () => {
                     else dispatch(setCompanies(companiesData.data));
                     setIsLoginClicked(true)
                 } else {
-                    console.log("the second")
                     setPhoneStatus("error")
                 }
             }
         } catch (error) {
-            console.log("reerrere")
             setPhoneStatus("error")
         }
     }
@@ -135,7 +133,6 @@ const LoginUser = () => {
                     `${import.meta.env.VITE_API_URL}/auth/sign_in/auth_token_by_phone?PhoneNumber=${encodeURIComponent(phone)}&ReCaptchaResponse=${encodeURIComponent(captchaToken)}`
                 );
                 const data = await response.json();
-                console.log(data, response)
                 if (data.status === "success") {
                     setSmsToken(data.data.token);
                 }
@@ -524,10 +521,10 @@ const LoginUser = () => {
                                         <button
                                             className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
                                             type={"button"}
-                                            disabled={!phone}
+                                            disabled={!phone || startTimer}
                                             onClick={handleCaptchaAndSMS}
                                         >
-                                            <p className={`text-lg font-medium ${!phone ? "!text-[#9B9FAD]" : "text-primary"}`}>
+                                            <p className={`text-lg font-medium ${!phone || startTimer ? "!text-[#9B9FAD]" : "text-primary"}`}>
                                                 {startTimer && second ? `Отправить повторно ${second === 60 ? "60" : `0:${second}`}` : "Получить код"}
                                             </p>
                                         </button>
