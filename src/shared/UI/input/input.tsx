@@ -82,7 +82,7 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
     };
 
     return rest.type === "password" ? (
-        <label className="relative">
+        <label className="relative w-full">
             <input
                 className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass)}
                 {...rest}
@@ -118,7 +118,7 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
             onChange={handleNumberChange}
         />
     ) : (
-        <label className={"relative"}>
+        <label className={"relative w-full"}>
             <input
                 className={clsx(`bg-secondary rounded-primary text-sm py-2 pl-2.5 ${inputValue && withEraser ? "pr-8" : "pr-2.5"} w-full`, extraClass)}
                 type={rest.type || "text"}

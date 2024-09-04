@@ -46,7 +46,7 @@ const InputDate = ({
     };
 
     return (
-        <div className={`flex flex-col min-h-7`} ref={containerRef} {...rest}>
+        <div className={`flex flex-col min-h-7 cursor-none`} ref={containerRef} {...rest}>
             <label className="relative flex justify-end items-center w-full cursor-pointer">
                 <div
                     className={`${extraClass} w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}

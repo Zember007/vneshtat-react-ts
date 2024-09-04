@@ -36,7 +36,8 @@ const Dropdown = ({
                         {title}
                     </h6>
                     {selectedText && (
-                        <p className="text-xs font-medium whitespace-nowrap text-[#9B9FAD]" onClick={() => setIsOpen((prev) => !prev)}>
+                        <p className="text-xs font-medium whitespace-nowrap text-[#9B9FAD]"
+                           onClick={() => setIsOpen((prev) => !prev)}>
                             {selectedText}
                         </p>
                     )}
@@ -58,16 +59,21 @@ const Dropdown = ({
                     />
                 </button>
             </div>
-            <div
-                className={`transition-max-height duration-300 ease-in-out overflow-hidden  
-                ${isAbsoluteDrop
-                    ? "absolute top-full left-0 p-3 z-10 w-full mt-2 !bg-secondary rounded-[18px]"
-                    : "relative"} 
+            {isAbsoluteDrop ? (
+                <div
+                    className={`transition-max-height duration-300 ease-in-out overflow-hidden absolute top-full left-0 p-3 z-10 w-full mt-2 !bg-secondary rounded-[18px]
                 ${isOpen ? "max-h-screen mt-2.5" : "max-h-0 mt-0"}
                 ${isAbsoluteDrop && !isOpen && "hidden"} bg-secondary`}
-            >
-                {children}
-            </div>
+                >
+                    {children}
+                </div>
+            ) : (
+                <div
+                    className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isOpen ? "max-h-screen mt-2.5" : "max-h-0 mt-0"}`}
+                >
+                    {children}
+                </div>
+            )}
         </div>
     )
 };

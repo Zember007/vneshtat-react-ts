@@ -1,11 +1,22 @@
 import {RegistrationCompany} from "@/widgets/registration/registration-company";
 import VneshtatImg from "@/assets/icons/vneshtat.svg?react";
 import {useConfirmToken} from "@/shared/hooks/use-confirm-token";
+import {useEffect} from "react";
+import {setPage, setProgress} from "@/widgets/registration/registration-company/model/registration-company.store";
+import {useDispatch} from "react-redux";
 
 const Registration = () => {
     const {status, companyName} = useConfirmToken(localStorage.getItem("ConfirmToken") || "");
     localStorage.setItem("Status", status);
     localStorage.setItem("RegistrationCompanyName", companyName);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (status === "completed") {
+            dispatch(setProgress(2));
+            dispatch(setPage(2));
+        }
+    }, [status])
 
     return (
         <div className={"px-[100px] h-[100vh]"}>

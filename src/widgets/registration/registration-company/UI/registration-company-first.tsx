@@ -2,14 +2,13 @@ import {useDispatch, useSelector} from "react-redux";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import contractImg from "@/assets/icons/contract.png";
 import {RootState} from "@/app/config/store";
-import {ChangeEvent, useEffect} from "react";
+import {ChangeEvent} from "react";
 import {
     setPage, setProgress,
     updateCompanyState,
     updateUploadedFile,
 } from "@/widgets/registration/registration-company/model/registration-company.store";
 import {Input} from "@/shared/UI";
-import {UserStatus} from "@/shared/types";
 
 const RegistrationCompanyFirst = () => {
     const {isCompanyReady} = useSelector((state: RootState) => state.registrationCompany);
@@ -67,13 +66,9 @@ const RegistrationCompanyFirst = () => {
         }
     }
 
-    useEffect(() => {
-        const status: UserStatus | null = localStorage.getItem("Status") as UserStatus;
-        if (status === "completed") {
-            dispatch(setProgress(2));
-            dispatch(setPage(2))
-        }
-    }, [])
+
+
+    console.log(progress)
 
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>

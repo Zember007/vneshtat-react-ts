@@ -57,14 +57,15 @@ const HotelFilter = () => {
                 </button>
             </div>
             <hr className="h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"/>
-            <div className="max-h-[calc(100vh-338px)] overflow-y-auto scroll flex flex-col py-2.5 gap-2.5">
+            <div className="h-[calc(100vh-338px)] overflow-y-auto scroll flex flex-col py-2.5 gap-2.5">
                 <Dropdown
                     isChanged={location.isChanged}
                     title="Расположение"
                     onErase={() => {
                         dispatch(setLocationFrom("default"))
                         dispatch(setLocationRadius("default"))
-                    }}>
+                    }}
+                >
                     <input
                         type="text"
                         className={"rounded-primary w-full px-2.5 py-1 text-[11px] font-medium"}

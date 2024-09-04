@@ -125,7 +125,7 @@ const registrationCompanyStore = createSlice({
             }
 
             const {name, surname, middlename, birthday} = state.info;
-            const isAllFieldsFilled = !!name && !!surname && !!middlename && !!birthday;
+            const isAllFieldsFilled = !!name && !!surname && !!middlename && !!birthday && birthday.length === 10;
             if (isAllFieldsFilled !== wasAllFieldsFilled) {
                 state.isInfoReady = isAllFieldsFilled;
                 state.progress += isAllFieldsFilled ? 1 : -1;

@@ -94,9 +94,13 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
         }
     };
 
+    const handleLinkClick = () => {
+        setIsOpen(false);
+    };
+
     return (
         <div
-            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "!min-w-[235px] !w-[235px] !max-w-[235px] absolute z-10" : "min-w-[100px]"}`}>
+            className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "!min-w-[210px] !w-[210px] !max-w-[210px] absolute z-10" : "min-w-[100px]"}`}>
             <div className="flex items-center justify-center relative">
                 <Link to={"/"}
                       className={`flex items-center ${isOpen ? "-translate-x-[85px]" : ""} logo-animation-container`}
@@ -111,9 +115,10 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 </div>
             </div>
             <div
-                className={`transition w-full h-full flex flex-col items-center gap-2.5 py-5 px-2.5 ultra:gap-7 bg-primary ${isOpen ? "rounded-[26px]" : "rounded-primary"}`}>
+                className={`transition duration-500 w-full h-full flex flex-col items-center gap-2.5 py-5 px-2.5 ultra:gap-7 bg-primary ${isOpen ? "rounded-[26px]" : "rounded-primary"}`}>
                 <div className={`w-full flex flex-col gap-2.5 ultra:gap-7`}>
                     <Link to={"/"}
+                          onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <HomeImg
@@ -127,6 +132,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                         )}
                     </Link>
                     <Link to={"/swap"}
+                          onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <SwapImg
@@ -140,6 +146,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                         )}
                     </Link>
                     <Link to={"/copy"}
+                          onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <CopyImg
@@ -156,6 +163,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 <hr className={"h-[1px] w-full bg-[#e5e7ea]"}/>
                 <div className={`w-full flex flex-col gap-2.5 ultra:gap-7`}>
                     <Link to={"/messages"}
+                          onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <MessageImg
@@ -170,6 +178,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                         )}
                     </Link>
                     <Link to={"/jobs"}
+                          onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <JobImg
@@ -186,6 +195,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 <hr className={"h-[1px] w-full bg-[#e5e7ea]"}/>
                 <div className={`w-full flex flex-col gap-2.5 ultra:gap-7`}>
                     <Link to={"/scope"}
+                          onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <ScopeImg
@@ -199,6 +209,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                         )}
                     </Link>
                     <Link to={"/filter"}
+                          onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <SettingsImg
