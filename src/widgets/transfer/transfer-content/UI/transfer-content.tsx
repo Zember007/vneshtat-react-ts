@@ -6,10 +6,27 @@ import {setCityFromName, setCityToName, setDate} from "@/widgets/transfer/transf
 import {City} from "@/shared/types";
 import PassengerImg from "@/assets/icons/users.svg?react";
 import RouteImg from "@/assets/icons/route.svg?react";
+import {useEffect, useRef} from "react";
+import mapboxgl from "mapbox-gl";
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const TransferContent = () => {
     const {date, time, cityFromName, cityToName, cityFrom, cityTo} = useSelector((state: RootState) => state.transfer);
     const dispatch = useDispatch();
+    const mapContainerRef = useRef<HTMLDivElement | null>(null);
+    const mapRef = useRef<mapboxgl.Map | null>(null);
+
+    useEffect(() => {
+        if (mapContainerRef.current && !mapRef.current) {
+            mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
+
+            mapRef.current = new mapboxgl.Map({
+                container: mapContainerRef.current as HTMLElement,
+                center: [37.6206, 55.758],
+                zoom: 12,
+            });
+        }
+    }, [mapContainerRef.current, mapRef.current]);
 
     const swapCities = () => {
         const temp = cityFromName;
@@ -22,7 +39,7 @@ const TransferContent = () => {
     };
 
     return (
-        <div className={"w-full"}>
+        <div className={"w-full flex flex-col gap-4"}>
             <div className={"bg-primary p-5 rounded-[26px]"}>
                 <div className={"flex flex-row items-center gap-2.5"}>
                     <div
@@ -59,6 +76,14 @@ const TransferContent = () => {
                     />
                     <InputTime time={time}/>
                 </div>
+            </div>
+
+            <div className="p-5 bg-primary rounded-[26px] h-full">
+                <div
+                    style={{height: '100%'}}
+                    ref={mapContainerRef}
+                    className={`map-container rounded-primary`}
+                />
             </div>
         </div>
     )

@@ -69,9 +69,8 @@ const RegistrationCompanyCredentials = ({
         const upperField = field === "email" ? "Email" : field === "phone" ? "PhoneNumber" : field === "login" ? "Username" : "";
         dispatch(updateCredentialsState({field, value} as any));
 
-        if (field === "email") {
-            if (!validateEmail(value)) return;
-        }
+        if (field === "email" && !validateEmail(value)) return;
+        if (field === "phone" && value.length !== 12) return;
 
         const availability = await handleCheckCredentials(upperField, value);
         if (availability.status === "success") {
@@ -95,7 +94,6 @@ const RegistrationCompanyCredentials = ({
         const data = await res.json();
 
         if (data.status === "success") {
-            // dispatch(setPage(4));
             setHasCreatedAccount(true);
             await handleLogin();
         } else {

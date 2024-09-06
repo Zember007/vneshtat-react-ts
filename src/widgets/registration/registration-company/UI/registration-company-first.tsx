@@ -21,6 +21,8 @@ const RegistrationCompanyFirst = () => {
         uploadedFile
     } = useSelector((state: RootState) => state.registrationCompany.company);
     const {progress} = useSelector((state: RootState) => state.registrationCompany);
+    const registrationCompanyName= localStorage.getItem("RegistrationCompanyName")
+    const legalCompanyName= localStorage.getItem("LegalCompanyName")
     const dispatch = useDispatch();
 
     const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,18 +68,14 @@ const RegistrationCompanyFirst = () => {
         }
     }
 
-
-
-    console.log(progress)
-
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>
             <div className={"flex items-center gap-4"}>
-                <div className={"flex flex-col gap-4 w-[320px] h-[620px]"}>
+                <div className={"flex flex-col gap-4 w-[320px] h-[540px]"}>
                     <div className={"p-6 bg-primary rounded-[35px]"}>
                         <div
                             className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
-                            <h2 className={"text-lg text-[#9B9FAD]"}>{localStorage.getItem("RegistrationCompanyName")}</h2>
+                            <h2 className={"text-lg text-[#9B9FAD]"}>{legalCompanyName ? legalCompanyName : registrationCompanyName}</h2>
                             <SuccessImg className={"min-w-6 min-h-6 grey-fill"}/>
                         </div>
                     </div>
@@ -88,10 +86,13 @@ const RegistrationCompanyFirst = () => {
                                 extraClass={"h-[50px] text-center rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                 placeholder={"Юридическое название"}
                                 value={legalName}
-                                onChange={e => dispatch(updateCompanyState({
-                                    field: "legalName",
-                                    value: e.target.value
-                                }))}
+                                onChange={e => {
+                                    localStorage.setItem("LegalCompanyName", e.target.value)
+                                    dispatch(updateCompanyState({
+                                        field: "legalName",
+                                        value: e.target.value
+                                    }))
+                                }}
                             />
                             <Input
                                 extraClass={"h-[50px] text-center rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
@@ -130,7 +131,7 @@ const RegistrationCompanyFirst = () => {
                         </div>
                     </div>
                 </div>
-                <div className={"w-[320px] h-[620px] p-6 bg-primary rounded-[35px] flex flex-col justify-between"}>
+                <div className={"w-[320px] h-[540px] p-6 bg-primary rounded-[35px] flex flex-col justify-between"}>
                     <div>
                         <div
                             className={`${isCompanyReady ? "p-6" : "px-5 py-16"} border border-solid border-[#ECEEF1] rounded-[16px]`}>
@@ -173,7 +174,7 @@ const RegistrationCompanyFirst = () => {
                     <button
                         className={"transition bg-black py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-full mt-2.5 disabled:cursor-not-allowed disabled:bg-secondary"}
                         disabled={!isCompanyReady || !uploadedFile}
-                        onClick={progress === 1 ? handleRegistration : () => setPage(2)}
+                        onClick={progress === 1 ? handleRegistration : () => dispatch(setPage(2))}
                     >
                         <h3 className={`text-lg font-medium ${isCompanyReady && uploadedFile ? "text-primary" : "text-[#787B86]"}`}>Зарегистрировать</h3>
                     </button>

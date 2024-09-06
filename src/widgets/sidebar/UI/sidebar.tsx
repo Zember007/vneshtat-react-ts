@@ -115,7 +115,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 </div>
             </div>
             <div
-                className={`transition duration-500 w-full h-full flex flex-col items-center gap-2.5 py-5 px-2.5 ultra:gap-7 bg-primary ${isOpen ? "rounded-[26px]" : "rounded-primary"}`}>
+                className={`transition-all duration-400 w-full h-full flex flex-col items-center gap-2.5 py-5 px-2.5 ultra:gap-7 bg-primary ${isOpen ? "rounded-[26px]" : "rounded-primary"}`}>
                 <div className={`w-full flex flex-col gap-2.5 ultra:gap-7`}>
                     <Link to={"/"}
                           onClick={handleLinkClick}
@@ -227,7 +227,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                 <button onClick={() => setIsOpen((prev) => !prev)}
                         onMouseEnter={() => setIsButtonHovered(true)}
                         onMouseLeave={() => setIsButtonHovered(false)}
-                        className={`${isOpen ? "w-full pl-2.5 mt-4 ultra:pl-5 ultra:mt-10" : "mt-2.5"} flex gap-2.5 items-center`}>
+                        className={`${isOpen ? "w-full pl-2.5 mt-5 ultra:pl-5 ultra:mt-10" : "mt-2.5"} flex gap-2.5 items-center`}>
                     <RightImg
                         className={`blue-fill-hover transition ultra:min-w-7 ultra:min-h-7 ${isButtonHovered && "blue-fill"} ${isOpen ? "rotate-180" : "rotate-0"}`}/>
                     {isOpen && <p className={`text-sm text-[#787B86] ${isButtonHovered && "text-blue"}`}>Свернуть</p>}

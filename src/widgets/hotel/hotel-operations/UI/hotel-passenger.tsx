@@ -107,6 +107,7 @@ const HotelPassenger = () => {
                 : room
         );
         setRooms(updatedRooms);
+        setIsCountdownActive(true);
     };
 
     return (

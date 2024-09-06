@@ -56,6 +56,8 @@ const RegistrationCompanySecond = () => {
     const [isPhoneAvailable, setIsPhoneAvailable] = useState<boolean | null>(null);
     const [isLoginAvailable, setIsLoginAvailable] = useState<boolean | null>(null);
     const {name, surname, middlename, birthday} = useSelector((state: RootState) => state.registrationCompany.info);
+    const registrationCompanyName= localStorage.getItem("RegistrationCompanyName")
+    const legalCompanyName= localStorage.getItem("LegalCompanyName")
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -105,16 +107,16 @@ const RegistrationCompanySecond = () => {
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>
             <div className={"flex items-center gap-4"}>
-                <div className={"flex flex-col gap-4 w-[320px] h-[620px]"}>
+                <div className={"flex flex-col gap-4 w-[320px] h-[540px]"}>
                     <div className={"p-6 bg-primary rounded-[35px] relative"}>
                         {localStorage.getItem("Status") !== "completed" && (
-                            <button className={"absolute right-[366px] top-[30%]"} onClick={() => dispatch(setPage(1))}>
+                            <button className={"absolute right-[340px] top-[30%]"} onClick={() => dispatch(setPage(1))}>
                                 <ArrowImg/>
                             </button>
                         )}
                         <div
                             className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
-                            <h2 className={"text-lg text-[#9B9FAD]"}>{localStorage.getItem("RegistrationCompanyName")}</h2>
+                            <h2 className={"text-lg text-[#9B9FAD]"}>{legalCompanyName ? legalCompanyName : registrationCompanyName}</h2>
                             <SuccessImg className={"min-w-6 min-h-6 blue-fill"}/>
                         </div>
                     </div>
@@ -163,7 +165,7 @@ const RegistrationCompanySecond = () => {
                             в личном кабинете сервиса</p>
                     </div>
                 </div>
-                <div className={"w-[320px] h-[620px] p-6 bg-primary rounded-[35px] flex flex-col"}>
+                <div className={"w-[320px] h-[540px] p-6 bg-primary rounded-[35px] flex flex-col"}>
                     <div className={"flex justify-center"}>
                         <LogoId/>
                     </div>
