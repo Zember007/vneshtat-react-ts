@@ -103,12 +103,12 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
             className={`flex flex-col gap-5 items-center mt-4 min-w-fit ultra:w-full w-fit max-w-[100px] h-[calc(100vh-60px)] ${isOpen ? "!min-w-[210px] !w-[210px] !max-w-[210px] absolute z-10" : "min-w-[100px]"}`}>
             <div className="flex items-center justify-center relative">
                 <Link to={"/"}
-                      className={`flex items-center ${isOpen ? "-translate-x-[85px]" : ""} logo-animation-container`}
+                      className={`flex items-center ${isOpen ? "-translate-x-[73px]" : ""} logo-animation-container`}
                       ref={containerRef}
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}>
                 </Link>
-                <div className={`absolute ${isOpen ? "-left-12" : "left-3"} w-[140px] h-[18px] mb-3 overflow-hidden`}>
+                <div className={`absolute ${isOpen ? "-left-[38px]" : "left-3"} w-[140px] h-[18px] mb-3 overflow-hidden`}>
                     <div className={`flex ${isOpen ? "justify-end" : "justify-start"}`}>
                         <LogoText className={`logo-text h-full w-[125px] ${isOpen ? "open" : ""}`} />
                     </div>

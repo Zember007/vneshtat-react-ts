@@ -147,6 +147,27 @@ const LoginUser = () => {
         }
     };
 
+    const handleCheckCredentials = async (field: string, value: string) => {
+        const queryParams = new URLSearchParams({
+            [field]: value,
+        });
+        const url = `${import.meta.env.VITE_API_URL}/auth/sign_up/check_vneshtat_id_credentials_available?${queryParams.toString()}`;
+        const res = await fetch(url);
+        const {data} = await res.json();
+        return data ? "error" : "success";
+    }
+
+    const handleInputChange = async (field: string, value: string) => {
+        const upperField = field === "phone" ? "PhoneNumber" : field === "login" ? "Username" : "";
+        dispatch(updateLoginState({field, value} as any));
+
+        if (field === "phone" && value.length !== 12) return;
+
+        const availability = await handleCheckCredentials(upperField, value);
+        if (field === "login") setLoginStatus(availability);
+        if (field === "phone") setPhoneStatus(availability);
+    };
+
     const handleCaptchaChange = (token: string | null) => {
         setCaptchaToken(token);
     };
@@ -342,7 +363,7 @@ const LoginUser = () => {
                                                     )
                                                 ) : null}
                                                 <button
-                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center mt-20"}
                                                     onClick={() => navigate("/sign-up")}
                                                 >
                                                     <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
@@ -351,12 +372,13 @@ const LoginUser = () => {
                                         ) : (
                                             <>
                                                 <Input
-                                                    extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] text-blue !bg-primary first-letter-black`}
+                                                    extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary first-letter-black`}
                                                     placeholder="Почта"
-                                                    value={restoreEmail ? `@${restoreEmail}` : ""}
+                                                    type={"email"}
+                                                    value={restoreEmail}
                                                     onChange={e => dispatch(updateRestoreState({
                                                         field: "email",
-                                                        value: e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value
+                                                        value: e.target.value
                                                     }))}
                                                 />
                                                 <Input
@@ -386,7 +408,7 @@ const LoginUser = () => {
                                                     <p className={`text-lg font-medium text-primary ${!isRestoreLoginReady && "!text-[#9B9FAD]"}`}>Подтвердить</p>
                                                 </button>
                                                 <button
-                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center mt-20"}
                                                     onClick={() => navigate("/sign-up")}
                                                 >
                                                     <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
@@ -402,7 +424,7 @@ const LoginUser = () => {
                             <div className={"flex justify-center"}>
                                 <LogoIdImg/>
                             </div>
-                            <form className={"flex flex-col gap-2.5"} autoComplete={"on"}
+                            <form className={"flex flex-col"} autoComplete={"on"}
                                   onSubmit={!withPhone ? sendSMScode : handleLogin}>
                                 <Switch
                                     extraClass={"w-full h-[50px] !bg-[#FAFAFA] border border-solid border-[#E5E7EA]"}
@@ -425,17 +447,14 @@ const LoginUser = () => {
                                 {withPhone ? (
                                     <>
                                         <Input
-                                            extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] ${loginStatus === "error" ? "#FF64A3" : "text-blue"} !bg-primary first-letter-black`}
+                                            extraClass={`!text-lg !font-medium mt-2.5 h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] ${loginStatus === "error" ? "#FF64A3" : "text-blue"} !bg-primary first-letter-black`}
                                             placeholder="Логин"
                                             value={login ? `@${login}` : ""}
-                                            onChange={e => dispatch(updateLoginState({
-                                                field: "login",
-                                                value: e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value
-                                            }))}
+                                            onChange={e => handleInputChange("login", e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value)}
                                             autoComplete={"on"}
                                         />
                                         <Input
-                                            extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary first-letter-black`}
+                                            extraClass={`!text-lg !font-medium mt-2.5 h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary first-letter-black`}
                                             placeholder="Пароль"
                                             type={"password"}
                                             value={password}
@@ -446,10 +465,11 @@ const LoginUser = () => {
                                             autoComplete={"on"}
                                         />
                                         {loginStatus === "error" ? (
-                                            <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта, с
+                                            <p className={"text-center mt-2.5 text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
+                                                с
                                                 таким
                                                 ID не найдено</p>
-                                        ) : <div className={"flex flex-col items-center my-1"}>
+                                        ) : <div className={"flex flex-col mt-2.5 items-center my-1"}>
                                         <span className={"flex items-center gap-2 w-[190px]"}>
                                             <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>6+</p>
                                             <p className={"text-xs text-[#787B86]"}>Не менее 6 символов</p>
@@ -465,13 +485,14 @@ const LoginUser = () => {
                                         </div>
                                         }
                                         <button
-                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
+                                            className={"w-full mt-2.5 flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
                                             disabled={!isLoginReady}
                                             type={"submit"}
                                         >
                                             <p className={`text-lg font-medium text-primary ${!isLoginReady && "!text-[#9B9FAD]"}`}>Войти</p>
                                         </button>
                                         <button
+                                            className={"mt-2.5"}
                                             onClick={() => dispatch(updateLoginState({
                                                 field: "isRestore",
                                                 value: true
@@ -482,7 +503,7 @@ const LoginUser = () => {
                                                 пароль</p>
                                         </button>
                                         <button
-                                            className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
+                                            className={"mt-2.5 border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
                                             onClick={() => navigate("/sign-up")}
                                             type={"button"}
                                         >
@@ -492,14 +513,11 @@ const LoginUser = () => {
                                 ) : (
                                     <>
                                         <Input
-                                            extraClass={"!text-lg !font-medium h-[50px] rounded-[16px] text-center border border-solid border-[#E5E7EA] !bg-primary"}
+                                            extraClass={"!text-lg !font-medium mt-2.5 h-[50px] rounded-[16px] text-center border border-solid border-[#E5E7EA] !bg-primary"}
                                             placeholder={"+7 (___) ___ - __ -__"}
                                             type={"phone"}
                                             value={phone}
-                                            onChange={e => dispatch(updateLoginState({
-                                                field: "phone",
-                                                value: e.target.value
-                                            }))}
+                                            onChange={e => handleInputChange("phone", e.target.value)}
                                         />
                                         {!captchaToken ? (
                                             <ReCAPTCHA
@@ -510,7 +528,7 @@ const LoginUser = () => {
                                             />
                                         ) : null}
                                         <Input
-                                            extraClass={"!text-lg !font-medium text-blue text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
+                                            extraClass={"!text-lg !font-medium mt-2.5 text-blue text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                             placeholder={"Введите код из СМС"}
                                             value={sms}
                                             onChange={e => dispatch(updateLoginState({
@@ -519,24 +537,24 @@ const LoginUser = () => {
                                             }))}
                                         />
                                         <button
-                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
+                                            className={"w-full flex justify-center mt-2.5 items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
                                             type={"button"}
                                             disabled={!phone || startTimer}
                                             onClick={handleCaptchaAndSMS}
                                         >
                                             <p className={`text-lg font-medium ${!phone || startTimer ? "!text-[#9B9FAD]" : "text-primary"}`}>
                                                 {startTimer && second
-                                                    ? `Отправить повторно ${second === 60 ? "60" : `0:${String(second).padStart(2, "0")}`}`
+                                                    ? `Отправить повторно ${second === 60 ? "01:00" : `0:${String(second).padStart(2, "0")}`}`
                                                     : "Получить код"}
                                             </p>
                                         </button>
                                         {phoneStatus === "error" ? (
-                                            <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
+                                            <p className={"text-center mt-2.5 text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
                                                 привязанного к
                                                 этому номеру не найдено</p>
                                         ) : null}
                                         <button
-                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
+                                            className={"w-full flex mt-2.5 justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
                                             disabled={!isLoginReady}
                                             type={"submit"}
                                         >

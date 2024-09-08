@@ -236,7 +236,7 @@ const RegistrationCompanyHasAccount = ({isLoginClicked, setIsLoginClicked, setHa
             >
                 <p className={`text-lg font-medium ${!phone || startTimer ? "!text-[#9B9FAD]" : "text-primary"}`}>
                     {startTimer && second
-                        ? `Отправить повторно ${second === 60 ? "60" : `0:${String(second).padStart(2, "0")}`}`
+                        ? `Отправить повторно ${second === 60 ? "01:00" : `0:${String(second).padStart(2, "0")}`}`
                         : "Получить код"}
                 </p>
             </button>

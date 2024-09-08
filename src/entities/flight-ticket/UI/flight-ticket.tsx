@@ -31,7 +31,7 @@ const FlightTicket = () => {
                 <div className={"w-full flex gap-2.5"}>
                     <div className={"flex items-center gap-2.5 mb-5"}>
                         <button>
-                            <VariationImg className={"transition-all blue-stroke-hover"}/>
+                            <VariationImg className={"transition black-stroke-hover"}/>
                         </button>
                         <button>
                             <AvialogoImg/>
@@ -71,7 +71,7 @@ const FlightTicket = () => {
                 <div className={"w-full flex gap-2.5 mt-7"}>
                     <div className={"flex items-center gap-2.5 mb-5"}>
                         <button>
-                            <VariationImg/>
+                            <VariationImg className={"transition black-stroke-hover"}/>
                         </button>
                         <button>
                             <AvialogoImg/>

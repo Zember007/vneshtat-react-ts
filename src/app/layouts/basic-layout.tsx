@@ -15,12 +15,19 @@ const BasicLayout = ({component}: { component: JSX.Element }) => {
     const {companies} = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
 
+    const handleCloseSidebar = () => {
+        if (isOpen) {
+            setIsOpen(false);
+        }
+    };
+
     return (
         <div className={"flex flex-row justify-center items-center"}>
             {employeeId ? (
                 <div className={"pt-5 pb-10 flex flex-row gap-7 overflow-hidden w-full px-16 ultra:px-24"}>
                     <div
                         className={`fixed inset-0 transition-all ${isOpen ? "bg-opacity-50 z-10 bg-[#1212121A]" : "bg-opacity-0 z-[-1] bg-primary"}`}
+                        onClick={handleCloseSidebar}
                     />
 
                     <div
