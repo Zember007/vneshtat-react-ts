@@ -14,6 +14,7 @@ const Aero = lazy(() => import("@/pages/aero/aero"));
 const Transfer = lazy(() => import("@/pages/transfer/transfer"));
 const Taxi = lazy(() => import("@/pages/taxi/taxi"));
 const Admin = lazy(() => import("@/pages/admin/admin"));
+const Finance = lazy(() => import("@/pages/finance/finance"));
 
 const Layout = () => {
     return (
@@ -33,6 +34,8 @@ const Layout = () => {
                 <Route path="/sign-in" element={<Login/>} />
                 <Route path="/sign-up" element={<Registration/>} />
                 <Route path="/registration-confirm" element={<RegistrationConfirm/>} />
+                <Route path="/jobs/finance" element={<Finance/>} />
+                
             </Routes>
         </Suspense>
     );

@@ -10,9 +10,19 @@ import YandexTaxiImg from "@/assets/icons/yandex-taxi.svg?react";
 import RestaurantImg from "@/assets/icons/restaurant.svg?react";
 import BurgerImg from "@/assets/icons/burger.svg?react";
 import LockImg from "@/assets/icons/lock.svg?react";
+import CenterCostImg from "@/assets/icons/center-cost.svg?react";
+import TeamImg from "@/assets/icons/team.svg?react";
+import TravelPolicyImg from "@/assets/icons/travel-policy.svg?react";
+import ReportsImg from "@/assets/icons/reports.svg?react";
+import CompanyImg from "@/assets/icons/job.svg?react";
+import FinanceImg from "@/assets/icons/finance.svg?react";
+import AgreementImg from "@/assets/icons/agreement.svg?react";
+import C1Img from "@/assets/icons/1c.svg?react";
+
 
 const Header = () => {
     const location = useLocation().pathname;
+    
     const links = [
         {to: "/flight", img: PlaneImg, label: "Самолёт"},
         {to: "/journey", img: TrainImg, label: "Поезд"},
@@ -22,8 +32,24 @@ const Header = () => {
         {to: "/transfer", img: CarImg, label: "Трансфер"},
         {to: "/taxi", img: YandexTaxiImg, label: "Такси"},
         {to: "/restaurant", img: RestaurantImg, label: "Места"},
+        {to: "/jobs", img: CompanyImg, label: "Компания", type: 'jobs'},
+        {to: "/jobs/team", img: TeamImg, label: "Сотрудники", type: 'jobs'},
+        {to: "/jobs/center-cost", img: CenterCostImg, label: "Центры затрат", type: 'jobs'},
+        {to: "/jobs/travel-pocicy", img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs'},
+        {to: "/jobs/agreement", img: AgreementImg, label: "Согласование", type: 'jobs'},
+        {to: "/jobs/finance", img: FinanceImg, label: "Финансы", type: 'jobs'},
+        {to: "/jobs/reports", img: ReportsImg, label: "Отчеты", type: 'jobs'},
+        {to: "/jobs/1c", img: C1Img, label: "Интеграция 1С", type: 'jobs'},
     ];
+
     const isLinkSelected = links.some(item => item.to === location)
+    const links_view = links.filter(item => {
+        if(location.split('/')[1] === 'jobs') {
+            return item.type === 'jobs'
+        } else {
+            return item.type !== 'jobs'
+        }
+    })
 
     return (
         <div className="flex flex-row justify-between items-center py-2.5">
@@ -45,7 +71,7 @@ const Header = () => {
             </div>
             <div className={"flex items-center gap-2.5"}>
                 <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
-                    {links.map(({to, img: Icon, label}) => (
+                    {links_view.map(({to, img: Icon, label}) => (
                         <Link to={to} className="flex items-center" key={to}>
                             <div className="bg-primary relative z-10">
                                 <Icon className={clsx("blue-fill-hover transition", location === to && "blue-fill")}/>
