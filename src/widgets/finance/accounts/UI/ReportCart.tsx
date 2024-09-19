@@ -1,5 +1,5 @@
-import Icon from "@/assets/icons/download_xlsx.svg?react";
-import Icon1 from "@/assets/icons/download_pdf.svg?react";
+import Icon_xlsx from "@/assets/icons/download_xlsx.svg?react";
+import Icon_pdf from "@/assets/icons/download_pdf.svg?react";
 
 
 interface props {
@@ -19,11 +19,13 @@ const ReportCart = (props: props) => {
     return (
         <div className='report_cart'>
             <div className="report_cart-block">
+
+                <div className="report_cart-row">
+                    <span className="report_cart-number">№ {props.number}</span>
+                    <span className={'report_cart-status ' + props.status}>{props.status === 'no-payed' ? 'Просрочен' : props.status === 'payed' ? 'Оплачен' : 'Ожидает оплаты '}</span>
+                </div>
+                
                 <div className="report_cart-block-item">
-                    <div className="report_cart-row">
-                        <span className="report_cart-number">№ {props.number}</span>
-                        <span className={'report_cart-status ' + props.status}>{props.status === 'no-payed' ? 'Просрочен' : props.status === 'payed' ? 'Оплачен' : 'Ожидает оплаты '}</span>
-                    </div>
                     <div className="report_cart-inf">
                         <div className="report_cart-inf-item">
                             <span>Дата</span>
@@ -34,18 +36,19 @@ const ReportCart = (props: props) => {
                             <strong>{props.date.before}</strong>
                         </div>
                     </div>
-                </div>
-                <div className="report_cart-pay">
-                    <strong>{props.prices.price} ₽</strong>
-                    <span>{props.prices.payed} ₽ оплачено </span>
+
+                    <div className="report_cart-pay">
+                        <strong>{props.prices.price} ₽</strong>
+                        <span>{props.prices.payed} ₽ оплачено </span>
+                    </div>
                 </div>
             </div>
             <div className="report_cart-nav">
                 <button className='report_cart-download'>
-                    <Icon />
+                    <Icon_xlsx />
                 </button>
                 <button className='report_cart-download'>
-                    <Icon1 />
+                    <Icon_pdf />
                 </button>
             </div>
         </div>

@@ -1,10 +1,12 @@
-
+import InputDate from "@/widgets/finance/accounts/UI/InputDate";
+import { useState } from "react";
 
 interface props {
     action: any
 }
 
 const Letter = (props:props) => {
+    const [Date, setDate] = useState<string>('')
     return (
         <div className="modal__overlay">
             <div className="letter">
@@ -20,11 +22,7 @@ const Letter = (props:props) => {
                         <div className="letter__box-data">
                             <div className="letter__box-inputs">
                                 <input className='letter__box-inpt' placeholder='50 000,00 ₽ ' type="text" />
-                                <div className="inpt_date-box">
-                                    <input type="text" placeholder='Дата погашения' className="inpt_date-value" />
-                                    <input type="date" className="inpt_date" />
-                                    <img src="/images/icons/calendar.svg" alt="calendar" />
-                                </div>
+                                <InputDate value={Date} placeholder='Дата погашения' change={setDate}/>
                             </div>
                             <button>Скачать</button>
                         </div>

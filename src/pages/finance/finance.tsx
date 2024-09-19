@@ -1,33 +1,80 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './style.scss'
 import { Accounts } from "@/widgets/finance/accounts";
+import { Banks } from "@/widgets/finance/banks";
 import Button from "@/widgets/finance/UI/Button";
 import Infornation from "@/widgets/finance/UI/Infornation";
 import Letter from "@/widgets/finance/UI/Letter";
 import Modal from "@/widgets/finance/UI/Modal";
-import SwitcherItem from "@/widgets/finance/UI/SwitcherItem";
+import InputDate from "@/widgets/finance/accounts/UI/InputDate";
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
 const finance = () => {
-    const [typeFinance, setTypeFinance] = useState<string>('report')
 
+    const location = useLocation().pathname
+    const navigate = useNavigate()
+
+    useEffect(() => {
+
+        if (location === '/jobs/finance') {
+            navigate('/jobs/finance/banks')
+            console.log(1);
+
+        }
+
+    }, [])
 
 
     const [actOpen, setAct] = useState<boolean>(false)
     const [advance, setAdvance] = useState<boolean>(false)
     const [letter, setLetter] = useState<boolean>(false)
+
+
+    const [actDateBefore, setActDateBefore] = useState<string>('')
+    const [actDateFrom, setActDateFrom] = useState<string>('')
+
+    
+    const links = [
+        { title: 'Банки', to: '/jobs/finance/banks' },
+        { title: 'Счета', to: '/jobs/finance/accounts' },
+        { title: 'Закрывающие документы', to: '/jobs/finance/documents' },
+        { title: 'Отчёт по движению средств', to: '/jobs/finance/report' },
+    ]
+
     return (
         <>
             <main className='main'>
                 <div className="main__column">
                     <div className="switcher">
-                        <SwitcherItem data='banks' active={typeFinance} title='Банки' change={setTypeFinance} />
-                        <SwitcherItem data='accounts' active={typeFinance} title='Счета' change={setTypeFinance} />
-                        <SwitcherItem data='close_documents' active={typeFinance} title='Закрывающие документы' change={setTypeFinance} />
-                        <SwitcherItem data='report' active={typeFinance} title='Отчёт по движению средств' change={setTypeFinance} />
+
+                        {
+                            links.map(item => (
+                                <Link to={item.to} key={item.to} className={location === item.to ? "switcher-item active" : "switcher-item"}>{item.title}</Link>
+                            ))
+                        }
+
                     </div>
 
-                    <Accounts />
+
+                    {
+                        location.includes('/jobs/finance/banks') && <Banks />
+                    }
+
+                    {
+                        location.includes('/jobs/finance/accounts') && <Accounts />
+                    }
+
+                    {
+                        location.includes('/jobs/finance/documents') && <Accounts />
+                    }
+
+                    {
+                        location.includes('/jobs/finance/report') && <Accounts />
+                    }
+
+
 
                 </div>
                 <div className="main__column">
@@ -49,16 +96,8 @@ const finance = () => {
                         button='Скачать'
                         body={
                             <>
-                                <div className="inpt_date-box">
-                                    <input type="text" placeholder='Дата от' className="inpt_date-value" />
-                                    <input type="date" className="inpt_date" />
-                                    <img src="/images/icons/calendar.svg" alt="calendar" />
-                                </div>
-                                <div className="inpt_date-box">
-                                    <input type="text" placeholder='Дата до' className="inpt_date-value" />
-                                    <input type="date" className="inpt_date" />
-                                    <img src="/images/icons/calendar.svg" alt="calendar" />
-                                </div>
+                                <InputDate value={actDateFrom} placeholder='Дата от' change={setActDateFrom} />
+                                <InputDate value={actDateBefore} placeholder='Дата до' change={setActDateBefore} />
                             </>
                         }></Modal>
                 </div>

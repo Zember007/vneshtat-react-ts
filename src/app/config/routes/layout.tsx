@@ -35,6 +35,10 @@ const Layout = () => {
                 <Route path="/sign-up" element={<Registration/>} />
                 <Route path="/registration-confirm" element={<RegistrationConfirm/>} />
                 <Route path="/jobs/finance" element={<Finance/>} />
+                <Route path="/jobs/finance/banks" element={<Finance/>} />
+                <Route path="/jobs/finance/report" element={<Finance/>} />
+                <Route path="/jobs/finance/documents" element={<Finance/>} />
+                <Route path="/jobs/finance/accounts" element={<Finance/>} />
                 
             </Routes>
         </Suspense>

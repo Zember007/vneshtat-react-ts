@@ -32,7 +32,7 @@ const Header = () => {
         {to: "/transfer", img: CarImg, label: "Трансфер"},
         {to: "/taxi", img: YandexTaxiImg, label: "Такси"},
         {to: "/restaurant", img: RestaurantImg, label: "Места"},
-        {to: "/jobs", img: CompanyImg, label: "Компания", type: 'jobs'},
+        {to: "/jobs/company", img: CompanyImg, label: "Компания", type: 'jobs'},
         {to: "/jobs/team", img: TeamImg, label: "Сотрудники", type: 'jobs'},
         {to: "/jobs/center-cost", img: CenterCostImg, label: "Центры затрат", type: 'jobs'},
         {to: "/jobs/travel-pocicy", img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs'},
@@ -74,11 +74,9 @@ const Header = () => {
                     {links_view.map(({to, img: Icon, label}) => (
                         <Link to={to} className="flex items-center" key={to}>
                             <div className="bg-primary relative z-10">
-                                <Icon className={clsx("blue-fill-hover transition", location === to && "blue-fill")}/>
+                                <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")}/>
                             </div>
-                            {location === to && (
-                                <p className="animate-fadeIn ml-1 text-base text-blue max-w-full">{label}</p>
-                            )}
+                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
                         </Link>
                     ))}
                 </div>

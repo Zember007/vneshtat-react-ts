@@ -44,7 +44,7 @@ const BasicLayout = ({component}: { component: JSX.Element }) => {
                     </div>
 
                     <div
-                        className={`h-[calc(100vh-60px)] w-full flex flex-col gap-5 transition-all duration-300 ${isOpen ? "bg-[#1212121A] blur-md ml-[84px] ultra:ml-[110px]" : "ml-[84px] ultra:ml-[110px]"}`}>
+                        className={`h-[calc(100vh-60px)] min-h-[664px] w-full flex flex-col gap-5 transition-all duration-300 ${isOpen ? "bg-[#1212121A] blur-md ml-[84px] ultra:ml-[110px]" : "ml-[84px] ultra:ml-[110px]"}`}>
                         <Header/>
                         {component}
                     </div>

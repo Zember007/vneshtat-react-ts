@@ -221,7 +221,7 @@
 
 
 .reports {
-    border-radius: 11px;
+    border-radius: 26px;
     padding: 25px 20px;
     flex-grow: 1;
     height: 100%;
@@ -358,6 +358,7 @@
     gap: 2px;
 
     strong {
+        line-height: 1;
         font-weight: 400;
         font-size: 16px;
         text-align: center;
@@ -536,6 +537,8 @@
 }
 
 .modal__wrapper {
+    position: fixed;
+    z-index: 100000;
     visibility: hidden;
     opacity: 0;
     transition: all .5s;

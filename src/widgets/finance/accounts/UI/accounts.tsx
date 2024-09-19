@@ -97,7 +97,7 @@ const Accounts = () => {
                     {
                         repots.map(function (report) {
                             return (
-                                <ReportCart number={report.number} status={report.status} date={report.date} prices={report.prices}></ReportCart>
+                                <ReportCart key={report.number} number={report.number} status={report.status} date={report.date} prices={report.prices}></ReportCart>
                             )
                         })
 
