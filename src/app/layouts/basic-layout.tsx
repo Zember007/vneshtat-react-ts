@@ -1,8 +1,6 @@
 import {Sidebar} from "@/widgets/sidebar";
 import {Header} from "@/widgets/header";
 import {useState} from "react";
-
-1
 import AlphaImg from "@/assets/icons/alpha.svg?react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import {useSelector} from "react-redux";
@@ -13,6 +11,8 @@ const BasicLayout = ({component}: { component: JSX.Element }) => {
     const [isOpen, setIsOpen] = useState(false);
     const employeeId = localStorage.getItem("EmployeeId");
     const {companies} = useSelector((state: RootState) => state.user);
+
+    
     const navigate = useNavigate();
 
     const handleCloseSidebar = () => {

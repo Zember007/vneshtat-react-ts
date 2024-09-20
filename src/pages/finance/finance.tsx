@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react'
 import './style.scss'
 import { Accounts } from "@/widgets/finance/accounts";
+import { Documents } from "@/widgets/finance/documents";
+import { Report } from "@/widgets/finance/report";
 import { Banks } from "@/widgets/finance/banks";
 import Button from "@/widgets/finance/UI/Button";
 import Infornation from "@/widgets/finance/UI/Infornation";
 import Letter from "@/widgets/finance/UI/Letter";
 import Modal from "@/widgets/finance/UI/Modal";
-import InputDate from "@/widgets/finance/accounts/UI/InputDate";
-
+import InputDate from "@/widgets/finance/UI/InputDate";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Information } from "@/widgets/finance/types";
+
 
 
 const finance = () => {
@@ -35,13 +38,32 @@ const finance = () => {
     const [actDateBefore, setActDateBefore] = useState<string>('')
     const [actDateFrom, setActDateFrom] = useState<string>('')
 
-    
+
     const links = [
         { title: 'Банки', to: '/jobs/finance/banks' },
         { title: 'Счета', to: '/jobs/finance/accounts' },
         { title: 'Закрывающие документы', to: '/jobs/finance/documents' },
         { title: 'Отчёт по движению средств', to: '/jobs/finance/report' },
     ]
+
+    const [infornations, setInfornations] = useState<Information>({
+        list: [
+            { title: 'Задолженность', data: 'Отсутствует' },
+            { title: 'Баланс', data: '150 000.00 RUB' },
+            { title: 'Кредитный лимит', data: 'Неограничен' },
+            { title: 'Лимит по договору ', data: 'Не установлен' },
+            { title: 'Статус', data: 'Активно' },
+        ],
+        edit: true
+    })
+
+    const [viewInfornation, setViewInfornation] = useState<boolean>(true)
+
+    const changeInformation = (data:Information) => {
+        setInfornations(data)
+        setViewInfornation(true)
+    }
+
 
     return (
         <>
@@ -59,7 +81,7 @@ const finance = () => {
 
 
                     {
-                        location.includes('/jobs/finance/banks') && <Banks />
+                        location.includes('/jobs/finance/banks') && <Banks edit={changeInformation} />
                     }
 
                     {
@@ -67,18 +89,20 @@ const finance = () => {
                     }
 
                     {
-                        location.includes('/jobs/finance/documents') && <Accounts />
+                        location.includes('/jobs/finance/documents') && <Documents />
                     }
 
                     {
-                        location.includes('/jobs/finance/report') && <Accounts />
+                        location.includes('/jobs/finance/report') && <Report />
                     }
 
 
 
                 </div>
-                <div className="main__column">
-                    <Infornation />
+                <div className="main__column justify-between">
+                    <div className='grow'>
+                        {viewInfornation && (<Infornation close={setViewInfornation} data={infornations} />)}
+                    </div>
                     <div className="finances__nav">
                         <div className="buttons_generates">
                             <Button action={setAct} title='Сформировать акт сверки' />

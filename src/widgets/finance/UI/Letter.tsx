@@ -1,4 +1,4 @@
-import InputDate from "@/widgets/finance/accounts/UI/InputDate";
+import InputDate from "@/widgets/finance/UI/InputDate";
 import { useState } from "react";
 
 interface props {

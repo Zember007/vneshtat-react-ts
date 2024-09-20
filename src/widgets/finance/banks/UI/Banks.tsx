@@ -7,7 +7,7 @@ import PlusImg from "@/assets/icons/plus.svg?react";
 
 
 
-const Banks = () => {
+const Banks = ({edit}:{edit:any}) => {
 
     const [banks, setBanks] = useState([
         {
@@ -20,9 +20,39 @@ const Banks = () => {
         }
     ])
 
-    const EditBank = (id: Number) => {
-        console.log(id);
+    const EditBank = (index: number) => {
+        const send = {
+            list: [
+                {
+                    title: 'Номер счёта',
+                    data: '4400 2493 2871 7824 2873'
+                },
+                {
+                    title: 'Банк',
+                    data: 'Волго-вятский банк ПАО Сбербанк'
+                },
+                {
+                    title: 'Город',
+                    data: 'г. Нижний Новгород'
+                },
+                {
+                    title: 'БИК',
+                    data: '034920843'
+                },
+                {
+                    title: 'Корр. счёт',
+                    data: '0309090084920843'
+                },
+                {
+                    title: 'Статус',
+                    data: 'Действующий'
+                }
+            ],
 
+            edit: true
+        }
+
+        edit(send)
     }
 
 
@@ -32,10 +62,10 @@ const Banks = () => {
         <>
             <div className="flex flex-col gap-[20px] rounded-[26px] px-[30px] py-[25px] bg-[#FAFAFA] h-full">
                 <span className="text-[#121212] text-[25px] font-medium">Банковские счета</span>
-                <div className="flex flex-col gap-[10px] h-full max-h-full">
+                <div className="flex flex-col gap-[10px] h-full max-h-full overflow-y-auto scroll">
                     {
                         banks.map((bank, index) => (
-                            <BankCart key={index} EditBank={EditBank} title={bank.title} Img={bank.Img} status={true} id={index} />
+                            <BankCart key={index} EditBank={EditBank} title={bank.title} Img={bank.Img} status={true} index={index} />
                         ))
                     }
                 </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import SearchInput from './SearchInput'
-import CheckerFilter from './CheckerFilter'
-import InputDate from './InputDate'
+import SearchInput from '../../UI/SearchInput'
+import CheckerFilter from '../../UI/CheckerFilter'
+import InputDate from '../../UI/InputDate'
 import ReportCart from './ReportCart'
 import Icon from "@/assets/icons/download_xlsx.svg?react";
 
@@ -93,7 +93,7 @@ const Accounts = () => {
                         <Icon />
                     </button>
                 </div>
-                <div className="reports__box">
+                <div className="reports__box overflow-y-auto scroll">
                     {
                         repots.map(function (report) {
                             return (

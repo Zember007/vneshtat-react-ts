@@ -20,6 +20,7 @@ function App() {
             const setUserData = async () => {
                 const user = await getUser();
                 dispatch(setUser(user));
+                console.log(setUser(user), 'user');
             }
             setUserData()
 

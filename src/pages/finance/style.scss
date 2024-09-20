@@ -395,6 +395,7 @@
     background: #fafafa;
     padding: 20px;
     height: 100%;
+    max-width: 300px;
 }
 
 .information__top {
@@ -424,6 +425,7 @@
 .information__item {
     display: flex;
     align-items: center;
+    gap: 20px;
     justify-content: space-between;
     border-radius: 13px;
     padding: 8px 10px;
@@ -433,12 +435,14 @@
         font-weight: 500;
         font-size: 12px;
         color: #9b9fad;
+        white-space: nowrap;
     }
 
     strong {
         font-weight: 500;
         font-size: 12px;
         color: #121212;
+        text-align: right;
     }
 }
 
