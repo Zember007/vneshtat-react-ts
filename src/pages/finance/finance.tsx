@@ -11,6 +11,7 @@ import Modal from "@/widgets/finance/UI/Modal";
 import InputDate from "@/widgets/finance/UI/InputDate";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Information } from "@/widgets/finance/types";
+import Layout from '@/widgets/jobs/layout/layout';
 
 
 
@@ -59,7 +60,7 @@ const finance = () => {
 
     const [viewInfornation, setViewInfornation] = useState<boolean>(true)
 
-    const changeInformation = (data:Information) => {
+    const changeInformation = (data: Information) => {
         setInfornations(data)
         setViewInfornation(true)
     }
@@ -67,8 +68,8 @@ const finance = () => {
 
     return (
         <>
-            <main className='main'>
-                <div className="main__column">
+            <Layout component={
+                <>
                     <div className="switcher">
 
                         {
@@ -96,13 +97,15 @@ const finance = () => {
                         location.includes('/jobs/finance/report') && <Report />
                     }
 
+                </>
+            }
 
-
-                </div>
-                <div className="main__column justify-between">
-                    <div className='grow'>
+                information={
+                    <>
                         {viewInfornation && (<Infornation close={setViewInfornation} data={infornations} />)}
-                    </div>
+                    </>
+                }
+                navigation={
                     <div className="finances__nav">
                         <div className="buttons_generates">
                             <Button action={setAct} title='Сформировать акт сверки' />
@@ -110,7 +113,10 @@ const finance = () => {
                         </div>
                         <Button action={setLetter} title='Гарантийное письмо' />
                     </div>
-                </div>
+                }
+            />
+
+
 
                 <div className={actOpen ? "modal__wrapper active" : "modal__wrapper"}>
                     <Modal
@@ -144,9 +150,6 @@ const finance = () => {
                         action={setLetter}
                     ></Letter>
                 </div>
-
-
-            </main>
         </>
     );
 };
