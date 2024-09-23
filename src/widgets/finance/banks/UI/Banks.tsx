@@ -9,7 +9,7 @@ import PlusImg from "@/assets/icons/plus.svg?react";
 
 const Banks = ({edit}:{edit:any}) => {
 
-    const [banks, setBanks] = useState([
+    const banks = [
         {
             title: 'Альфа банк',
             Img: AlphaImg
@@ -18,9 +18,11 @@ const Banks = ({edit}:{edit:any}) => {
             title: 'Сбербанк',
             Img: SberbankImg
         }
-    ])
+    ]
 
     const EditBank = (index: number) => {
+        console.log(index);
+        
         const send = {
             list: [
                 {
