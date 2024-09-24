@@ -71,11 +71,11 @@ const ReportCart = ({ date, receipt, writingOff, data }: props) => {
                     <div className="grid grid-cols-[1.5fr_4fr_2fr_2fr_22px] gap-[8px]">
                         <div><span className={clsx("text-[12px] font-medium transition-all duration-500", active && "opacity-0")}>Итого за день</span></div>
                         <div></div>
-                        <div><div className={clsx("inline-flex items-center gap-[15px] transition-all duration-500", active && "rounded-[13px] px-[15px] py-[8px] bg-[#FBFBFB]")}>
-                            <span className={clsx("text-[#9B9FAD] text-[12px] font-medium max-w-[0px] overflow-hidden transition-all duration-500", active && "!max-w-[100px]")}>Списание</span>
+                        <div><div className={clsx("inline-flex items-center transition-all duration-500", active && "rounded-[13px] px-[15px] py-[8px] bg-[#FBFBFB]")}>
+                            <span className={clsx("text-[#9B9FAD] text-[12px] font-medium max-w-[0px] overflow-hidden transition-all duration-500", active && "!max-w-[100px] mr-[15px]")}>Списание</span>
                             <span className="text-[12px] font-medium">{(receipt + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')} ₽</span></div></div>
-                        <div><div className={clsx("inline-flex items-center gap-[15px] transition-all duration-500", active && "rounded-[13px] px-[15px] py-[8px] bg-[#FBFBFB]")}>
-                            <span className={clsx("text-[#9B9FAD] text-[12px] font-medium max-w-[0px] overflow-hidden transition-all duration-500", active && "!max-w-[100px]")}>Поступление</span>
+                        <div><div className={clsx("inline-flex items-center transition-all duration-500", active && "rounded-[13px] px-[15px] py-[8px] bg-[#FBFBFB]")}>
+                            <span className={clsx("text-[#9B9FAD] text-[12px] font-medium max-w-[0px] overflow-hidden transition-all duration-500", active && "!max-w-[100px] mr-[15px]")}>Поступление</span>
                             <span className="text-[12px] font-medium">{(writingOff + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')}  ₽</span></div></div>
                     </div>
                 </div>
