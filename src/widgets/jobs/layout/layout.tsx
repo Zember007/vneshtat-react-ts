@@ -6,7 +6,7 @@ const Layout = ({ component, information, navigation }: { component: JSX.Element
             <div className="flex flex-col gap-[15px] h-full grow">
                 {component}
             </div>
-            <div className="flex flex-col gap-[15px] justify-between w-[300px]">
+            <div className="flex flex-col gap-[15px] justify-between w-[300px] min-w-[300px]">
                 <div className='grow rounded-[26px] bg-[#FAFAFA]'>
                     {information}
                 </div>

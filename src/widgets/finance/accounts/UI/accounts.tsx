@@ -1,11 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchInput from '../../UI/SearchInput'
 import CheckerFilter from '../../UI/CheckerFilter'
 import InputDate from '../../UI/InputDate'
 import ReportCart from './ReportCart'
 import Icon from "@/assets/icons/download_xlsx.svg?react";
+import { getAccessToken } from "@/shared/utils";
 
-
+interface reports {
+    number: number;
+    Status: string;
+    PaidAt: Date;
+    PayDeadline: Date;
+    FullBill: number;
+    PaidBill: number;
+}
 
 const Accounts = () => {
 
@@ -17,44 +25,37 @@ const Accounts = () => {
     const [sum_filter, setSum] = useState<boolean>(false)
     const [new_filter, setNew] = useState<boolean>(false)
 
-    const repots = [
-        {
-            number: '8812',
-            status: 'payed',
-            date: {
-                created: '01.11.2005',
-                before: '12.11.2024'
-            },
-            prices: {
-                price: '8010',
-                payed: '1222'
+    const [repots, setReports] = useState<Array<reports>>([])
+
+    useEffect(() => {
+        getBills()
+    }, [])
+
+    const getBills = async () => {
+        const EmployeeId = localStorage.getItem('EmployeeId')
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/finance/get_company_bills');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${getAccessToken()}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
             }
-        },
-        {
-            number: '8812',
-            status: 'progress',
-            date: {
-                created: '01.11.2005',
-                before: '12.11.2024'
-            },
-            prices: {
-                price: '8010',
-                payed: '1222'
+
+            if (data.status === "success" && data.data) {
+                setReports(data.data)
             }
-        },
-        {
-            number: '8812',
-            status: 'progress',
-            date: {
-                created: '01.11.2005',
-                before: '12.11.2024'
-            },
-            prices: {
-                price: '8010',
-                payed: '1222'
-            }
+        } catch (error) {
+
+            console.log(error);
+
         }
-    ]
+    }
     return (
         <>
 
@@ -95,9 +96,9 @@ const Accounts = () => {
                 </div>
                 <div className="reports__box overflow-y-auto scroll">
                     {
-                        repots.map(function (report) {
+                        repots.map(function (report, index) {
                             return (
-                                <ReportCart key={report.number} number={report.number} status={report.status} date={report.date} prices={report.prices}></ReportCart>
+                                <ReportCart key={index + 1} number={index + 1} Status={report.Status} PaidAt={report.PaidAt} PayDeadline={report.PayDeadline} FullBill={report.FullBill} PaidBill={report.PaidBill}></ReportCart>
                             )
                         })
 
@@ -109,4 +110,4 @@ const Accounts = () => {
     );
 };
 
-export {Accounts};
+export { Accounts };

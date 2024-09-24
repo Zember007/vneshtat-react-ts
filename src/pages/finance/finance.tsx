@@ -12,7 +12,7 @@ import InputDate from "@/widgets/finance/UI/InputDate";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Information } from "@/widgets/finance/types";
 import Layout from '@/widgets/jobs/layout/layout';
-
+import { getAccessToken } from "@/shared/utils";
 
 
 const finance = () => {
@@ -24,11 +24,14 @@ const finance = () => {
 
         if (location === '/jobs/finance') {
             navigate('/jobs/finance/banks')
-            console.log(1);
-
         }
 
+        getFinanceDetails()
+
+
     }, [])
+
+
 
 
     const [actOpen, setAct] = useState<boolean>(false)
@@ -48,14 +51,8 @@ const finance = () => {
     ]
 
     const [infornations, setInfornations] = useState<Information>({
-        list: [
-            { title: 'Задолженность', data: 'Отсутствует' },
-            { title: 'Баланс', data: '150 000.00 RUB' },
-            { title: 'Кредитный лимит', data: 'Неограничен' },
-            { title: 'Лимит по договору ', data: 'Не установлен' },
-            { title: 'Статус', data: 'Активно' },
-        ],
-        edit: true
+        list: [],
+        edit: false
     })
 
     const [viewInfornation, setViewInfornation] = useState<boolean>(true)
@@ -63,6 +60,50 @@ const finance = () => {
     const changeInformation = (data: Information) => {
         setInfornations(data)
         setViewInfornation(true)
+    }
+
+    const getSum = (data:number) => {
+        return (data + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ') +' RUB'
+    }
+
+    const getFinanceDetails = async () => {
+        const EmployeeId = localStorage.getItem('EmployeeId')
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/finance/get_company_financial_details');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${getAccessToken()}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                console.log(data.data)
+
+                const details = {
+                    list: [
+                        { title: 'Задолженность', data: data.data.Debt? getSum(data.data.Debt)  : 'Отсутствует' },
+                        { title: 'Баланс', data: getSum(data.data.Balance) },
+                        { title: 'Кредитный лимит', data: !data.data.CreditLimit?'Неограничен' : getSum(data.data.CreditLimit) },
+                        { title: 'Лимит по договору ', data: !data.data.ContractLimit? 'Не установлен' : getSum(data.data.ContractLimit) },
+                        { title: 'Статус', data: data.data.Status !== 'unactive'? 'Активно' : 'Не активно' },
+                    ],
+                    edit: false
+                }
+
+                setInfornations(details)
+                
+            }
+        } catch (error) {
+
+            console.log(error);
+            
+        }
     }
 
 
@@ -118,38 +159,38 @@ const finance = () => {
 
 
 
-                <div className={actOpen ? "modal__wrapper active" : "modal__wrapper"}>
-                    <Modal
-                        action={setAct}
-                        title='Акт-сверки'
-                        text='Укажите период для формирования документа.'
-                        button='Скачать'
-                        body={
-                            <>
-                                <InputDate value={actDateFrom} placeholder='Дата от' change={setActDateFrom} />
-                                <InputDate value={actDateBefore} placeholder='Дата до' change={setActDateBefore} />
-                            </>
-                        }></Modal>
-                </div>
+            <div className={actOpen ? "modal__wrapper active" : "modal__wrapper"}>
+                <Modal
+                    action={setAct}
+                    title='Акт-сверки'
+                    text='Укажите период для формирования документа.'
+                    button='Скачать'
+                    body={
+                        <>
+                            <InputDate value={actDateFrom} placeholder='Дата от' change={setActDateFrom} />
+                            <InputDate value={actDateBefore} placeholder='Дата до' change={setActDateBefore} />
+                        </>
+                    }></Modal>
+            </div>
 
-                <div className={advance ? "modal__wrapper active" : "modal__wrapper"}>
-                    <Modal
-                        action={setAdvance}
-                        title='Счёт на аванс'
-                        text='Укажите желаемую сумму аванса.'
-                        button='Сформировать'
-                        body={
-                            <>
-                                <input type="text" placeholder='50 000,00 ₽' className='input_default' />
-                            </>
-                        }></Modal>
-                </div>
+            <div className={advance ? "modal__wrapper active" : "modal__wrapper"}>
+                <Modal
+                    action={setAdvance}
+                    title='Счёт на аванс'
+                    text='Укажите желаемую сумму аванса.'
+                    button='Сформировать'
+                    body={
+                        <>
+                            <input type="text" placeholder='50 000,00 ₽' className='input_default' />
+                        </>
+                    }></Modal>
+            </div>
 
-                <div className={letter ? "modal__wrapper active" : "modal__wrapper"}>
-                    <Letter
-                        action={setLetter}
-                    ></Letter>
-                </div>
+            <div className={letter ? "modal__wrapper active" : "modal__wrapper"}>
+                <Letter
+                    action={setLetter}
+                ></Letter>
+            </div>
         </>
     );
 };

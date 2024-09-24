@@ -3,43 +3,46 @@ import Icon_pdf from "@/assets/icons/download_pdf.svg?react";
 
 
 interface props {
-    number: String,
-    status: String,
-    date: {
-        created: String,
-        before: String
-    },
-    prices: {
-        price: String,
-        payed: String
-    }
+    number: number;
+    Status: string;
+    PaidAt: Date;
+    PayDeadline: Date;
+    FullBill: number;
+    PaidBill: number;
 }
 
 const ReportCart = (props: props) => {
+    const GetDate = (date: Date): string => {
+        const day = date.getDate()
+        const month = date.getMonth() + 1
+        const year = date.getFullYear()
+
+        return (day > 9 ? day : '0' + day) + '.' + (month > 9 ? month : '0' + month) + '.' + year
+    }
     return (
         <div className='report_cart'>
             <div className="report_cart-block">
 
                 <div className="report_cart-row">
                     <span className="report_cart-number">№ {props.number}</span>
-                    <span className={'report_cart-status ' + props.status}>{props.status === 'no-payed' ? 'Просрочен' : props.status === 'payed' ? 'Оплачен' : 'Ожидает оплаты '}</span>
+                    <span className={'report_cart-status ' + props.Status}>{props.Status === 'no-payed' ? 'Просрочен' : props.Status !== 'waiting_for_payment' ? 'Оплачен' : 'Ожидает оплаты '}</span>
                 </div>
-                
+
                 <div className="report_cart-block-item">
                     <div className="report_cart-inf">
                         <div className="report_cart-inf-item">
                             <span>Дата</span>
-                            <strong>{props.date.created}</strong>
+                            <strong>{GetDate(props.PaidAt)}</strong>
                         </div>
                         <div className="report_cart-inf-item">
                             <span>Оплатить до</span>
-                            <strong>{props.date.before}</strong>
+                            <strong>{GetDate(props.PayDeadline)}</strong>
                         </div>
                     </div>
 
                     <div className="report_cart-pay">
-                        <strong>{props.prices.price} ₽</strong>
-                        <span>{props.prices.payed} ₽ оплачено </span>
+                        <strong>{props.FullBill} ₽</strong>
+                        <span>{props.PaidBill} ₽ оплачено </span>
                     </div>
                 </div>
             </div>
