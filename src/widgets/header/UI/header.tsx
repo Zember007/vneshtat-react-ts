@@ -33,7 +33,7 @@ const Header = () => {
         {to: "/taxi", img: YandexTaxiImg, label: "Такси"},
         {to: "/restaurant", img: RestaurantImg, label: "Места"},
         {to: "/jobs/company", img: CompanyImg, label: "Компания", type: 'jobs'},
-        {to: "/jobs/team", img: TeamImg, label: "Сотрудники", type: 'jobs'},
+        {to: "/jobs/employees", img: TeamImg, label: "Сотрудники", type: 'jobs'},
         {to: "/jobs/center-cost", img: CenterCostImg, label: "Центры затрат", type: 'jobs'},
         {to: "/jobs/travel-pocicy", img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs'},
         {to: "/jobs/agreement", img: AgreementImg, label: "Согласование", type: 'jobs'},

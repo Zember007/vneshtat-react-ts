@@ -1,43 +1,28 @@
-
-
-
+import Switcher from "@/widgets/jobs/UI/Switcher";
+import { useState } from "react";
 
 const Services = () => {
 
-    
+    const [switcher, setSwitcher] = useState<boolean>(false)
+
     return (
         <>
 
-            <div className="search_block">
-                <div className="search_block__inputs">
-                </div>
-                <div className="search_block__filters">
+            {/* <span className='font-normal text-[#787B86] text-center max-w-[390px]'>Выберите календарный отрезок и параметры формирования отчёта.</span> */}
 
-                    <input type="checkbox" id='input_type' className='input_type' />
+            <div className="flex flex-col gap-[15px] p-[20px] h-full">
 
-                    <label htmlFor="input_type" className="type">
 
-                        <span>Все</span>
-
-                        <span>Активные</span>
-
-                    </label>
+                <Switcher items={['Всё', 'По услугам']} change={setSwitcher} checked={switcher}/>
 
 
 
+                <div className="grow h-full">
+                    <div className="p-[15px] bg-[#ECEEF1] rounded-[13px]">
+                        <div className="h-full bg-[#FBFBFBD1] p-[15px] rounded-[13px]">
 
-                </div>
-            </div>
-            <div className="reports">
-                <div className="reports__top">
-                    <div className="reports__title">Счета</div>
-                    <button className="reports__download">
-                        <span>Скачать все</span>
-                        
-                    </button>
-                </div>
-                <div className="reports__box overflow-y-auto scroll">
-                   
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -45,4 +30,4 @@ const Services = () => {
     );
 };
 
-export {Services};
+export { Services };

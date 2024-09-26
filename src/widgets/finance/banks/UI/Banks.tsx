@@ -3,11 +3,14 @@ import BankCart from './BankCart'
 import SberbankImg from "@/assets/icons/sberbank.svg?react";
 import AlphaImg from "@/assets/icons/alpha.svg?react";
 import PlusImg from "@/assets/icons/plus.svg?react";
+import Modal from '@/widgets/jobs/UI/Modal';
+import { useState } from 'react';
 
 
 
+const Banks = ({ edit }: { edit: any }) => {
 
-const Banks = ({edit}:{edit:any}) => {
+    const [addBank, setAddBank] = useState<boolean>(false)
 
     const banks = [
         {
@@ -22,7 +25,7 @@ const Banks = ({edit}:{edit:any}) => {
 
     const EditBank = (index: number) => {
         console.log(index);
-        
+
         const send = {
             list: [
                 {
@@ -72,13 +75,30 @@ const Banks = ({edit}:{edit:any}) => {
                     }
                 </div>
 
-                <button className="flex items-center gap-[20px] rounded-[26px] border border-solid border-[#E5E7EA] px-[25px] py-[23px]">
-                    <PlusImg className='h-[15px] w-[15px]'/>
+                <button onClick={() => {setAddBank(true)}} className="flex items-center gap-[20px] rounded-[26px] border border-solid border-[#E5E7EA] px-[25px] py-[23px]">
+                    <PlusImg className='h-[15px] w-[15px]' />
                     <span className='font-normal text-[#787B86]'>Добавить счет</span>
                 </button>
             </div>
 
 
+            <div className={addBank ? "modal__wrapper active" : "modal__wrapper"}>
+                <Modal
+                    action={setAddBank}
+                    title='Счёт на аванс'
+                    text='Укажите желаемую сумму аванса.'
+                    button='Добавить'
+                    body={
+                        <div className='flex flex-col gap-[10px] w-full'>
+                            <input type="text" placeholder='Название банка' className='w-full' />
+                            <input type="text" placeholder='Номер счета' className='w-full' />
+                            <input type="text" placeholder='Банк' className='w-full' />
+                            <input type="text" placeholder='Город' className='w-full' />
+                            <input type="text" placeholder='БИК' className='w-full' />
+                            <input type="text" placeholder='Номер корреспондентского счета' className='w-full' />
+                        </div>
+                    }></Modal>
+            </div>
         </>
     );
 };

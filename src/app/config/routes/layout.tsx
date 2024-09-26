@@ -16,6 +16,7 @@ const Taxi = lazy(() => import("@/pages/taxi/taxi"));
 const Admin = lazy(() => import("@/pages/admin/admin"));
 const Finance = lazy(() => import("@/pages/finance/finance"));
 const Reports = lazy(() => import("@/pages/reports/reports"));
+const Employees = lazy(() => import("@/pages/employees/employees"));
 
 const Layout = () => {
     return (
@@ -43,7 +44,11 @@ const Layout = () => {
                 <Route path="/jobs/reports" element={<Reports/>} />
                 <Route path="/jobs/reports/services" element={<Reports/>} />
                 <Route path="/jobs/reports/business" element={<Reports/>} />
-                
+                <Route path="/jobs/employees" element={<Employees/>} />                
+                <Route path="/jobs/employees/structure" element={<Employees/>} />                
+                <Route path="/jobs/employees/sections" element={<Employees/>} />                
+                <Route path="/jobs/employees/passengers" element={<Employees/>} />                
+                <Route path="/jobs/employees/groups" element={<Employees/>} />                
             </Routes>
         </Suspense>
     );

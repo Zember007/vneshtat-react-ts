@@ -2,6 +2,7 @@ import {thunk} from "redux-thunk";
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import journeyStore from "@/widgets/journey/journey-operations/model/journey.store";
 import flightStore from "@/widgets/flight/flight-operations/model/flight.store";
+import reportsStore from "@/widgets/reports/model/reports.store";
 import busStore from "@/widgets/bus/bus-operations/model/bus.store";
 import promoStore from "@/widgets/promo/promo-popups/model/promo.store";
 import registrationCompanyStore from "@/widgets/registration/registration-company/model/registration-company.store";
@@ -14,6 +15,7 @@ import taxiStore from "@/widgets/taxi/taxi-operations/model/taxi.store";
 const rootReducer = combineReducers({
     journey: journeyStore,
     flight: flightStore,
+    reports: reportsStore,
     bus: busStore,
     user: userStore,
     promo: promoStore,

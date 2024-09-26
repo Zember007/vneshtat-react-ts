@@ -1,6 +1,6 @@
 
 
-const Layout = ({ component, information, navigation }: { component: JSX.Element, information?: JSX.Element , navigation?: JSX.Element  }) => {
+const Layout = ({ component, information, navigation }: { component: JSX.Element, information?: JSX.Element  , navigation?: JSX.Element | boolean }) => {
     return (
         <main className='flex gap-[15px] h-full grow'>
             <div className="flex flex-col gap-[15px] h-full grow">

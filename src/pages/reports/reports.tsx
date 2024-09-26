@@ -1,7 +1,9 @@
-import { useEffect } from 'react'
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from "react-router-dom"
 import Layout from '@/widgets/jobs/layout/layout';
-import clsx from "clsx";
+import Button from '@/widgets/jobs/UI/Button';
+import { Services } from '@/widgets/reports/services';
+import { ServicesFilters } from '@/widgets/reports/services';
 
 
 
@@ -25,6 +27,9 @@ const reports = () => {
     ]
 
 
+    const [filterStep, setFilterStep] = useState<number>(0)
+
+
     return (
         <>
             <Layout component={
@@ -33,24 +38,47 @@ const reports = () => {
                 <>
                     <div className="flex gap-[10px]">
                         {links.map(item => (
-                            <Link to={item.to} key={item.to} className={clsx('px-[25px] py-[15px] rounded-[13px] bg-[#FAFAFA] font-normal transition-all ', location === item.to && 'text-[#007BFB]')}>{item.title}</Link>
+                            <Button to={item.to} key={item.to} Class={location === item.to ? 'text-[#007BFB]' : ''} title={item.title}></Button>
                         ))}
                     </div>
                     <div className="grow h-full rounded-[26px] bg-[#FAFAFA]">
-                        <span className='font-normal text-[#787B86] text-center max-w-[390px]'>Выберите календарный отрезок и параметры формирования отчёта.</span>
-                        {/* 
-                    {
-                        location.includes('/jobs/reports/services') && <Banks />
-                    }
+                        {
+                            location.includes('/jobs/reports/services') && <Services />
+                        }
 
-                    {
+                        {/* {
                         location.includes('/jobs/reports/business') && <Accounts />
                     } */}
                     </div>
                 </>
 
 
-            } />
+            }
+
+                information={
+                    <>
+                        {
+                            location.includes('/jobs/reports/services') && <ServicesFilters filterStep={filterStep} setFilterStep={setFilterStep} />
+                        }
+                    </>
+                }
+
+                navigation={
+                          
+                        location.includes('/jobs/reports/services') && (
+                            <button className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full"
+                            onClick={() => {
+                                if(filterStep != 2) {
+                                    setFilterStep(filterStep+1)
+                                }
+                            }}
+                            ><p className="text-[16px] text-primary">{
+                                filterStep == 0? 'Выбрать сотрудников' :filterStep==1? 'Отобразить' : 'Скачать в .xlsx'
+                            }</p></button>    
+                        )
+                        
+                }
+            />
 
 
 

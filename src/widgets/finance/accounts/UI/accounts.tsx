@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import SearchInput from '../../UI/SearchInput'
-import CheckerFilter from '../../UI/CheckerFilter'
+import SearchInput from '@/widgets/jobs/UI/SearchInput'
+import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import InputDate from '../../UI/InputDate'
 import ReportCart from './ReportCart'
 import Icon from "@/assets/icons/download_xlsx.svg?react";
 import { getAccessToken } from "@/shared/utils";
+import Switcher from '@/widgets/jobs/UI/Switcher';
 
 interface reports {
     number: number;
@@ -26,6 +27,7 @@ const Accounts = () => {
     const [new_filter, setNew] = useState<boolean>(false)
 
     const [repots, setReports] = useState<Array<reports>>([])
+    const [switcher, setSwitcher] = useState<boolean>(false)
 
     useEffect(() => {
         getBills()
@@ -56,6 +58,8 @@ const Accounts = () => {
 
         }
     }
+
+    
     return (
         <>
 
@@ -69,13 +73,8 @@ const Accounts = () => {
 
                     <input type="checkbox" id='input_type' className='input_type' />
 
-                    <label htmlFor="input_type" className="type">
+                    <Switcher items={['Все', 'Активные']} change={setSwitcher} checked={switcher}/>
 
-                        <span>Все</span>
-
-                        <span>Активные</span>
-
-                    </label>
 
 
                     <CheckerFilter change={setDefault} title='По умолчанию' active={default_filter} />
