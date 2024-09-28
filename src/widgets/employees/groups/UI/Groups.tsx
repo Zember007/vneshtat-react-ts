@@ -1,21 +1,31 @@
 import SearchInput from '@/widgets/jobs/UI/SearchInput'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import Switcher from '@/widgets/jobs/UI/Switcher';
-import StafferCart from '../../../jobs/UI/StafferCart';
+import GroupCart from '@/widgets/jobs/UI/GroupCart'
 import { useState, useEffect } from 'react';
-import { Staffers } from '../../utils';
+import ArchiveImg from "@/assets/icons/archive.svg?react";
 
 interface staffers {
-    id: number;
     name: string;
-    speciality: string;
+    staffers: number;
     archive: boolean;
-    lastVisite: Date;
-    online: boolean;
 }
 
 
-const Index = ({select, active}:{select:Function, active:number | null}) => {
+const Groups = () => {
+
+    const groups = [
+        {
+            name: 'Сборная Самары по биатлону',
+            staffers: 18,
+            archive: false
+        },
+        {
+            name: 'ДЮСШ №5 г. Самары',
+            staffers: 34,
+            archive: true
+        },
+    ]
 
 
 
@@ -23,10 +33,10 @@ const Index = ({select, active}:{select:Function, active:number | null}) => {
     const [switcher, setSwitcher] = useState<boolean>(false)
     const [alphabet_filter, setAlphabet] = useState<boolean>(true)
     const [new_filter, setNew] = useState<boolean>(false)
-    const [StaffersView, setStaffersView] = useState<Array<staffers>>([])
+    const [GroupsView, setGroupsView] = useState<Array<staffers>>(groups)
 
-    const filterStaffers = (data:Array<staffers>) => {
-        setStaffersView(data.filter(item => {
+    const filterGroups = (data:Array<staffers>) => {
+        setGroupsView(data.filter(item => {
             if(switcher) {
                 return item.archive
             } else {
@@ -37,7 +47,7 @@ const Index = ({select, active}:{select:Function, active:number | null}) => {
     }
 
     useEffect(() => {
-        filterStaffers(Staffers)
+        filterGroups(groups)
     }, [switcher])
 
     
@@ -52,21 +62,18 @@ const Index = ({select, active}:{select:Function, active:number | null}) => {
                 <div className="flex gap-[10px] items-center">
                     <Switcher items={['Действительные', 'Архив']} change={setSwitcher} checked={switcher} />
                     <CheckerFilter change={setAlphabet} title='По алфавиту' active={alphabet_filter} />
-                    {!switcher &&<CheckerFilter change={setNew} title='По статусу' active={new_filter} />}
                     <CheckerFilter change={setNew} title='Сначала новые' active={new_filter} />
-                    {!switcher &&<CheckerFilter change={setNew} title='Онлайн' active={new_filter} />}
-                    {!switcher && <CheckerFilter change={setNew} title='Только с доступом' active={new_filter} />}
                 </div>
             </div>
 
             <div className="p-[20px] rounded-[26px] bg-[#FAFAFA] flex flex-col gap-[20px] grow">
                 <div>
-                    <span className='text-[25px] font-medium'>Сотрудники</span>
+                    <span className='text-[25px] font-medium'>Группы пассажиров</span>
                 </div>
                 <div className="flex flex-col gap-[10px]">
                     {
-                        StaffersView.map((item) => (
-                            <StafferCart select={select} id={item.id} active={active} viewOnline={true} viewMessage={true} lastVisite={item.lastVisite} online={item.online} key={item.id} name={item.name} speciality={item.speciality} archive={item.archive}/>
+                        GroupsView.map((item,index) => (
+                            <GroupCart key={index} name={item.name} staffers={item.staffers + ' пассажиров'} icon={<ArchiveImg />}/>
                         ))
                     }
                 </div>
@@ -76,4 +83,4 @@ const Index = ({select, active}:{select:Function, active:number | null}) => {
     );
 };
 
-export { Index };
+export { Groups };

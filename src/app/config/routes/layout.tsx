@@ -17,6 +17,7 @@ const Admin = lazy(() => import("@/pages/admin/admin"));
 const Finance = lazy(() => import("@/pages/finance/finance"));
 const Reports = lazy(() => import("@/pages/reports/reports"));
 const Employees = lazy(() => import("@/pages/employees/employees"));
+const Company = lazy(() => import("@/pages/company/company"));
 
 const Layout = () => {
     return (
@@ -48,7 +49,8 @@ const Layout = () => {
                 <Route path="/jobs/employees/structure" element={<Employees/>} />                
                 <Route path="/jobs/employees/sections" element={<Employees/>} />                
                 <Route path="/jobs/employees/passengers" element={<Employees/>} />                
-                <Route path="/jobs/employees/groups" element={<Employees/>} />                
+                <Route path="/jobs/employees/groups" element={<Employees/>} />
+                <Route path="/jobs/company" element={<Company/>} />                
             </Routes>
         </Suspense>
     );

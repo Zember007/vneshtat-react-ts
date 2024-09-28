@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Departments, NoDepartments, Services } from "../utils";
+import { Departments, NoDepartments, Services, centers, projects, structure } from "../utils";
 import { changeCheckbox, checkIfChanged } from "@/shared/utils";
 import { FilterData } from "@/shared/types";
 import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
@@ -8,12 +8,19 @@ export interface DepartmentsState {
     departments: FilterData<CheckboxItem[]>;
     noDepartments: FilterData<CheckboxItem[]>;
     services: FilterData<CheckboxItem[]>;
+    centers: CheckboxItem[];
+    projects: CheckboxItem[];
+    structure: CheckboxItem[];
 }
 
 const initialState: DepartmentsState = {
     departments: {data: Departments, isChanged: false},
     noDepartments: {data: NoDepartments, isChanged: false},
     services: {data: Services, isChanged: false},
+    centers: centers,
+    projects: projects,
+    structure: structure,
+
 };
 
 const reportsStore = createSlice({
@@ -51,13 +58,28 @@ const reportsStore = createSlice({
                 state.services.data = changeCheckbox(state.services.data, id, oneChoise);
                 state.services.isChanged = checkIfChanged(initialState.services.data, state.services.data);
             }
-        }
+        },
+        setCenters: (state, action) => {
+            const {id, oneChoise} = action.payload;
+            state.centers = changeCheckbox(state.centers, id, oneChoise);
+        },
+        setProjects: (state, action) => {
+            const {id, oneChoise} = action.payload;
+            state.projects = changeCheckbox(state.projects, id, oneChoise);
+        },
+        setStructure: (state, action) => {
+            const {id, oneChoise} = action.payload;
+            state.structure = changeCheckbox(state.structure, id, oneChoise);
+        },
     }
 })
 
 export const {
     setDepartments,
     setNoDepartments,
-    setServices
+    setServices,
+    setCenters,
+    setProjects,
+    setStructure
 } = reportsStore.actions
 export default reportsStore.reducer;

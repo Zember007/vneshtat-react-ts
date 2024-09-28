@@ -4,6 +4,7 @@ import MessageImg from "@/assets/icons/message.svg?react";
 import clsx from "clsx";
 
 interface props {
+    id: number
     name: string;
     speciality?: string;
     archive?: boolean;
@@ -11,9 +12,11 @@ interface props {
     lastVisite?: Date;
     viewMessage: boolean;
     viewOnline: boolean;
+    active?: number | null;
+    select:Function;
 }
 
-const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessage, viewOnline }: props) => {
+const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessage, viewOnline, active, id, select }: props) => {
 
     const GetInitials = (name: string): string => {
 
@@ -47,12 +50,12 @@ const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessag
 
     return (
         <div className="flex gap-[10px] items-center">
-            <div className="grow flex items-center justify-between bg-[#ECEEF1] pr-[25px] p-[12px] rounded-[20px]">
+            <div onClick={() => {active === id?select(null):select(id)}} className={clsx("cursor-pointer transition-all grow flex items-center justify-between bg-[#ECEEF1] pr-[25px] p-[12px] rounded-[20px]", active === id && '!bg-[#121212]')}>
                 <div className="flex gap-[15px] items-center">
                     <div className="w-[30px] h-[30px] flex items-center justify-center bg-[#FAFAFA] rounded-[100%]">
                         <span className='font-normal text-[14px] text-[#787B86]'>{GetInitials(name)}</span>
                     </div>
-                    <span className='font-medium'>{name}</span>
+                    <span className={clsx('transition-all font-medium', active === id && 'text-[#FAFAFA]')}>{name}</span>
                     {
                       (!archive && viewOnline) &&  <span className={clsx("px-[10px] py-[4px] text-[#FAFAFA] text-[10px] font-medium bg-[#8C909C] rounded-[10px]", online && 'bg-[#007BFB]')}>
                             {getStatusOnline()}

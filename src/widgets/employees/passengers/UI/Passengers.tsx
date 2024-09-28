@@ -1,10 +1,11 @@
 import SearchInput from '@/widgets/jobs/UI/SearchInput'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import Switcher from '@/widgets/jobs/UI/Switcher';
-import StafferCart from '../../UI/StafferCart';
+import StafferCart from '../../../jobs/UI/StafferCart';
 import { useState, useEffect } from 'react';
 
 interface staffers {
+    id: number;
     name: string;
     speciality: string;
     archive: boolean;
@@ -17,6 +18,7 @@ const Passengers = () => {
 
     const Staffers = [
         {
+            id: 0,
             name: 'Вознесенский Иван Сергеевич',
             speciality: 'Тревел-менеджер',
             archive: false,
@@ -24,6 +26,7 @@ const Passengers = () => {
             lastVisite: new Date()
         },
         {
+            id: 1,
             name: 'Соколова Татьяна Ивановна',
             speciality: 'Тревел-менеджер',
             archive: true,
@@ -78,7 +81,7 @@ const Passengers = () => {
                 <div className="flex flex-col gap-[10px]">
                     {
                         StaffersView.map((item,index) => (
-                            <StafferCart viewOnline={false} viewMessage={false} key={index} name={item.name} />
+                            <StafferCart id={item.id} select={() => {}} viewOnline={false} viewMessage={false} key={index} name={item.name} />
                         ))
                     }
                 </div>

@@ -357,6 +357,10 @@ a {
     }
 }
 
+.scroll_information {
+    max-height: calc(100vh - 258px);
+}
+
 
 .inpt_date {
     position: absolute;

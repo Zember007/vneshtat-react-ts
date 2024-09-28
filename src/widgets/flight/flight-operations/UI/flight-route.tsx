@@ -125,6 +125,7 @@ const FlightRouteItem = ({ flight, index, onRemove }: FlightRouteItemProps) => {
                     calendarOpt={calendarOptions}
                     extraCalendarClass={"right-[180px] -translate-y-[200px]"}
                     placeholder={"Дата"}
+                    noNeedButton={true}
                 />
             </div>
         </div>

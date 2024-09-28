@@ -4,19 +4,25 @@ import Filter from "@/assets/icons/filter.svg?react";
 import Lock from "@/assets/icons/lock.svg?react";
 import clsx from "clsx";
 import CloseImg from '@/assets/icons/cross.svg?react'
-import InputDate from "./InputDate";
-import InputSelect from "./InputSelect";
+import InputDate from "../../../jobs/UI/InputDate";
+import InputSelect from "../../../jobs/UI/InputSelect";
 import { Checkbox } from "@/shared/UI";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/config/store";
-import { setDepartments, setNoDepartments, setServices } from "../../model/reports.store";
+import { setDepartments, setNoDepartments, setServices, setCenters, setProjects, setStructure } from "../../model/reports.store";
 import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
+import { useState } from "react";
 
 const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFilterStep: Function;}) => {
     const dispatch: AppDispatch = useDispatch();
     const Departments = useSelector((state: RootState) => state.reports.departments);
     const NoDepartments = useSelector((state: RootState) => state.reports.noDepartments);
     const Services = useSelector((state: RootState) => state.reports.services);
+
+    const centers = useSelector((state: RootState) => state.reports.centers);
+    const projects = useSelector((state: RootState) => state.reports.projects);
+    const structure = useSelector((state: RootState) => state.reports.structure);
+
 
     const navigation = [
         {
@@ -42,6 +48,9 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFil
         })
     }
 
+    const [dateFrom, setDateFrom] = useState<Date>(new Date)
+    const [dateBefore, setDateBefore] = useState<Date>(new Date)
+
     return (
         <div className="p-[20px] flex flex-col gap-[10px]">
             <div className="flex items-center gap-[10px]">
@@ -63,13 +72,13 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFil
                         </button>
                     </div>
                     <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
-                        <div className="flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                        <div className="relative flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата от</span>
-                            <InputDate value="13.01.12" change={setFilterStep} />
+                            <InputDate value={dateFrom} change={setDateFrom} />
                         </div>
-                        <div className="flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                        <div className="relative flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата до</span>
-                            <InputDate value="13.01.12" change={setFilterStep} />
+                            <InputDate value={dateBefore} change={setDateBefore} />
                         </div>
                     </div>
                     <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
@@ -82,11 +91,11 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFil
                             </div>
                         </div>
 
-                        <InputSelect value={null} items={['123', '123']} title="Центры затрат" default="Не выбрано" change={setFilterStep} />
+                        <InputSelect data={centers} title="Центры затрат" default="Не выбрано" change={(id:number) => dispatch(setCenters({id,oneChoise: true}))} />
 
-                        <InputSelect value={null} items={['2', '1']} title="Проект" default="Не выбрано" change={setFilterStep} />
+                        <InputSelect data={projects} title="Проект" default="Не выбрано" change={(id:number) => dispatch(setProjects({id,oneChoise: true}))} />
 
-                        <InputSelect value={'Табельный номер '} items={['Табельный номер ', 'Табельный номер ']} title="Структурные аналитики " default="Не выбрано" change={setFilterStep} />
+                        <InputSelect data={structure} title="Структурные аналитики " default="Не выбрано" change={(id:number) => dispatch(setStructure({id,oneChoise: true}))} />
 
                     </div>
                 </div>

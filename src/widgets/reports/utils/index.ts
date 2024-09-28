@@ -21,3 +21,22 @@ export const Services: CheckboxItem[] = [
     {content: "Трансфер", isSelected: false, id: 6},
     {content: "Такси", isSelected: false, id: 7},
 ]
+
+export const centers: CheckboxItem[] = [
+    {content: "Центры затрат", isSelected: true, id: 1},
+    {content: "Центры затрат", isSelected: false, id: 2},
+    {content: "Центры затрат", isSelected: false, id: 3},
+]
+
+export const projects: CheckboxItem[] = [
+    {content: "Проект", isSelected: true, id: 1},
+    {content: "Проект", isSelected: false, id: 2},
+    {content: "Проект", isSelected: false, id: 3},
+]
+
+export const structure: CheckboxItem[] = [
+    {content: "Табельный номер", isSelected: true, id: 1},
+    {content: "Табельный номер", isSelected: false, id: 2},
+    {content: "Табельный номер", isSelected: false, id: 3},
+]
+

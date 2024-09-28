@@ -11,6 +11,8 @@ import loginStore from "@/widgets/login/login-user/model/login.store";
 import hotelStore from "@/widgets/hotel/hotel-operations/model/hotel.store";
 import userStore from "@/app/model/user.store";
 import taxiStore from "@/widgets/taxi/taxi-operations/model/taxi.store";
+import EmployeesStore from "@/widgets/employees/index/model/index.store";
+
 
 const rootReducer = combineReducers({
     journey: journeyStore,
@@ -23,7 +25,8 @@ const rootReducer = combineReducers({
     hotel: hotelStore,
     taxi: taxiStore,
     transfer: transferStore,
-    registrationCompany: registrationCompanyStore
+    registrationCompany: registrationCompanyStore,
+    employees: EmployeesStore
 })
 
 export const store = configureStore({
