@@ -6,7 +6,7 @@ import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
 
 
 interface InputProps {
-    title: string;
+    title?: string;
     default?: string;
     change: Function;
     icon?: JSX.Element;
@@ -30,11 +30,11 @@ const InputSelect = (props: InputProps) => {
         <div ref={box} className="flex flex-col  rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA] relative">
 
             <div onClick={() => setActive(!active)} className="flex gap-[10px] justify-between cursor-pointer relative">
-                <span className={clsx("text-[#9B9FAD] text-[12px] font-medium transition-all duration-300 flex justify-start w-full", active && 'justify-center translate-x-[10px]')}>{props.title}</span>
+               {props.title &&  <span className={clsx("text-[#9B9FAD] text-[12px] font-medium transition-all duration-300 flex justify-start w-full", active && 'justify-center translate-x-[10px]')}>{props.title}</span> }
 
 
-                <div className={clsx("flex justify-end items-center", !active && 'w-full')}>
-                    <span className={clsx("leading-[1.17] transition-all duration-300 w-full text-right text-[12px] font-medium bg-[transparent] overflow-hidden  max-w-[100px] pr-[6px]", active && '!max-w-[0px] !max-h-[0px] !pr-[0px]')}> {activeElement?.content ? activeElement.content : props.default}</span>
+                <div className={clsx("flex items-center", !active && 'w-full', !props.title ? 'justify-between w-full' : 'justify-end')}>
+                    <span className={clsx("leading-[1.17] transition-all duration-300 w-full  text-[12px] font-medium bg-[transparent] overflow-hidden   pr-[6px]", (active && props.title)&& '!max-w-[0px] !max-h-[0px] !pr-[0px]', props.title && 'text-right max-w-[100px]')}> {activeElement?.content ? activeElement.content : props.default}</span>
                     {
                         (!props.icon || active) ? <Icon className={clsx("transition-all duration-300 block", !active && 'rotate-[180deg]')} /> : (!active && props.icon)
                     }

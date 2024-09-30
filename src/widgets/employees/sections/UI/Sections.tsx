@@ -1,30 +1,19 @@
 import SearchInput from '@/widgets/jobs/UI/SearchInput'
-import GroupCart from '@/widgets/jobs/UI/GroupCart'
+import { GroupCart } from '../../UI'
 import { useState } from 'react';
 import TrashImg from "@/assets/icons/trash.svg?react";
+import { sections } from '../../utils';
 
+const Sections = ({ select, active }: { select: Function, active: number | null }) => {
 
-const Sections = () => {
-
-    const sections = [
-        {
-            name: 'Администрация',
-            manager: 'Вознесенский Иван Сергеевич',
-            staffers: 3
-        },
-        {
-            name: 'Администрация',
-            manager: 'Вознесенский Иван Сергеевич',
-            staffers: 3
-        },
-    ]
+    
 
 
 
     const [search, setSearch] = useState<string>('')
 
 
-    
+
 
     return (
         <>
@@ -41,8 +30,8 @@ const Sections = () => {
                 </div>
                 <div className="flex flex-col gap-[10px]">
                     {
-                        sections.map((item,index) => (
-                            <GroupCart key={index} name={item.name} staffers={item.staffers + ' сотрудников'} manager={item.manager} icon={<TrashImg />}/>
+                        sections.map((item) => (
+                            <GroupCart select={select} active={active} id={item.id} key={item.id} name={item.name} staffers={item.staffers + ' сотрудников'} manager={item.manager} icon={<TrashImg />} />
                         ))
                     }
                 </div>

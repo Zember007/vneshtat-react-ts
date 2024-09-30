@@ -5,14 +5,12 @@ import { Documents } from "@/widgets/finance/documents";
 import { Report } from "@/widgets/finance/report";
 import { Banks } from "@/widgets/finance/banks";
 import Button from "@/widgets/finance/UI/Button";
-import Infornation from "@/widgets/finance/UI/Infornation";
+import Infornation from "@/widgets/jobs/UI/Infornation";
 import Letter from "@/widgets/finance/UI/Letter";
 import Modal from "@/widgets/jobs/UI/Modal";
 import InputDate from "@/widgets/finance/UI/InputDate";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Information } from "@/widgets/finance/types";
 import Layout from '@/widgets/jobs/layout/layout';
-import { getAccessToken } from "@/shared/utils";
 import ButtonLink from '@/widgets/jobs/UI/Button';
 
 
@@ -27,10 +25,13 @@ const finance = () => {
             navigate('/jobs/finance/banks')
         }
 
-        getFinanceDetails()
 
 
     }, [])
+
+
+    const [selectedBankId, setSelectedBankId] = useState<number | null>(null)
+
 
 
 
@@ -51,61 +52,13 @@ const finance = () => {
         { title: 'Отчёт по движению средств', to: '/jobs/finance/report' },
     ]
 
-    const [infornations, setInfornations] = useState<Information>({
-        list: [],
-        edit: false
-    })
+    
 
     const [viewInfornation, setViewInfornation] = useState<boolean>(true)
 
-    const changeInformation = (data: Information) => {
-        setInfornations(data)
-        setViewInfornation(true)
-    }
+    
 
-    const getSum = (data: number) => {
-        return (data + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ') + ' RUB'
-    }
-
-    const getFinanceDetails = async () => {
-        const EmployeeId = localStorage.getItem('EmployeeId')
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/finance/get_company_financial_details');
-        url.searchParams.append('EmployeeId', EmployeeId || '');
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
-
-            if (data.status === "success" && data.data) {
-                console.log(data.data)
-
-                const details = {
-                    list: [
-                        { title: 'Задолженность', data: data.data.Debt ? getSum(data.data.Debt) : 'Отсутствует' },
-                        { title: 'Баланс', data: getSum(data.data.Balance) },
-                        { title: 'Кредитный лимит', data: !data.data.CreditLimit ? 'Неограничен' : getSum(data.data.CreditLimit) },
-                        { title: 'Лимит по договору ', data: !data.data.ContractLimit ? 'Не установлен' : getSum(data.data.ContractLimit) },
-                        { title: 'Статус', data: data.data.Status !== 'unactive' ? 'Активно' : 'Не активно' },
-                    ],
-                    edit: false
-                }
-
-                setInfornations(details)
-
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-    }
+    
 
 
     return (
@@ -122,7 +75,7 @@ const finance = () => {
 
 
                     {
-                        location.includes('/jobs/finance/banks') && <Banks edit={changeInformation} />
+                        location.includes('/jobs/finance/banks') && <Banks activeId={selectedBankId} setActiveId={setSelectedBankId} />
                     }
 
                     {
@@ -142,7 +95,7 @@ const finance = () => {
 
                 information={
                     <>
-                        {viewInfornation && (<Infornation close={setViewInfornation} data={infornations} />)}
+                        {viewInfornation && (<Infornation close={setViewInfornation} selectedBankId={selectedBankId} />)}
                     </>
                 }
                 navigation={

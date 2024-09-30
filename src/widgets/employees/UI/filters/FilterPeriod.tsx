@@ -2,7 +2,7 @@ import InputDate from "@/widgets/jobs/UI/InputDate";
 import InputSelect from "@/widgets/jobs/UI/InputSelect";
 import { useState } from "react";
 
-import { setDeputy } from "../model/index.store";
+import { setDeputy } from "../../model/index.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 

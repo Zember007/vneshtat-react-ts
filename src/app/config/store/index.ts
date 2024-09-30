@@ -11,7 +11,7 @@ import loginStore from "@/widgets/login/login-user/model/login.store";
 import hotelStore from "@/widgets/hotel/hotel-operations/model/hotel.store";
 import userStore from "@/app/model/user.store";
 import taxiStore from "@/widgets/taxi/taxi-operations/model/taxi.store";
-import EmployeesStore from "@/widgets/employees/index/model/index.store";
+import EmployeesStore from "@/widgets/employees/model/index.store";
 
 
 const rootReducer = combineReducers({

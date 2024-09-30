@@ -1,11 +1,13 @@
 import Layout from '@/widgets/jobs/layout/layout';
 
 // import { useLocation } from "react-router-dom";
-import { useEffect } from 'react';
-import CloseImg from '@/assets/icons/cross.svg?react'
+import { useEffect, useState } from 'react';
+import Infornation from '@/widgets/jobs/UI/Infornation';
+import Modal from '@/widgets/jobs/UI/Modal';
+import clsx from 'clsx';
 
 
-const employees = () => {
+const company = () => {
 
     // const location = useLocation().pathname
 
@@ -13,7 +15,8 @@ const employees = () => {
 
     }, [])
 
-
+    const [viewInfornation, setViewInfornation] = useState<boolean>(true)
+    const [viewContracts, setViewContracts] = useState<boolean>(false)
 
     return (
         <>
@@ -47,25 +50,33 @@ const employees = () => {
                 }
 
                 information={
-                    <div className='p-[20px] flex flex-col gap-[10px]'>
-                        <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
-                            <span className="font-medium ">Информация</span>
-                            <button>
-                                <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
-                            </button>
-                        </div>
-                    </div>
+                    <>
+                        {viewInfornation && (<Infornation close={setViewInfornation} />)}
+                    </>
                 }
 
                 navigation={
 
-                    <button className='bg-[#DCE0E5] py-[13px] w-full rounded-[13px] text-[14px]'>Договоры</button>
+                    <button onClick={() => {setViewContracts(true)}} className='bg-[#DCE0E5] py-[13px] w-full rounded-[13px] text-[14px]'>Договоры</button>
 
                 }
             />
+
+            <div className={clsx(" transition-all duration-500 fixed z-[1000]", !viewContracts ? 'invisible opacity-0' : 'visible opacity-100')}>
+                <Modal
+                    action={setViewContracts}
+                    title='Договоры'
+                    text='Здесь лежат копии договоров между компанией и Внештатом.'
+                    body={
+                        <div className='flex items-start flex-col gap-[5px]'>
+                            <button className='font-normal text-[14px] px-[15px] py-[10px] rounded-[13px] bg-[#ECEEF1]'>Договор Внештат - Альфа 18.02.2023</button>
+                            <button className='font-normal text-[14px] px-[15px] py-[10px] rounded-[13px] bg-[#ECEEF1]'>Дополнительный договор Внештат - Альфа 22.09.2023</button>
+                        </div>
+                    }></Modal>
+            </div>
 
         </>
     );
 };
 
-export default employees;
+export default company;

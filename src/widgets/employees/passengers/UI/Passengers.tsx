@@ -1,8 +1,9 @@
 import SearchInput from '@/widgets/jobs/UI/SearchInput'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import Switcher from '@/widgets/jobs/UI/Switcher';
-import StafferCart from '../../../jobs/UI/StafferCart';
+import { StafferCart } from '../../UI';
 import { useState, useEffect } from 'react';
+import { passengers } from '../../utils';
 
 interface staffers {
     id: number;
@@ -14,26 +15,9 @@ interface staffers {
 }
 
 
-const Passengers = () => {
+const Passengers = ({ select, active }: { select: Function, active: number | null }) => {
 
-    const Staffers = [
-        {
-            id: 0,
-            name: 'Вознесенский Иван Сергеевич',
-            speciality: 'Тревел-менеджер',
-            archive: false,
-            online:  false,
-            lastVisite: new Date()
-        },
-        {
-            id: 1,
-            name: 'Соколова Татьяна Ивановна',
-            speciality: 'Тревел-менеджер',
-            archive: true,
-            online: true,
-            lastVisite: new Date()
-        },
-    ]
+    
 
 
 
@@ -41,24 +25,24 @@ const Passengers = () => {
     const [switcher, setSwitcher] = useState<boolean>(false)
     const [alphabet_filter, setAlphabet] = useState<boolean>(true)
     const [new_filter, setNew] = useState<boolean>(false)
-    const [StaffersView, setStaffersView] = useState<Array<staffers>>(Staffers)
+    const [StaffersView, setStaffersView] = useState<Array<staffers>>([])
 
-    const filterStaffers = (data:Array<staffers>) => {
+    const filterStaffers = (data: Array<staffers>) => {
         setStaffersView(data.filter(item => {
-            if(switcher) {
+            if (switcher) {
                 return item.archive
             } else {
                 return !item.archive
             }
-            
+
         }))
     }
 
     useEffect(() => {
-        filterStaffers(Staffers)
+        filterStaffers(passengers)
     }, [switcher])
 
-    
+
 
     return (
         <>
@@ -80,8 +64,8 @@ const Passengers = () => {
                 </div>
                 <div className="flex flex-col gap-[10px]">
                     {
-                        StaffersView.map((item,index) => (
-                            <StafferCart id={item.id} select={() => {}} viewOnline={false} viewMessage={false} key={index} name={item.name} />
+                        StaffersView.map((item, index) => (
+                            <StafferCart id={item.id} select={select} active={active} viewOnline={false} viewMessage={false} key={index} name={item.name} />
                         ))
                     }
                 </div>

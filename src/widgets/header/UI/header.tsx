@@ -34,12 +34,12 @@ const Header = () => {
         {to: "/restaurant", img: RestaurantImg, label: "Места"},
         {to: "/jobs/company", img: CompanyImg, label: "Компания", type: 'jobs'},
         {to: "/jobs/employees", img: TeamImg, label: "Сотрудники", type: 'jobs'},
-        {to: "/jobs/center-cost", img: CenterCostImg, label: "Центры затрат", type: 'jobs'},
-        {to: "/jobs/travel-pocicy", img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs'},
-        {to: "/jobs/agreement", img: AgreementImg, label: "Согласование", type: 'jobs'},
+        {to: "#", img: CenterCostImg, label: "Центры затрат", type: 'jobs'},
+        {to: "#", img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs'},
+        {to: "#", img: AgreementImg, label: "Согласование", type: 'jobs'},
         {to: "/jobs/finance", img: FinanceImg, label: "Финансы", type: 'jobs'},
         {to: "/jobs/reports", img: ReportsImg, label: "Отчеты", type: 'jobs'},
-        {to: "/jobs/1c", img: C1Img, label: "Интеграция 1С", type: 'jobs'},
+        {to: "#", img: C1Img, label: "Интеграция 1С", type: 'jobs'},
     ];
 
     const isLinkSelected = links.some(item => item.to === location)

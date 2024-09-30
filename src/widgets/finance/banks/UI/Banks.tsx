@@ -1,64 +1,16 @@
 
 import BankCart from './BankCart'
 import SberbankImg from "@/assets/icons/sberbank.svg?react";
-import AlphaImg from "@/assets/icons/alpha.svg?react";
 import PlusImg from "@/assets/icons/plus.svg?react";
 import Modal from '@/widgets/jobs/UI/Modal';
 import { useState } from 'react';
+import { banks } from '../../utils';
 
 
 
-const Banks = ({ edit }: { edit: any }) => {
+const Banks = ({ activeId, setActiveId }: { activeId: number | null; setActiveId:Function; }) => {
 
     const [addBank, setAddBank] = useState<boolean>(false)
-
-    const banks = [
-        {
-            title: 'Альфа банк',
-            Img: AlphaImg
-        },
-        {
-            title: 'Сбербанк',
-            Img: SberbankImg
-        }
-    ]
-
-    const EditBank = (index: number) => {
-        console.log(index);
-
-        const send = {
-            list: [
-                {
-                    title: 'Номер счёта',
-                    data: '4400 2493 2871 7824 2873'
-                },
-                {
-                    title: 'Банк',
-                    data: 'Волго-вятский банк ПАО Сбербанк'
-                },
-                {
-                    title: 'Город',
-                    data: 'г. Нижний Новгород'
-                },
-                {
-                    title: 'БИК',
-                    data: '034920843'
-                },
-                {
-                    title: 'Корр. счёт',
-                    data: '0309090084920843'
-                },
-                {
-                    title: 'Статус',
-                    data: 'Действующий'
-                }
-            ],
-
-            edit: true
-        }
-
-        edit(send)
-    }
 
 
 
@@ -69,8 +21,8 @@ const Banks = ({ edit }: { edit: any }) => {
                 <span className="text-[#121212] text-[25px] font-medium">Банковские счета</span>
                 <div className="flex flex-col gap-[10px] h-full max-h-full overflow-y-auto scroll">
                     {
-                        banks.map((bank, index) => (
-                            <BankCart key={index} EditBank={EditBank} title={bank.title} Img={bank.Img} status={true} index={index} />
+                        banks.map((bank) => (
+                            <BankCart active={activeId} key={bank.id} EditBank={(id:number) => {setActiveId(id)}} title={bank.title} Img={SberbankImg} status={true} id={bank.id} />
                         ))
                     }
                 </div>

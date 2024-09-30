@@ -13,7 +13,7 @@ interface props {
     viewMessage: boolean;
     viewOnline: boolean;
     active?: number | null;
-    select:Function;
+    select: Function;
 }
 
 const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessage, viewOnline, active, id, select }: props) => {
@@ -32,7 +32,7 @@ const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessag
             return 'Онлайн'
 
         } else {
-            const date = lastVisite?? new Date() 
+            const date = lastVisite ?? new Date()
             const day = date.getDate()
             const month = date.getMonth() + 1
             const year = date.getFullYear()
@@ -50,14 +50,14 @@ const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessag
 
     return (
         <div className="flex gap-[10px] items-center">
-            <div onClick={() => {active === id?select(null):select(id)}} className={clsx("cursor-pointer transition-all grow flex items-center justify-between bg-[#ECEEF1] pr-[25px] p-[12px] rounded-[20px]", active === id && '!bg-[#121212]')}>
+            <div onClick={() => { active === id ? select(null) : select(id) }} className={clsx("cursor-pointer transition-all grow flex items-center justify-between bg-[#ECEEF1] pr-[25px] p-[12px] rounded-[20px]", active === id && '!bg-[#121212]')}>
                 <div className="flex gap-[15px] items-center">
                     <div className="w-[30px] h-[30px] flex items-center justify-center bg-[#FAFAFA] rounded-[100%]">
                         <span className='font-normal text-[14px] text-[#787B86]'>{GetInitials(name)}</span>
                     </div>
                     <span className={clsx('transition-all font-medium', active === id && 'text-[#FAFAFA]')}>{name}</span>
                     {
-                      (!archive && viewOnline) &&  <span className={clsx("px-[10px] py-[4px] text-[#FAFAFA] text-[10px] font-medium bg-[#8C909C] rounded-[10px]", online && 'bg-[#007BFB]')}>
+                        (!archive && viewOnline) && <span className={clsx("px-[10px] py-[4px] text-[#FAFAFA] text-[10px] font-medium bg-[#8C909C] rounded-[10px]", online && 'bg-[#007BFB]')}>
                             {getStatusOnline()}
                         </span>
                     }
@@ -66,7 +66,7 @@ const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessag
             </div>
             {viewMessage && <button className='w-[35px] h-[35px] rounded-[11px] flex items-center justify-center bg-[#ECEEF1]'>
                 <MessageImg className='w-[19px] h-auto' />
-            </button> }
+            </button>}
             <button className='w-[35px] h-[35px] rounded-[11px] flex items-center justify-center bg-[#ECEEF1]'>
                 <ArchiveImg className='w-[19px] h-auto' />
             </button>
@@ -74,4 +74,4 @@ const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessag
     );
 };
 
-export default StafferCart;
+export { StafferCart };

@@ -1,6 +1,6 @@
 import LockImg from '@/assets/icons/lock.svg?react'
 import InputSelect from "@/widgets/jobs/UI/InputSelect";
-import { setAccess } from "../model/index.store";
+import { setAccess } from "../../model/index.store";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import InputDate from "@/widgets/jobs/UI/InputDate";

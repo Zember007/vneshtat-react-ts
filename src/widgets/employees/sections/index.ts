@@ -1,3 +1,3 @@
 export { Sections } from './UI/Sections'
-export { IndexInfornation } from './UI/IndexInfornation'
-export { IndexNavigation } from './UI/IndexNavigation'
+export { SectionsInfornation } from './UI/SectionsInfornation'
+export { SectionsNavigation } from './UI/SectionsNavigation'

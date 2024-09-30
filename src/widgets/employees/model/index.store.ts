@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { changeCheckbox } from "@/shared/utils";
 import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
-import { level, accommodation, reports, right, taxi, tickets, access, deputy } from "../utils";
+import { level, accommodation, reports, right, taxi, tickets, access, deputy, require } from "../utils";
 
 export interface FlightState {
     level: CheckboxItem[];
@@ -12,6 +12,7 @@ export interface FlightState {
     tickets: CheckboxItem[];
     access: CheckboxItem[];
     deputy: CheckboxItem[];
+    require: CheckboxItem[];
 }
 
 const initialState: FlightState = {
@@ -22,16 +23,21 @@ const initialState: FlightState = {
     taxi: taxi,
     tickets: tickets,
     access: access,
-    deputy: deputy
+    deputy: deputy,
+    require: require
 };
 
 const EmployeesStore = createSlice({
     name: "employees",
     initialState,
     reducers: {
+        setRequire: (state, action) => {
+            const {id, oneChoise} = action.payload;
+            state.require = changeCheckbox(state.require, id, oneChoise);
+        },
         setDeputy: (state, action) => {
             const {id, oneChoise} = action.payload;
-            state.level = changeCheckbox(state.level, id, oneChoise);
+            state.deputy = changeCheckbox(state.deputy, id, oneChoise);
         },
         setLevel: (state, action) => {
             const {id, oneChoise} = action.payload;
@@ -72,6 +78,7 @@ export const {
     setTaxi,
     setTickets,
     setAccess,
-    setDeputy
+    setDeputy,
+    setRequire
 } = EmployeesStore.actions
 export default EmployeesStore.reducer;

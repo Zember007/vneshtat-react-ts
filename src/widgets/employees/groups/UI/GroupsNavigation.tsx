@@ -1,5 +1,5 @@
 
-const IndexNavigation = () => {
+const GroupsNavigation = () => {
     return (
         <div className="flex flex-col gap-[10px]">
             <div className="flex gap-[10px] pb-[10px] after:content-[''] after:absolute after:bottom-0 after:left-[50%] after:translate-x-[-50%] after:h-[1px] relative after:w-[50px] after:bg-[#C0C7D1]">
@@ -12,7 +12,7 @@ const IndexNavigation = () => {
             </div>
             <button className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full">
                 <p className="text-[16px] text-primary">
-                    Добавить сотрудника
+                    Создать группу
                 </p>
             </button>
 
@@ -20,4 +20,4 @@ const IndexNavigation = () => {
     );
 };
 
-export { IndexNavigation };
+export { GroupsNavigation };

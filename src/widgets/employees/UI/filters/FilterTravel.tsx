@@ -1,5 +1,5 @@
 import InputSelect from "@/widgets/jobs/UI/InputSelect";
-import { setTaxi,setLevel,setReports,setAccommodation,setRight,setTickets } from "../model/index.store";
+import { setTaxi,setLevel,setReports,setAccommodation,setRight,setTickets } from "../../model/index.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 

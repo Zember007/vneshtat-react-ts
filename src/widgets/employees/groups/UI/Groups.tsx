@@ -1,31 +1,23 @@
 import SearchInput from '@/widgets/jobs/UI/SearchInput'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import Switcher from '@/widgets/jobs/UI/Switcher';
-import GroupCart from '@/widgets/jobs/UI/GroupCart'
+import { GroupCart } from '../../UI'
 import { useState, useEffect } from 'react';
 import ArchiveImg from "@/assets/icons/archive.svg?react";
+import { groups } from '../../utils';
 
-interface staffers {
+
+interface groups {
+    id: number;
     name: string;
-    staffers: number;
     archive: boolean;
+    staffers: number;
 }
 
 
-const Groups = () => {
+const Groups = ({ select, active }: { select: Function, active: number | null }) => {
 
-    const groups = [
-        {
-            name: 'Сборная Самары по биатлону',
-            staffers: 18,
-            archive: false
-        },
-        {
-            name: 'ДЮСШ №5 г. Самары',
-            staffers: 34,
-            archive: true
-        },
-    ]
+    
 
 
 
@@ -33,16 +25,16 @@ const Groups = () => {
     const [switcher, setSwitcher] = useState<boolean>(false)
     const [alphabet_filter, setAlphabet] = useState<boolean>(true)
     const [new_filter, setNew] = useState<boolean>(false)
-    const [GroupsView, setGroupsView] = useState<Array<staffers>>(groups)
+    const [GroupsView, setGroupsView] = useState<Array<groups>>([])
 
-    const filterGroups = (data:Array<staffers>) => {
+    const filterGroups = (data: Array<groups>) => {
         setGroupsView(data.filter(item => {
-            if(switcher) {
+            if (switcher) {
                 return item.archive
             } else {
                 return !item.archive
             }
-            
+
         }))
     }
 
@@ -50,7 +42,7 @@ const Groups = () => {
         filterGroups(groups)
     }, [switcher])
 
-    
+
 
     return (
         <>
@@ -72,8 +64,8 @@ const Groups = () => {
                 </div>
                 <div className="flex flex-col gap-[10px]">
                     {
-                        GroupsView.map((item,index) => (
-                            <GroupCart key={index} name={item.name} staffers={item.staffers + ' пассажиров'} icon={<ArchiveImg />}/>
+                        GroupsView.map(item => (
+                            <GroupCart id={item.id} select={select} active={active} key={item.id} name={item.name} staffers={item.staffers + ' пассажиров'} icon={<ArchiveImg />} />
                         ))
                     }
                 </div>

@@ -1,26 +1,19 @@
 import SearchInput from '@/widgets/jobs/UI/SearchInput'
-import GroupCart from '@/widgets/jobs/UI/GroupCart'
+import { GroupCart } from '@/widgets/employees/UI'
 import { useState } from 'react';
 import TrashImg from "@/assets/icons/trash.svg?react";
+import { structure } from '../../utils';
 
+const Structure = ({ select, active }: { select: Function, active: number | null }) => {
 
-const Structure = () => {
-
-    const structure = [
-        {
-            name: 'Должность'
-        },
-        {
-            name: 'Администрация'
-        },
-    ]
-
+    
+ 
 
 
     const [search, setSearch] = useState<string>('')
 
 
-    
+
 
     return (
         <>
@@ -37,8 +30,8 @@ const Structure = () => {
                 </div>
                 <div className="flex flex-col gap-[10px]">
                     {
-                        structure.map((item,index) => (
-                            <GroupCart key={index} name={item.name} staffers={'Свое значение'} icon={<TrashImg />}/>
+                        structure.map(item => (
+                            <GroupCart active={active} select={select} id={item.id}  key={item.id} name={item.name} staffers={'Свое значение'} icon={<TrashImg />} />
                         ))
                     }
                 </div>

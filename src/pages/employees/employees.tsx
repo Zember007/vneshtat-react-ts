@@ -8,10 +8,10 @@ import TeamImg from "@/assets/icons/team.svg?react";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Index, IndexInfornation, IndexNavigation } from '@/widgets/employees/index'
-import { Passengers } from '@/widgets/employees/passengers';
-import { Sections } from '@/widgets/employees/sections';
-import { Groups } from '@/widgets/employees/groups';
-import { Structure } from '@/widgets/employees/structure';
+import { Passengers, PassengersInfornation, PassengersNavigation } from '@/widgets/employees/passengers';
+import { Sections, SectionsInfornation, SectionsNavigation } from '@/widgets/employees/sections';
+import { Groups, GroupsInfornation,GroupsNavigation  } from '@/widgets/employees/groups';
+import { Structure, StructureNavigation, StructureInfornation } from '@/widgets/employees/structure';
 
 
 const employees = () => {
@@ -31,6 +31,7 @@ const employees = () => {
     ]
 
     const [selectedStafferId, setSelectedStafferId] = useState<number | null>(null)
+    const [selectedPassengerId, setSelectedPassengerId] = useState<number | null>(null)
 
 
 
@@ -54,33 +55,54 @@ const employees = () => {
 
                 component={
 
-                    (location == '/jobs/employees' || location == '/jobs/employees/') && <Index active={selectedStafferId} select={setSelectedStafferId} />  
+                    (location == '/jobs/employees' || location == '/jobs/employees/') && <Index active={selectedStafferId} select={setSelectedStafferId} />
                     ||
-                    location.includes('/jobs/employees/passengers') && <Passengers />
+                    location.includes('/jobs/employees/passengers') && <Passengers active={selectedPassengerId} select={setSelectedPassengerId} />
                     ||
-                    location.includes('/jobs/employees/sections') && <Sections />
+                    location.includes('/jobs/employees/sections') && <Sections active={selectedPassengerId} select={setSelectedPassengerId}/>
                     ||
-                    location.includes('/jobs/employees/groups') && <Groups />
+                    location.includes('/jobs/employees/groups') && <Groups active={selectedPassengerId} select={setSelectedPassengerId}/>
                     ||
-                    location.includes('/jobs/employees/structure') && <Structure />
-                   
+                    location.includes('/jobs/employees/structure') && <Structure active={selectedPassengerId} select={setSelectedPassengerId}/>
+
                 }
 
-            information={
-                <>
-                    {
-                        (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexInfornation selectedStafferId={selectedStafferId}/>
-                    }
-                </>
-            }
+                information={
+                    <>
+                        {
+                            (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexInfornation selectedStafferId={selectedStafferId} />
+                        }
+                        {
+                            location.includes('/jobs/employees/passengers') && <PassengersInfornation selectedPassengerId={selectedPassengerId} />
+                        } 
+                        {
+                            location.includes('/jobs/employees/sections') && <SectionsInfornation selectedSectionId={selectedPassengerId} /> 
+                        }
+                        {
+                            location.includes('/jobs/employees/structure') && <StructureInfornation selectedStructureId={selectedPassengerId} /> 
+                        }
+                        {
+                            location.includes('/jobs/employees/groups') && <GroupsInfornation selectedGroupsId={selectedPassengerId} /> 
+                        }
+                    </>
+                }
 
-            navigation={
+                navigation={
 
 
-                (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexNavigation />
+                    (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexNavigation />
+                    ||
+                    location.includes('/jobs/employees/passengers') && <PassengersNavigation />
+                    ||
+                    location.includes('/jobs/employees/sections') && <SectionsNavigation />
+                    ||
+                    location.includes('/jobs/employees/groups') && <GroupsNavigation />
+                    ||
+                    location.includes('/jobs/employees/structure') && <StructureNavigation />
 
 
-            }
+
+                }
             />
 
         </>
