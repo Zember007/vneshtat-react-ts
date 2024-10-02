@@ -24,28 +24,10 @@ const company = () => {
             <Layout
 
                 component={
+                   <div className=''>
 
-                    <div className='rounded-[40px] bg-[#FAFAFA] py-[25px] px-[30px] flex flex-col gap-[20px]'>
-                        <span className='text-[25px] font-medium'>Реквизиты компании ООО “Альфа”</span>
-                        <div className="flex gap-[25px]">
-                            <div className="flex flex-col gap-[13px]">
-                                <span className='font-medium text-[#9B9FAD]'>Короткое название</span>
-                                <span className='font-medium text-[#9B9FAD]'>Номер договора</span>
-                                <span className='font-medium text-[#9B9FAD]'>ИНН</span>
-                                <span className='font-medium text-[#9B9FAD]'>КПП</span>
-                                <span className='font-medium text-[#9B9FAD]'>Юридический адрес</span>
-                                <span className='font-medium text-[#9B9FAD]'>CEO</span>
-                            </div>
-                            <div className="flex flex-col gap-[13px]">
-                                <span className='font-medium'>Альфа</span>
-                                <span className='font-medium'>11 141</span>
-                                <span className='font-medium'>07.11.2021</span>
-                                <span className='font-medium'>37419248737</span>
-                                <span className='font-medium'>440000, г. Пенза, ул. Пушкина 2, оф. 907</span>
-                                <span className='font-medium'>Петров Сергей Петрович</span>
-                            </div>
-                        </div>
-                    </div>
+                   </div>
+                    
 
                 }
 
@@ -57,7 +39,14 @@ const company = () => {
 
                 navigation={
 
-                    <button onClick={() => {setViewContracts(true)}} className='bg-[#DCE0E5] py-[13px] w-full rounded-[13px] text-[14px]'>Договоры</button>
+                   <div className="h-full w-full bg-[#FAFAFA] rounded-[40px] px-[45px] py-[30px] flex items-center flex-col gap-[30px]">
+                        <div className="h-[145px] w-[145px] rounded-[50%]">
+                            АБ
+                        </div>
+                        <button className='w-full py-[15px] bg-[#ECEEF1] rounded-[16px] text-center'>
+                            <span className='text-[18px] font-medium text-[#787B86]'>Изменить логотип</span>
+                        </button>
+                   </div>
 
                 }
             />
