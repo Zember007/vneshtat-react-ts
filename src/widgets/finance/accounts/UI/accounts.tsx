@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import SearchInput from '@/widgets/jobs/UI/SearchInput'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
-import InputDate from '../../UI/InputDate'
+import {InputDate} from "@/shared/UI";
 import ReportCart from './ReportCart'
 import Icon from "@/assets/icons/download_xlsx.svg?react";
 import { getAccessToken } from "@/shared/utils";
@@ -18,10 +18,9 @@ interface reports {
 
 const Accounts = () => {
 
-    const [search, setSearch] = useState<string>('')
-    const [dateBefore, setDateBefore] = useState<string>('')
-    const [dateFrom, setDateFrom] = useState<string>('')
+    const [dates, setDates] = useState<Date[]>([]);
 
+    const [search, setSearch] = useState<string>('')
     const [default_filter, setDefault] = useState<boolean>(true)
     const [sum_filter, setSum] = useState<boolean>(false)
     const [new_filter, setNew] = useState<boolean>(false)
@@ -59,15 +58,62 @@ const Accounts = () => {
         }
     }
 
+    const handleDateClick = (date: Date) => {
+        let updatedDates = dates.filter(d => d !== undefined);
+
+        if (updatedDates.length === 2) {
+            updatedDates = [];
+            setDates([]);
+        }
+        if (!dates[0] || updatedDates.length === 0) {
+            updatedDates = [date];
+        } else {
+            updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
+        }
+
+        setDates(updatedDates);
+    }
+
     
     return (
         <>
 
-            <div className="search_block">
+            <div className="search_block min-h-[134px]">
                 <div className="search_block__inputs">
-                    <SearchInput value={search} change={setSearch} placeholder='Фамилия сотрудника, номер билета, город' />
-                    <InputDate change={setDateFrom} value={dateFrom} placeholder='Дата от' />
-                    <InputDate change={setDateBefore} value={dateBefore} placeholder='Дата до' />
+                    <SearchInput value={search} change={setSearch} placeholder='Фамилия сотрудника, номер билета, город' />                    
+                   
+                   <InputDate
+                        placeholder={"Дата от "}
+                        extraClass={"p-[11px] h-[41px] min-w-[120px] max-w-[120px] !rounded-[13px]"}
+                        inputValue={dates}
+                        viewValue={dates[0]}
+                        isShortDate={true}
+                        withIcon={true}
+                        calendarOpt={{
+                            onClickDay: handleDateClick,
+                            allowPartialOptions: true,
+                            selectRange: true
+                        }}
+                        setter={(dates: Date[]) => {
+                            setDates(dates);
+                        }}
+                    />
+                    <InputDate
+                        placeholder={"Дата до"}
+                        extraClass={"p-[11px] h-[41px] min-w-[120px] max-w-[120px] !rounded-[13px]"}
+                        inputValue={dates}
+                        viewValue={dates[1]}
+                        isShortDate={true}
+                        withIcon={true}
+                        calendarOpt={{
+                            onClickDay: handleDateClick,
+                            allowPartialOptions: true,
+                            selectRange: true
+                        }}
+                        setter={(dates: Date[]) => {
+                            setDates(dates);
+                        }}
+                    />
                 </div>
                 <div className="search_block__filters">
 

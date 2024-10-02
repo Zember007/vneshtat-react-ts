@@ -21,7 +21,7 @@ const FilterPeriod = () => {
 
             <div className="flex gap-[6px]">
                 <InputDate placeholder="Дата от" ClassCalendar="!right-[0] !left-[auto] " ClassView="bg-[#FAFAFA] rounded-[13px] relative w-[115px] p-[8px] *:text-left" value={dateFrom} change={(date: Date) => { setDateFrom(date) }} />
-                <InputDate placeholder="Дата от" ClassCalendar="!right-[0] !left-[auto] " ClassView="bg-[#FAFAFA] rounded-[13px] relative w-[115px] p-[8px] *:text-left" value={dateBefore} change={(date: Date) => { setDateBefore(date) }} />
+                <InputDate placeholder="Дата до" ClassCalendar="!right-[0] !left-[auto] " ClassView="bg-[#FAFAFA] rounded-[13px] relative w-[115px] p-[8px] *:text-left" value={dateBefore} change={(date: Date) => { setDateBefore(date) }} />
             </div>
             <InputSelect title="Заместитель" data={deputy} change={(id: number) => dispatch(setDeputy({ id, oneChoise: true }))} />
         </div>

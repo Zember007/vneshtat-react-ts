@@ -32,6 +32,9 @@ const employees = () => {
 
     const [selectedStafferId, setSelectedStafferId] = useState<number | null>(null)
     const [selectedPassengerId, setSelectedPassengerId] = useState<number | null>(null)
+    const [selectedGroupsId, setSelectedGroupsId] = useState<number | null>(null)
+    const [selectedSectionsId, setSelectedSectionsId] = useState<number | null>(null)
+    const [selectedStrucrureId, setSelectedStrucrureId] = useState<number | null>(null)
 
 
 
@@ -59,30 +62,30 @@ const employees = () => {
                     ||
                     location.includes('/jobs/employees/passengers') && <Passengers active={selectedPassengerId} select={setSelectedPassengerId} />
                     ||
-                    location.includes('/jobs/employees/sections') && <Sections active={selectedPassengerId} select={setSelectedPassengerId}/>
+                    location.includes('/jobs/employees/sections') && <Sections active={selectedPassengerId} select={setSelectedSectionsId}/>
                     ||
-                    location.includes('/jobs/employees/groups') && <Groups active={selectedPassengerId} select={setSelectedPassengerId}/>
+                    location.includes('/jobs/employees/groups') && <Groups active={selectedPassengerId} select={setSelectedGroupsId}/>
                     ||
-                    location.includes('/jobs/employees/structure') && <Structure active={selectedPassengerId} select={setSelectedPassengerId}/>
+                    location.includes('/jobs/employees/structure') && <Structure active={selectedPassengerId} select={setSelectedStrucrureId}/>
 
                 }
 
                 information={
                     <>
                         {
-                            (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexInfornation selectedStafferId={selectedStafferId} />
+                            (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexInfornation selectedStafferId={selectedGroupsId} />
                         }
                         {
                             location.includes('/jobs/employees/passengers') && <PassengersInfornation selectedPassengerId={selectedPassengerId} />
                         } 
                         {
-                            location.includes('/jobs/employees/sections') && <SectionsInfornation selectedSectionId={selectedPassengerId} /> 
+                            location.includes('/jobs/employees/sections') && <SectionsInfornation selectedSectionId={selectedSectionsId} /> 
                         }
                         {
-                            location.includes('/jobs/employees/structure') && <StructureInfornation selectedStructureId={selectedPassengerId} /> 
+                            location.includes('/jobs/employees/structure') && <StructureInfornation selectedStructureId={selectedStrucrureId} /> 
                         }
                         {
-                            location.includes('/jobs/employees/groups') && <GroupsInfornation selectedGroupsId={selectedPassengerId} /> 
+                            location.includes('/jobs/employees/groups') && <GroupsInfornation selectedGroupsId={selectedGroupsId} /> 
                         }
                     </>
                 }

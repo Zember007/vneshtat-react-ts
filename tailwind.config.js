@@ -7,7 +7,7 @@ export default {
   theme: {
     screens: {
       xl: "1280px",
-      xxl: "1536px",
+      xxl: "1836px",
       ultra: "2560px"
     },
     extend: {

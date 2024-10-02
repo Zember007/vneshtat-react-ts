@@ -1,3 +1,6 @@
+import { useClickAway } from "@/shared/hooks/use-click-away";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 interface props {
     title: String,
@@ -7,11 +10,34 @@ interface props {
     action: Function
 }
 
+
+
+
+
 const Modal = (props: props) => {
 
+    useEffect(() => {
+
+        window.addEventListener('keyup',(e) => {
+            if(e.code == 'Escape') {
+                props.action(false)
+            }
+            
+        })
+    
+        return () => {
+            window.removeEventListener('keyup', () => {})
+        }
+    },[])
+
+    const box = useRef<HTMLDivElement | null>(null)
+    
+    useClickAway(box, () => {props.action(false)})
+
+
     return (
-        <div className="fixed top-0 bottom-0 right-0 left-0 bg-[#00000066] z-[1000]">
-            <div className='absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] rounded-[36px] p-8 min-w-[540px] flex flex-col gap-[15px] bg-[#fafafa]'>
+        <div  className="fixed top-0 bottom-0 right-0 left-0 bg-[#00000066] z-[1000]">
+            <div ref={box} className='absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] rounded-[36px] p-8 min-w-[540px] flex flex-col gap-[15px] bg-[#fafafa]'>
                 <div className="flex flex-col gap-[10px]">
                     <div className="flex justify-between">
                         <div className="font-medium text-[1.56rem] leading-8 leading-[100%] text-[#121212]">{props.title}</div>

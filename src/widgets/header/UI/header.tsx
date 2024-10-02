@@ -24,25 +24,25 @@ const Header = () => {
     const location = useLocation().pathname;
     
     const links = [
-        {to: "/flight", img: PlaneImg, label: "Самолёт"},
-        {to: "/journey", img: TrainImg, label: "Поезд"},
-        {to: "/bus", img: BusImg, label: "Автобусы"},
-        {to: "/hotel", img: BedImg, label: "Отели"},
-        {to: "/aero", img: WebImg, label: "Аэроэкспресс"},
-        {to: "/transfer", img: CarImg, label: "Трансфер"},
-        {to: "/taxi", img: YandexTaxiImg, label: "Такси"},
-        {to: "/restaurant", img: RestaurantImg, label: "Места"},
+        {to: "/flight", img: PlaneImg, label: "Самолёт", type: 'trips'},
+        {to: "/journey", img: TrainImg, label: "Поезд", type: 'trips'},
+        {to: "/bus", img: BusImg, label: "Автобусы", type: 'trips'},
+        {to: "/hotel", img: BedImg, label: "Отели", type: 'trips'},
+        {to: "/aero", img: WebImg, label: "Аэроэкспресс", type: 'trips'},
+        {to: "/transfer", img: CarImg, label: "Трансфер", type: 'trips'},
+        {to: "/taxi", img: YandexTaxiImg, label: "Такси", type: 'trips'},
+        {to: "/restaurant", img: RestaurantImg, label: "Места", type: 'trips'},
         {to: "/jobs/company", img: CompanyImg, label: "Компания", type: 'jobs'},
         {to: "/jobs/employees", img: TeamImg, label: "Сотрудники", type: 'jobs'},
-        {to: "#", img: CenterCostImg, label: "Центры затрат", type: 'jobs'},
-        {to: "#", img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs'},
-        {to: "#", img: AgreementImg, label: "Согласование", type: 'jobs'},
+        {to: "/jobs/center", disabled: true, img: CenterCostImg, label: "Центры затрат", type: 'jobs'},
+        {to: "/jobs/travel", disabled: true, img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs'},
+        {to: "/jobs/agree", disabled: true, img: AgreementImg, label: "Согласование", type: 'jobs'},
         {to: "/jobs/finance", img: FinanceImg, label: "Финансы", type: 'jobs'},
         {to: "/jobs/reports", img: ReportsImg, label: "Отчеты", type: 'jobs'},
-        {to: "#", img: C1Img, label: "Интеграция 1С", type: 'jobs'},
+        {to: "/jobs/1c", disabled: true, img: C1Img, label: "Интеграция 1С", type: 'jobs'},
     ];
 
-    const isLinkSelected = links.some(item => item.to === location)
+    const isLinkSelected = links.some(item => {item.to === location && item.type == 'trips'})
     const links_view = links.filter(item => {
         if(location.split('/')[1] === 'jobs') {
             return item.type === 'jobs'
@@ -71,8 +71,8 @@ const Header = () => {
             </div>
             <div className={"flex items-center gap-2.5"}>
                 <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
-                    {links_view.map(({to, img: Icon, label}) => (
-                        <Link to={to} className="flex items-center" key={to}>
+                    {links_view.map(({to, img: Icon, label, disabled}) => (
+                        <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
                             <div className="bg-primary relative z-10">
                                 <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")}/>
                             </div>

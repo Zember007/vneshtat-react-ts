@@ -23,6 +23,9 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
     const [switcher, setSwitcher] = useState<boolean>(false)
     const [alphabet_filter, setAlphabet] = useState<boolean>(true)
     const [new_filter, setNew] = useState<boolean>(false)
+    const [status_filter, setStatus] = useState<boolean>(false)
+    const [online_filter, setOnline] = useState<boolean>(false)
+    const [access_filter, setAccess] = useState<boolean>(false)
     const [StaffersView, setStaffersView] = useState<Array<staffers>>([])
 
     const filterStaffers = (data: Array<staffers>) => {
@@ -52,10 +55,10 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
                 <div className="flex gap-[10px] items-center">
                     <Switcher items={['Действительные', 'Архив']} change={setSwitcher} checked={switcher} />
                     <CheckerFilter change={setAlphabet} title='По алфавиту' active={alphabet_filter} />
-                    {!switcher && <CheckerFilter change={setNew} title='По статусу' active={new_filter} />}
+                    {!switcher && <CheckerFilter change={setStatus} title='По статусу' active={status_filter} />}
                     <CheckerFilter change={setNew} title='Сначала новые' active={new_filter} />
-                    {!switcher && <CheckerFilter change={setNew} title='Онлайн' active={new_filter} />}
-                    {!switcher && <CheckerFilter change={setNew} title='Только с доступом' active={new_filter} />}
+                    {!switcher && <CheckerFilter change={setOnline} title='Онлайн' active={online_filter} />}
+                    {!switcher && <CheckerFilter change={setAccess} title='Только с доступом' active={access_filter} />}
                 </div>
             </div>
 
