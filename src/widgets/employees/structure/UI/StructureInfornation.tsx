@@ -1,9 +1,9 @@
-import { groups } from '../../utils';
+import { structure } from '../../utils';
 import { FilterStructure } from '../../UI';
 
-const StructureInfornation = ({ selectedStructureId }: { selectedStructureId: number | null }) => {
+const StructureInfornation = ({ selectedStructureId, close }: { selectedStructureId: number | null, close:Function }) => {
 
-    const selectedStructure = groups.find(item => item.id === selectedStructureId);
+    const selectedStructure = structure.find(item => item.id === selectedStructureId);
 
     return (
         <div className="p-[20px] flex flex-col gap-[10px] h-full">
@@ -19,7 +19,7 @@ const StructureInfornation = ({ selectedStructureId }: { selectedStructureId: nu
                 )
                     :
                     (
-                        <FilterStructure />
+                        <FilterStructure close={close}/>
                     )
             }
         </div>

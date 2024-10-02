@@ -15,7 +15,7 @@ import FilterPeriod from "./FilterPeriod";
 import FilterTravel from "./FilterTravel";
 import FilterUser from "./FilterUser";
 
-const FilterUsers = () => {
+const FilterUsers = ({close, disabled}:{close:Function; disabled?:boolean}) => {
 
     const filterNav = [
         {
@@ -33,15 +33,18 @@ const FilterUsers = () => {
 
         {
             Img: AccessImg,
-            code: 'access'
+            code: 'access',
+            disabled: true
         },
         {
             Img: TravelPolicyImg,
-            code: 'travel-policy'
+            code: 'travel-policy',
+            disabled: true
         },
         {
             Img: PeriodImg,
-            code: 'period'
+            code: 'period',
+            disabled: true
         },
     ]
 
@@ -51,8 +54,8 @@ const FilterUsers = () => {
             <div className="flex gap-[10px]">
                 {
                     filterNav.map(item => (
-                        <button onClick={() => { setActiveFilter(item.code) }} className={clsx('w-[35px] h-[35px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]')}>
-                            <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', activeFilter !== item.code && '*:fill-[#121212]')} />
+                        <button onClick={() => { setActiveFilter(item.code) }} className={clsx('w-[35px] h-[35px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]', (disabled && item.disabled) && 'pointer-events-none')}>
+                            <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', (disabled && item.disabled)? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
                         </button>
                     ))
                 }
@@ -66,8 +69,8 @@ const FilterUsers = () => {
                                     activeFilter === 'access' ? 'Доступ' :
                                         ''}
                 </span>
-                {activeFilter !== 'travel-policy' && <button>
-                    <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
+                {activeFilter !== 'travel-policy' && <button onClick={() => {close()}}>
+                    <CloseImg  className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>}
             </div>
             <div className="flex flex-col gap-[10px] max-h-full scroll ">

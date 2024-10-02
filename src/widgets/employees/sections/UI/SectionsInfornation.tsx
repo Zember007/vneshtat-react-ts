@@ -3,7 +3,7 @@ import { sections } from '../../utils';
 import { FilterSections } from '../../UI';
 
 
-const SectionsInfornation = ({ selectedSectionId }: { selectedSectionId: number | null }) => {
+const SectionsInfornation = ({ selectedSectionId }: { selectedSectionId: number | null, close:Function }) => {
     const selectedSections = sections.find(item => item.id === selectedSectionId);
 
     return (

@@ -3,7 +3,7 @@ import { passengers } from '../../utils';
 import { FilterUsers } from '../../UI';
 
 
-const PassengersInfornation = ({ selectedPassengerId }: { selectedPassengerId: number | null }) => {
+const PassengersInfornation = ({ selectedPassengerId, close }: { selectedPassengerId: number | null, close:Function }) => {
     const selectedPassenger = passengers.find(item => item.id === selectedPassengerId);
 
 
@@ -22,7 +22,7 @@ const PassengersInfornation = ({ selectedPassengerId }: { selectedPassengerId: n
                 )
                     :
                     (
-                        <FilterUsers />
+                        <FilterUsers disabled={true} close={close}/>
                     )
             }
         </div>

@@ -8,7 +8,7 @@ import { FilterUsers } from '../../UI';
 
 
 
-const IndexInfornation = ({ selectedStafferId }: { selectedStafferId: number | null }) => {
+const IndexInfornation = ({ selectedStafferId, close }: { selectedStafferId: number | null, close:Function }) => {
     const selectedStaffer = Staffers.find(item => item.id === selectedStafferId);
 
 
@@ -22,7 +22,7 @@ const IndexInfornation = ({ selectedStafferId }: { selectedStafferId: number | n
                     <>
                         <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
                             <span className="font-medium ">Информация</span>
-                            <button>
+                            <button onClick={() => {close()}}>
                                 <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                             </button>
                         </div>
@@ -51,7 +51,7 @@ const IndexInfornation = ({ selectedStafferId }: { selectedStafferId: number | n
                 )
                     :
                     (
-                        <FilterUsers />
+                        <FilterUsers close={close}/>
                     )
             }
         </div>

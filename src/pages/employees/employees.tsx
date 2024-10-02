@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { Index, IndexInfornation, IndexNavigation } from '@/widgets/employees/index'
 import { Passengers, PassengersInfornation, PassengersNavigation } from '@/widgets/employees/passengers';
 import { Sections, SectionsInfornation, SectionsNavigation } from '@/widgets/employees/sections';
-import { Groups, GroupsInfornation,GroupsNavigation  } from '@/widgets/employees/groups';
+import { Groups, GroupsInfornation, GroupsNavigation } from '@/widgets/employees/groups';
 import { Structure, StructureNavigation, StructureInfornation } from '@/widgets/employees/structure';
 
 
@@ -18,9 +18,7 @@ const employees = () => {
 
     const location = useLocation().pathname
 
-    useEffect(() => {
 
-    }, [])
 
     const links = [
         { Img: TeamImg, title: 'Сотрудники', to: '/jobs/employees' },
@@ -35,8 +33,32 @@ const employees = () => {
     const [selectedGroupsId, setSelectedGroupsId] = useState<number | null>(null)
     const [selectedSectionsId, setSelectedSectionsId] = useState<number | null>(null)
     const [selectedStrucrureId, setSelectedStrucrureId] = useState<number | null>(null)
+    const [informationView, setInfornationView] = useState<boolean>(true)
+
+    useEffect(() => {
+
+        if (selectedStafferId !== null || selectedPassengerId !== null || selectedGroupsId !== null || selectedSectionsId !== null || selectedStrucrureId !== null ) {
+            setInfornationView(true)
+        }
 
 
+    }, [selectedStafferId, selectedPassengerId, selectedGroupsId, selectedSectionsId, selectedStrucrureId])
+
+    useEffect(() => {
+
+        if (informationView === false) {
+            reset()
+        }
+
+    }, [informationView])
+
+    const reset = () => {
+        setSelectedStafferId(null)
+        setSelectedPassengerId(null)
+        setSelectedGroupsId(null)
+        setSelectedSectionsId(null)
+        setSelectedStrucrureId(null)
+    }
 
     return (
         <>
@@ -44,7 +66,7 @@ const employees = () => {
             <Layout
 
                 links={
-                    <div className="flex gap-[10px]">
+                    <div onClick={() => { reset() }} className="flex gap-[10px]">
                         {links.map(item => (
                             <ButtonLink to={item.to} key={item.to} title={
                                 <div className="flex gap-[5px] items-center">
@@ -62,31 +84,33 @@ const employees = () => {
                     ||
                     location.includes('/jobs/employees/passengers') && <Passengers active={selectedPassengerId} select={setSelectedPassengerId} />
                     ||
-                    location.includes('/jobs/employees/sections') && <Sections active={selectedPassengerId} select={setSelectedSectionsId}/>
+                    location.includes('/jobs/employees/sections') && <Sections active={selectedSectionsId} select={setSelectedSectionsId} />
                     ||
-                    location.includes('/jobs/employees/groups') && <Groups active={selectedPassengerId} select={setSelectedGroupsId}/>
+                    location.includes('/jobs/employees/groups') && <Groups active={selectedGroupsId} select={setSelectedGroupsId} />
                     ||
-                    location.includes('/jobs/employees/structure') && <Structure active={selectedPassengerId} select={setSelectedStrucrureId}/>
+                    location.includes('/jobs/employees/structure') && <Structure active={selectedStrucrureId} select={setSelectedStrucrureId} />
 
                 }
 
                 information={
                     <>
-                        {
-                            (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexInfornation selectedStafferId={selectedGroupsId} />
-                        }
-                        {
-                            location.includes('/jobs/employees/passengers') && <PassengersInfornation selectedPassengerId={selectedPassengerId} />
-                        } 
-                        {
-                            location.includes('/jobs/employees/sections') && <SectionsInfornation selectedSectionId={selectedSectionsId} /> 
-                        }
-                        {
-                            location.includes('/jobs/employees/structure') && <StructureInfornation selectedStructureId={selectedStrucrureId} /> 
-                        }
-                        {
-                            location.includes('/jobs/employees/groups') && <GroupsInfornation selectedGroupsId={selectedGroupsId} /> 
-                        }
+                        {informationView && (<>
+                            {
+                                (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexInfornation close={() => setInfornationView(false)} selectedStafferId={selectedStafferId} />
+                            }
+                            {
+                                location.includes('/jobs/employees/passengers') && <PassengersInfornation close={() => setInfornationView(false)} selectedPassengerId={selectedPassengerId} />
+                            }
+                            {
+                                location.includes('/jobs/employees/sections') && <SectionsInfornation close={() => setInfornationView(false)} selectedSectionId={selectedSectionsId} />
+                            }
+                            {
+                                location.includes('/jobs/employees/structure') && <StructureInfornation close={() => setInfornationView(false)} selectedStructureId={selectedStrucrureId} />
+                            }
+                            {
+                                location.includes('/jobs/employees/groups') && <GroupsInfornation selectedGroupsId={selectedGroupsId} />
+                            }
+                        </>)}
                     </>
                 }
 

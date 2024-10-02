@@ -8,7 +8,7 @@ import { setRequire } from "../../model/index.store";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 
-const FilterStructure = () => {
+const FilterStructure = ({close}:{close:Function}) => {
 
     const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const FilterStructure = () => {
                 <span className="font-medium ">
                     {activeFilter === 'document' ? 'Данные параметра' : 'Значения'}
                 </span>
-                {activeFilter !== 'travel-policy' && <button>
+                {activeFilter !== 'travel-policy' && <button onClick={() => {close()}}>
                     <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>}
             </div>
