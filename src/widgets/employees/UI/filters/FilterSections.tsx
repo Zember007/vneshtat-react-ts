@@ -2,7 +2,7 @@ import UserImg from '@/assets/icons/user.svg?react'
 import TravelPolicyImg from '@/assets/icons/travel-policy.svg?react'
 import InputSelect from '@/widgets/jobs/UI/InputSelect';
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FilterTravel from "./FilterTravel";
 import { setDeputy } from "../../model/index.store";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +28,18 @@ const FilterSections = () => {
     ]
 
     const [activeFilter, setActiveFilter] = useState<string>('user')
+
+    const box = useRef<HTMLDivElement | null>(null)
+
+    const [maxHeight, setMaxHeight] = useState<string>()
+
+
+    useEffect(() => {
+
+        setMaxHeight(box.current?.offsetHeight + 'px')
+
+    }, [box])
+
     return (
         <>
             <div className="flex gap-[10px]">
@@ -40,7 +52,7 @@ const FilterSections = () => {
                 }
             </div>
             <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]"></div>
-            <div className="flex flex-col gap-[10px] max-h-full scroll ">
+            <div ref={box} className="flex flex-col gap-[10px] grow h-full overflow-y-auto scroll" style={{ 'maxHeight': maxHeight }}>
                 {activeFilter === 'user' ?
                     (
                         <>

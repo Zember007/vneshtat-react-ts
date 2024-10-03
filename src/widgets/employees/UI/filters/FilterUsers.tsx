@@ -6,7 +6,7 @@ import DocumentImg from '@/assets/icons/document.svg?react'
 import CloseImg from '@/assets/icons/cross.svg?react'
 import AddCartImg from '@/assets/icons/add_cart.svg?react'
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import FilterAccess from "./FilterAccess";
 import FilterCarts from "./FilterCarts";
@@ -15,7 +15,7 @@ import FilterPeriod from "./FilterPeriod";
 import FilterTravel from "./FilterTravel";
 import FilterUser from "./FilterUser";
 
-const FilterUsers = ({close, disabled}:{close:Function; disabled?:boolean}) => {
+const FilterUsers = ({ close, disabled }: { close: Function; disabled?: boolean }) => {
 
     const filterNav = [
         {
@@ -49,13 +49,24 @@ const FilterUsers = ({close, disabled}:{close:Function; disabled?:boolean}) => {
     ]
 
     const [activeFilter, setActiveFilter] = useState<string>('user')
+
+    const box = useRef<HTMLDivElement | null>(null)
+
+    const [maxHeight, setMaxHeight] = useState<string>()
+
+
+    useEffect(() => {
+
+        setMaxHeight(box.current?.offsetHeight + 'px')
+
+    }, [box])
     return (
         <>
             <div className="flex gap-[10px]">
                 {
                     filterNav.map(item => (
                         <button onClick={() => { setActiveFilter(item.code) }} className={clsx('w-[35px] h-[35px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]', (disabled && item.disabled) && 'pointer-events-none')}>
-                            <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', (disabled && item.disabled)? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
+                            <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', (disabled && item.disabled) ? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
                         </button>
                     ))
                 }
@@ -69,11 +80,11 @@ const FilterUsers = ({close, disabled}:{close:Function; disabled?:boolean}) => {
                                     activeFilter === 'access' ? 'Доступ' :
                                         ''}
                 </span>
-                {activeFilter !== 'travel-policy' && <button onClick={() => {close()}}>
-                    <CloseImg  className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
+                {activeFilter !== 'travel-policy' && <button onClick={() => { close() }}>
+                    <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>}
             </div>
-            <div className="flex flex-col gap-[10px] max-h-full scroll ">
+            <div ref={box} className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto")} style={{ 'maxHeight': maxHeight }}>
                 {activeFilter === 'user' ?
                     (
                         <FilterUser />

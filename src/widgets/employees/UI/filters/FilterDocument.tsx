@@ -26,9 +26,9 @@ const FilterDocument = () => {
                     <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Серия и номер</span>
                     <input value={'5017 574839'} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
                 </div>
-                <div className="relative flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                     <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Срок действия</span>
-                    <InputDate value={documentTerm} change={(date: Date) => { setDocumentTerm(date) }} />
+                    <InputDate value={documentTerm} ClassCalendar="!w-[260px] translate-x-[23px]" change={(date: Date) => { setDocumentTerm(date) }} />
                 </div>
                 <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                     <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Фамилия (лат.)</span>

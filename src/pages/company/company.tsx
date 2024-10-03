@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { Preview } from "@/widgets/company/preview";
 import { Edit } from "@/widgets/company/edit";
 import { Tariffs } from "@/widgets/company/tariffs";

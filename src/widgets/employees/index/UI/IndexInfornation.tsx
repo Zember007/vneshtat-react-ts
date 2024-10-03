@@ -16,7 +16,7 @@ const IndexInfornation = ({ selectedStafferId, close }: { selectedStafferId: num
 
 
     return (
-        <div className="p-[20px] flex flex-col gap-[10px] ">
+        <div className="p-[20px] flex flex-col gap-[10px] h-full">
             {
                 !selectedStaffer ? (
                     <>

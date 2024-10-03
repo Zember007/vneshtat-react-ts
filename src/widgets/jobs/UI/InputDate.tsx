@@ -62,12 +62,39 @@ const InputDate = (props: InputProps) => {
 
     useClickAway(box, () => { setOpen(false) })
 
+    const [top, setTop] = useState('')
+    const [right, setRight] = useState('')
+
+    useEffect(() => {
+
+        let position = box.current?.getBoundingClientRect()
+        console.log(position);
+        
+        let top = position?.top 
+        let right = position?.x 
+        let height = box.current?.clientHeight
+        let width = box.current?.clientWidth
+
+        if(typeof top === 'number' && typeof height === 'number' && typeof right === 'number' && typeof width === 'number') {
+            setTop((top + height + window.pageYOffset) + 'px')
+            setRight( (window.innerWidth - right - width) + 'px')
+        }
+        
+        
+
+
+    }, [box])
+
 
 
     return (
         <div ref={box} className={"flex items-center gap-[6px] " + props.ClassView}>
             <input value={value} disabled type="text" placeholder={props.placeholder} className="w-[100%] text-right text-[12px] font-medium bg-[transparent]" />
-            <div className={clsx("flex flex-col gap-[10px] absolute z-10 top-[100%] left-[-13px] right-[-13px] p-[13px] bg-[#F5F5F5D1] rounded-[23px]  transition-all duration-300 " + props.ClassCalendar, !open ? 'opacity-0 hidden' : 'opacity-1 visible')}>
+            <div className={clsx("flex flex-col gap-[10px] absolute z-10 p-[13px] bg-[#F5F5F5D1] rounded-[23px]  transition-all duration-300 " + props.ClassCalendar, !open ? 'opacity-0 hidden' : 'opacity-1 visible')}
+            style={{
+                top: top,
+                right: right
+            }}>
                 <Calendar value={reviewTypeDate(props.value)} setter={(date) => {
                     props.change(date)
                     setOpen(false)

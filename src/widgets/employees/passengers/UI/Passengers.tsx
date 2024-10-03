@@ -65,7 +65,7 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
                 <div className="flex flex-col gap-[10px]">
                     {
                         StaffersView.map((item, index) => (
-                            <StafferCart id={item.id} select={select} active={active} viewOnline={false} viewMessage={false} key={index} name={item.name} />
+                            <StafferCart id={item.id} select={select} active={active} archive={item.archive} viewOnline={false} viewMessage={false} key={index} name={item.name} />
                         ))
                     }
                 </div>

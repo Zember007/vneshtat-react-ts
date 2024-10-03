@@ -42,7 +42,9 @@ const ReportCart = ({ date, receipt, writingOff, data }: props) => {
     return (
         <div className="flex gap-[10px] items-start">
             <div className="rounded-[26px] bg-[#ECEEF1] p-[15px]">
-                <span className="rounded-[13px] px-[15px] py-[8px] bg-[#FBFBFB] text-[12px] font-medium text-[#007BFB]">{GetDate(date)}</span>
+                <div className="inline-flex rounded-[13px] px-[15px] py-[8px] bg-[#FBFBFB] ">
+                    <span className="text-[12px] font-medium text-[#007BFB]">{GetDate(date)}</span>
+                </div>
             </div>
 
             <div className="grow rounded-[26px] p-[15px] transition-all duration-500 bg-[#ECEEF1]">

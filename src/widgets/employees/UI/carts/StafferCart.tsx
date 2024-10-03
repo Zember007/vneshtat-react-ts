@@ -1,5 +1,6 @@
 
 import ArchiveImg from "@/assets/icons/archive.svg?react";
+import ArchiveReverseImg from "@/assets/icons/archive_reverse.svg?react";
 import MessageImg from "@/assets/icons/message.svg?react";
 import clsx from "clsx";
 
@@ -68,7 +69,8 @@ const StafferCart = ({ name, speciality, archive, online, lastVisite, viewMessag
                 <MessageImg className='w-[19px] h-auto' />
             </button>}
             <button className='w-[35px] h-[35px] rounded-[11px] flex items-center justify-center bg-[#ECEEF1]'>
-                <ArchiveImg className='w-[19px] h-auto' />
+                {!archive && <ArchiveImg className='w-[19px] h-auto' />}
+                {archive && <ArchiveReverseImg className='w-[19px] h-auto' />}
             </button>
         </div>
     );

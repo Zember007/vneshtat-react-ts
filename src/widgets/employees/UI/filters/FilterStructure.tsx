@@ -2,7 +2,7 @@ import SectionsImg from '@/assets/icons/sections.svg?react'
 import DocumentImg from '@/assets/icons/document.svg?react'
 import CloseImg from '@/assets/icons/cross.svg?react'
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import InputSelect from '@/widgets/jobs/UI/InputSelect';
 import { setRequire } from "../../model/index.store";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +26,18 @@ const FilterStructure = ({close}:{close:Function}) => {
     ]
 
     const [activeFilter, setActiveFilter] = useState<string>('document')
+
+    const box = useRef<HTMLDivElement | null>(null)
+
+    const [maxHeight, setMaxHeight] = useState<string>()
+
+
+    useEffect(() => {
+
+        setMaxHeight(box.current?.offsetHeight + 'px')
+
+    }, [box])
+
     return (
         <>
             <div className="flex gap-[10px]">
@@ -45,7 +57,7 @@ const FilterStructure = ({close}:{close:Function}) => {
                     <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>}
             </div>
-            <div className="flex flex-col gap-[10px] max-h-full scroll ">
+            <div ref={box} className="flex flex-col gap-[10px] grow h-full overflow-y-auto scroll" style={{ 'maxHeight': maxHeight }}>
                 {activeFilter === 'document' ?
                     (
                         <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
