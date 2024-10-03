@@ -69,7 +69,7 @@ const reports = () => {
                             <button className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full"
                             onClick={() => {
                                 if(filterStep != 2) {
-                                    setFilterStep(filterStep+1)
+                                    setFilterStep(typeof filterStep ==='number'?filterStep+1:0)
                                 }
                             }}
                             ><p className="text-[16px] text-primary">{
