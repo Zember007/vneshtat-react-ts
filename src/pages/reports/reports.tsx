@@ -27,7 +27,7 @@ const reports = () => {
     ]
 
 
-    const [filterStep, setFilterStep] = useState<number>(0)
+    const [filterStep, setFilterStep] = useState<number | null>(0)
 
 
     return (

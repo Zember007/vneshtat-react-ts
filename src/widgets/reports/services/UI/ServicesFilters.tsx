@@ -13,7 +13,7 @@ import { setDepartments, setNoDepartments, setServices, setCenters, setProjects,
 import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
 import { useState } from "react";
 
-const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFilterStep: Function;}) => {
+const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number | null; setFilterStep: Function;}) => {
     const dispatch: AppDispatch = useDispatch();
     const Departments = useSelector((state: RootState) => state.reports.departments);
     const NoDepartments = useSelector((state: RootState) => state.reports.noDepartments);
@@ -52,7 +52,7 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFil
     const [dateBefore, setDateBefore] = useState<Date>(new Date)
 
     return (
-        <div className="p-[20px] flex flex-col gap-[10px]">
+        <div className="p-[20px] flex flex-col gap-[10px] ">
             <div className="flex items-center gap-[10px]">
                 {
                     navigation.map(item => (
@@ -64,21 +64,21 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFil
             </div>
 
             {filterStep == 0 && (
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-[10px] h-[calc(100vh-320px)] scroll overflow-y-auto">
                     <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
                         <span className="font-medium ">Параметры</span>
-                        <button>
+                        <button onClick={() => { setFilterStep(null) }}>
                             <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                         </button>
                     </div>
                     <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
-                        <div className="relative flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                        <div className=" flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата от</span>
-                            <InputDate value={dateFrom} change={setDateFrom} />
+                            <InputDate ClassCalendar="!w-[260px] translate-x-[23px]" value={dateFrom} change={setDateFrom} />
                         </div>
-                        <div className="relative flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                        <div className=" flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата до</span>
-                            <InputDate value={dateBefore} change={setDateBefore} />
+                            <InputDate ClassCalendar="!w-[260px] translate-x-[23px]" value={dateBefore} change={setDateBefore} />
                         </div>
                     </div>
                     <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
@@ -102,7 +102,7 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFil
             )}
 
             {filterStep == 1 && (
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-[10px] h-[calc(100vh-320px)] scroll overflow-y-auto">
                     <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]"></div>
                     <div className="flex items-center justify-between">
                         <span className="font-medium">Отделы</span>
@@ -139,10 +139,10 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number; setFil
 
 
             {filterStep == 2 && (
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-[10px] h-[calc(100vh-320px)] scroll overflow-y-auto">
                     <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
                         <span className="font-medium ">Услуги</span>
-                        <button>
+                        <button onClick={() => { setFilterStep(null) }}>
                             <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                         </button>
                     </div>
