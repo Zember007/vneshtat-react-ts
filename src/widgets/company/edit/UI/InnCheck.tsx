@@ -10,7 +10,7 @@ const InnCheck = ({next}:{next:Function}) => {
             <div className="flex flex-col gap-[15px] items-center grow justify-center">
                 {!active && (
                     <>
-                        <img src={ImgWrite} alt="write" className="mb-[20px]" />
+                        <img src={ImgWrite} alt="write" className="mb-[10px] max-h-[100%]" />
                         <input type="text" placeholder="Введите ИНН" className="border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
                         <p className="text-center text-[18px]">
                             Напишите ИНН вашей компании <br />

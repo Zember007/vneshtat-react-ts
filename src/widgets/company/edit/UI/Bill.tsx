@@ -23,22 +23,11 @@ const Bill = ({ next, prev }: { next: Function;prev: Function }) => {
         )
     }
 
-    const box = useRef<HTMLDivElement | null>(null)
-
-    const [maxHeight, setMaxHeight] = useState<string>()
-
-
-    useEffect(() => {
-
-        setMaxHeight(box.current?.offsetHeight + 'px')
-
-    }, [box])
-
     return (
         <>
-            <div ref={box} className="flex flex-col gap-[15px] items-center grow justify-center scroll overflow-y-auto" style={{ 'maxHeight': maxHeight }}>
+            <div  className="flex flex-col gap-[15px] items-center grow scroll overflow-y-auto max-h-[calc(100vh-430px)] min-h-[290px]" >
 
-                <div className='flex flex-col gap-[15px] max-w-[520px]'>
+                <div className='flex flex-col gap-[15px] max-w-[520px] my-auto'>
                     {bills.map(item => (
                         <div className="flex flex-col gap-[10px] border-[#ECEEF1] border-0 border-b border-solid pb-[15px]">
                             <div className="grid grid-cols-2">

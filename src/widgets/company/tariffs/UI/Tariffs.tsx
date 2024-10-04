@@ -11,7 +11,7 @@ const Tariffs = () => {
     const [active, setActive] = useState<string>('fix')
 
     return (
-        <div className="grow p-[60px] pl-[35px] bg-primary rounded-[40px] flex gap-[25px] items-center relative">
+        <div className="grow p-[60px] pl-[35px] bg-primary rounded-[40px] flex gap-[25px] items-center relative leading-[1]">
             <Link to={'/jobs/company'} className="absolute top-[25px] right-[25px]">
                 <CloseIcon className="w-[25px] h-[25px] *:fill-[#8C909C]" />
             </Link>
