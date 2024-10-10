@@ -8,8 +8,8 @@ const RegistrationCompany = () => {
 
     return (
         <div className="flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]">
-            {page === 1 ? <RegistrationCompanyFirst /> : null}
-            {page === 2 ? <RegistrationCompanySecond /> : null}
+            {page === 2 ? <RegistrationCompanyFirst /> : null}
+            {page === 1 ? <RegistrationCompanySecond /> : null}
             <div className="w-[700px] flex items-center gap-[5px]">
                 <div
                     className="transition-all duration-300 h-2 rounded-[7px] bg-blue"

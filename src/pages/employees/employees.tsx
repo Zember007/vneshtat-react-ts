@@ -1,4 +1,4 @@
-import Layout from '@/widgets/jobs/layout/layout';
+import Layout from '@/app/layouts/layout';
 import ButtonLink from '@/widgets/jobs/UI/Button';
 import PassengersImg from "@/assets/icons/passengers.svg?react";
 import SectionsImg from "@/assets/icons/sections.svg?react";

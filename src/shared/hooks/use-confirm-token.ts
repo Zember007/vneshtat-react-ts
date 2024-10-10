@@ -22,10 +22,8 @@ const useConfirmToken = (token: string) => {
                 setStatus(data.data.Status);
                 setCompanyName(data.data.CompanyName);
                 localStorage.setItem("ConfirmToken", token);
-                localStorage.setItem("Status", data.data.Status)
-                if (data.data.Status === "in_progress" || data.data.Status === "completed") {
-                    navigate("/sign-up");
-                }
+                navigate("/sign-up");
+                
             } else {
                 alert(`Возникла ошибка: ${data.message}. Повторите позже или повторите заявку`);
                 navigate("/try");

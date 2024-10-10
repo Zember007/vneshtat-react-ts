@@ -3,11 +3,11 @@ import Icon from "@/assets/icons/search.svg?react";
 
 interface InputProps {
     value: string;
-    placeholder: string;
+    placeholder?: string;
     change: any;
 }
 
-const InputDate = (props: InputProps) => {
+const SearchInput = (props: InputProps) => {
     return (
         <label className='py-[10px] px-[20px] flex gap-[5px] bg-[#ECEEF1] rounded-[13px] grow'>
             <Icon className="w-[18px] h-[18px]"/>
@@ -16,4 +16,4 @@ const InputDate = (props: InputProps) => {
     );
 };
 
-export default InputDate;
+export  {SearchInput};

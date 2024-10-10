@@ -131,13 +131,13 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                             </div>
                         )}
                     </Link>
-                    <Link to={"/swap"}
+                    <Link to={"/journeys"}
                           onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <SwapImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/swap" && "blue-fill"}`}/>
-                            {isOpen && <p className={`text-sm ${location === "/swap" && "text-blue"}`}>Поездка</p>}
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/journeys" && "blue-fill"}`}/>
+                            {isOpen && <p className={`text-sm ${location === "/journeys" && "text-blue"}`}>Поездка</p>}
                         </div>
                         {isOpen && (
                             <div className={"h-8 w-8 bg-primary flex items-center justify-center rounded-[9px]"}>
@@ -145,13 +145,13 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                             </div>
                         )}
                     </Link>
-                    <Link to={"/copy"}
+                    <Link to={"/templates"}
                           onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <CopyImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/copy" && "blue-fill"}`}/>
-                            {isOpen && <p className={`text-sm ${location === "/copy" && "text-blue"}`}>Шаблоны</p>}
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/templates" && "blue-fill"}`}/>
+                            {isOpen && <p className={`text-sm ${location === "/templates" && "text-blue"}`}>Шаблоны</p>}
                         </div>
                         {isOpen && (
                             <div className={"h-8 w-8 bg-primary flex items-center justify-center rounded-[9px]"}>

@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState } from "react";
+import {useState } from "react";
 
 const Bill = ({ next, prev }: { next: Function;prev: Function }) => {
 

@@ -1,4 +1,4 @@
-import SearchInput from '@/widgets/jobs/UI/SearchInput'
+import {SearchInput} from '@/shared/UI'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import Switcher from '@/widgets/jobs/UI/Switcher';
 import { StafferCart } from '../../UI';

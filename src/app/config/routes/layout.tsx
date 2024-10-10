@@ -18,22 +18,23 @@ const Finance = lazy(() => import("@/pages/finance/finance"));
 const Reports = lazy(() => import("@/pages/reports/reports"));
 const Employees = lazy(() => import("@/pages/employees/employees"));
 const Company = lazy(() => import("@/pages/company/company"));
+const Templates = lazy(() => import("@/pages/templates/templates"));
 
 const Layout = () => {
     return (
         <Suspense fallback={<div></div>}>
             <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/journey" element={<Journey/>}/>
-                <Route path="/flight" element={<Flight/>}/>
-                <Route path="/bus" element={<Bus/>}/>
-                <Route path="/aero" element={<Aero/>}/>
+                <Route path="/journeys/train" element={<Journey/>}/>
+                <Route path="/journeys/flight" element={<Flight/>}/>
+                <Route path="/journeys/bus" element={<Bus/>}/>
+                <Route path="/journeys/aero" element={<Aero/>}/>
+                <Route path="/journeys/taxi" element={<Taxi/>} />
+                <Route path="/journeys/hotel" element={<Hotel/>} />
+                <Route path="/journeys/transfer" element={<Transfer/>} />
                 <Route path="/promo" element={<Promo/>} />
                 <Route path="/try" element={<Promo/>} />
-                <Route path="/taxi" element={<Taxi/>} />
                 <Route path="/admin" element={<Admin/>} />
-                <Route path="/hotel" element={<Hotel/>} />
-                <Route path="/transfer" element={<Transfer/>} />
                 <Route path="/sign-in" element={<Login/>} />
                 <Route path="/sign-up" element={<Registration/>} />
                 <Route path="/registration-confirm" element={<RegistrationConfirm/>} />
@@ -53,6 +54,8 @@ const Layout = () => {
                 <Route path="/jobs/company" element={<Company/>} />                
                 <Route path="/jobs/company/edit" element={<Company/>} />                
                 <Route path="/jobs/company/tariffs" element={<Company/>} />                
+                <Route path="/templates" element={<Templates/>} />               
+                <Route path="/templates/all" element={<Templates/>} />               
             </Routes>
         </Suspense>
     );

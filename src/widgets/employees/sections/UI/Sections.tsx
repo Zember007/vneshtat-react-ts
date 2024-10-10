@@ -1,4 +1,4 @@
-import SearchInput from '@/widgets/jobs/UI/SearchInput'
+import {SearchInput} from '@/shared/UI'
 import { GroupCart } from '../../UI'
 import { useState } from 'react';
 import TrashImg from "@/assets/icons/trash.svg?react";

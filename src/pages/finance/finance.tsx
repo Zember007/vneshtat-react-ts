@@ -10,7 +10,7 @@ import Letter from "@/widgets/finance/UI/Letter";
 import Modal from "@/widgets/jobs/UI/Modal";
 import InputDate from "@/widgets/finance/UI/InputDate";
 import { useLocation, useNavigate } from "react-router-dom";
-import Layout from '@/widgets/jobs/layout/layout';
+import Layout from '@/app/layouts/layout';
 import ButtonLink from '@/widgets/jobs/UI/Button';
 
 

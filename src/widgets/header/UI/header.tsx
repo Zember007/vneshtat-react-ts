@@ -23,33 +23,41 @@ import C1Img from "@/assets/icons/1c.svg?react";
 const Header = () => {
     const location = useLocation().pathname;
 
-    const links = [
-        { to: "/flight", img: PlaneImg, label: "Самолёт", type: 'trips' },
-        { to: "/journey", img: TrainImg, label: "Поезд", type: 'trips' },
-        { to: "/bus", img: BusImg, label: "Автобусы", type: 'trips' },
-        { to: "/hotel", img: BedImg, label: "Отели", type: 'trips' },
-        { to: "/aero", img: WebImg, label: "Аэроэкспресс", type: 'trips' },
-        { to: "/transfer", img: CarImg, label: "Трансфер", type: 'trips' },
-        { to: "/taxi", img: YandexTaxiImg, label: "Такси", type: 'trips' },
-        { to: "/restaurant", img: RestaurantImg, label: "Места", type: 'trips' },
-        { to: "/jobs/company", img: CompanyImg, label: "Компания", type: 'jobs' },
-        { to: "/jobs/employees", img: TeamImg, label: "Сотрудники", type: 'jobs' },
-        { to: "/jobs/center", disabled: true, img: CenterCostImg, label: "Центры затрат", type: 'jobs' },
-        { to: "/jobs/travel", disabled: true, img: TravelPolicyImg, label: "Тревел-политика", type: 'jobs' },
-        { to: "/jobs/agree", disabled: true, img: AgreementImg, label: "Согласование", type: 'jobs' },
-        { to: "/jobs/finance", img: FinanceImg, label: "Финансы", type: 'jobs' },
-        { to: "/jobs/reports", img: ReportsImg, label: "Отчеты", type: 'jobs' },
-        { to: "/jobs/1c", disabled: true, img: C1Img, label: "Интеграция 1С", type: 'jobs' },
+    const links_journeys = [
+        { disabled: false, to: "/journeys/flight", img: PlaneImg, label: "Самолёт" },
+        { disabled: false, to: "/journeys/train", img: TrainImg, label: "Поезд" },
+        { disabled: false, to: "/journeys/bus", img: BusImg, label: "Автобусы" },
+        { disabled: false, to: "/journeys/hotel", img: BedImg, label: "Отели" },
+        { disabled: false, to: "/journeys/aero", img: WebImg, label: "Аэроэкспресс" },
+        { disabled: false, to: "/journeys/transfer", img: CarImg, label: "Трансфер" },
+        { disabled: false, to: "/journeys/taxi", img: YandexTaxiImg, label: "Такси" },
+        { disabled: false, to: "/journeys/restaurant", img: RestaurantImg, label: "Места" },
     ];
 
-    const isLinkSelected = links.some(item => { item.to === location && item.type == 'trips' })
-    const links_view = links.filter(item => {
-        if (location.split('/')[1] === 'jobs') {
-            return item.type === 'jobs'
-        } else {
-            return item.type !== 'jobs'
-        }
-    })
+    const links_templates = [
+        { disabled: false, to: "/templates?type=flight", img: PlaneImg, label: "Самолёт" },
+        { disabled: false, to: "/templates?type=train", img: TrainImg, label: "Поезд" },
+        { disabled: false, to: "/templates?type=bus", img: BusImg, label: "Автобусы" },
+        { disabled: false, to: "/templates?type=hotel", img: BedImg, label: "Отели" },
+        { disabled: false, to: "/templates?type=aero", img: WebImg, label: "Аэроэкспресс" },
+        { disabled: false, to: "/templates?type=transfer", img: CarImg, label: "Трансфер" },
+        { disabled: false, to: "/templates?type=taxi", img: YandexTaxiImg, label: "Такси" },
+        { disabled: false, to: "/templates?type=restaurant", img: RestaurantImg, label: "Места" },
+    ];
+
+    const links_company = [
+        { to: "/jobs/company", img: CompanyImg, label: "Компания" },
+        { to: "/jobs/employees", img: TeamImg, label: "Сотрудники" },
+        { to: "/jobs/center", disabled: true, img: CenterCostImg, label: "Центры затрат" },
+        { to: "/jobs/travel", disabled: true, img: TravelPolicyImg, label: "Тревел-политика" },
+        { to: "/jobs/agree", disabled: true, img: AgreementImg, label: "Согласование" },
+        { to: "/jobs/finance", img: FinanceImg, label: "Финансы" },
+        { to: "/jobs/reports", img: ReportsImg, label: "Отчеты" },
+        { to: "/jobs/1c", disabled: true, img: C1Img, label: "Интеграция 1С" },
+    ];
+
+    // const isLinkSelected = links.some(item => { item.to === location  })
+
 
     return (
         <div className="flex flex-row justify-between items-center py-2.5">
@@ -59,35 +67,97 @@ const Header = () => {
                     <LockImg className={"min-h-[18px] min-w-[18px]"} />
                 </button>
 
-                {isLinkSelected ? (
+                {location.includes('/journeys') ? (
                     <>
-                        <button className="flex items-center bg-primary p-2.5 rounded-primary h-[45px]">
-                            <BurgerImg className={`transition w-6 h-6 blue-fill-hover`} />
-                        </button>
-                        <button className="flex items-center gap-3 bg-primary px-5 py-3 rounded-primary h-[45px]">
+                        <Link to={'/journeys/all'} className="flex items-center bg-primary p-2.5 rounded-primary h-[45px] flex items-center">
+                            <BurgerImg className={`transition w-6 h-6 blue-fill-hover ${location.includes('/journeys/all') && "blue-fill"}`} />
+                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/journeys/all') && "max-w-[150px] ml-1")}>Все поездки</p>
+                        </Link>
+                        {/* <button className="flex items-center gap-3 bg-primary px-5 py-3 rounded-primary h-[45px]">
                             <p className={"text-base leading-none text-blue"}>Инспекция в Самару</p>
                             <span className={"w-0.5 h-4 rounded-[3px] bg-secondary"} />
                             <p className={"text-base leading-none font-medium"}>18 924,40 ₽</p>
+                        </button> */}
+                    </>
+                ) : null}
+
+                {location.includes('/templates') ? (
+                    <>
+
+                        <                       Link to={'/templates/all'} className="flex items-center bg-primary p-2.5 rounded-primary h-[45px] flex items-center">
+                            <BurgerImg className={`transition w-6 h-6 blue-fill-hover ${location.includes('/templates/all') && "blue-fill"}`} />
+                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/templates/all') && "max-w-[150px] ml-1")}>Все шаблоны</p>
+                        </Link>
+                    </>
+                ) : null}
+
+
+            </div>
+            <div className={"flex items-center gap-2.5"}>
+
+                {location.includes('/journeys') ? (
+                    <>
+                        <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
+                            {links_journeys.map(({ to, img: Icon, label, disabled }) => (
+                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                    <div className="bg-primary relative z-10">
+                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")} />
+                                    </div>
+                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                ) : null}
+
+                {location.includes('/templates') ? (
+                    <>
+                        <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
+                            {links_templates.map(({ to, img: Icon, label, disabled }) => (
+                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                    <div className="bg-primary relative z-10">
+                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")} />
+                                    </div>
+                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                ) : null}
+
+                {location.includes('/jobs') ? (
+                    <>
+                        <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
+                            {links_company.map(({ to, img: Icon, label, disabled }) => (
+                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                    <div className="bg-primary relative z-10">
+                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")} />
+                                    </div>
+                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                ) : null}
+
+                {location.includes('/journeys') ? (
+                    <>
+
+                        <button
+                            className="bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue">
+                            Создать поездку
                         </button>
                     </>
                 ) : null}
-            </div>
-            <div className={"flex items-center gap-2.5"}>
-                <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
-                    {links_view.map(({ to, img: Icon, label, disabled }) => (
-                        <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
-                            <div className="bg-primary relative z-10">
-                                <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")} />
-                            </div>
-                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
-                        </Link>
-                    ))}
-                </div>
-                {location === "/" || location === "/all-journeys" ? (
-                    <button
-                        className="bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue">
-                        Создать поездку
-                    </button>
+
+                {location.includes('/templates') ? (
+                    <>
+
+                        <button
+                            className="bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue">
+                            Создать шаблон
+                        </button>
+                    </>
                 ) : null}
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import DocumentCart from './DocumentCart'
-import SearchInput from '@/widgets/jobs/UI/SearchInput'
+import {SearchInput} from '@/shared/UI'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import {InputDate} from "@/shared/UI";
 import Icon from "@/assets/icons/download_xlsx.svg?react";

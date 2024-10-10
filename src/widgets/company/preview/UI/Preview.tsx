@@ -1,4 +1,4 @@
-import Layout from '@/widgets/jobs/layout/layout';
+import Layout from '@/app/layouts/layout';
 
 
 import { useEffect, useState } from 'react';

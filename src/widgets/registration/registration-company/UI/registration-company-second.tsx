@@ -1,9 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
-import ArrowImg from "@/assets/icons/arrow-long.svg?react";
 import LogoId from "@/assets/icons/logo-id.svg?react";
 import {RootState} from "@/app/config/store";
-import {setPage, updateInfoState} from "../model/registration-company.store";
+import { updateInfoState} from "../model/registration-company.store";
 import {Input} from "@/shared/UI";
 import {ChangeEvent, useState} from "react";
 import {RegistrationCompanyHasAccount} from "./registration-company-has-account";
@@ -106,18 +105,13 @@ const RegistrationCompanySecond = () => {
 
     return (
         <div className={"flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]"}>
-            <div className={"flex items-center gap-4"}>
-                <div className={"flex flex-col gap-4 w-[320px] h-[540px]"}>
+            <div className={"flex items-center gap-4 w-[700px]"}>
+                <div className={"flex flex-col gap-4 w-full h-[540px]"}>
                     <div className={"p-6 bg-primary rounded-[35px] relative"}>
-                        {localStorage.getItem("Status") !== "completed" && (
-                            <button className={"absolute right-[340px] top-[30%]"} onClick={() => dispatch(setPage(1))}>
-                                <ArrowImg/>
-                            </button>
-                        )}
                         <div
-                            className={"flex items-center justify-between pl-6 py-4 pr-4 rounded-[16px] border border-solid border-[#E5E7EA]"}>
+                            className={"flex items-center justify-between pl-[25px] py-[10px] pr-[15px] rounded-[16px] border border-solid border-[#E5E7EA]"}>
                             <h2 className={"text-lg text-[#9B9FAD]"}>{legalCompanyName ? legalCompanyName : registrationCompanyName}</h2>
-                            <SuccessImg className={"min-w-6 min-h-6 blue-fill"}/>
+                            <SuccessImg className={"min-w-[25px] min-h-[25px] blue-fill"}/>
                         </div>
                     </div>
                     <div className={"p-6 bg-primary rounded-[35px] h-full flex flex-col justify-between"}>
@@ -165,7 +159,7 @@ const RegistrationCompanySecond = () => {
                             в личном кабинете сервиса</p>
                     </div>
                 </div>
-                <div className={"w-[320px] h-[540px] p-6 bg-primary rounded-[35px] flex flex-col"}>
+                <div className={"w-full h-[540px] p-6 bg-primary rounded-[35px] flex flex-col"}>
                     <div className={"flex justify-center"}>
                         <LogoId/>
                     </div>
