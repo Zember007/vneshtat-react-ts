@@ -2,7 +2,8 @@ import {Suspense, lazy} from "react";
 import {Route, Routes} from "react-router-dom";
 
 const Home = lazy(() => import("@/pages/home/home"));
-const Journey = lazy(() => import("@/pages/journey/journey"));
+const Journeys = lazy(() => import("@/pages/journeys/journeys"));
+const Train = lazy(() => import("@/pages/train/train"));
 const Flight = lazy(() => import("@/pages/flight/flight"));
 const Bus = lazy(() => import("@/pages/bus/bus"));
 const Promo = lazy(() => import("@/pages/promo/promo"));
@@ -25,7 +26,10 @@ const Layout = () => {
         <Suspense fallback={<div></div>}>
             <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/journeys/train" element={<Journey/>}/>
+                <Route path="/journeys" element={<Journeys/>}/>
+                <Route path="/journeys/all" element={<Journeys/>}/>
+                <Route path="/journeys/create" element={<Journeys/>}/>
+                <Route path="/journeys/train" element={<Train/>}/>
                 <Route path="/journeys/flight" element={<Flight/>}/>
                 <Route path="/journeys/bus" element={<Bus/>}/>
                 <Route path="/journeys/aero" element={<Aero/>}/>

@@ -1,5 +1,5 @@
 import Layout from '@/app/layouts/layout';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { TemplateAll, TemplateCreate, TemplateAdd } from '@/widgets/templates';
 import { useLocation, useNavigate } from 'react-router-dom';
 

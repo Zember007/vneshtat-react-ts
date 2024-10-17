@@ -1,24 +1,25 @@
-import {InputDateProps} from "./input-date.props";
+import { InputDateProps } from "./input-date.props";
 import CalendarImg from "@/assets/icons/calendar.svg?react";
-import {useEffect, useRef, useState} from "react";
-import {Calendar} from "@/shared/UI";
-import {formatDate, getDayOfWeek} from "@/shared/utils";
-import {useClickAway} from "@/shared/hooks/use-click-away";
+import { useEffect, useRef, useState } from "react";
+import { Calendar } from "@/shared/UI";
+import { formatDate, getDayOfWeek } from "@/shared/utils";
+import { useClickAway } from "@/shared/hooks/use-click-away";
 
 const InputDate = ({
-                       extraClass,
-                       extraCalendarClass,
-                       inputValue,
-                       viewValue,
-                       setter,
-                       isShortDate = false,
-                       withIcon = true,
-                       calendarOpt,
-                       placeholder,
-                       noNeedButton = false,
-                       noNeedHandler,
-                       ...rest
-                   }: InputDateProps) => {
+    extraClass,
+    extraCalendarClass,
+    inputValue,
+    viewValue,
+    setter,
+    isShortDate = false,
+    withIcon = true,
+    calendarOpt,
+    placeholder,
+    noNeedButton = false,
+    noNeedHandler,
+    extraClassIcon,
+    ...rest
+}: InputDateProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     useClickAway(containerRef, () => setIsOpen(false))
@@ -45,9 +46,32 @@ const InputDate = ({
         }
     };
 
+    const [top, setTop] = useState('')
+    const [right, setRight] = useState('')
+
+    useEffect(() => {
+
+        let position = containerRef.current?.getBoundingClientRect()
+        console.log(position);
+
+        let top = position?.top
+        let right = position?.x
+        let height = containerRef.current?.clientHeight
+        let width = containerRef.current?.clientWidth
+
+        if (typeof top === 'number' && typeof height === 'number' && typeof right === 'number' && typeof width === 'number') {
+            setTop((top + height + window.pageYOffset) + 'px')
+            setRight((window.innerWidth - right - width) + 'px')
+        }
+
+
+
+
+    }, [containerRef])
+
     return (
-        <div className={`flex flex-col min-h-7 cursor-none`} ref={containerRef} {...rest}>
-            
+        <div className={`flex flex-col min-h-7 cursor-none w-full`} ref={containerRef} {...rest}>
+
             <label className="relative flex justify-end items-center w-full cursor-pointer">
                 <div
                     className={`${extraClass} w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}
@@ -61,18 +85,20 @@ const InputDate = ({
                     )}
                 </div>
                 {withIcon ? (
-                    <button className="absolute pr-1.5" onClick={() => setIsOpen(prev => !prev)}>
-                        <CalendarImg className="w-[24px] h-[24px]"/>
+                    <button className={`absolute pr-1.5`} onClick={() => setIsOpen(prev => !prev)}>
+                        <CalendarImg className={`w-[24px] h-[24px] ${extraClassIcon}`} />
                     </button>
                 ) : null}
             </label>
             {isOpen && (
                 <div
-                    className={`absolute rounded-[23px] p-5 -translate-x-[35%] top-[250px] z-50 flex flex-col gap-2.5 ${extraCalendarClass}`}
+                    className={`absolute rounded-[23px] p-5 z-50 flex flex-col gap-2.5 ${extraCalendarClass}`}
                     style={{
                         background: "rgba(245, 245, 245, 0.82)",
                         boxShadow: "0px 4px 6.5px 0px rgba(0, 0, 0, 0.04)",
-                        backdropFilter: "blur(4.849999904632568px)"
+                        backdropFilter: "blur(4.849999904632568px)",
+                        top: top,
+                        right: right
                     }}
                 >
                     <Calendar value={inputValue} setter={setter} {...calendarOpt} />
@@ -90,4 +116,4 @@ const InputDate = ({
     )
 };
 
-export {InputDate};
+export { InputDate };

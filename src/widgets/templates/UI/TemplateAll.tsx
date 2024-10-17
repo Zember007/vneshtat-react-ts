@@ -1,7 +1,7 @@
 import { SearchInput, Switch } from '@/shared/UI'
 import { useState } from 'react';
 import TemplateCart from './TemplateCart';
-import TemplateCartService from './TemplateCartService';
+// import TemplateCartService from './TemplateCartService';
 import { Link } from 'react-router-dom';
 
 

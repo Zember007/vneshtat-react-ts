@@ -10,7 +10,7 @@ import {
     setCityFromName,
     setCityTo,
     setCityToName, setDateBack, setDateTo
-} from "../../journey-operations/model/journey.store";
+} from "../../train-operations/model/journey.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {useEffect, useState} from "react";

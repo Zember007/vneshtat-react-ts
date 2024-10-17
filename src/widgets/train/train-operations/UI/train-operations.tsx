@@ -13,7 +13,7 @@ import {JourneyAdd} from "./journey-add";
 import {JourneyFilter} from "./journey-filter";
 import {JourneyPassenger} from "./journey-passenger";
 
-const JourneyOperations = () => {
+const TrainOperations = () => {
     const [activeOperation, setActiveOperation] = useState<ActiveOperation>("route");
 
     return (
@@ -73,4 +73,4 @@ const JourneyOperations = () => {
     )
 };
 
-export {JourneyOperations};
+export {TrainOperations};

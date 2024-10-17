@@ -3,7 +3,7 @@ import { setCenterCosts, setProject } from "../model/template.store";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import Layout from "../layout/Layout";
-import { useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const TemplateCreate = () => {
     const dispatch = useDispatch();

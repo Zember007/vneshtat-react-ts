@@ -8,10 +8,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {handleScrollToTop} from "@/shared/utils";
 import {AppDispatch, RootState} from "@/app/config/store";
 import {JourneyTicket, JourneyTicketPreload} from "@/entities/journey-ticket";
-import {JourneyTicketsHeader} from "@/widgets/journey/journey-tickets/UI/journey-tickets-header";
-import {fetchJourneyTickets} from "@/widgets/journey/journey-operations/model/journey.store";
+import {JourneyTicketsHeader} from "@/widgets/train/train-tickets/UI/journey-tickets-header";
+import {fetchJourneyTickets} from "@/widgets/train/train-operations/model/journey.store";
 
-const JourneyTickets = () => {
+const TrainTickets = () => {
     const {dateTo, dateBack} = useSelector((state: RootState) => state.journey);
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const ticketContainerRef = useRef<HTMLDivElement | null>(null);
@@ -127,4 +127,4 @@ const JourneyTickets = () => {
     );
 };
 
-export { JourneyTickets };
+export { TrainTickets };

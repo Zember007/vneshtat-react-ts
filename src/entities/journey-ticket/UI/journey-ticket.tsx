@@ -9,7 +9,7 @@ import BackCannotImg from "@/assets/icons/back-cannot.svg?react";
 import InvalidImg from "@/assets/icons/invalid.svg?react";
 import SuitcaseImg from "@/assets/icons/suitcase.svg?react";
 import {useEffect, useState} from "react";
-import {ticketOptionsMock} from "@/widgets/journey/journey-operations/utils";
+import {ticketOptionsMock} from "@/widgets/train/train-operations/utils";
 import {JourneyTicketBody} from "@/entities/journey-ticket/UI/journey-ticket-body";
 import {JourneyTicketTimetable} from "@/entities/journey-ticket/UI/journey-ticket-timetable";
 import {TicketOptions} from "@/shared/UI";

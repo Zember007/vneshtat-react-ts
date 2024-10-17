@@ -1,10 +1,10 @@
 import Layout from "@/app/layouts/layout";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import TemplateCartService from "./TemplateCartService";
 import Filters from "./filters/Filters";
-import { Services } from "../utils";
-import { addService, removeService, updateService } from "../model/template.store";
+// import { Services } from "../utils";
+// import { removeService, updateService } from "../model/template.store";
+import { addService } from "../model/template.store";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import { FlightTickets } from "@/widgets/flight/flight-tickets";

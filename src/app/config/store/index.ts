@@ -1,6 +1,6 @@
 import {thunk} from "redux-thunk";
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
-import journeyStore from "@/widgets/journey/journey-operations/model/journey.store";
+import journeyStore from "@/widgets/train/train-operations/model/journey.store";
 import flightStore from "@/widgets/flight/flight-operations/model/flight.store";
 import reportsStore from "@/widgets/reports/model/reports.store";
 import busStore from "@/widgets/bus/bus-operations/model/bus.store";

@@ -8,11 +8,11 @@ import TicketImg from '@/assets/icons/ticket.svg?react'
 import CloseImg from '@/assets/icons/cross.svg?react'
 
 import clsx from "clsx";
-import { useState } from "react";
+// import { useState } from "react";
 import { Services } from '../../utils'
 import ServiceType from './ServiceType'
 import { FlightRoute } from "@/widgets/flight/flight-operations/UI/flight-route";
-import { JourneyRoute } from "@/widgets/journey/journey-operations/UI/journey-route";
+// import { JourneyRoute } from "@/widgets/train/train-operations/UI/journey-route";
 import { FlightFilter } from '@/widgets/flight/flight-operations/UI/flight-filter'
 import ServiceTeam from './ServiceTeam'
 

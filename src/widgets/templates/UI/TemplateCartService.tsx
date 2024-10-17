@@ -1,4 +1,4 @@
-import FlightImg from '@/assets/icons/fligt/flight-avialogo.svg?react'
+// import FlightImg from '@/assets/icons/fligt/flight-avialogo.svg?react'
 import RouteImg from '@/assets/icons/route.svg?react'
 import { Services } from '../utils';
 import RoutePlusImg from '@/assets/icons/route_plus.svg?react'
