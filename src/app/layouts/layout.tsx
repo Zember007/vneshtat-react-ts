@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-const Layout = ({ component, information, navigation, links }: { links?: JSX.Element | boolean; component?: JSX.Element | boolean | string, information?: JSX.Element | boolean | string, navigation?: JSX.Element | boolean }) => {
+const Layout = ({ component, information, navigation, links, extraClassBar }: { links?: JSX.Element | boolean; component?: JSX.Element | boolean | string, information?: JSX.Element | boolean | string, navigation?: JSX.Element | boolean, extraClassBar?:string }) => {
     return (
         <main className='flex gap-[15px] h-full grow'>
             <div className={"flex flex-col gap-[15px] h-full grow"}>
@@ -13,7 +13,7 @@ const Layout = ({ component, information, navigation, links }: { links?: JSX.Ele
                     </div>
                 ) : component}
             </div>
-            <div className="flex flex-col gap-[15px] justify-between w-[300px] min-w-[300px]">
+            <div className={"flex flex-col gap-[15px] justify-between w-[300px] "+extraClassBar}>
                 <div className={clsx('grow rounded-[26px] bg-[#FAFAFA]', typeof information == 'string' && 'flex items-center justify-center')}>
                     {information}
                 </div>

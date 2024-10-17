@@ -23,11 +23,12 @@ import {ShowedGraph} from "./flight-tickets";
 import {usePagination} from "@/shared/hooks/use-pagination";
 import {PriceData, priceData} from "../utils";
 
-const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActiveRate}: {
+const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActiveRate, template}: {
     showedGraph: ShowedGraph | null,
     setShowedGraph: Dispatch<SetStateAction<ShowedGraph | null>>,
     activeRate: PriceData | null,
-    setActiveRate: Dispatch<SetStateAction<PriceData | null>>
+    setActiveRate: Dispatch<SetStateAction<PriceData | null>>,
+    template?:boolean
 }) => {
     const {flights, cityFrom, cityTo} = useSelector((state: RootState) => state.flight);
     const [byQueue, setByQueue] = useState(true);
@@ -233,11 +234,11 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                             <h6 className={"text-xs font-medium"}>Москва — Самара</h6>
                             <p className={"text-[10px] text-[#9B9FAD]"}>18.02.2023 - 21.02.2023</p>
                         </div>
-                        <div
+                        {!template && (<div
                             className={"flex items-center h-[50px] gap-2.5 px-4 py-2.5 rounded-primary bg-secondary cursor-pointer"}>
                             <CopyImg/>
                             <h6 className={"text-xs font-medium"}>Выбрать из шаблонов</h6>
-                        </div>
+                        </div> )}
                     </div>
                 )}
             </div>

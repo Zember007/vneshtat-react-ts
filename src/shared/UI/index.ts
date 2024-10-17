@@ -14,3 +14,4 @@ export {Popup} from "./popup/popup";
 export {CountdownCircle} from "./countdown-circle/countdown-circle";
 export {InputTime} from "./input-time/input-time";
 export {SearchInput} from "./search/SearchInput";
+export {PassengerItem} from "./passenger-item/passenger-item";

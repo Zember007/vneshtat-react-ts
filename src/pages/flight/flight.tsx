@@ -4,7 +4,7 @@ import {FlightOperations} from "@/widgets/flight/flight-operations";
 const Flight = () => {
     return (
         <div className={"flex flex-row gap-4"}>
-            <FlightTickets/>
+            <FlightTickets />
             <FlightOperations/>
         </div>
     )

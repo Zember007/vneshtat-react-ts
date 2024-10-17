@@ -1,10 +1,10 @@
-import {ReactNode, useState} from "react";
+import { ReactNode, useState } from "react";
 import EraserImg from "@/assets/icons/eraser.svg?react";
 import ArrowImg from "@/assets/icons/arrow-top.svg?react";
 
 interface DropdownProps {
     isChanged?: boolean,
-    title: string,
+    title?: string,
     onErase?: () => void,
     selectedText?: string
     children: ReactNode
@@ -13,9 +13,9 @@ interface DropdownProps {
 }
 
 const Dropdown = ({
-                      isChanged = false, onErase = () => {
+    isChanged = false, onErase = () => {
     }, title, selectedText, children, isAbsoluteDrop = false, extraClass
-                  }: DropdownProps) => {
+}: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -27,17 +27,19 @@ const Dropdown = ({
                     onClick={() => setIsOpen((prev) => !prev)}
                 >
                     {isChanged && (
-                        <span className="absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3"/>
+                        <span className="absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3" />
                     )}
-                    <h6
-                        className="text-xs font-medium whitespace-nowrap ml-2"
-                        onClick={() => setIsOpen((prev) => !prev)}
-                    >
-                        {title}
-                    </h6>
+                    {
+                        title && <h6
+                            className="text-[14px] font-medium whitespace-nowrap ml-2"
+                            onClick={() => setIsOpen((prev) => !prev)}
+                        >
+                            {title}
+                        </h6>
+                    }
                     {selectedText && (
-                        <p className="text-xs font-medium whitespace-nowrap text-[#9B9FAD]"
-                           onClick={() => setIsOpen((prev) => !prev)}>
+                        <p className="text-[14px] font-medium whitespace-nowrap text-[#9B9FAD]"
+                            onClick={() => setIsOpen((prev) => !prev)}>
                             {selectedText}
                         </p>
                     )}
@@ -49,11 +51,11 @@ const Dropdown = ({
                             }}
                             type={"button"}
                         >
-                            <EraserImg className="transition hover:brightness-50"/>
+                            <EraserImg className="transition hover:brightness-50" />
                         </button>
                     )}
                 </div>
-                <button onClick={() => setIsOpen((prev) => !prev)} type={"button"}>
+                <button type={"button"}>
                     <ArrowImg
                         className={`transform transition-transform duration-300 ${!isOpen ? "rotate-180" : ""}`}
                     />
@@ -78,4 +80,4 @@ const Dropdown = ({
     )
 };
 
-export {Dropdown};
+export { Dropdown };

@@ -27,7 +27,7 @@ const finance = () => {
 
 
 
-    }, [])
+    }, [location])
 
 
     const [selectedBankId, setSelectedBankId] = useState<number | null>(null)

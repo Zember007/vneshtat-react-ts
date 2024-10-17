@@ -13,7 +13,7 @@ import {PriceData} from "../utils";
 
 export type ShowedGraph = "graph" | "dashboard" | null;
 
-const FlightTickets = () => {
+const FlightTickets = ({template}:{template?: boolean}) => {
     const { flights } = useSelector((state: RootState) => state.flight);
     const firstFlight = flights[0];
     const tickets = 1;
@@ -76,7 +76,7 @@ const FlightTickets = () => {
 
     return (
         <div ref={scrollRef} className={"w-full flex flex-col bg-primary rounded-[26px]"}>
-            <FlightTicketsHeader setShowedGraph={setShowedGraph} showedGraph={showedGraph} activeRate={activeRate} setActiveRate={setActiveRate} />
+            <FlightTicketsHeader template={template} setShowedGraph={setShowedGraph} showedGraph={showedGraph} activeRate={activeRate} setActiveRate={setActiveRate} />
             <hr className={"h-[1px] bg-[#e5e7ea] rounded-[1px] mt-4 mx-5"} />
             <div className={"bg-primary overflow-hidden rounded-b-[26px]"}>
                 {showedGraph ? (

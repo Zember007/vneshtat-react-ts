@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import TrashImg from "@/assets/icons/trash.svg?react";
+// import TrashImg from "@/assets/icons/trash.svg?react";
 import {AppDispatch, RootState} from "@/app/config/store";
 import {Checkbox, Dropdown, Input, InputRange} from "@/shared/UI";
 import {priceRanges, timeOnWayRanges} from "../utils";
@@ -16,25 +16,25 @@ const FlightFilter = () => {
     const [customPriceRange, setCustomPriceRange] = useState<Range>(priceRanges);
     const dispatch: AppDispatch = useDispatch();
 
-    const handleClearFilter = () => {
-        dispatch(setPriceRange(priceRanges))
-        dispatch(setTimeFrom(timeOnWayRanges))
-        dispatch(setTimeTo(timeOnWayRanges))
-        setCustomPriceRange(priceRanges)
-        dispatch(setAirportFrom("default"));
-        dispatch(setAirportTo("default"));
-    }
+    // const handleClearFilter = () => {
+    //     dispatch(setPriceRange(priceRanges))
+    //     dispatch(setTimeFrom(timeOnWayRanges))
+    //     dispatch(setTimeTo(timeOnWayRanges))
+    //     setCustomPriceRange(priceRanges)
+    //     dispatch(setAirportFrom("default"));
+    //     dispatch(setAirportTo("default"));
+    // }
 
     return (
         <div className="w-full">
-            <div className="flex justify-between items-center">
+            {/* <div className="flex justify-between items-center">
                 <h3>Фильтры</h3>
                 <button onClick={handleClearFilter}>
                     <TrashImg className={"transition black-fill-hover black-stroke-hover"}/>
                 </button>
-            </div>
-            <hr className="h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"/>
-            <div className="h-[calc(100vh-343px)] overflow-y-auto scroll flex flex-col gap-2.5 py-2.5">
+            </div> */}
+            {/* <hr className="h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"/> */}
+            <div className="h-[calc(100vh-343px)] overflow-y-auto scroll flex flex-col gap-2.5 ">
                 <Dropdown
                     isChanged={priceRange.isChanged}
                     title="Стоимость"

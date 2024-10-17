@@ -84,7 +84,7 @@ const Header = () => {
                 {location.includes('/templates') ? (
                     <>
 
-                        <                       Link to={'/templates/all'} className="flex items-center bg-primary p-2.5 rounded-primary h-[45px] flex items-center">
+                        <Link to={'/templates/all'} className="flex items-center bg-primary p-2.5 rounded-primary h-[45px] flex items-center">
                             <BurgerImg className={`transition w-6 h-6 blue-fill-hover ${location.includes('/templates/all') && "blue-fill"}`} />
                             <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/templates/all') && "max-w-[150px] ml-1")}>Все шаблоны</p>
                         </Link>
@@ -153,10 +153,10 @@ const Header = () => {
                 {location.includes('/templates') ? (
                     <>
 
-                        <button
-                            className="bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue">
+                        <Link to={'/templates/create'}
+                            className={`bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue ${location.includes('/templates/create') && 'text-blue'}`}>
                             Создать шаблон
-                        </button>
+                        </Link>
                     </>
                 ) : null}
             </div>

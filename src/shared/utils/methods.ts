@@ -113,6 +113,8 @@ export async function getUserCompanies() {
         if(!data.data.length){
             localStorage.clear();
         } else {
+            console.log(data);
+            
             return data;
         }
     }

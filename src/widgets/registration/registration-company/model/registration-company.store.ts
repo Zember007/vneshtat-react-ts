@@ -40,7 +40,7 @@ interface RegistrationCompanyStoreState {
 }
 
 const initialState: RegistrationCompanyStoreState = {
-    progress: 3,
+    progress: 2,
     page: 1,
     isCompanyReady: false,
     isInfoReady: false,

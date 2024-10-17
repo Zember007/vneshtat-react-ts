@@ -11,7 +11,7 @@ const Switch = ({
                     setter,
                 }: SwitchProps) => {
     return (
-        <div className={`flex flex-row items-center gap-1 bg-secondary p-1 rounded-primary w-fit ${extraClass}`}>
+        <div className={`flex flex-row items-center bg-secondary p-1 rounded-primary w-fit ${extraClass}`}>
             <div
                 className={`rounded-secondary cursor-pointer h-7 flex justify-center items-center py-1.5 px-2.5 ${extraChildClass}`}
                 style={{

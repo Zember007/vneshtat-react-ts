@@ -56,6 +56,9 @@ const Layout = () => {
                 <Route path="/jobs/company/tariffs" element={<Company/>} />                
                 <Route path="/templates" element={<Templates/>} />               
                 <Route path="/templates/all" element={<Templates/>} />               
+                <Route path="/templates/create" element={<Templates/>} />               
+                <Route path="/templates/create/add" element={<Templates/>} />               
+                <Route path="/templates/view" element={<Templates/>} />               
             </Routes>
         </Suspense>
     );
