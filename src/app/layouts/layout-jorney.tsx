@@ -1,9 +1,10 @@
+import { ReactNode } from "react";
 
 
 interface props {
-    block?: JSX.Element;
-    block1?: JSX.Element;
-    block2?: JSX.Element;
+    block?: ReactNode;
+    block1?: ReactNode;
+    block2?: ReactNode;
 }
 
 const Layout = ({ block, block1, block2 }: props) => {
@@ -16,7 +17,7 @@ const Layout = ({ block, block1, block2 }: props) => {
                 <div className="rounded-[26px] bg-primary p-[30px] grow">
                     {block1}
                 </div>
-                {block2 ? <div className="rounded-[26px] bg-primary p-[30px] min-w-[255px]"></div> : block2}
+                {!block2 ? <div className="rounded-[26px] bg-primary p-[30px] min-w-[255px]"></div> : block2}
             </div>
         </div>
     );

@@ -35,14 +35,14 @@ const Header = () => {
     ];
 
     const links_templates = [
-        { disabled: false, to: "/templates?type=flight", img: PlaneImg, label: "Самолёт" },
-        { disabled: false, to: "/templates?type=train", img: TrainImg, label: "Поезд" },
-        { disabled: false, to: "/templates?type=bus", img: BusImg, label: "Автобусы" },
-        { disabled: false, to: "/templates?type=hotel", img: BedImg, label: "Отели" },
-        { disabled: false, to: "/templates?type=aero", img: WebImg, label: "Аэроэкспресс" },
-        { disabled: false, to: "/templates?type=transfer", img: CarImg, label: "Трансфер" },
-        { disabled: false, to: "/templates?type=taxi", img: YandexTaxiImg, label: "Такси" },
-        { disabled: false, to: "/templates?type=restaurant", img: RestaurantImg, label: "Места" },
+        { disabled: false, to: "/templates/flight", img: PlaneImg, label: "Самолёт" },
+        { disabled: false, to: "/templates/train", img: TrainImg, label: "Поезд" },
+        { disabled: false, to: "/templates/bus", img: BusImg, label: "Автобусы" },
+        { disabled: false, to: "/templates/hotel", img: BedImg, label: "Отели" },
+        { disabled: false, to: "/templates/aero", img: WebImg, label: "Аэроэкспресс" },
+        { disabled: false, to: "/templates/transfer", img: CarImg, label: "Трансфер" },
+        { disabled: false, to: "/templates/taxi", img: YandexTaxiImg, label: "Такси" },
+        { disabled: false, to: "/templates/restaurant", img: RestaurantImg, label: "Места" },
     ];
 
     const links_company = [
@@ -142,11 +142,10 @@ const Header = () => {
 
                 {location.includes('/journeys') ? (
                     <>
-
-                        <button
-                            className="bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue">
+                        <Link to={'/journeys/create'}
+                            className={`bg-primary border rounded-primary px-9 h-[45px] flex justify-center items-center transition text-base hover:text-blue ${location.includes('/journeys/create') && 'text-blue'}`}>
                             Создать поездку
-                        </button>
+                        </Link>
                     </>
                 ) : null}
 

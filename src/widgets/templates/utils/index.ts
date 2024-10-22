@@ -30,7 +30,7 @@ export interface Services {
     route: Route;
     city: string | null;
     team: Array<Team> | number | null;
-    filters: Array<any> | null;
+    filters: number | null;
     option: Array<Option> | null;
 }
 

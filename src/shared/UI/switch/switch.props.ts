@@ -5,6 +5,7 @@ export interface SwitchProps {
     secondChild: ReactNode
     isSelected: boolean,
     extraChildClass?: string,
+    extraActiveChildClass?: string,
     selectedBg?: string,
     unselectedBg?: string,
     extraClass?: string,

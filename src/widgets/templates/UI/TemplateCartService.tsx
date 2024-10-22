@@ -1,5 +1,6 @@
-// import FlightImg from '@/assets/icons/fligt/flight-avialogo.svg?react'
+import FlightImg from '@/assets/icons/fligt/flight-avialogo.svg?react'
 import RouteImg from '@/assets/icons/route.svg?react'
+import FilterImg from '@/assets/icons/filter.svg?react'
 import { Services } from '../utils';
 import RoutePlusImg from '@/assets/icons/route_plus.svg?react'
 
@@ -40,40 +41,40 @@ const TemplateCartService = ({ data, select }: { data: Services, select?: Functi
                 </div>
                 <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px]">
                     <span className="text-[18px] font-medium text-[#787B86] ">{data.type === 'hotels' ? 'Гости' : 'Пассажиры'} </span>
-                    {(!data.team && select) && <div className="flex gap-[10px] justify-between mt-[5px]">
+                    {(!data.team && select) ? <div className="flex gap-[10px] justify-between mt-[5px]">
                         <p className='text-[#787B86] text-[14px]'>Если это шаблон для конкретных сотрудников</p>
                         <button onClick={() => select('team')} className='py-[7.5px] px-[22px] rounded-[10px] bg-primary'>
                             <p className='text-[#007BFB] text-[14px]'>Выбрать</p>
                         </button>
-                    </div>}
-                    {/* <div className="text-[14px] font-medium *:text-[#787B86] flex gap-[5px]  mt-[10px]">
-                        <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
-                            Ви
-                        </div>
-                        <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
-                            Ви
-                        </div>
-                        <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
-                            Ви
-                        </div>
-                        <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
-                            Ви
-                        </div>
-                        <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
-                            Ви
-                        </div>
-                    </div> */}
+                    </div> :
+                        <div className="text-[14px] font-medium *:text-[#787B86] flex gap-[5px]  mt-[10px] uppercase">
+                            <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
+                                Ви
+                            </div>
+                            <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
+                                Ви
+                            </div>
+                            <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
+                                Ви
+                            </div>
+                            <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
+                                Ви
+                            </div>
+                            <div className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-primary">
+                                Ви
+                            </div>
+                        </div>}
                 </div>
                 <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] row-span-2 flex flex-col">
                     <span className="text-[18px] font-medium text-[#787B86]">Вариант</span>
 
-                    <p className='text-[#787B86] text-[14px] mt-[5px]'>Добавить в шаблон конкретный рейс или отель, чтобы не пришлось выбирать при создании поездки</p>
+                    {!data.option && <p className='text-[#787B86] text-[14px] mt-[5px]'>Добавить в шаблон конкретный рейс или отель, чтобы не пришлось выбирать при создании поездки</p>}
 
 
-                    {/* <div className="flex flex-col gap-[5px] grow mt-[10px]">
+                    {data.option && <div className="flex flex-col gap-[5px] grow mt-[10px]">
                         <div className="p-[10px] rounded-[13px] bg-primary grow flex flex-col gap-[5px]">
                             <div className="flex items-center gap-[5px]">
-                                <FlightImg className='w-[13px]'/>
+                                <FlightImg className='w-[13px]' />
                                 <span className='text-[11px] font-medium '>S7</span>
                                 <span className='text-[11px] font-medium text-[#9B9FAD]'>2550</span>
                                 <span className='text-[11px] font-medium text-[#9B9FAD]'>4ч 35м</span>
@@ -98,7 +99,7 @@ const TemplateCartService = ({ data, select }: { data: Services, select?: Functi
                             </div>
                         </div>
                         <button className="text-[#007BFB] text-[14px] rounded-[13px] bg-primary py-[9px]">Добавить вариант</button>
-                    </div> */}
+                    </div>}
                 </div>
                 <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px]">
                     <span className="text-[18px] font-medium text-[#787B86] ">{data.type === 'hotels' ? 'Город' : 'Маршрут'}</span>
@@ -112,32 +113,34 @@ const TemplateCartService = ({ data, select }: { data: Services, select?: Functi
                         : !data.city ?
                             data.route.items.map(item => (
                                 <div className=" flex gap-[5px] mt-[15px]">
-                                    <div className="w-[30px] h-[30px] rounded-[11px] bg-primary flex items-center justify-center"><RouteImg className='w-[16px] h-[16px] *:fill-[#8C909C]'/></div>
+                                    <div className="w-[30px] h-[30px] rounded-[11px] bg-primary flex items-center justify-center"><RouteImg className='w-[16px] h-[16px] *:fill-[#8C909C]' /></div>
                                     {item.cityFrom && item.cityBefore && <div className="rounded-[11px] bg-primary  px-[13px] text-[12px] font-medium text-[#787B86] flex items-center">{item.cityFrom} — {item.cityBefore}</div>}
                                     <div className="rounded-[11px] bg-primary  px-[13px] text-[12px] font-medium text-[#787B86] flex items-center">{data.route.class}</div>
                                 </div>
                             ))
                             :
                             <div className="flex gap-[5px] mt-[15px]">
-                                <div className="w-[30px] h-[30px] rounded-[11px] bg-primary flex items-center justify-center"><RouteImg className='w-[16px] h-[16px] *:fill-[#8C909C]'/></div>
-                                <div className="rounded-[11px] bg-primary  px-[13px] text-[12px] font-medium text-[#787B86] flex items-center">{data.city}</div>                                
+                                <div className="w-[30px] h-[30px] rounded-[11px] bg-primary flex items-center justify-center"><RouteImg className='w-[16px] h-[16px] *:fill-[#8C909C]' /></div>
+                                <div className="rounded-[11px] bg-primary  px-[13px] text-[12px] font-medium text-[#787B86] flex items-center">{data.city}</div>
                             </div>
                     }
 
                 </div>
                 <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px]">
                     <span className="text-[18px] font-medium text-[#787B86] ">Фильтры</span>
-                    {(!data.filters && select) && <div className="flex gap-[10px] justify-between mt-[5px]">
+                    {(!data.filters && select) ? <div className="flex gap-[10px] justify-between mt-[5px]">
                         <p className='text-[#787B86] text-[14px]'>Если это шаблон для конкретных сотрудников</p>
                         <button onClick={() => select('filters')} className='py-[7.5px] px-[22px] rounded-[10px] bg-primary'>
                             <p className='text-[#007BFB] text-[14px]'>Выбрать</p>
                         </button>
-                    </div>}
-                    {/* <div className=" flex gap-[5px] mt-[15px]">
-                        <div className="w-[30px] h-[30px] rounded-[11px] bg-primary flex items-center justify-center"></div>
-                        <div className="rounded-[11px] bg-primary  px-[13px] text-[12px] font-medium text-[#787B86] flex items-center">4 активных фильтра</div>
-                    </div> */}
-
+                    </div> :
+                        <div className=" flex gap-[5px] mt-[15px]">
+                            <div className="w-[30px] h-[30px] rounded-[11px] bg-primary flex items-center justify-center">
+                                <FilterImg className='*:fill-[#8C909C] w-[16px] h-[16px]'/>
+                            </div>
+                            <div className="rounded-[11px] bg-primary  px-[13px] text-[12px] font-medium text-[#787B86] flex items-center">4 активных фильтра</div>
+                        </div>
+                    }
                 </div>
 
             </div>

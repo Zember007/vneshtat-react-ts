@@ -29,6 +29,8 @@ const Layout = () => {
                 <Route path="/journeys" element={<Journeys/>}/>
                 <Route path="/journeys/all" element={<Journeys/>}/>
                 <Route path="/journeys/create" element={<Journeys/>}/>
+                <Route path="/journeys/item" element={<Journeys/>}/>
+                <Route path="/journeys/item/information" element={<Journeys/>}/>
                 <Route path="/journeys/train" element={<Train/>}/>
                 <Route path="/journeys/flight" element={<Flight/>}/>
                 <Route path="/journeys/bus" element={<Bus/>}/>
@@ -36,6 +38,13 @@ const Layout = () => {
                 <Route path="/journeys/taxi" element={<Taxi/>} />
                 <Route path="/journeys/hotel" element={<Hotel/>} />
                 <Route path="/journeys/transfer" element={<Transfer/>} />
+                <Route path="/templates/train" element={<Templates/>}/>
+                <Route path="/templates/flight" element={<Templates/>}/>
+                <Route path="/templates/bus" element={<Templates/>}/>
+                <Route path="/templates/aero" element={<Templates/>}/>
+                <Route path="/templates/taxi" element={<Templates/>} />
+                <Route path="/templates/hotel" element={<Templates/>} />
+                <Route path="/templates/transfer" element={<Templates/>} />
                 <Route path="/promo" element={<Promo/>} />
                 <Route path="/try" element={<Promo/>} />
                 <Route path="/admin" element={<Admin/>} />
