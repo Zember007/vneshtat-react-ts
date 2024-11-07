@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 
 const Home = lazy(() => import("@/pages/home/home"));
 const Journeys = lazy(() => import("@/pages/journeys/journeys"));
+const Messages = lazy(() => import("@/pages/messages/Messages"));
 const Train = lazy(() => import("@/pages/train/train"));
 const Flight = lazy(() => import("@/pages/flight/flight"));
 const Bus = lazy(() => import("@/pages/bus/bus"));
@@ -45,12 +46,14 @@ const Layout = () => {
                 <Route path="/templates/taxi" element={<Templates/>} />
                 <Route path="/templates/hotel" element={<Templates/>} />
                 <Route path="/templates/transfer" element={<Templates/>} />
+                <Route path="/messages" element={<Messages/>}/>
                 <Route path="/promo" element={<Promo/>} />
                 <Route path="/try" element={<Promo/>} />
                 <Route path="/admin" element={<Admin/>} />
                 <Route path="/sign-in" element={<Login/>} />
                 <Route path="/sign-up" element={<Registration/>} />
                 <Route path="/registration-confirm" element={<RegistrationConfirm/>} />
+                <Route path="/connect" element={<RegistrationConfirm/>} />
                 <Route path="/jobs/finance" element={<Finance/>} />
                 <Route path="/jobs/finance/banks" element={<Finance/>} />
                 <Route path="/jobs/finance/report" element={<Finance/>} />

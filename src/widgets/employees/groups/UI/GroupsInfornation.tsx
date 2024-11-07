@@ -1,8 +1,13 @@
-import { groups } from '../../utils';
+
+import {  useSelector } from 'react-redux';
 import { FilterGroups } from '../../UI';
+import { RootState } from '@/app/config/store';
 
 
 const GroupsInfornation = ({ selectedGroupsId }: { selectedGroupsId: number | null }) => {
+
+    const groups = useSelector((state: RootState) => state.employees.GroupsInformation);
+
     const selectedGroups = groups.find(item => item.id === selectedGroupsId);
 
     return (
@@ -19,7 +24,7 @@ const GroupsInfornation = ({ selectedGroupsId }: { selectedGroupsId: number | nu
                 )
                     :
                     (
-                        <FilterGroups />
+                        <FilterGroups selectedGroupId={selectedGroupsId} />
                     )
             }
         </div>

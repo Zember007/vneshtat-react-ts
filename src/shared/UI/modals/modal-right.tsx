@@ -1,7 +1,7 @@
 import CloseImg from '@/assets/icons/close.svg?react'
 import { useClickAway } from '@/shared/hooks/use-click-away';
 import { ReactNode, useEffect, useRef } from 'react';
-const ModalRight = ({ active, close, title, description, button, children }: { active: boolean; close: Function; title: string; button: string; description: string; children: ReactNode }) => {
+const ModalRight = ({ active, close, title, description, button, children, action, buttonClass }: { active: boolean; close: Function; title: string; button: string; description: string; children: ReactNode; action:Function; buttonClass?:string }) => {
 
     useEffect(() => {
 
@@ -36,7 +36,7 @@ const ModalRight = ({ active, close, title, description, button, children }: { a
                     </div>
                     {children}
                 </div>
-                <button className='text-[#787B86] text-[16px] py-[10.5px] px-[52px] rounded-[13px] bg-[#ECEEF1] self-end'>{button}</button>
+                <button onClick={(e) => {action(e)}} className={`text-[#787B86] text-[16px] py-[10.5px] px-[52px] rounded-[13px] bg-[#ECEEF1] self-end ${buttonClass}`}>{button}</button>
             </div>
         </div>
     );

@@ -38,8 +38,8 @@ const initialState: TemplateState = {
     ]
 };
 
-const EmployeesStore = createSlice({
-    name: "employees",
+const TemplateStore = createSlice({
+    name: "template",
     initialState,
     reducers: {
         addService: (state) => {
@@ -64,7 +64,9 @@ const EmployeesStore = createSlice({
             });
         },
         removeService: (state, action) => {
+
             state.services = state.services.filter(service => service.id !== action.payload);
+
         },
         updateService: (state, action) => {
             const { id, field, value } = action.payload;
@@ -154,5 +156,5 @@ export const {
     changeCity,
     removeRoute,
     setClassRoutes
-} = EmployeesStore.actions
-export default EmployeesStore.reducer;
+} = TemplateStore.actions
+export default TemplateStore.reducer;

@@ -20,7 +20,6 @@ function App() {
             const setUserData = async () => {
                 const user = await getUser();
                 dispatch(setUser(user));
-                console.log(setUser(user), 'user');
             }
             setUserData()
 
@@ -41,6 +40,8 @@ function App() {
             setUserCompanies();
             const intervalId = setInterval(() => {
                 setUserOnline();
+                console.log(123);
+                
             }, 60 * 1000);
 
             return () => clearInterval(intervalId);

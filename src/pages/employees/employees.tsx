@@ -1,28 +1,30 @@
 import Layout from '@/app/layouts/layout';
-import ButtonLink from '@/widgets/jobs/UI/Button';
 import PassengersImg from "@/assets/icons/passengers.svg?react";
 import SectionsImg from "@/assets/icons/sections.svg?react";
 import GroupsImg from "@/assets/icons/groups.svg?react";
 import SettingsImg from "@/assets/icons/settings.svg?react";
 import TeamImg from "@/assets/icons/team.svg?react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Index, IndexInfornation, IndexNavigation } from '@/widgets/employees/index'
 import { Passengers, PassengersInfornation, PassengersNavigation } from '@/widgets/employees/passengers';
 import { Sections, SectionsInfornation, SectionsNavigation } from '@/widgets/employees/sections';
 import { Groups, GroupsInfornation, GroupsNavigation } from '@/widgets/employees/groups';
 import { Structure, StructureNavigation, StructureInfornation } from '@/widgets/employees/structure';
+import { useDispatch } from 'react-redux';
+import { getAccessToken } from '@/shared/utils';
+import { setStaffers } from '@/widgets/employees/model/index.store';
 
 
 const employees = () => {
 
     const location = useLocation().pathname
-
+    const dispatch = useDispatch();
 
 
     const links = [
         { Img: TeamImg, title: 'Сотрудники', to: '/jobs/employees' },
-        { Img: SettingsImg, title: 'Своя структура', to: '/jobs/employees/structure' },
+        { Img: SettingsImg, title: 'Своя структура', to: '/jobs/employees/structure', disabled: true },
         { Img: SectionsImg, title: 'Отделы', to: '/jobs/employees/sections' },
         { Img: PassengersImg, title: 'Пассажиры', to: '/jobs/employees/passengers' },
         { Img: GroupsImg, title: 'Группы', to: '/jobs/employees/groups' },
@@ -37,7 +39,7 @@ const employees = () => {
 
     useEffect(() => {
 
-        if (selectedStafferId !== null || selectedPassengerId !== null || selectedGroupsId !== null || selectedSectionsId !== null || selectedStrucrureId !== null ) {
+        if (selectedStafferId !== null || selectedPassengerId !== null || selectedGroupsId !== null || selectedSectionsId !== null || selectedStrucrureId !== null) {
             setInfornationView(true)
         }
 
@@ -60,6 +62,80 @@ const employees = () => {
         setSelectedStrucrureId(null)
     }
 
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const AccessToken = getAccessToken()
+
+    const getOnline = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_online_employees');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                return data.data
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    const getStaffers = async (onlines: number[]) => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+
+                const employees: any[] = data.data
+
+                employees.forEach(el => {
+                    const online = onlines.find(item_online => item_online == el.id)
+
+                    el.isSelected = false
+                    el.content = `${el.Surname} ${el.Name}`
+
+                    el.online = online ? true : false
+                })
+
+                dispatch(setStaffers(employees))
+
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    useEffect(() => {
+        getOnline().then((res) => {
+            getStaffers(res)
+        })
+    }, [])
+
     return (
         <>
 
@@ -67,13 +143,13 @@ const employees = () => {
 
                 links={
                     <div onClick={() => { reset() }} className="flex gap-[10px]">
-                        {links.map(item => (
-                            <ButtonLink to={item.to} key={item.to} title={
-                                <div className="flex gap-[5px] items-center">
-                                    <item.Img className={location === item.to ? '*:fill-[#007BFB]' : ''} />
-                                    <span className={location === item.to ? 'text-[#007BFB]' : ''} >{item.title}</span>
+                        {links.map((item, index) => (
+                            <Link to={item.to} key={index} className={`px-[25px] py-[15px] rounded-[13px] bg-[#FAFAFA] font-normal transition-all ${item.disabled && 'pointer-events-none'}`}>
+                                <div className={`flex gap-[5px] items-center`}>
+                                    <item.Img className={`${location === item.to && '*:fill-[#007BFB]'} ${item.disabled && '*:fill-[#8C909C]'}`} />
+                                    <span className={`${location === item.to && 'text-[#007BFB]'} ${item.disabled && 'text-[#8C909C]'}`} >{item.title}</span>
                                 </div>
-                            }></ButtonLink>
+                            </Link>
                         ))}
                     </div>
                 }
@@ -117,13 +193,13 @@ const employees = () => {
                 navigation={
 
 
-                    (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexNavigation />
+                    (location == '/jobs/employees' || location == '/jobs/employees/') && <IndexNavigation selectedStafferId={selectedStafferId} />
                     ||
-                    location.includes('/jobs/employees/passengers') && <PassengersNavigation />
+                    location.includes('/jobs/employees/passengers') && <PassengersNavigation selectedPassengerId={selectedPassengerId} select={setSelectedPassengerId} />
                     ||
-                    location.includes('/jobs/employees/sections') && <SectionsNavigation />
+                    location.includes('/jobs/employees/sections') && <SectionsNavigation selectedSectionId={selectedSectionsId} select={setSelectedSectionsId} />
                     ||
-                    location.includes('/jobs/employees/groups') && <GroupsNavigation />
+                    location.includes('/jobs/employees/groups') && <GroupsNavigation selectedGroupsId={selectedGroupsId} select={setSelectedGroupsId} />
                     ||
                     location.includes('/jobs/employees/structure') && <StructureNavigation />
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import Layout from '@/widgets/jobs/layout/layout';
-import Button from '@/widgets/jobs/UI/Button';
 import { Services } from '@/widgets/reports/services';
 import { ServicesFilters } from '@/widgets/reports/services';
 
@@ -37,8 +36,10 @@ const reports = () => {
 
                 <>
                     <div className="flex gap-[10px]">
-                        {links.map(item => (
-                            <Button to={item.to} key={item.to} Class={location === item.to ? 'text-[#007BFB]' : ''} title={item.title}></Button>
+                        {links.map((item,index) => (
+                            <Link to={item.to} key={index} className={`px-[25px] py-[15px] rounded-[13px] bg-[#FAFAFA] font-normal transition-all ${location === item.to && 'text-[#007BFB]'}`}>
+                                {item.title}
+                            </Link>
                         ))}
                     </div>
                     <div className="grow h-full rounded-[26px] bg-[#FAFAFA]">
@@ -64,19 +65,19 @@ const reports = () => {
                 }
 
                 navigation={
-                          
-                        location.includes('/jobs/reports/services') && (
-                            <button className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full"
+
+                    location.includes('/jobs/reports/services') && (
+                        <button className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full"
                             onClick={() => {
-                                if(filterStep != 2) {
-                                    setFilterStep(typeof filterStep ==='number'?filterStep+1:0)
+                                if (filterStep != 2) {
+                                    setFilterStep(typeof filterStep === 'number' ? filterStep + 1 : 0)
                                 }
                             }}
-                            ><p className="text-[16px] text-primary">{
-                                filterStep == 0? 'Выбрать сотрудников' :filterStep==1? 'Отобразить' : 'Скачать в .xlsx'
-                            }</p></button>    
-                        )
-                        
+                        ><p className="text-[16px] text-primary">{
+                            filterStep == 0 ? 'Выбрать сотрудников' : filterStep == 1 ? 'Отобразить' : 'Скачать в .xlsx'
+                        }</p></button>
+                    )
+
                 }
             />
 

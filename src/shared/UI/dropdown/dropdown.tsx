@@ -63,9 +63,9 @@ const Dropdown = ({
             </div>
             {isAbsoluteDrop ? (
                 <div
-                    className={`transition-max-height duration-300 ease-in-out overflow-hidden absolute top-full left-0 p-3 z-10 w-full mt-2 !bg-secondary rounded-[18px]
-                ${isOpen ? "max-h-screen mt-2.5" : "max-h-0 mt-0"}
-                ${isAbsoluteDrop && !isOpen && "hidden"} bg-secondary`}
+                    className={`transition-all duration-300 ease-in-out overflow-hidden absolute top-full left-0 p-3 z-10 w-full  !bg-secondary rounded-[18px]
+                ${isOpen ? "opacity-100 visible mt-2" : "opacity-0 invisible mt-0"}
+                 bg-secondary`}
                 >
                     {children}
                 </div>

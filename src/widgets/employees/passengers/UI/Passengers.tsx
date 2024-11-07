@@ -1,25 +1,22 @@
-import {SearchInput} from '@/shared/UI'
+import { SearchInput } from '@/shared/UI'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import Switcher from '@/widgets/jobs/UI/Switcher';
 import { StafferCart } from '../../UI';
 import { useState, useEffect } from 'react';
-import { passengers } from '../../utils';
-
-interface staffers {
-    id: number;
-    name: string;
-    speciality: string;
-    archive: boolean;
-    lastVisite: Date;
-    online: boolean;
-}
+import { staffers } from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/app/config/store';
+import { getAccessToken } from '@/shared/utils';
+import { setPassengers } from '../../model/index.store';
 
 
 const Passengers = ({ select, active }: { select: Function, active: number | null }) => {
 
-    
 
 
+    const dispatch = useDispatch();
+
+    const Passengers = useSelector((state: RootState) => state.employees.Passengers);
 
     const [search, setSearch] = useState<string>('')
     const [switcher, setSwitcher] = useState<boolean>(false)
@@ -30,19 +27,56 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
     const filterStaffers = (data: Array<staffers>) => {
         setStaffersView(data.filter(item => {
             if (switcher) {
-                return item.archive
+                return !item.IsActive
             } else {
-                return !item.archive
+                return item.IsActive
             }
 
         }))
     }
 
     useEffect(() => {
-        filterStaffers(passengers)
-    }, [switcher])
+        console.log(1);
+        
+        filterStaffers(Passengers)
+    }, [switcher,Passengers])
 
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const AccessToken = getAccessToken()
 
+    const getPassengers = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                
+                console.log(data.data);
+                
+                dispatch(setPassengers(data.data))
+
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    useEffect(() => {
+        getPassengers()
+    }, [])
 
     return (
         <>
@@ -65,7 +99,7 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
                 <div className="flex flex-col gap-[10px]">
                     {
                         StaffersView.map((item, index) => (
-                            <StafferCart id={item.id} select={select} active={active} archive={item.archive} viewOnline={false} viewMessage={false} key={index} name={item.name} />
+                            <StafferCart id={item.id} select={select} active={active} archive={item.IsActive} viewMessage={false} key={index} MiddleName={item.MiddleName} Surname={item.Surname} Name={item.Name} />
                         ))
                     }
                 </div>

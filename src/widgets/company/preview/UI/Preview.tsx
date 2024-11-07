@@ -70,6 +70,7 @@ const Preview = () => {
 
             <div className={clsx(" transition-all duration-500 fixed z-[1000]", !viewContracts ? 'invisible opacity-0' : 'visible opacity-100')}>
                 <Modal
+                close={() => {}}
                     action={setViewContracts}
                     title='Договоры'
                     text='Здесь лежат копии договоров между компанией и Внештатом.'

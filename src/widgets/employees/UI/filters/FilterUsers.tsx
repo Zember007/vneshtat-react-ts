@@ -6,7 +6,6 @@ import DocumentImg from '@/assets/icons/document.svg?react'
 import CloseImg from '@/assets/icons/cross.svg?react'
 import AddCartImg from '@/assets/icons/add_cart.svg?react'
 import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
 
 import FilterAccess from "./FilterAccess";
 import FilterCarts from "./FilterCarts";
@@ -14,8 +13,15 @@ import FilterDocument from "./FilterDocument";
 import FilterPeriod from "./FilterPeriod";
 import FilterTravel from "./FilterTravel";
 import FilterUser from "./FilterUser";
+import { setActiveFilter } from '../../model/index.store'
+import { RootState } from '@/app/config/store'
+import { useSelector, useDispatch } from 'react-redux'
 
-const FilterUsers = ({ close, disabled }: { close: Function; disabled?: boolean }) => {
+const FilterUsers = ({ close, passenger, selectId }: { close: Function; passenger?: boolean; selectId:number | null }) => {
+
+    const dispatch = useDispatch();
+
+    const activeFilter = useSelector((state: RootState) => state.employees.activeFilter);
 
     const filterNav = [
         {
@@ -34,7 +40,7 @@ const FilterUsers = ({ close, disabled }: { close: Function; disabled?: boolean 
         {
             Img: AccessImg,
             code: 'access',
-            disabled: true
+            no_passanger: true
         },
         {
             Img: TravelPolicyImg,
@@ -44,29 +50,17 @@ const FilterUsers = ({ close, disabled }: { close: Function; disabled?: boolean 
         {
             Img: PeriodImg,
             code: 'period',
-            disabled: true
+            no_passanger: true
         },
     ]
 
-    const [activeFilter, setActiveFilter] = useState<string>('user')
-
-    const box = useRef<HTMLDivElement | null>(null)
-
-    const [maxHeight, setMaxHeight] = useState<string>()
-
-
-    useEffect(() => {
-
-        setMaxHeight(box.current?.offsetHeight + 'px')
-
-    }, [box])
     return (
         <>
             <div className="flex gap-[10px]">
                 {
                     filterNav.map(item => (
-                        <button onClick={() => { setActiveFilter(item.code) }} className={clsx('w-[35px] h-[35px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]', (disabled && item.disabled) && 'pointer-events-none')}>
-                            <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', (disabled && item.disabled) ? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
+                        <button onClick={() => { dispatch(setActiveFilter(item.code)) }} className={clsx('w-[35px] h-[35px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]', ((passenger && item.no_passanger) || item.disabled) && 'pointer-events-none')}>
+                            <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', ((passenger && item.no_passanger) || item.disabled) ? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
                         </button>
                     ))
                 }
@@ -84,10 +78,10 @@ const FilterUsers = ({ close, disabled }: { close: Function; disabled?: boolean 
                     <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>}
             </div>
-            <div ref={box} className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto")} style={{ 'maxHeight': maxHeight }}>
+            <div className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto max-h-[calc(100vh-342px)]")}>
                 {activeFilter === 'user' ?
                     (
-                        <FilterUser />
+                        <FilterUser selectId={selectId} passenger={passenger}/>
                     ) : activeFilter === 'document' ?
                         (
                             <FilterDocument />
@@ -96,7 +90,7 @@ const FilterUsers = ({ close, disabled }: { close: Function; disabled?: boolean 
                                 <FilterCarts />
                             ) : activeFilter === 'access' ?
                                 (
-                                    <FilterAccess />
+                                    <FilterAccess selectId={selectId}/>
                                 ) : activeFilter === 'travel-policy' ?
                                     (
                                         <FilterTravel />

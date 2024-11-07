@@ -9,9 +9,8 @@ import Infornation from "@/widgets/jobs/UI/Infornation";
 import Letter from "@/widgets/finance/UI/Letter";
 import Modal from "@/widgets/jobs/UI/Modal";
 import InputDate from "@/widgets/finance/UI/InputDate";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Layout from '@/app/layouts/layout';
-import ButtonLink from '@/widgets/jobs/UI/Button';
 
 
 const finance = () => {
@@ -52,13 +51,13 @@ const finance = () => {
         { title: 'Отчёт по движению средств', to: '/jobs/finance/report' },
     ]
 
-    
+
 
     const [viewInfornation, setViewInfornation] = useState<boolean>(true)
 
-    
 
-    
+
+
 
 
     return (
@@ -67,8 +66,10 @@ const finance = () => {
                 <>
                     <div className="switcher">
 
-                        {links.map(item => (
-                            <ButtonLink to={item.to} key={item.to} Class={location === item.to ? 'text-[#007BFB]' : ''} title={item.title}></ButtonLink>
+                        {links.map((item,index) => (                            
+                            <Link to={item.to} key={index} className={`px-[25px] py-[15px] rounded-[13px] bg-[#FAFAFA] font-normal transition-all ${location === item.to && 'text-[#007BFB]'}`}>
+                                {item.title}
+                            </Link>
                         ))}
 
                     </div>
@@ -113,7 +114,8 @@ const finance = () => {
 
             <div className={actOpen ? "modal__wrapper active" : "modal__wrapper"}>
                 <Modal
-                    action={setAct}
+                    action={() => { }}
+                    close={() => { setAct(false) }}
                     title='Акт-сверки'
                     text='Укажите период для формирования документа.'
                     button='Скачать'
@@ -127,7 +129,8 @@ const finance = () => {
 
             <div className={advance ? "modal__wrapper active" : "modal__wrapper"}>
                 <Modal
-                    action={setAdvance}
+                    action={() => {}}
+                    close={() => { setAdvance(false) }}
                     title='Счёт на аванс'
                     text='Укажите желаемую сумму аванса.'
                     button='Сформировать'

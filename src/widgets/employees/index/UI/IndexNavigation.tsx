@@ -1,43 +1,217 @@
-import { ModalRight, Input } from "@/shared/UI";
-import { ChangeEvent, useState } from "react";
-import ImportImg from '@/assets/icons/import-team.svg?react'
 
-const IndexNavigation = () => {
+import { useState } from "react";
+import AddTeam from "./modals/AddTeam";
+import ImportTeam from "./modals/ImportTeam";
+import { getAccessToken } from "@/shared/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/config/store";
+import { changeStaffers } from "../../model/index.store";
 
-    const formatDisplayDate = (value: string): string => {
-        const cleaned = value.replace(/\D/g, '');
+const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | null }) => {
 
-        if (cleaned.length <= 2) {
-            return cleaned;
-        } else if (cleaned.length <= 4) {
-            return `${cleaned.slice(0, 2)}-${cleaned.slice(2)}`;
-        } else if (cleaned.length <= 8) {
-            return `${cleaned.slice(0, 2)}-${cleaned.slice(2, 4)}-${cleaned.slice(4)}`;
-        } else {
-            return value;
+    const dispatch = useDispatch()
+
+    const AccessToken = getAccessToken()
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const activeFilter = useSelector((state: RootState) => state.employees.activeFilter);
+    const StafferInformation = useSelector((state: RootState) => state.employees.StaffersInformations).find(item => item.id === selectedStafferId);
+    const access = useSelector((state: RootState) => state.employees.StaffersAccess).find(item => item.id === selectedStafferId);
+    const Periods = useSelector((state: RootState) => state.employees.Periods);
+
+    const safeEmployee = async () => {
+
+        if (activeFilter === 'user') {
+
+            safePersonalInformations()
         }
-    };
 
-    const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setDateUser(formatDisplayDate(value));
-    };
+        if (activeFilter === 'access') {
 
-    const [DateUser, setDateUser] = useState<string>('')
+            safeAccessInformations()
+        }
 
+        if (activeFilter === 'period') {
+            safePeriods()
+        }
+    }
+
+    const safePeriods = async () => {
+
+
+        const Periods_new = Periods.filter(item => item.new)
+
+        if (Periods_new.length > 0) {
+            Periods_new.forEach(async (el) => {
+                const formdata = new FormData();
+
+                const DateFrom = el.DateFrom? el.DateFrom.toLocaleString('ru-RU', { year: 'numeric', month: 'numeric', day: 'numeric' }).split('.').reverse().join('-') : null;
+                const DateTo = el.DateTo? el.DateTo.toLocaleString('ru-RU', { year: 'numeric', month: 'numeric', day: 'numeric' }).split('.').reverse().join('-') : null;
+                formdata.append('EmployeeId', selectedStafferId?.toString() ?? '')
+                formdata.append('DeputyId', el.DeputyId?.toString() ?? '')
+                formdata.append('DateFrom', DateFrom ?? '')
+                formdata.append('DateTo', DateTo ?? '')
+                
+
+                try {
+                    const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/create_employee_profile_period_of_absence', {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${AccessToken}`
+                        },
+                        body: formdata
+                    });
+                    const data = await res.json();
+                    if (data.status === "error") {
+                        console.log("error", data);
+                    }
+
+                    if (data.status === "success") {
+                        console.log(data);
+
+                    }
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            })
+        }
+
+    }
+
+    const safePersonalInformations = async () => {
+        const formdata = new FormData();
+
+        formdata.append('EmployeeId', EmployeeId ?? '')
+
+        const url = StafferInformation?.Type === 'Update' ? 'edit_employees_profile_personal_information' : 'create_employees_profile_personal_information'
+        const method = StafferInformation?.Type === 'Update' ? 'PATCH' : 'POST'
+
+        if(StafferInformation?.Type === 'Update') {
+            formdata.append('Surname', StafferInformation?.Surname ?? '')
+            formdata.append('MiddleName', StafferInformation?.MiddleName ?? '')
+            formdata.append('Name', StafferInformation?.Name ?? '')
+            formdata.append('PersonalInfoSurname', StafferInformation?.PersonalInfoSurname ?? '')
+            formdata.append('PersonalInfoName', StafferInformation?.PersonalInfoName ?? '')
+            formdata.append('PersonalInfoBirthDate', StafferInformation?.PersonalInfoBirthDate ? StafferInformation.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
+            formdata.append('PersonalInfoGender', StafferInformation?.PersonalInfoGender ?? 'male')
+            formdata.append('PersonalInfoNationality', StafferInformation?.PersonalInfoNationality ?? '')
+            formdata.append('Email', StafferInformation?.Email ?? '')
+            formdata.append('PhoneNumber', StafferInformation?.PhoneNumber ?? '')
+            formdata.append('Username', StafferInformation?.Username ?? '')
+        }
+
+        if(StafferInformation?.Type === 'Create') {
+            formdata.append('Surname', StafferInformation?.PersonalInfoSurname ?? '')
+            formdata.append('Name', StafferInformation?.PersonalInfoName ?? '')
+            formdata.append('BirthDate', StafferInformation?.PersonalInfoBirthDate ? StafferInformation.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
+            formdata.append('Gender', StafferInformation?.PersonalInfoGender ?? 'male')
+            formdata.append('Nationality', StafferInformation?.PersonalInfoNationality ?? '') 
+        }
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/' + url, {
+                method: method,
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                console.log(data);
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+    }
+
+    const safeAccessInformations = async () => {
+        const formdata = {
+            EmployeeId: EmployeeId ?? '',
+            EditingEmployeeId: selectedStafferId?.toString() ?? '',
+            PermissionsClassName: access?.PermissionsClassName,
+            ValidityDeadline: access?.ValidityDeadline,
+            IsUnlimited: access?.IsUnlimited,
+        };
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/edit_employees_profile_access', {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formdata)
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                console.log(data);
+                dispatch(changeStaffers({id:selectedStafferId, field: 'PermissionsClassName', value: access?.PermissionsClassName}))
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+    }
 
     const [importTeam, setImportTeam] = useState<boolean>(false)
-    // const [exportTeam, setExportTeam] = useState<boolean>(false)
     const [addTeam, setAddTeam] = useState<boolean>(false)
+
+    const ExportTeam = async () => {
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/company_profile/export_confirmed_company_employees?EmployeeId=' + EmployeeId, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const blob = await res.blob()
+            const url = window.URL.createObjectURL(blob)
+
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'ExportData.xlsx'
+            document.body.appendChild(a)
+
+            a.click()
+            a.remove()
+
+            window.URL.revokeObjectURL(url)
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+    }
+
     return (
         <>
-            <div className="flex flex-col gap-[10px]">
+            {!selectedStafferId && <div className="flex flex-col gap-[10px]">
                 <div className="flex gap-[10px] pb-[10px] after:content-[''] after:absolute after:bottom-0 after:left-[50%] after:translate-x-[-50%] after:h-[1px] relative after:w-[50px] after:bg-[#C0C7D1]">
                     <button
                         onClick={() => setImportTeam(true)}
                         className="font-medium w-full py-[10px] text-center rounded-[13px] bg-[#DCE0E5]"
                     >Импорт</button>
                     <button
+                        onClick={() => ExportTeam()}
                         className="font-medium w-full py-[10px] text-center rounded-[13px] bg-[#DCE0E5]"
                     >Экспорт</button>
                 </div>
@@ -49,73 +223,25 @@ const IndexNavigation = () => {
                     </p>
                 </button>
 
-            </div>
+            </div>}
 
-            <ModalRight
+            {selectedStafferId && <button
+                onClick={() => { safeEmployee() }}
+                className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full">
+                <p className="text-[16px] text-primary">
+                    Сохранить
+                </p>
+            </button>}
+
+            <ImportTeam
                 active={importTeam}
-                button="Завершить импорт"
                 close={() => { setImportTeam(false) }}
-                description="Скачайте и заполните таблицу со списком сотрудников. Не меняйте количество и порядок строк и столбцов, чтобы алгоритм смог правильно импортировать данные."
-                title="Импорт сотрудников">
-                <div className="flex flex-col grow">
-                    <div className="flex gap-[8px] rounded-[23px] bg-[#ECEEF1] p-[13px]">
-                        <button className="bg-primary rounded-[13px] text-[12px] font-medium w-full py-[8px]">Скачать таблицу</button>
-                        <button className="bg-[#121212] rounded-[13px] text-[12px] font-medium text-primary w-full py-[8px]">Загрузить таблицу</button>
-                    </div>
-                    <div className="grow flex justify-center items-center">
-                        <ImportImg />
-                    </div>
-                </div>
-            </ModalRight>
+            />
 
-            <ModalRight
+            <AddTeam
                 active={addTeam}
-                button="Добавить"
                 close={() => { setAddTeam(false) }}
-                description="Сотрудник получит письмо с персональной ссылкой на подключение. На этом этапе личные данные нужны для того, чтобы он мог убедиться, что ему пришла корректная ссылка."
-                title="Добавить сотрудника">
-                <div className="flex flex-col grow gap-[15px] ">
-                    <span className="text-[18px] font-medium">Личные данные</span>
-                    <div className="flex flex-col gap-[8px]">
-
-                        <Input
-                            extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
-                            placeholder={"Фамилия"}
-                            value={''}
-                            onChange={() => { }}
-                        />
-
-                        <Input
-                            extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
-                            placeholder={"Имя"}
-                            value={''}
-                            onChange={() => { }}
-                        />
-
-                        <Input
-                            extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
-                            placeholder={"Отчество"}
-                            value={''}
-                            onChange={() => { }}
-                        />
-
-                        <Input
-                            extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
-                            placeholder={"Дата рождения"}
-                            value={DateUser}
-                            onChange={handleDateChange}
-                            maxLength={10}
-                        />
-
-                        <Input
-                            extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
-                            placeholder={"Email"}
-                            value={''}
-                            onChange={() => { }}
-                        />
-                    </div>
-                </div>
-            </ModalRight>
+            />
         </>
     );
 };

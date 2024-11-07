@@ -1,14 +1,15 @@
 
-import { passengers } from '../../utils';
+import { useSelector } from 'react-redux';
 import { FilterUsers } from '../../UI';
+import { RootState } from '@/app/config/store';
 
 
 const PassengersInfornation = ({ selectedPassengerId, close }: { selectedPassengerId: number | null, close:Function }) => {
-    const selectedPassenger = passengers.find(item => item.id === selectedPassengerId);
 
-
-
-
+    
+    const Passengers = useSelector((state: RootState) => state.employees.Passengers);
+    const selectedPassenger = Passengers.find(item => item.id === selectedPassengerId);
+    
 
     return (
         <div className="p-[20px] flex flex-col gap-[10px] h-full">
@@ -22,7 +23,7 @@ const PassengersInfornation = ({ selectedPassengerId, close }: { selectedPasseng
                 )
                     :
                     (
-                        <FilterUsers disabled={true} close={close}/>
+                        <FilterUsers selectId={selectedPassengerId} passenger={true} close={close} />
                     )
             }
         </div>

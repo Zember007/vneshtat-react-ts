@@ -1,23 +1,20 @@
-import {SearchInput} from '@/shared/UI'
+import { SearchInput } from '@/shared/UI'
 import CheckerFilter from '@/widgets/jobs/UI/CheckerFilter'
 import Switcher from '@/widgets/jobs/UI/Switcher';
-import { StafferCart } from '../../UI'; 
+import { StafferCart } from '../../UI';
 import { useState, useEffect } from 'react';
-import { Staffers } from '../../utils';
-
-interface staffers {
-    id: number;
-    name: string;
-    speciality: string;
-    archive: boolean;
-    lastVisite: Date;
-    online: boolean;
-}
+import { staffers } from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/app/config/store';
+import { getAccessToken } from '@/shared/utils';
+import { setAccessEmployees, setStaffersInformations } from '../../model/index.store';
 
 
 const Index = ({ select, active }: { select: Function, active: number | null }) => {
 
+    const dispatch = useDispatch();
 
+    const Staffers = useSelector((state: RootState) => state.employees.Staffers);
 
     const [search, setSearch] = useState<string>('')
     const [switcher, setSwitcher] = useState<boolean>(false)
@@ -26,29 +23,99 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
     const [status_filter, setStatus] = useState<boolean>(false)
     const [online_filter, setOnline] = useState<boolean>(false)
     const [access_filter, setAccess] = useState<boolean>(false)
-    const [StaffersView, setStaffersView] = useState<Array<staffers>>([])
+    const [StaffersView, setStaffersView] = useState<staffers[]>([])
 
-    const filterStaffers = (data: Array<staffers>) => {
+    const filterStaffers = (data: staffers[]) => {
         setStaffersView(data.filter(item => {
             if (switcher) {
-                return item.archive
+                return !item.IsActive
             } else {
-                return !item.archive
+                return item.IsActive
             }
 
         }))
     }
 
+    
+
     useEffect(() => {
         filterStaffers(Staffers)
-    }, [switcher])
+    }, [switcher, Staffers])
+
+    const AccessToken = getAccessToken()
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const getInformation = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_personal_information');
+        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                console.log(data.data)     
+                const information:any[] = data.data
+                information.forEach(item => {
+                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate.split('-').reverse().join('-')
+
+                    item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
+                })        
+                dispatch(setStaffersInformations(information))        
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    const getAccess = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_access');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);                
+            }
+
+            if (data.status === "success" && data.data) {
+
+                dispatch(setAccessEmployees(data.data))
+                
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
 
 
+    useEffect(() => {
+        getInformation()
+        getAccess()
+    }, [])
+    
+
+    
 
     return (
         <>
-
-
 
             <div className="p-[20px] rounded-[26px] bg-[#FAFAFA] flex flex-col gap-[10px]">
                 <SearchInput value={search} change={setSearch} placeholder='Поиск сотрудника' />
@@ -69,7 +136,7 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
                 <div className="flex flex-col gap-[10px]">
                     {
                         StaffersView.map((item) => (
-                            <StafferCart select={select} id={item.id} active={active} viewOnline={true} viewMessage={true} lastVisite={item.lastVisite} online={item.online} key={item.id} name={item.name} speciality={item.speciality} archive={item.archive} />
+                            <StafferCart online={item.online} select={select} id={item.id} active={active} viewMessage={true} lastVisite={item.LastOnline} key={item.id} MiddleName={item.MiddleName} Surname={item.Surname} Name={item.Name} speciality={item.PermissionsClassName} archive={!item.IsActive} />
                         ))
                     }
                 </div>

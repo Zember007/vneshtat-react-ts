@@ -101,7 +101,7 @@ const Header = () => {
                             {links_journeys.map(({ to, img: Icon, label, disabled }) => (
                                 <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
-                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")} />
+                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
                                     <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
                                 </Link>
@@ -116,7 +116,7 @@ const Header = () => {
                             {links_templates.map(({ to, img: Icon, label, disabled }) => (
                                 <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
-                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")} />
+                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
                                     <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
                                 </Link>
@@ -131,7 +131,7 @@ const Header = () => {
                             {links_company.map(({ to, img: Icon, label, disabled }) => (
                                 <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
-                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill")} />
+                                        <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
                                     <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
                                 </Link>

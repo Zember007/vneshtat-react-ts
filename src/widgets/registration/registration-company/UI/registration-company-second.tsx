@@ -70,6 +70,8 @@ const RegistrationCompanySecond = () => {
         }));
     };
 
+    const connect = localStorage.getItem('connect_employee')
+
     const handleSendInformation = async () => {
         const formdata = new FormData();
         const confirmToken = localStorage.getItem("ConfirmToken");
@@ -84,7 +86,15 @@ const RegistrationCompanySecond = () => {
             formdata.append("Token", confirmToken)
         }
 
-        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/connect_vheshtat_id_and_create_company", {
+        let url = ''
+
+        if(connect === 'true') {
+            url = "/auth/sign_up/connect_vheshtat_id_and_company"
+        } else {
+            url = "/auth/sign_up/connect_vheshtat_id_and_create_company"
+        }
+
+        const res = await fetch(import.meta.env.VITE_API_URL + url, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${getAccessToken()}`

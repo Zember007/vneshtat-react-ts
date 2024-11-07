@@ -120,9 +120,9 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
             onChange={handleNumberChange}
         />
     ) : (
-        <label className={"relative w-full"}>
+        <label className={"relative w-full overflow-hidden"}>
             <input
-                className={clsx(`bg-secondary rounded-primary text-sm py-2 pl-2.5 ${inputValue && withEraser ? "pr-8" : "pr-2.5"} w-full`, extraClass)}
+                className={clsx(`bg-secondary rounded-primary text-sm py-2 px-2.5 w-full`, extraClass)}
                 type={rest.type || "text"}
                 {...rest}
                 onChange={handleChange}
@@ -132,7 +132,7 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
                     onClick={handleClear}
                     type={"button"}
                     tabIndex={-1}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    className="absolute w-4 right-2 top-2 bottom-2 bg-primary flex items-center justify-center">
                     <CrossImg className={"black-fill"}/>
                 </button>
             ) : null}

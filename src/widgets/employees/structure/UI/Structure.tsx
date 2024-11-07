@@ -31,7 +31,7 @@ const Structure = ({ select, active }: { select: Function, active: number | null
                 <div className="flex flex-col gap-[10px]">
                     {
                         structure.map(item => (
-                            <GroupCart active={active} select={select} id={item.id}  key={item.id} name={item.name} staffers={'Свое значение'} icon={<TrashImg />} />
+                            <GroupCart Delete={() => {}} active={active} select={select} id={item.id}  key={item.id} name={item.name} staffers={'Свое значение'} icon={<TrashImg />} />
                         ))
                     }
                 </div>

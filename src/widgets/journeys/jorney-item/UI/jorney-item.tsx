@@ -156,6 +156,7 @@ const JorneyItem = () => {
 
 
             <ModalRight
+                action={() => { }}
                 active={agreementModal}
                 button="Отправить"
                 close={() => { setAgreementModal(false) }}

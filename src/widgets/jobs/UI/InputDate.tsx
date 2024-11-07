@@ -65,10 +65,8 @@ const InputDate = (props: InputProps) => {
     const [top, setTop] = useState('')
     const [right, setRight] = useState('')
 
-    useEffect(() => {
-
+    const setPosition = () => {
         let position = box.current?.getBoundingClientRect()
-        console.log(position);
         
         let top = position?.top 
         let right = position?.x 
@@ -79,9 +77,11 @@ const InputDate = (props: InputProps) => {
             setTop((top + height + window.pageYOffset) + 'px')
             setRight( (window.innerWidth - right - width) + 'px')
         }
-        
-        
+    }
 
+    useEffect(() => {
+
+        setPosition()
 
     }, [box])
 
@@ -109,7 +109,7 @@ const InputDate = (props: InputProps) => {
                     )
                 }
             </div>
-            <button onClick={() => setOpen(!open)}>
+            <button onClick={() => {setPosition();setOpen(!open);}}>
                 <Icon className="w-[20px] h-auto" />
             </button>
         </div>
