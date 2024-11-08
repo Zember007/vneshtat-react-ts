@@ -7,7 +7,7 @@ import RoutePlusImg from '@/assets/icons/route_plus.svg?react'
 
 
 
-const TemplateCartService = ({ data, select, clear }: { data: Services, select?: Function; clear?: Function }) => {
+const TemplateCartService = ({ data, select, clear, active }: { data: Services, select?: Function; clear?: Function; active?: string | null }) => {
     return (
         <div className="mb-[9px]  flex gap-[15px] items-center ">
             <div className="flex gap-[10px] flex-col">
@@ -24,7 +24,7 @@ const TemplateCartService = ({ data, select, clear }: { data: Services, select?:
                 </button>
             </div>
             <div className="grid grid-cols-[1fr_1fr_220px] gap-[10px] grow *:leading-[1.2]">
-                <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] flex items-center min-h-[97px] relative">
+                <div className={`rounded-[23px] bg-[#ECEEF1] p-[15px] flex items-center min-h-[97px] relative ${active === 'type' && '!bg-[#DCE0E5]'}`}>
                     {data.type &&
                         <>
                             <span className="text-[#9B9FAD] text-[40px] font-medium ">
@@ -51,7 +51,7 @@ const TemplateCartService = ({ data, select, clear }: { data: Services, select?:
                         </div>
                     </div>}
                 </div>
-                <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px]">
+                <div className={`rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px] ${active === 'team' && '!bg-[#DCE0E5]'}`}>
                     <div className="flex justify-between">
                         <span className="text-[18px] font-medium text-[#787B86] ">{data.type === 'hotels' ? 'Гости' : 'Пассажиры'}</span>
                         {(!data.filters && data.team) && clear && <button onClick={() => {clear('team')}} >
@@ -84,7 +84,7 @@ const TemplateCartService = ({ data, select, clear }: { data: Services, select?:
                             </div>
                         </div>}
                 </div>
-                <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] row-span-2 flex flex-col">
+                <div className={`rounded-[23px] bg-[#ECEEF1] p-[15px] row-span-2 flex flex-col ${active === 'option' && '!bg-[#DCE0E5]'}`}>
                     <div className="flex justify-between">
                         <span className="text-[18px] font-medium text-[#787B86] ">Вариант</span>
                         {data.option && clear && 
@@ -127,7 +127,7 @@ const TemplateCartService = ({ data, select, clear }: { data: Services, select?:
                         <button className="text-[#007BFB] text-[14px] rounded-[13px] bg-primary py-[9px]">Добавить вариант</button>
                     </div>}
                 </div>
-                <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px]">
+                <div className={`rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px] ${active === 'route' && '!bg-[#DCE0E5]'}`}>
                     <div className="flex justify-between">
                         <span className="text-[18px] font-medium text-[#787B86] ">{data.type === 'hotels' ? 'Город' : 'Маршрут'}</span>
                         {((data.route.class || data.city) && !data.team) && clear &&
@@ -161,7 +161,7 @@ const TemplateCartService = ({ data, select, clear }: { data: Services, select?:
                     }
 
                 </div>
-                <div className="rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px]">
+                <div className={`rounded-[23px] bg-[#ECEEF1] p-[15px] flex flex-col min-h-[97px] ${active === 'filters' && '!bg-[#DCE0E5]'}`}>
                     <div className="flex justify-between">
                         <span className="text-[18px] font-medium text-[#787B86] ">Фильтры</span>
                         {(data.filters && !data.option) && clear && 

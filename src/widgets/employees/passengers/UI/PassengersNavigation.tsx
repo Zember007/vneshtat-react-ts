@@ -9,8 +9,7 @@ import { RootState } from "@/app/config/store";
 const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPassengerId: number | null; select: Function }) => {
 
     const dispatch = useDispatch();
-    const Passengers = useSelector((state: RootState) => state.employees.Passengers);
-    // const EmployeesPersonalInformations = {Type:'Create'};
+    const PassengerInformation = useSelector((state: RootState) => state.employees.PassengersInformations).find(item => item.id === selectedPassengerId);
 
     const [importTeam, setImportTeam] = useState<boolean>(false)
     const AccessToken = getAccessToken()
@@ -55,105 +54,105 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
     }
 
 
-    // const Create = async () => {
-    //     const formdata = new FormData();
+    const Create = async () => {
+        const formdata = new FormData();
 
 
 
-    //     formdata.append('EmployeeId', EmployeeId ?? '')
-    //     formdata.append('Surname', EmployeesPersonalInformations?.Surname ?? '')
-    //     formdata.append('Name', EmployeesPersonalInformations?.Name ?? '')
-    //     formdata.append('MiddleName', EmployeesPersonalInformations?.MiddleName ?? '')
+        formdata.append('EmployeeId', EmployeeId ?? '')
+        formdata.append('Surname', PassengerInformation?.Surname ?? '')
+        formdata.append('Name', PassengerInformation?.Name ?? '')
+        formdata.append('MiddleName', PassengerInformation?.MiddleName ?? '')
 
-    //     try {
-    //         const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/create_passenger', {
-    //             method: "POST",
-    //             headers: {
-    //                 Authorization: `Bearer ${AccessToken}`
-    //             },
-    //             body: formdata
-    //         });
-    //         const data = await res.json();
-    //         if (data.status === "error") {
-    //             console.log("error", data);
-    //         }
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/create_passenger', {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
 
-    //         if (data.status === "success") {
-    //             console.log(data);
+            if (data.status === "success") {
+                console.log(data);
 
-    //         }
+            }
 
-    //     } catch (error) {
+        } catch (error) {
 
-    //         console.log(error);
+            console.log(error);
 
-    //     }
-    // }
+        }
+    }
 
-    // const safePersonalInformations = async () => {
-    //     const formdata = new FormData();
+    const safePersonalInformations = async () => {
+        const formdata = new FormData();
 
-    //     let url = 'create_passenger_personal_information'
-    //     let method = "POST"
-
-
-    //     formdata.append('EmployeeId', EmployeeId ?? '')
-    //     formdata.append('PassengerId', selectedPassengerId?.toString() ?? '')
+        let url = 'create_passenger_personal_information'
+        let method = "POST"
 
 
-    //     if (EmployeesPersonalInformations.Type === 'Update') {
-    //         url = 'edit_passengers_personal_information'
-    //         method = "PATCH"
-    //         formdata.append('Surname', EmployeesPersonalInformations?.Surname ?? '')
-    //         formdata.append('Name', EmployeesPersonalInformations?.Name ?? '')
-    //         formdata.append('MiddleName', EmployeesPersonalInformations?.MiddleName ?? '')
-    //         formdata.append('PersonalInfoBirthDate', EmployeesPersonalInformations?.PersonalInfoBirthDate ? EmployeesPersonalInformations.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
-    //         formdata.append('PersonalInfoSurname', EmployeesPersonalInformations?.PersonalInfoSurname ?? '')
-    //         formdata.append('PersonalInfoName', EmployeesPersonalInformations?.PersonalInfoName ?? '')
-    //         formdata.append('PersonalInfoGender', EmployeesPersonalInformations?.PersonalInfoGender ?? 'male')
-    //         formdata.append('PersonalInfoNationality', EmployeesPersonalInformations?.PersonalInfoNationality ?? '')
-    //     } else {
-    //         formdata.append('Surname', EmployeesPersonalInformations?.PersonalInfoSurname ?? '')
-    //         formdata.append('Name', EmployeesPersonalInformations?.PersonalInfoName ?? '')
-    //         formdata.append('BirthDate', EmployeesPersonalInformations?.PersonalInfoBirthDate ? EmployeesPersonalInformations.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
-    //         formdata.append('Gender', EmployeesPersonalInformations?.PersonalInfoGender ?? 'male')
-    //         formdata.append('Nationality', EmployeesPersonalInformations?.PersonalInfoNationality ?? '')
-    //     }
-
-    //     try {
-    //         const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/' + url, {
-    //             method: method,
-    //             headers: {
-    //                 Authorization: `Bearer ${AccessToken}`
-    //             },
-    //             body: formdata
-    //         });
-    //         const data = await res.json();
-    //         if (data.status === "error") {
-    //             console.log("error", data);
-    //         }
-
-    //         if (data.status === "success") {
-    //             console.log(data);
-
-    //         }
-
-    //     } catch (error) {
-
-    //         console.log(error);
-
-    //     }
-    // }
+        formdata.append('EmployeeId', EmployeeId ?? '')
+        formdata.append('PassengerId', selectedPassengerId?.toString() ?? '')
 
 
-    // const safePassenger = () => {
-    //     if (EmployeesPersonalInformations.Type === 'Create') {
-    //         Create()
-    //     } else {
-    //         safePersonalInformations()
-    //     }
+        if (PassengerInformation.Type === 'Update') {
+            url = 'edit_passengers_personal_information'
+            method = "PATCH"
+            formdata.append('Surname', PassengerInformation?.Surname ?? '')
+            formdata.append('Name', PassengerInformation?.Name ?? '')
+            formdata.append('MiddleName', PassengerInformation?.MiddleName ?? '')
+            formdata.append('PersonalInfoBirthDate', PassengerInformation?.PersonalInfoBirthDate ? PassengerInformation.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
+            formdata.append('PersonalInfoSurname', PassengerInformation?.PersonalInfoSurname ?? '')
+            formdata.append('PersonalInfoName', PassengerInformation?.PersonalInfoName ?? '')
+            formdata.append('PersonalInfoGender', PassengerInformation?.PersonalInfoGender ?? 'male')
+            formdata.append('PersonalInfoNationality', PassengerInformation?.PersonalInfoNationality ?? '')
+        } else {
+            formdata.append('Surname', PassengerInformation?.PersonalInfoSurname ?? '')
+            formdata.append('Name', PassengerInformation?.PersonalInfoName ?? '')
+            formdata.append('BirthDate', PassengerInformation?.PersonalInfoBirthDate ? PassengerInformation.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
+            formdata.append('Gender', PassengerInformation?.PersonalInfoGender ?? 'male')
+            formdata.append('Nationality', PassengerInformation?.PersonalInfoNationality ?? '')
+        }
 
-    // }
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/' + url, {
+                method: method,
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                console.log(data);
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+    }
+
+
+    const safePassenger = () => {
+        if (PassengerInformation.Type === 'Create') {
+            Create()
+        } else {
+            safePersonalInformations()
+        }
+
+    }
 
     return (
         <>
@@ -169,7 +168,7 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
                     >Экспорт</button>
                 </div>
                 <button
-                    onClick={() => { const id = Passengers.length + 1; select(id); dispatch(addPassengers(id)) }}
+                    onClick={() => { const id = Date.now(); select(id); dispatch(addPassengers(id)) }}
                     className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full">
                     <p className="text-[16px] text-primary">
                         Добавить пассажира
@@ -178,7 +177,7 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
             </div>}
 
             {selectedPassengerId && <button
-                onClick={() => { }}
+                onClick={() => {safePassenger()}}
                 className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full">
                 <p className="text-[16px] text-primary">
                     Сохранить

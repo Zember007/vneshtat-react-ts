@@ -46,6 +46,10 @@ const Layout = () => {
                 <Route path="/templates/taxi" element={<Templates/>} />
                 <Route path="/templates/hotel" element={<Templates/>} />
                 <Route path="/templates/transfer" element={<Templates/>} />
+                <Route path="/messages/notifications" element={<Messages/>}/>
+                <Route path="/messages/chats" element={<Messages/>}/>
+                <Route path="/messages/jorneys" element={<Messages/>}/>
+                <Route path="/messages/all" element={<Messages/>}/>
                 <Route path="/messages" element={<Messages/>}/>
                 <Route path="/promo" element={<Promo/>} />
                 <Route path="/try" element={<Promo/>} />

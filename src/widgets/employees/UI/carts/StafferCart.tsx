@@ -2,10 +2,13 @@
 import ArchiveImg from "@/assets/icons/archive.svg?react";
 import ArchiveReverseImg from "@/assets/icons/archive_reverse.svg?react";
 import MessageImg from "@/assets/icons/message.svg?react";
+import { getAccessToken } from "@/shared/utils";
 import clsx from "clsx";
+import { useDispatch } from "react-redux";
+import { changeStaffers } from "../../model/index.store";
 
 interface props {
-    id?: number
+    id: number
     Name: string;
     MiddleName: string;
     Surname: string;
@@ -16,11 +19,12 @@ interface props {
     online?: boolean;
     active?: number | null;
     select: Function;
+    passenger?: boolean;
 }
 
-const StafferCart = ({ Name, Surname, MiddleName, speciality, archive, lastVisite, viewMessage, active, id, select, online }: props) => {
+const StafferCart = ({ Name, Surname, MiddleName, speciality, archive, lastVisite, viewMessage, active, id, select, online, passenger }: props) => {
 
-
+    const dispatch = useDispatch()
 
 
 
@@ -50,6 +54,49 @@ const StafferCart = ({ Name, Surname, MiddleName, speciality, archive, lastVisit
 
         return ''
 
+
+    }
+
+    const AccessToken = getAccessToken()
+    const EmployeeId = localStorage.getItem('EmployeeId')
+
+    const ArchiveMove = async () => {
+
+        const formdata = new FormData();
+
+        formdata.append('EmployeeId', EmployeeId ?? '')
+        
+
+        if(passenger) {
+            formdata.append('PassengerId', id.toString())
+        } else {
+            formdata.append('DepartmentEmployeeId', id.toString())
+        }
+
+        const url = passenger ? 'change_status_company_groups_passanger' : 'change_status_company_department_employee'
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/' + url, {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                dispatch(changeStaffers({id: id, field:'IsActive', value: archive, passenger: passenger}))
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
 
     }
 
@@ -87,7 +134,11 @@ const StafferCart = ({ Name, Surname, MiddleName, speciality, archive, lastVisit
             {viewMessage && <button className='w-[35px] h-[35px] rounded-[11px] flex items-center justify-center bg-[#ECEEF1]'>
                 <MessageImg className='w-[19px] h-auto' />
             </button>}
-            <button className='w-[35px] h-[35px] rounded-[11px] flex items-center justify-center bg-[#ECEEF1]'>
+            <button
+                onClick={
+                    () => ArchiveMove()
+                }
+                className='w-[35px] h-[35px] rounded-[11px] flex items-center justify-center bg-[#ECEEF1]'>
                 {!archive && <ArchiveImg className='w-[19px] h-auto' />}
                 {archive && <ArchiveReverseImg className='w-[19px] h-auto' />}
             </button>

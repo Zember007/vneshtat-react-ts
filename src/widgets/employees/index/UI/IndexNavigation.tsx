@@ -14,8 +14,8 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
     const AccessToken = getAccessToken()
     const EmployeeId = localStorage.getItem('EmployeeId')
     const activeFilter = useSelector((state: RootState) => state.employees.activeFilter);
-    const StafferInformation = useSelector((state: RootState) => state.employees.StaffersInformations).find(item => item.id === selectedStafferId);
-    const access = useSelector((state: RootState) => state.employees.StaffersAccess).find(item => item.id === selectedStafferId);
+    const StafferInformation = useSelector((state: RootState) => state.employees.StaffersInformations).find(item => item.EmployeeId === selectedStafferId);
+    const access = useSelector((state: RootState) => state.employees.StaffersAccess).find(item => item.EmployeeId === selectedStafferId);
     const Periods = useSelector((state: RootState) => state.employees.Periods);
 
     const safeEmployee = async () => {

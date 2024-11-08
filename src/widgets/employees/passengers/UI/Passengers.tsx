@@ -7,7 +7,7 @@ import { staffers } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/config/store';
 import { getAccessToken } from '@/shared/utils';
-import { setPassengers } from '../../model/index.store';
+import { setPassengers, setPassengersInformations } from '../../model/index.store';
 
 
 const Passengers = ({ select, active }: { select: Function, active: number | null }) => {
@@ -74,8 +74,43 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
 
     }
 
+    const getInformation = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_personal_info');
+        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                console.log(data.data)     
+                const information:any[] = data.data
+                information.forEach(item => {
+                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate.split('-').reverse().join('-')
+
+                    item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
+                })        
+                dispatch(setPassengersInformations(information)) 
+                       
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
     useEffect(() => {
         getPassengers()
+        getInformation()
     }, [])
 
     return (
@@ -99,7 +134,7 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
                 <div className="flex flex-col gap-[10px]">
                     {
                         StaffersView.map((item, index) => (
-                            <StafferCart id={item.id} select={select} active={active} archive={item.IsActive} viewMessage={false} key={index} MiddleName={item.MiddleName} Surname={item.Surname} Name={item.Name} />
+                            <StafferCart passenger={true} id={item.id} select={select} active={active} archive={!item.IsActive} viewMessage={false} key={index} MiddleName={item.MiddleName} Surname={item.Surname} Name={item.Name} />
                         ))
                     }
                 </div>

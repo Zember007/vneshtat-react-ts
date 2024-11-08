@@ -58,9 +58,9 @@ const FilterUsers = ({ close, passenger, selectId }: { close: Function; passenge
         <>
             <div className="flex gap-[10px]">
                 {
-                    filterNav.map(item => (
+                    filterNav.map((item,index) => (
                         <button onClick={() => { dispatch(setActiveFilter(item.code)) }} className={clsx('w-[35px] h-[35px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]', ((passenger && item.no_passanger) || item.disabled) && 'pointer-events-none')}>
-                            <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', ((passenger && item.no_passanger) || item.disabled) ? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
+                            <item.Img key={index} className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', ((passenger && item.no_passanger) || item.disabled) ? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
                         </button>
                     ))
                 }
@@ -84,7 +84,7 @@ const FilterUsers = ({ close, passenger, selectId }: { close: Function; passenge
                         <FilterUser selectId={selectId} passenger={passenger}/>
                     ) : activeFilter === 'document' ?
                         (
-                            <FilterDocument />
+                            <FilterDocument selectId={selectId} passenger={passenger}/>
                         ) : activeFilter === 'ad-cart' ?
                             (
                                 <FilterCarts />

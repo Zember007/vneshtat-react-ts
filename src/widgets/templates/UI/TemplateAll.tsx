@@ -2,7 +2,7 @@ import { SearchInput, Switch } from '@/shared/UI'
 import { useState } from 'react';
 import TemplateCart from './TemplateCart';
 import TemplateCartService from './TemplateCartService';
-import { Link, useLocation } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 
 
 
@@ -52,25 +52,27 @@ const TemplateAll = () => {
 
                 />
             </div>
-            <div className="p-[20px] rounded-[26px] bg-primary grow flex flex-col">
-                <div className="flex flex-col gap-[9px] grow">
-                    {
-                        location.includes('/templates/all') ?
-                            <TemplateCart />
-                            :
-                            <TemplateCartService data={service}/>
-                    }
+            <div className="p-[20px] rounded-[26px] bg-primary grow flex flex-col ">
+                <div className="max-h-[calc(100vh-340px)] scroll overflow-y-auto">
+                    <div className="flex flex-col gap-[9px] grow ">
+                        {
+                            location.includes('/templates/all') ?                                
+                                <TemplateCart />
+                                :
+                                <TemplateCartService data={service} />
+                        }
 
+                    </div>
                 </div>
 
-                <div className="flex flex-col gap-[12px] items-center mt-[74px] mb-[54px] text-center">
+                {/* <div className="flex flex-col gap-[12px] items-center mt-[74px] mb-[54px] text-center">
                     <Link to={'/templates/create'} className='bg-[#ECEEF1] py-[15px] rounded-[18px] w-[250px]'>
                         <p>Создать шаблон</p>
                     </Link>
                     <Link to={'#'} className='bg-[#ECEEF1] py-[15px] rounded-[18px] w-[250px]'>
                         <p>Создать из поездки</p>
                     </Link>
-                </div>
+                </div> */}
             </div>
 
         </>

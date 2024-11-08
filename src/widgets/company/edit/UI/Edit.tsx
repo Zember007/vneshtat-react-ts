@@ -23,9 +23,9 @@ const Edit = () => {
                     </p>
                 </div>
                 <div className="flex flex-col gap-[15px]">
-                    <button onClick={() => setActive('inn')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300', active === 'inn' && '!bg-primary !mr-[0] border border-[#E5E7EA] border-solid')}>Данные</button>
-                    <button onClick={() => setActive('bill')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300', active === 'bill' && '!bg-primary !mr-[0] border border-[#E5E7EA] border-solid')}>Расчетные счета</button>
-                    <button onClick={() => setActive('contract')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300', active === 'contract' && '!bg-primary !mr-[0] border border-[#E5E7EA] border-solid')}>Договор</button>
+                    <button onClick={() => setActive('inn')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid', active === 'inn' && '!bg-primary !mr-[0]')}>Данные</button>
+                    <button onClick={() => setActive('bill')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid', active === 'bill' && '!bg-primary !mr-[0]')}>Расчетные счета</button>
+                    <button onClick={() => setActive('contract')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid', active === 'contract' && '!bg-primary !mr-[0]')}>Договор</button>
                 </div>
             </div>
             <div className="grow p-[35px] rounded-[50px] border border-solid border-[#E5E7EA] h-full w-full flex flex-col gap-[20px] justify-between">

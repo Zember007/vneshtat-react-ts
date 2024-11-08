@@ -4,11 +4,12 @@ import Switcher from '@/widgets/jobs/UI/Switcher';
 import { GroupCart } from '../../UI'
 import { useState, useEffect } from 'react';
 import ArchiveImg from "@/assets/icons/archive.svg?react";
+import ArchiveReverseImg from "@/assets/icons/archive_reverse.svg?react";
 import { getAccessToken } from '@/shared/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/config/store';
 import { groups } from '../../utils';
-import { setGroups, setGroupsInformation } from '../../model/index.store';
+import { changeGroup, setGroups, setGroupsInformation } from '../../model/index.store';
 
 
 
@@ -157,6 +158,43 @@ const Groups = ({ select, active }: { select: Function, active: number | null })
         getInformation()
     }, [])
 
+    const ArchiveMove = async (id: number, active?: boolean) => {
+
+        const formdata = new FormData();
+
+        formdata.append('EmployeeId', EmployeeId ?? '')
+        
+
+        formdata.append('GroupId', id.toString())
+
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/change_status_company_passengers_group' , {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                console.log(data);
+                
+                dispatch(changeGroup({id: id, field:'IsActive', value: !active}))
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
 
 
     return (
@@ -181,7 +219,7 @@ const Groups = ({ select, active }: { select: Function, active: number | null })
                     
                     {
                         GroupsView.map(item => (
-                            <GroupCart Delete={() => {}} id={item.id} select={select} active={active} key={item.id} name={item.Name} staffers={item.PassengersCount + ' пассажиров'} icon={<ArchiveImg />} />
+                            <GroupCart Delete={() => {ArchiveMove(item.id, item.IsActive)}} id={item.id} select={select} active={active} key={item.id} name={item.Name} staffers={item.PassengersCount + ' пассажиров'} icon={item.IsActive ? <ArchiveImg /> : <ArchiveReverseImg />} />
                         ))
                     }
                 </div>

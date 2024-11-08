@@ -90,7 +90,7 @@ const IndexInfornation = ({ selectedStafferId, close }: { selectedStafferId: num
                 )
                     :
                     (
-                        <FilterUsers selectId={selectedStafferId} close={close} />
+                        <FilterUsers selectId={selectedStafferId} close={close} passenger={false} />
                     )
             }
         </div>

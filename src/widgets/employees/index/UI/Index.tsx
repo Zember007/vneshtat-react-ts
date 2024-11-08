@@ -7,7 +7,7 @@ import { staffers } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/config/store';
 import { getAccessToken } from '@/shared/utils';
-import { setAccessEmployees, setStaffersInformations } from '../../model/index.store';
+import { setAccessEmployees, setStaffersDocuments, setStaffersInformations } from '../../model/index.store';
 
 
 const Index = ({ select, active }: { select: Function, active: number | null }) => {
@@ -59,14 +59,15 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
                 console.log("error", data);
             }
 
-            if (data.status === "success" && data.data) {
-                console.log(data.data)     
+            if (data.status === "success" && data.data) {  
                 const information:any[] = data.data
                 information.forEach(item => {
                     item.PersonalInfoBirthDate = item.PersonalInfoBirthDate.split('-').reverse().join('-')
 
                     item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
                 })        
+                console.log('information', information);
+                
                 dispatch(setStaffersInformations(information))        
             }
         } catch (error) {
@@ -94,6 +95,8 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
 
             if (data.status === "success" && data.data) {
 
+                console.log(data.data);
+                
                 dispatch(setAccessEmployees(data.data))
                 
             }
@@ -105,10 +108,41 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
 
     }
 
+    const getDocuments = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_documents');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                console.log(data.data)
+                const information:any[] = data.data
+                // information.forEach(item => {
+                                    
+                // })  
+                dispatch(setStaffersDocuments(information))
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
 
     useEffect(() => {
         getInformation()
         getAccess()
+        getDocuments()
     }, [])
     
 

@@ -10,6 +10,7 @@ import CopyImg from "@/assets/icons/copy.svg?react";
 import MessageImg from "@/assets/icons/message.svg?react";
 
 import PinImg from "@/assets/icons/pin_.svg?react";
+import { Link } from "react-router-dom";
 
 const TemplateCart = () => {
     return (
@@ -26,7 +27,7 @@ const TemplateCart = () => {
                     <MessageImg className="w-[19px] h-[19px]" />
                 </button>
             </div>
-            <div className="bg-[#ECEEF1] rounded-[23px] p-[15px] grow flex flex-col gap-[15px] justify-between h-full">
+            <Link to={'/templates/create/add'} className=" bg-[#ECEEF1] rounded-[23px] p-[15px] grow flex flex-col gap-[15px] justify-between h-full">
                 <div className="max-w-[calc(100vw-710px)] flex items-center gap-[32px] justify-between">
                     <p className="truncate text-[18px] font-medium ">Квартальная инспекция в Самару, шаблон для отдела продаж</p>
                     <PinImg />
@@ -71,9 +72,9 @@ const TemplateCart = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Link>
             <div className="bg-[#ECEEF1] rounded-[23px] p-[15px] flex flex-col gap-[5px] h-full min-w-[215px]">
-                <div className="rounded-[13px] bg-primary py-[10.5px] text-center text-[#787B86]">28 570 ₽ </div>
+                <Link to={'/templates/create/add'} className="rounded-[13px] bg-primary py-[10.5px] text-center text-[#787B86]">28 570 ₽ </Link>
                 <button className="rounded-[13px] bg-primary py-[10.5px] text-center text-[#787B86]">Архивировать</button>
                 <button className="rounded-[13px] bg-[#121212] py-[10.5px] text-center text-primary">Создать поездку</button>
             </div>

@@ -52,29 +52,31 @@ const TemplateAdd = () => {
                     {activeFilter == 'filters' || activeFilter == 'option' ?
                         <FlightTickets template={true} />
                         :
-                        <div className="p-[20px] bg-primary rounded-[26px] flex flex-col h-full max-h-[calc(100vh-145px)] scroll overflow-y-auto">
-                            <div className="flex flex-col gap-[15px]">
-                                {services.map((item, index) => (
-                                    <>
-                                        <TemplateCartService key={item.id} data={item} clear={(data: string) => { clearService(data, item.id) }} select={(filter: string) => { setActiveFilter(filter); setServiceActive(item.id); }} />
-                                        {(index !== services.length - 1 && services.length !== 0) && (
-                                            <div className="flex gap-[10px] pl-[50px]">
-                                                <button className="py-[15px] px-[35px] rounded-[18px] bg-[#ECEEF1]">
-                                                    <p className="text-[16px] text-[#787B86]">Добавить транспорт</p>
-                                                </button>
+                        <div className="p-[20px] bg-primary rounded-[26px] flex flex-col h-full ">
+                            <div className="max-h-[calc(100vh-185px)] scroll overflow-y-auto">
+                                <div className="flex flex-col gap-[15px]">
+                                    {services.map((item, index) => (
+                                        <>
+                                            <TemplateCartService active={serviceActive === item.id ? activeFilter : null} key={item.id} data={item} clear={(data: string) => { clearService(data, item.id) }} select={(filter: string) => { setActiveFilter(filter); setServiceActive(item.id); }} />
+                                            {(index !== services.length - 1 && services.length !== 0) && (
+                                                <div className="flex gap-[10px] pl-[50px]">
+                                                    <button className="py-[15px] px-[35px] rounded-[18px] bg-[#ECEEF1]">
+                                                        <p className="text-[16px] text-[#787B86]">Добавить транспорт</p>
+                                                    </button>
 
-                                                <button className="py-[15px] px-[35px] rounded-[18px] bg-[#ECEEF1]">
-                                                    <p className="text-[16px] text-[#787B86]">Добавить точку</p>
-                                                </button>
-                                            </div>
-                                        )}
-                                    </>
-                                ))}
-                            </div>
+                                                    <button className="py-[15px] px-[35px] rounded-[18px] bg-[#ECEEF1]">
+                                                        <p className="text-[16px] text-[#787B86]">Добавить точку</p>
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </>
+                                    ))}
+                                </div>
 
-                            <div className="flex flex-col items-center gap-[12px] my-[100px]">
-                                <button onClick={() => { dispatch(addService()) }} className="w-[255px] py-[15px] rounded-[18px] bg-[#ECEEF1]">Добавить элемент</button>
-                                <button className="w-[255px] py-[15px] rounded-[18px] bg-[#ECEEF1]">Выбрать из поездки</button>
+                                <div className="flex flex-col items-center gap-[12px] my-[100px]">
+                                    <button onClick={() => { dispatch(addService()) }} className="w-[255px] py-[15px] rounded-[18px] bg-[#ECEEF1]">Добавить элемент</button>
+                                    <button className="w-[255px] py-[15px] rounded-[18px] bg-[#ECEEF1]">Выбрать из поездки</button>
+                                </div>
                             </div>
                         </div>
                     }

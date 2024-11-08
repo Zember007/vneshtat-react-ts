@@ -23,15 +23,15 @@ const Tariffs = () => {
                     </p>
                 </div>
                 <div className="flex flex-col gap-[15px]">
-                    <button onClick={() => setActive('fix')} className={clsx('flex items-center gap-[10px]  bg-[#ECEEF1] rounded-[26px] mr-[25px] px-[30px] py-[17px]  text-left transition-all duration-300', active === 'fix' && '!bg-primary !mr-[0] border border-[#E5E7EA] border-solid')}>
+                    <button onClick={() => setActive('fix')} className={clsx('flex items-center gap-[10px]  bg-[#ECEEF1] rounded-[26px] mr-[25px] px-[30px] py-[17px]  text-left transition-all  border border-[#E5E7EA] border-solid duration-300', active === 'fix' && '!bg-primary !mr-[0]')}>
                         <span className="font-medium text-[25px]  leading-[1.3]">Фикс</span>
                         <p className="text-[18px] text-[#9B9FAD] font-medium">15 000 ₽/месяц</p>
                     </button>
-                    <button onClick={() => setActive('procent')} className={clsx('flex items-center gap-[10px] bg-[#ECEEF1]  rounded-[26px] mr-[25px] px-[30px] py-[17px]  text-left transition-all duration-300', active === 'procent' && '!bg-primary !mr-[0] border border-[#E5E7EA] border-solid')}>
+                    <button onClick={() => setActive('procent')} className={clsx('flex items-center gap-[10px] bg-[#ECEEF1]  rounded-[26px] mr-[25px] px-[30px] py-[17px]  text-left transition-all  border border-[#E5E7EA] border-solid duration-300', active === 'procent' && '!bg-primary !mr-[0]')}>
                         <span className="font-medium text-[25px]  leading-[1.3]">Процент</span>
                         <p className="text-[18px] text-[#9B9FAD] font-medium">150 ₽/услуга</p>
                     </button>
-                    <button onClick={() => setActive('elite')} className={clsx('flex items-center gap-[10px] bg-[#ECEEF1] rounded-[26px] mr-[25px] px-[30px] py-[17px]  text-left transition-all duration-300', active === 'elite' && '!bg-primary !mr-[0] border border-[#E5E7EA] border-solid')}>
+                    <button onClick={() => setActive('elite')} className={clsx('flex items-center gap-[10px] bg-[#ECEEF1] rounded-[26px] mr-[25px] px-[30px] py-[17px]  text-left transition-all  border border-[#E5E7EA] border-solid duration-300', active === 'elite' && '!bg-primary !mr-[0]')}>
                         <span className="font-medium text-[25px]  leading-[1.3]">Elite</span>
                         <p className="text-[18px] text-[#9B9FAD] font-medium">Индивидуальная цена</p>
                     </button>

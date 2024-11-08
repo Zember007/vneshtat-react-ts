@@ -1,5 +1,7 @@
 import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
+import RouteImg from "@/assets/icons/route.svg?react";
+import NotifyImg from "@/assets/icons/notify.svg?react";
 import PlaneImg from "@/assets/icons/plane.svg?react";
 import TrainImg from "@/assets/icons/train.svg?react";
 import BusImg from "@/assets/icons/bus.svg?react";
@@ -56,7 +58,11 @@ const Header = () => {
         { to: "/jobs/1c", disabled: true, img: C1Img, label: "Интеграция 1С" },
     ];
 
-    // const isLinkSelected = links.some(item => { item.to === location  })
+    const links_messanges = [
+        { to: "/messages/jorneys",disabled: false, img: RouteImg, label: "Сообщения в поездках" },
+        { to: "/messages/notifications",disabled: false, img: NotifyImg, label: "Уведомления" },
+        { to: "/messages/chats",disabled: false, img: TeamImg, label: "Переписки" },
+    ];
 
 
     return (
@@ -71,7 +77,7 @@ const Header = () => {
                     <>
                         <Link to={'/journeys/all'} className="flex items-center bg-primary p-2.5 rounded-primary h-[45px] flex items-center">
                             <BurgerImg className={`transition w-6 h-6 blue-fill-hover ${location.includes('/journeys/all') && "blue-fill"}`} />
-                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/journeys/all') && "max-w-[150px] ml-1")}>Все поездки</p>
+                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/journeys/all') && "max-w-[200px] ml-1")}>Все поездки</p>
                         </Link>
                         {/* <button className="flex items-center gap-3 bg-primary px-5 py-3 rounded-primary h-[45px]">
                             <p className={"text-base leading-none text-blue"}>Инспекция в Самару</p>
@@ -86,7 +92,17 @@ const Header = () => {
 
                         <Link to={'/templates/all'} className="flex items-center bg-primary p-2.5 rounded-primary h-[45px] flex items-center">
                             <BurgerImg className={`transition w-6 h-6 blue-fill-hover ${location.includes('/templates/all') && "blue-fill"}`} />
-                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/templates/all') && "max-w-[150px] ml-1")}>Все шаблоны</p>
+                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/templates/all') && "max-w-[200px] ml-1")}>Все шаблоны</p>
+                        </Link>
+                    </>
+                ) : null}
+
+                {location.includes('/messages') ? (
+                    <>
+
+                        <Link to={'/messages/all'} className="flex items-center bg-primary p-2.5 rounded-primary h-[45px] flex items-center">
+                            <BurgerImg className={`transition w-6 h-6 blue-fill-hover ${location.includes('/messages/all') && "blue-fill"}`} />
+                            <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes('/messages/all') && "max-w-[200px] ml-1")}>Все сообщения</p>
                         </Link>
                     </>
                 ) : null}
@@ -103,7 +119,7 @@ const Header = () => {
                                     <div className="bg-primary relative z-10">
                                         <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
-                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
+                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[200px] ml-1")}>{label}</p>
                                 </Link>
                             ))}
                         </div>
@@ -118,7 +134,22 @@ const Header = () => {
                                     <div className="bg-primary relative z-10">
                                         <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
-                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
+                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[200px] ml-1")}>{label}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                ) : null}
+
+                {location.includes('/messages') ? (
+                    <>
+                        <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
+                            {links_messanges.map(({ to, img: Icon, label, disabled }) => (
+                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                    <div className="bg-primary relative z-10">
+                                        <Icon className={clsx("blue-fill-hover transition ", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
+                                    </div>
+                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[200px] ml-1")}>{label}</p>
                                 </Link>
                             ))}
                         </div>
@@ -133,7 +164,7 @@ const Header = () => {
                                     <div className="bg-primary relative z-10">
                                         <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
-                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[150px] ml-1")}>{label}</p>
+                                    <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[200px] ml-1")}>{label}</p>
                                 </Link>
                             ))}
                         </div>
