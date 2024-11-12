@@ -6,7 +6,7 @@ import UserImg from '@/assets/icons/user.svg?react'
 import TravelPolicyImg from '@/assets/icons/travel-policy.svg?react'
 import InputSelect from '@/widgets/jobs/UI/InputSelect';
 import clsx from "clsx";
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import FilterTravel from "./FilterTravel";
 import { addSectionEmployee, changeSection, delSectionEmployee } from "../../model/index.store";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +36,7 @@ const FilterSections = ({ selectedSectionId }: { selectedSectionId: number | nul
     const [employeeAdd, setEmployeeAdd] = useState<boolean>(false)
 
 
-
+    const employees = Section?.Employees ?? []
 
     return (
         <>
@@ -59,16 +59,13 @@ const FilterSections = ({ selectedSectionId }: { selectedSectionId: number | nul
                                 <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
                                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                                         <input value={Section?.Name ?? ''} placeholder='Название отдела'
-                                            onInput={(e) => { dispatch(changeSection({id: Section?.id, field: 'Name', value: e.currentTarget.value})) }}
+                                            onInput={(e) => { dispatch(changeSection({ id: Section?.id, field: 'Name', value: e.currentTarget.value })) }}
                                             type="text" className="w-full bg-[transparent] text-[12px] font-medium" />
                                     </div>
                                 </div>
                                 <span className='mt-[5px] font-medium'>Руководитель отдела</span>
                                 <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
-                                    <InputSelect data={Section?.Employees && Section?.Supervisor ? [
-                                        Section?.Supervisor,
-                                        ...Section?.Employees
-                                    ]  : []} activeId={Section?.Supervisor?.id} change={(id: number) => {if(Section?.Supervisor?.id !== id) dispatch(changeSection({ id: Section?.id, field: 'Supervisor', value: Section?.Employees?.find(item => item.id === id)}))}} />
+                                    <InputSelect data={employees} activeId={Section?.Supervisor?.id} change={(id: number) => { if (Section?.Supervisor?.id !== id) dispatch(changeSection({ id: Section?.id, field: 'Supervisor', value: Section?.Employees?.find(item => item.id === id) })) }} />
                                 </div>
                                 <span className='mt-[5px] font-medium'>Сотрудники отдела</span>
                                 <div className="flex flex-col gap-[6px]">
@@ -272,7 +269,7 @@ const CartEmployee = (props: props) => {
                                         content: `${item.Surname} ${item.Name}`
                                     }
                                 }))
-                                
+
 
                                 if (props.add) props.add(true)
                             }}

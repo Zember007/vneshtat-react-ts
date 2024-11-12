@@ -62,7 +62,7 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
             if (data.status === "success" && data.data) {  
                 const information:any[] = data.data
                 information.forEach(item => {
-                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate.split('-').reverse().join('-')
+                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate ? item.PersonalInfoBirthDate.split('-').reverse().join('-') : null
 
                     item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
                 })        
