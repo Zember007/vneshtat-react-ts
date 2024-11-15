@@ -146,7 +146,7 @@ const CartEmployee = (props: props) => {
         setDeleteCountdown(null);
     }
 
-    const Staffers = useSelector((state: RootState) => state.employees.Staffers);
+    const Staffers = useSelector((state: RootState) => state.employees.Passengers);
 
     const Staffers_find = Staffers.filter(item => {
         if (searchEmployee.length > 0) {

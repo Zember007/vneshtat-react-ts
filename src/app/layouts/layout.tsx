@@ -14,7 +14,7 @@ const Layout = ({ component, information, navigation, links, extraClassBar }: { 
                     </div>
                 ) : component}
             </div>
-            <div className={"flex flex-col gap-[15px] justify-between w-[300px] " + extraClassBar}>
+            <div className={"flex flex-col gap-[15px] justify-between w-[300px] min-w-[300px] " + extraClassBar}>
                 <div className={clsx('grow rounded-[26px] bg-[#FAFAFA]', typeof information == 'string' && 'flex items-center justify-center')}>
                     {information}
                 </div>

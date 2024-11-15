@@ -38,8 +38,8 @@ const Tariffs = () => {
                 </div>
             </div>
             <div className="grow p-[30px] rounded-[50px] border border-solid border-[#E5E7EA] h-full w-full">
-                {active === 'fix' && <Fix />}
-                {active === 'procent' && <Procent />}
+                {active === 'fix' && <Fix setStatus={() => {}} status="" />}
+                {active === 'procent' && <Procent setStatus={() => {}} status="" />}
                 {active === 'elite' && <Elite />}
             </div>
 

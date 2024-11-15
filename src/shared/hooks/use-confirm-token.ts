@@ -22,16 +22,9 @@ const useConfirmToken = (token: string) => {
 
             localStorage.setItem('connect_employee', 'true')
             url = `/auth/sign_up/check_employee_registration?Token=${token}`
-            console.log(1);
-
-
-
         } else {
             localStorage.setItem('connect_employee', 'false')
             url = `/auth/sign_up/check_company_registration?Token=${token}`
-            console.log(2);
-
-
         }
 
         const connect = localStorage.getItem('connect_employee')
@@ -72,7 +65,7 @@ const useConfirmToken = (token: string) => {
                 if (data.data.BirthDate) {
                     dispatch(updateInfoState({
                         field: "birthday",
-                        value: data.data.BirthDate
+                        value: data.data.BirthDate.split('-').reverse().join('-')
                     }))
                 }
                 localStorage.setItem("ConfirmToken", token);

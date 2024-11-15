@@ -170,7 +170,7 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
                 <div className="flex flex-col gap-[10px]">
                     {
                         StaffersView.map((item) => (
-                            <StafferCart online={item.online} select={select} id={item.id} active={active} viewMessage={true} lastVisite={item.LastOnline} key={item.id} MiddleName={item.MiddleName} Surname={item.Surname} Name={item.Name} speciality={item.PermissionsClassName} archive={!item.IsActive} />
+                            <StafferCart online={item.id === Number(EmployeeId) ? true : item.online} select={select} id={item.id} active={active} viewMessage={true} lastVisite={item.LastOnline} key={item.id} MiddleName={item.MiddleName} Surname={item.Surname} Name={item.Name} speciality={item.PermissionsClassName} archive={!item.IsActive} />
                         ))
                     }
                 </div>

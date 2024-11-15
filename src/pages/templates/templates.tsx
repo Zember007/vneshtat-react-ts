@@ -11,7 +11,7 @@ const templates = () => {
     useEffect(() => {
 
 
-        if (location === '/templates') {
+        if (location === '/templates' || location === '/templates/') {
             navigate('/templates/all')
         }
 

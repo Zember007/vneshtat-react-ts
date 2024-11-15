@@ -181,6 +181,7 @@ const EmployeesStore = createSlice({
             state.Sections = state.Sections.filter(item => item.id !== action.payload)
         },
         addSectionEmployee: (state, action) => {
+            
             const { id, employee } = action.payload
             const Section = state.Sections.find(item => item.id === id)
             const SectionInformation = state.SectionsInformation.find(item => item.id === id)

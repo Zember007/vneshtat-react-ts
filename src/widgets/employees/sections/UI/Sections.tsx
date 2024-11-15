@@ -109,9 +109,11 @@ const Sections = ({ select, active }: { select: Function, active: number | null 
                     el.Supervisor.content = `${el.Supervisor.Surname} ${el.Supervisor.Name}`
 
                     const Employees: any[] = el.Employees
-                    Employees.forEach(el => {
-                        el.content = `${el.Surname} ${el.Name}`
-                    })
+                    if(Employees) {
+                        Employees.forEach(el => {
+                            el.content = `${el.Surname} ${el.Name}`
+                        })
+                    }
                 })
 
                 dispatch(setSectionsInformation(data.data))

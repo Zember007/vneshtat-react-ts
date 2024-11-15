@@ -70,7 +70,7 @@ const InputDate = ({
     }, [containerRef])
 
     return (
-        <div className={`flex flex-col min-h-7 cursor-none w-full`} ref={containerRef} {...rest}>
+        <div className={`flex flex-col min-h-7 cursor-none`} ref={containerRef} {...rest}>
 
             <label className="relative flex justify-end items-center w-full cursor-pointer">
                 <div

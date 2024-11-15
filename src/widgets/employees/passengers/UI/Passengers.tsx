@@ -7,7 +7,7 @@ import { staffers } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/config/store';
 import { getAccessToken } from '@/shared/utils';
-import { setPassengers, setPassengersInformations } from '../../model/index.store';
+import {  setPassengersInformations } from '../../model/index.store';
 
 
 const Passengers = ({ select, active }: { select: Function, active: number | null }) => {
@@ -36,43 +36,11 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
     }
 
     useEffect(() => {
-        console.log(1);
-        
         filterStaffers(Passengers)
     }, [switcher,Passengers])
 
     const EmployeeId = localStorage.getItem('EmployeeId')
     const AccessToken = getAccessToken()
-
-    const getPassengers = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers');
-        url.searchParams.append('EmployeeId', EmployeeId || '');
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
-
-            if (data.status === "success" && data.data) {
-                
-                console.log(data.data);
-                
-                dispatch(setPassengers(data.data))
-
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    }
 
     const getInformation = async () => {
         const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_personal_info');
@@ -93,7 +61,7 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
                 console.log(data.data)     
                 const information:any[] = data.data
                 information.forEach(item => {
-                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate.split('-').reverse().join('-')
+                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate ? item.PersonalInfoBirthDate.split('-').reverse().join('-') : null
 
                     item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
                 })        
@@ -109,7 +77,6 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
     }
 
     useEffect(() => {
-        getPassengers()
         getInformation()
     }, [])
 

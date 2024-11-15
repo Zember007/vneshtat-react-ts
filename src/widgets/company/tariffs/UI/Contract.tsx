@@ -1,9 +1,9 @@
 
 // import { useEffect, useRef, useState } from "react";
 import TrashIcon from '@/assets/icons/trash.svg?react'
-import ImgContract from '@/assets/img/company/contract.webp'
+import ImgContract from '@/assets/img/company/write.webp'
 import { getAccessToken } from '@/shared/utils';
-import {  useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface File extends Blob {
@@ -11,13 +11,13 @@ interface File extends Blob {
     readonly name: string;
 }
 
-const Contract = ({ status, setStatus }: { status?: string, setStatus: Function }) => {
+const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus: Function; TarrifId:string }) => {
 
     const EmployeeId = localStorage.getItem('EmployeeId')
     const AccessToken = getAccessToken()
 
     const DownloadContract = async () => {
-        const url_ = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_company_treaty');
+        const url_ = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_company_tariff_treaty');
         url_.searchParams.append('EmployeeId', EmployeeId || '');
 
         try {
@@ -50,25 +50,28 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
     }
 
     const FileInput = useRef<HTMLInputElement>(null)
-    const FileInputEdit = useRef<HTMLInputElement>(null)
 
     const [uploadFile, setUploadFile] = useState<File | null>(null)
 
 
-    const sendContract = async (method:string = 'POST') => {
+    const sendContract = async () => {
 
         const file = uploadFile
 
         const formdata = new FormData()
 
         formdata.append('EmployeeId', EmployeeId || '')
+        formdata.append('TariffId', TarrifId || '')
         formdata.append('TreatyFile', file || '')
+        
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/create_company_tariff_treaty')
 
-        const url = method === 'PATCH' ? '/edit_company_treaty' : '/create_company_treaty'
+        url.searchParams.append('EmployeeId', EmployeeId || '')
+        url.searchParams.append('TariffId', TarrifId || '')
 
         try {
-            const res = await fetch(import.meta.env.VITE_API_URL + '/company/company_profile'+url, {
-                method: method,
+            const res = await fetch(url, {
+                method: 'POST',
                 headers: {
                     Authorization: `Bearer ${AccessToken}`
                 },
@@ -92,14 +95,16 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
 
 
     }
+
+    const disableTariff = async() => {}
     return (
         <>
 
             {!status &&
                 <>
                     {!uploadFile &&
-                        <div className="flex flex-col gap-[15px] items-center justify-center grow">
-                            <img src={ImgContract} alt="contract" className="mb-[20px] max-w-[160px] mb-[20px]" />
+                        <div className="flex flex-col gap-[15px] items-center justify-center h-full">
+                            <img src={ImgContract} alt="contract" className="mb-[20px] max-w-full" />
 
                             <div className="flex gap-[10px]">
                                 <button
@@ -115,10 +120,8 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
 
                             </div>
 
-                            <p className="text-center text-[18px]">
-                                Договор успешно сформирован. <br />
-                                Вы можете скачать его и подписать <br />
-                                (а ЭЦП мы поддерживаем?). <br />
+                            <p className="text-center text-[18px] max-w-[300px]">
+                            Чтобы подключить тариф, нужно подписать дополнительный договор к основному.
                             </p>
 
                         </div>
@@ -182,7 +185,7 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
                     <div className="flex flex-col gap-[10px] items-center">
                         <span className='text-[30px] font-medium'>Договор подписан!</span>
                         <p className='text-[18px] max-w-[355px] text-center'>
-                            Мы очень рады сотрудничеству, теперь вы можете выбрать подходящий тариф.
+                            Мы очень рады сотрудничеству, теперь вы можете выбрать подходящий тариф.Вы можете сменить тариф, если окажется, что он вам не подходит. Менять тариф можно не чаще одного раза в месяц.
                         </p>
                     </div>
 
@@ -191,12 +194,8 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
                             onClick={() => { DownloadContract() }}
                             className='w-full bg-[#292933] px-[30px] py-[14px] rounded-[16px] text-primary text-[18px] font-medium whitespace-nowrap'>Скачать договор</button>
                         <button
-                            onClick={() => { FileInputEdit.current?.click() }}
-                            className='w-full bg-[#292933] px-[30px] py-[14px] rounded-[16px] text-primary text-[18px] font-medium whitespace-nowrap'>Изменить данные</button>
-                        <input type="file" ref={FileInputEdit} className='hidden'
-                            onChange={(e) => { e.target.files && setUploadFile(e.target.files[0]); sendContract('PATCH') }}
-
-                        />
+                            onClick={() => { disableTariff() }}
+                            className='w-full bg-[#292933] px-[30px] py-[14px] rounded-[16px] text-primary text-[18px] font-medium whitespace-nowrap'>Отключить тариф</button>
 
                     </div>
 

@@ -18,6 +18,7 @@ import { changeGroup, setGroups, setGroupsInformation } from '../../model/index.
 const Groups = ({ select, active }: { select: Function, active: number | null }) => {
 
     const dispatch = useDispatch()
+    
 
     const groups = useSelector((state: RootState) => state.employees.Groups);
 

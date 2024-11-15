@@ -13,7 +13,7 @@ import { Groups, GroupsInfornation, GroupsNavigation } from '@/widgets/employees
 import { Structure, StructureNavigation, StructureInfornation } from '@/widgets/employees/structure';
 import { useDispatch } from 'react-redux';
 import { getAccessToken } from '@/shared/utils';
-import { setStaffers } from '@/widgets/employees/model/index.store';
+import { setPassengers, setStaffers } from '@/widgets/employees/model/index.store';
 
 
 const employees = () => {
@@ -130,10 +130,42 @@ const employees = () => {
 
     }
 
+    const getPassengers = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                
+                console.log(data.data);
+                
+                dispatch(setPassengers(data.data))
+
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
     useEffect(() => {
         getOnline().then((res) => {
             getStaffers(res)
         })
+
+        getPassengers()
     }, [])
 
     return (

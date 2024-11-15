@@ -50,11 +50,11 @@ const Header = () => {
     const links_company = [
         { to: "/jobs/company", img: CompanyImg, label: "Компания" },
         { to: "/jobs/employees", img: TeamImg, label: "Сотрудники" },
+        { to: "/jobs/finance", img: FinanceImg, label: "Финансы" },
+        { to: "/jobs/reports", img: ReportsImg, label: "Отчеты" },
         { to: "/jobs/center", disabled: true, img: CenterCostImg, label: "Центры затрат" },
         { to: "/jobs/travel", disabled: true, img: TravelPolicyImg, label: "Тревел-политика" },
         { to: "/jobs/agree", disabled: true, img: AgreementImg, label: "Согласование" },
-        { to: "/jobs/finance", img: FinanceImg, label: "Финансы" },
-        { to: "/jobs/reports", img: ReportsImg, label: "Отчеты" },
         { to: "/jobs/1c", disabled: true, img: C1Img, label: "Интеграция 1С" },
     ];
 
@@ -147,7 +147,7 @@ const Header = () => {
                             {links_messanges.map(({ to, img: Icon, label, disabled }) => (
                                 <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
-                                        <Icon className={clsx("blue-fill-hover transition ", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
+                                        <Icon className={clsx("h-[25px] w-[25px] blue-fill-hover transition ", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
                                     <p className={clsx("transition-all duration-500 whitespace-nowrap text-base text-blue max-w-[0px] overflow-hidden ml-0", location.includes(to) && "max-w-[200px] ml-1")}>{label}</p>
                                 </Link>

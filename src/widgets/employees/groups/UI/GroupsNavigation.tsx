@@ -52,7 +52,7 @@ const GroupsNavigation = ({ selectedGroupsId, select }: { selectedGroupsId: numb
         const formdata = new FormData()
 
         formdata.append('EmployeeId', EmployeeId ?? '')
-        formdata.append('DepartmentId', GroupSelected?.id.toString() ?? '')
+        formdata.append('GroupId', GroupSelected?.id.toString() ?? '')
         formdata.append('Name', GroupSelected?.Name ?? '')
         formdata.append('SupervisorId', GroupSelected?.Supervisor?.id.toString() ?? '')
 
@@ -86,9 +86,9 @@ const GroupsNavigation = ({ selectedGroupsId, select }: { selectedGroupsId: numb
         if (EmployeesNew?.length) {
 
             const formdata = {
-                EmployeeId: EmployeeId,
-                DepartmentId: GroupSelected?.id?.toString() ?? '',
-                AddingEmployeeId: EmployeesNew.map((item) => (item.id.toString()))
+                EmployeeId: EmployeeId || '',
+                GroupId: GroupSelected?.id?.toString() || '',
+                AddingPassengerId: EmployeesNew.map((item) => (item.id.toString()))
             };
 
 
@@ -128,6 +128,35 @@ const GroupsNavigation = ({ selectedGroupsId, select }: { selectedGroupsId: numb
         }
     }
 
+    const ExportGroups = async () => {
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/company/company_profile/export_confirmed_company_passengers_group?GroupId=1&EmployeeId=' + EmployeeId, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const blob = await res.blob()
+            const url = window.URL.createObjectURL(blob)
+
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'ExportData.xlsx'
+            document.body.appendChild(a)
+
+            a.click()
+            a.remove()
+
+            window.URL.revokeObjectURL(url)
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+    }
+
     return (
         <>
             {!selectedGroupsId && <div className="flex flex-col gap-[10px]">
@@ -136,6 +165,7 @@ const GroupsNavigation = ({ selectedGroupsId, select }: { selectedGroupsId: numb
                         className="font-medium w-full py-[10px] text-center rounded-[13px] bg-[#DCE0E5]"
                     >Импорт</button>
                     <button
+                    onClick={() => {ExportGroups()}}
                         className="font-medium w-full py-[10px] text-center rounded-[13px] bg-[#DCE0E5]"
                     >Экспорт</button>
                 </div>

@@ -1,5 +1,5 @@
 import Layout from '@/app/layouts/layout';
-
+import ImgWrite from '@/assets/img/company/write.webp'
 
 import { useEffect, useState } from 'react';
 import Infornation from '@/widgets/jobs/UI/Infornation';
@@ -9,7 +9,7 @@ import ImgTravels from '@/assets/img/company/travels.webp'
 import { Link } from 'react-router-dom';
 
 
-const Preview = () => {
+const Preview = ({ information }: { information: any }) => {
 
     // const location = useLocation().pathname
 
@@ -28,12 +28,31 @@ const Preview = () => {
                 component={
 
                     <>
-                        <div className="text-center py-[50px] h-full bg-[#FAFAFA] rounded-[26px] flex items-center justify-center flex-col gap-[15px]">
-                            <span className='text-[44px] font-medium'>Добро пожаловать во Внештат!</span>
-                            <Link to={'/jobs/company/edit'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Заполнить данные компании</Link>
-                            <p className='text-[#787B86] mt-[5px]'>
-                                Чтобы получить полный доступ к сервису, нужно заполнить<br /> данные вашей компании, подписать договор и выбрать тариф
-                            </p>
+                        <div className="  h-full bg-[#FAFAFA] rounded-[26px] ">
+                            {!information &&
+                                <div className='text-center py-[50px] flex items-center justify-center flex-col gap-[15px]'>
+                                    <span className='text-[44px] font-medium'>Добро пожаловать во Внештат!</span>
+                                    <Link to={'/jobs/company/edit'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Заполнить данные компании</Link>
+                                    <p className='text-[#787B86] mt-[5px]'>
+                                        Чтобы получить полный доступ к сервису, нужно заполнить<br /> данные вашей компании, подписать договор и выбрать тариф
+                                    </p>
+                                </div>
+                            }
+                            {information &&
+                                <div className='py-[30px] px-[35px] flex items-center justify-between'>
+                                    <div className="flex flex-col gap-[10px]">
+                                        <span className='text-[#9B9FAD] text-[25px] font-medium'>Договор подписан</span>
+                                        <h1 className='text-[#000] text-[44px] font-medium'>{information.LegalName}</h1>
+                                        <p className='text-[18px] text-[#9B9FAD]'>
+                                            ИНН: {information.Inn} <br />
+                                            Номер договора: {information.Inn}
+                                        </p>
+                                        <Link to={'/jobs/company/edit'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium mt-[10px]'>Смотреть данные и договор</Link>
+                                    </div>
+
+                                    <img src={ImgWrite} alt="write" className="max-w-[100%]" />
+                                </div>
+                            }
                         </div>
                         <div className="pt-[36px] pb-[16px] bg-[#FAFAFA] relative rounded-[26px] flex items-center justify-center">
                             <img src={ImgTravels} alt="travels" />
@@ -70,7 +89,7 @@ const Preview = () => {
 
             <div className={clsx(" transition-all duration-500 fixed z-[1000]", !viewContracts ? 'invisible opacity-0' : 'visible opacity-100')}>
                 <Modal
-                close={() => {}}
+                    close={() => { }}
                     action={setViewContracts}
                     title='Договоры'
                     text='Здесь лежат копии договоров между компанией и Внештатом.'
@@ -86,4 +105,4 @@ const Preview = () => {
     );
 };
 
-export {Preview};
+export { Preview };

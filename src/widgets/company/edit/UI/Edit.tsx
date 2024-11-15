@@ -4,9 +4,10 @@ import Bill from "./Bill";
 import Contract from "./Contact";
 import { useState } from "react";
 import CloseIcon from '@/assets/icons/close.svg?react'
+import CheckIcon from '@/assets/icons/check.svg?react'
 import { Link } from "react-router-dom";
 
-const Edit = () => {
+const Edit = ({companyInformation, bills, contractStatus , setCompanyInformation, setBills, setContractStatus} : {companyInformation:any, bills:any, contractStatus?:string, setCompanyInformation:Function, setBills:Function, setContractStatus:Function}) => {
 
     const [active, setActive] = useState<string>('inn')
     
@@ -23,15 +24,31 @@ const Edit = () => {
                     </p>
                 </div>
                 <div className="flex flex-col gap-[15px]">
-                    <button onClick={() => setActive('inn')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid', active === 'inn' && '!bg-primary !mr-[0]')}>Данные</button>
-                    <button onClick={() => setActive('bill')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid', active === 'bill' && '!bg-primary !mr-[0]')}>Расчетные счета</button>
-                    <button onClick={() => setActive('contract')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid', active === 'contract' && '!bg-primary !mr-[0]')}>Договор</button>
+                    <button onClick={() => setActive('inn')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid flex items-center justify-between', active === 'inn' && '!bg-primary !mr-[0]')}>
+                        <span>Данные</span>
+                        {companyInformation && <div className="w-[21px] h-[21px] rounded-[50%] bg-[#007BFB] flex items-center justify-center">
+                            <CheckIcon />
+                        </div>}
+                    </button>
+                    <button onClick={() => setActive('bill')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid flex items-center justify-between', active === 'bill' && '!bg-primary !mr-[0]')}>
+                        <span>Расчетные счета</span>
+                        {bills && <div className="w-[21px] h-[21px] rounded-[50%] bg-[#007BFB] flex items-center justify-center">
+                            <CheckIcon />
+                        </div>}
+                    </button>
+                    <button onClick={() => setActive('contract')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid', active === 'contract' && '!bg-primary !mr-[0]')}>
+                        
+                        <span>Договор</span>
+                        {(contractStatus==='on_review' || contractStatus==='accepted') && <div className={`w-[21px] h-[21px] rounded-[50%] flex items-center justify-center ${contractStatus==='on_review' ? 'bg-[#FF64A3]' : 'bg-[#007BFB]'}`}>
+                            <CheckIcon />
+                        </div>}
+                    </button>
                 </div>
             </div>
-            <div className="grow p-[35px] rounded-[50px] border border-solid border-[#E5E7EA] h-full w-full flex flex-col gap-[20px] justify-between">
-                {active === 'inn' && <InnCheck next={() => setActive('bill')}/>}
-                {active === 'bill' && <Bill next={() => setActive('contract')} prev={() => setActive('inn')}/>}
-                {active === 'contract' && <Contract/>}
+            <div className="min-w-[600px] grow p-[35px] rounded-[50px] border border-solid border-[#E5E7EA] h-full w-full flex flex-col gap-[20px] justify-between">
+                {active === 'inn' && <InnCheck information={companyInformation} next={(data:any) => {setCompanyInformation(data);setActive('bill')}}/>}
+                {active === 'bill' && <Bill information={bills} setInformation={setBills} next={() => setActive('contract')} prev={() => setActive('inn')}/>}
+                {active === 'contract' && <Contract status={contractStatus} setStatus={(status:string) => {setContractStatus(status)}}/>}
             </div>
         </div>
     );
