@@ -4,17 +4,12 @@ import Switcher from '@/widgets/jobs/UI/Switcher';
 import { StafferCart } from '../../UI';
 import { useState, useEffect } from 'react';
 import { staffers } from '../../utils';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/app/config/store';
-import { getAccessToken } from '@/shared/utils';
-import {  setPassengersInformations } from '../../model/index.store';
 
 
 const Passengers = ({ select, active }: { select: Function, active: number | null }) => {
 
-
-
-    const dispatch = useDispatch();
 
     const Passengers = useSelector((state: RootState) => state.employees.Passengers);
 
@@ -39,46 +34,7 @@ const Passengers = ({ select, active }: { select: Function, active: number | nul
         filterStaffers(Passengers)
     }, [switcher,Passengers])
 
-    const EmployeeId = localStorage.getItem('EmployeeId')
-    const AccessToken = getAccessToken()
 
-    const getInformation = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_personal_info');
-        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
-
-            if (data.status === "success" && data.data) {
-                console.log(data.data)     
-                const information:any[] = data.data
-                information.forEach(item => {
-                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate ? item.PersonalInfoBirthDate.split('-').reverse().join('-') : null
-
-                    item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
-                })        
-                dispatch(setPassengersInformations(information)) 
-                       
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    }
-
-    useEffect(() => {
-        getInformation()
-    }, [])
 
     return (
         <>

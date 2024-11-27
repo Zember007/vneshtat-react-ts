@@ -1,9 +1,10 @@
 import { RootState } from "@/app/config/store";
 import { useDispatch, useSelector } from "react-redux";
-import { changeStaffersInformations, setGender } from "../../model/index.store";
+import { changeStaffersInformations, setGender, setPassengersInformations, setStaffersInformations } from "../../model/index.store";
 import InputSelect from "@/widgets/jobs/UI/InputSelect";
 import Lock from "@/assets/icons/lock.svg?react";
 import { ChangeEvent, useEffect } from "react";
+import { getAccessToken } from "@/shared/utils";
 
 const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: number | null }) => {
 
@@ -37,6 +38,56 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
         const value = e.target.value;
         dispatch(changeStaffersInformations({passenger: passenger ,field: 'PersonalInfoBirthDate', value: formatDisplayDate(value), id: selectId }))
     };
+
+    const AccessToken = getAccessToken()
+    const EmployeeId = localStorage.getItem('EmployeeId')
+
+    const getInformation = async () => {
+        const url = passenger ? new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_personal_info') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_personal_information');
+        const userId = passenger ? 'PassengerId'  : 'EmployeesId'
+        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
+        url.searchParams.append( userId , selectId?.toString() ?? '');
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {  
+                const information:any[] = data.data
+                information.forEach(item => {
+                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate ? item.PersonalInfoBirthDate.split('-').reverse().join('-') : null
+
+                    item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
+                })        
+                console.log('information', information);
+
+                if(passenger) {
+                    dispatch(setPassengersInformations(information))
+                } else {
+                    dispatch(setStaffersInformations(information))        
+                }
+                
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    useEffect(() => {
+        if(selectId){
+            getInformation()
+        }
+    },[selectId])
 
     return (
         <>

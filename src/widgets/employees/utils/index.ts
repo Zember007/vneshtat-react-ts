@@ -46,8 +46,9 @@ export interface documents_staffers {
     Documents: documents[]
 }
 
-interface documents {
-    id: number,
+export interface documents {
+    id?: number,
+    content?: string,
     DocumentType: string,
     Type: string,
     Nationality: string,
@@ -58,7 +59,9 @@ interface documents {
     Name: string,
     MiddleName: string,
     DateOfIssue: string | null,
-    New?: boolean
+    New?: boolean,
+    Edit?: boolean,
+    isSelected?:boolean
 }
 
 

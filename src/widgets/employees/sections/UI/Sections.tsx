@@ -5,7 +5,7 @@ import TrashImg from "@/assets/icons/trash.svg?react";
 import { getAccessToken } from '@/shared/utils';
 import { RootState } from '@/app/config/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { delSection, setSections, setSectionsInformation } from '../../model/index.store';
+import { delSection, setSections } from '../../model/index.store';
 
 const Sections = ({ select, active }: { select: Function, active: number | null }) => {
 
@@ -81,54 +81,10 @@ const Sections = ({ select, active }: { select: Function, active: number | null 
         }
     }
 
-    const getInformation = async () => {
-
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_departments_info');
-        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
-
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
-
-            if (data.status === "success" && data.data) {
-
-                console.log(data.data);
-
-                const information: any[] = data.data
-
-                information.forEach(el => {
-
-                    el.Supervisor.content = `${el.Supervisor.Surname} ${el.Supervisor.Name}`
-
-                    const Employees: any[] = el.Employees
-                    if(Employees) {
-                        Employees.forEach(el => {
-                            el.content = `${el.Surname} ${el.Name}`
-                        })
-                    }
-                })
-
-                dispatch(setSectionsInformation(data.data))
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    }
+    
 
     useEffect(() => {
         getSections()
-        getInformation()
     }, [])
 
 

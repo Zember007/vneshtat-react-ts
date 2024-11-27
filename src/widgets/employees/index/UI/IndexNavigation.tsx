@@ -17,6 +17,7 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
     const StafferInformation = useSelector((state: RootState) => state.employees.StaffersInformations).find(item => item.EmployeeId === selectedStafferId);
     const access = useSelector((state: RootState) => state.employees.StaffersAccess).find(item => item.EmployeeId === selectedStafferId);
     const Periods = useSelector((state: RootState) => state.employees.Periods);
+    const Documents = useSelector((state: RootState) => state.employees.StaffersDocuments).find(item => item.EmployeeId === selectedStafferId);
 
     const safeEmployee = async () => {
 
@@ -33,9 +34,111 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
         if (activeFilter === 'period') {
             safePeriods()
         }
+
+        if (activeFilter === 'document') {
+            safeDocuments()
+        }
     }
 
-    const safePeriods = async () => {
+    const safeDocuments = () => {
+
+
+        const Documents_new = Documents?.Documents.filter(item => item.New)
+        const Documents_edit = Documents?.Documents.filter(item => item.Edit)
+
+        if (Documents_new && Documents_new.length > 0) {
+            Documents_new.forEach(async (el) => {
+                
+                const formdata = new FormData()
+
+                formdata.append('EmployeeId', EmployeeId || '')
+                formdata.append('DocumentType', el.DocumentType)
+                formdata.append('Number', el.Number)
+                formdata.append('DateOfIssue', el.DateOfIssue || '')
+                formdata.append('MiddleName', el.MiddleName)
+                formdata.append('Nationality', el.Nationality)
+                formdata.append('ValidityDeadline', el.ValidityDeadline || '')
+                formdata.append('Name', el.Name)
+                formdata.append('Surname', el.Surname)       
+                formdata.append('Species', el.Species)
+                
+
+
+                try {
+                    const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/create_employees_profile_documents', {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${AccessToken}`,
+                        },
+                        body: formdata
+                    });
+                    const data = await res.json();
+                    if (data.status === "error") {
+                        console.log("error", data);
+                    }
+
+                    if (data.status === "success") {
+                        console.log(data);
+
+                    }
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            })
+        }
+
+        if (Documents_edit && Documents_edit.length > 0) {
+            Documents_edit.forEach(async (el) => {
+                
+                const formdata = new FormData()
+
+                formdata.append('EmployeeId', EmployeeId || '')
+                formdata.append('DocumentType', el.DocumentType)
+                formdata.append('DocumentId', el.id?.toString() || '')
+                formdata.append('Type', el.Type)
+                formdata.append('Number', el.Number)
+                formdata.append('DateOfIssue', el.DateOfIssue || '')
+                formdata.append('MiddleName', el.MiddleName)
+                formdata.append('Nationality', el.Nationality)
+                formdata.append('ValidityDeadline', el.ValidityDeadline || '')
+                formdata.append('Name', el.Name)
+                formdata.append('Surname', el.Surname)       
+                formdata.append('Species', el.Species)                
+                
+
+
+                try {
+                    const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/edit_employees_profile_document', {
+                        method: "PATCH",
+                        headers: {
+                            Authorization: `Bearer ${AccessToken}`,
+                        },
+                        body: formdata
+                    });
+                    const data = await res.json();
+                    if (data.status === "error") {
+                        console.log("error", data);
+                    }
+
+                    if (data.status === "success") {
+                        console.log(data);
+
+                    }
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            })
+        }
+
+    }
+
+    const safePeriods = () => {
 
 
         const Periods_new = Periods.filter(item => item.new)
@@ -44,13 +147,13 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
             Periods_new.forEach(async (el) => {
                 const formdata = new FormData();
 
-                const DateFrom = el.DateFrom? el.DateFrom.toLocaleString('ru-RU', { year: 'numeric', month: 'numeric', day: 'numeric' }).split('.').reverse().join('-') : null;
-                const DateTo = el.DateTo? el.DateTo.toLocaleString('ru-RU', { year: 'numeric', month: 'numeric', day: 'numeric' }).split('.').reverse().join('-') : null;
+                const DateFrom = el.DateFrom ? el.DateFrom.toLocaleString('ru-RU', { year: 'numeric', month: 'numeric', day: 'numeric' }).split('.').reverse().join('-') : null;
+                const DateTo = el.DateTo ? el.DateTo.toLocaleString('ru-RU', { year: 'numeric', month: 'numeric', day: 'numeric' }).split('.').reverse().join('-') : null;
                 formdata.append('EmployeeId', selectedStafferId?.toString() ?? '')
                 formdata.append('DeputyId', el.DeputyId?.toString() ?? '')
                 formdata.append('DateFrom', DateFrom ?? '')
                 formdata.append('DateTo', DateTo ?? '')
-                
+
 
                 try {
                     const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/create_employee_profile_period_of_absence', {
@@ -88,7 +191,7 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
         const url = StafferInformation?.Type === 'Update' ? 'edit_employees_profile_personal_information' : 'create_employees_profile_personal_information'
         const method = StafferInformation?.Type === 'Update' ? 'PATCH' : 'POST'
 
-        if(StafferInformation?.Type === 'Update') {
+        if (StafferInformation?.Type === 'Update') {
             formdata.append('Surname', StafferInformation?.Surname ?? '')
             formdata.append('MiddleName', StafferInformation?.MiddleName ?? '')
             formdata.append('Name', StafferInformation?.Name ?? '')
@@ -102,12 +205,12 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
             formdata.append('Username', StafferInformation?.Username ?? '')
         }
 
-        if(StafferInformation?.Type === 'Create') {
+        if (StafferInformation?.Type === 'Create') {
             formdata.append('Surname', StafferInformation?.PersonalInfoSurname ?? '')
             formdata.append('Name', StafferInformation?.PersonalInfoName ?? '')
             formdata.append('BirthDate', StafferInformation?.PersonalInfoBirthDate ? StafferInformation.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
             formdata.append('Gender', StafferInformation?.PersonalInfoGender ?? 'male')
-            formdata.append('Nationality', StafferInformation?.PersonalInfoNationality ?? '') 
+            formdata.append('Nationality', StafferInformation?.PersonalInfoNationality ?? '')
         }
 
         try {
@@ -160,7 +263,7 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
 
             if (data.status === "success") {
                 console.log(data);
-                dispatch(changeStaffers({id:selectedStafferId, field: 'PermissionsClassName', value: access?.PermissionsClassName}))
+                dispatch(changeStaffers({ id: selectedStafferId, field: 'PermissionsClassName', value: access?.PermissionsClassName }))
             }
 
         } catch (error) {
@@ -225,7 +328,7 @@ const IndexNavigation = ({ selectedStafferId }: { selectedStafferId: number | nu
 
             </div>}
 
-            {selectedStafferId && <button
+            {selectedStafferId && (activeFilter !== 'document' || selectedStafferId.toString() === EmployeeId) && <button
                 onClick={() => { safeEmployee() }}
                 className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full">
                 <p className="text-[16px] text-primary">

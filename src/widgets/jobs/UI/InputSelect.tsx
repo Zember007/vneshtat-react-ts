@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import clsx from "clsx";
 import { useClickAway } from "@/shared/hooks/use-click-away";
 import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
-import { staffers } from "@/widgets/employees/utils";
+import { documents, staffers } from "@/widgets/employees/utils";
 
 
 interface InputProps {
@@ -11,7 +11,7 @@ interface InputProps {
     default?: string;
     change: Function;
     icon?: JSX.Element;
-    data:CheckboxItem[] | staffers[];
+    data:CheckboxItem[] | staffers[] | documents[];
     center?:boolean;
     activeId?: number | null;
 }

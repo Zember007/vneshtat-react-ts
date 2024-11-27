@@ -11,6 +11,7 @@ interface InputProps {
     button?: string;
     ClassView?: string;
     ClassCalendar?: string;
+    disabled?:boolean;
 }
 
 
@@ -109,7 +110,7 @@ const InputDate = (props: InputProps) => {
                     )
                 }
             </div>
-            <button onClick={() => {setPosition();setOpen(!open);}}>
+            <button onClick={() => {if(!props.disabled) setPosition();setOpen(!open);}}>
                 <Icon className="w-[20px] h-auto" />
             </button>
         </div>

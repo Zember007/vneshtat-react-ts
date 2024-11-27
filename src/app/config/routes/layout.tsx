@@ -8,6 +8,7 @@ const Train = lazy(() => import("@/pages/train/train"));
 const Flight = lazy(() => import("@/pages/flight/flight"));
 const Bus = lazy(() => import("@/pages/bus/bus"));
 const Promo = lazy(() => import("@/pages/promo/promo"));
+const Profile = lazy(() => import("@/pages/profile/Profile"));
 const Registration = lazy(() => import("@/pages/registration/registration"));
 const RegistrationConfirm = lazy(() => import("@/pages/registration-confirm/registration-confirm"));
 const Login = lazy(() => import("@/pages/login/login"));
@@ -52,6 +53,7 @@ const Layout = () => {
                 <Route path="/messages/all" element={<Messages/>}/>
                 <Route path="/messages" element={<Messages/>}/>
                 <Route path="/promo" element={<Promo/>} />
+                <Route path="/profile" element={<Profile/>} />
                 <Route path="/try" element={<Promo/>} />
                 <Route path="/admin" element={<Admin/>} />
                 <Route path="/sign-in" element={<Login/>} />

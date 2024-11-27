@@ -8,7 +8,7 @@ import InputSelect from '@/widgets/jobs/UI/InputSelect';
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import FilterTravel from "./FilterTravel";
-import { addSectionEmployee, changeSection, delSectionEmployee } from "../../model/index.store";
+import { addSectionEmployee, changeSection, delSectionEmployee, setSectionsInformation } from "../../model/index.store";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import TrashImg from '@/assets/icons/trash.svg?react'
@@ -38,6 +38,61 @@ const FilterSections = ({ selectedSectionId }: { selectedSectionId: number | nul
 
     const employees = Section?.Employees ?? []
 
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const AccessToken = getAccessToken()
+
+    const getInformation = async () => {
+
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_departments_info');
+        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
+        url.searchParams.append('DepartmentId', selectedSectionId?.toString() ?? '');
+
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+
+                console.log(data.data);
+
+                const information: any[] = data.data
+
+                information.forEach(el => {
+
+                    el.Supervisor.content = `${el.Supervisor.Surname} ${el.Supervisor.Name}`
+
+                    const Employees: any[] = el.Employees
+                    if (Employees) {
+                        Employees.forEach(el => {
+                            el.content = `${el.Surname} ${el.Name}`
+                        })
+                    }
+                })
+
+                dispatch(setSectionsInformation(data.data))
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    useEffect(() => {
+        if (!Section) {
+            getInformation()
+        }
+    }, [])
+
     return (
         <>
             <div className="flex gap-[10px]">
@@ -65,7 +120,12 @@ const FilterSections = ({ selectedSectionId }: { selectedSectionId: number | nul
                                 </div>
                                 <span className='mt-[5px] font-medium'>Руководитель отдела</span>
                                 <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
-                                    <InputSelect data={employees} activeId={Section?.Supervisor?.id} change={(id: number) => { if (Section?.Supervisor?.id !== id) dispatch(changeSection({ id: Section?.id, field: 'Supervisor', value: Section?.Employees?.find(item => item.id === id) })) }} />
+                                    <InputSelect data={Section?.Supervisor ? [Section?.Supervisor, ...employees] : employees} activeId={Section?.Supervisor?.id} change={(id: number) => {
+                                        if (Section?.Supervisor?.id !== id) {
+                                            dispatch(changeSection({ id: Section?.id, field: 'Supervisor', value: Section?.Employees?.find(item => item.id === id) }))
+                                            dispatch(delSectionEmployee({ id: selectedSectionId, id_employee: id }))
+                                        }
+                                    }} />
                                 </div>
                                 <span className='mt-[5px] font-medium'>Сотрудники отдела</span>
                                 <div className="flex flex-col gap-[6px]">

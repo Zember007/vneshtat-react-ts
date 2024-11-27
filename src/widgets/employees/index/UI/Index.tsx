@@ -4,15 +4,11 @@ import Switcher from '@/widgets/jobs/UI/Switcher';
 import { StafferCart } from '../../UI';
 import { useState, useEffect } from 'react';
 import { staffers } from '../../utils';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/app/config/store';
-import { getAccessToken } from '@/shared/utils';
-import { setAccessEmployees, setStaffersDocuments, setStaffersInformations } from '../../model/index.store';
 
 
 const Index = ({ select, active }: { select: Function, active: number | null }) => {
-
-    const dispatch = useDispatch();
 
     const Staffers = useSelector((state: RootState) => state.employees.Staffers);
 
@@ -42,111 +38,8 @@ const Index = ({ select, active }: { select: Function, active: number | null }) 
         filterStaffers(Staffers)
     }, [switcher, Staffers])
 
-    const AccessToken = getAccessToken()
     const EmployeeId = localStorage.getItem('EmployeeId')
-    const getInformation = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_personal_information');
-        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
 
-            if (data.status === "success" && data.data) {  
-                const information:any[] = data.data
-                information.forEach(item => {
-                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate ? item.PersonalInfoBirthDate.split('-').reverse().join('-') : null
-
-                    item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
-                })        
-                console.log('information', information);
-                
-                dispatch(setStaffersInformations(information))        
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    }
-
-    const getAccess = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_access');
-        url.searchParams.append('EmployeeId', EmployeeId || '');
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);                
-            }
-
-            if (data.status === "success" && data.data) {
-
-                console.log(data.data);
-                
-                dispatch(setAccessEmployees(data.data))
-                
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    }
-
-    const getDocuments = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_documents');
-        url.searchParams.append('EmployeeId', EmployeeId || '');
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
-
-            if (data.status === "success" && data.data) {
-                console.log(data.data)
-                const information:any[] = data.data
-                // information.forEach(item => {
-                                    
-                // })  
-                dispatch(setStaffersDocuments(information))
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    }
-
-    useEffect(() => {
-        getInformation()
-        getAccess()
-        getDocuments()
-    }, [])
-    
-
-    
 
     return (
         <>

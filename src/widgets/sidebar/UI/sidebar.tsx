@@ -131,7 +131,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                             </div>
                         )}
                     </Link>
-                    <Link to={"/journeys"}
+                    <Link to={"/journeys/all"}
                           onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
@@ -145,7 +145,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                             </div>
                         )}
                     </Link>
-                    <Link to={"/templates"}
+                    <Link to={"/templates/all"}
                           onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
@@ -245,22 +245,18 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                             <p className={"text-[11px] text-primary"}>администратор</p>
                         </span>
                     </div>
-                    <button
-                        onClick={() => {
-                        localStorage.clear();
-                        window.location.replace("/");
-                    }}>
+                    <Link to={'/profile'}>
                         <OptionsImg/>
-                    </button>
+                    </Link>
                 </div>
             ) : (
-                <div className={"w-full min-h-[65px] ultra:min-h-[92px] rounded-[23px] flex justify-center items-center bg-black"}>
+                <Link to={'/profile'} className={"w-full min-h-[65px] ultra:min-h-[92px] rounded-[23px] flex justify-center items-center bg-black"}>
                     <div className={"bg-section h-[39px] w-[39px] ultra:h-[60px] ultra:w-[60px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
                         {fullname.name.length && fullname.surname.length ? (
                             <p className={"text-lg tracking-[-0.1em]"}>{fullname.name[0].toUpperCase()}{fullname.surname[0].toUpperCase()}</p>
                         ) : null}
                     </div>
-                </div>
+                </Link>
             )}
         </div>
     );

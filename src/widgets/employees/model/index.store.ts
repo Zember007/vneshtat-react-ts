@@ -137,7 +137,7 @@ const EmployeesStore = createSlice({
             state.Sections = action.payload
         },
         setSectionsInformation: (state, action) => {
-            state.SectionsInformation = action.payload
+            state.SectionsInformation.push(action.payload[0])
         },
         changeSection: (state, action) => {
             const { field, value, id } = action.payload;
@@ -181,7 +181,7 @@ const EmployeesStore = createSlice({
             state.Sections = state.Sections.filter(item => item.id !== action.payload)
         },
         addSectionEmployee: (state, action) => {
-            
+
             const { id, employee } = action.payload
             const Section = state.Sections.find(item => item.id === id)
             const SectionInformation = state.SectionsInformation.find(item => item.id === id)
@@ -235,15 +235,19 @@ const EmployeesStore = createSlice({
             state.StaffersInformations = action.payload
         },
         setStaffersDocuments: (state, action) => {
-            state.StaffersDocuments = action.payload
+            state.StaffersDocuments.push(action.payload[0])
         },
         changeStaffersDocuments: (state, action) => {
             const { field, value, id, id_document, passenger } = action.payload;
-            const data = passenger ? state.StaffersDocuments  : state.StaffersDocuments
+            const data = passenger ? state.StaffersDocuments : state.StaffersDocuments
             const information = data.find(item => item.EmployeeId === id)?.Documents.find(item => item.id === id_document)
             if (information) {
                 if (field in information) {
                     (information as any)[field] = value;
+
+                    if(!information.New) {
+                        information.Edit = true
+                    }
                 }
             }
         },
@@ -253,7 +257,7 @@ const EmployeesStore = createSlice({
         changeStaffersInformations: (state, action) => {
 
             const { field, value, id, passenger } = action.payload;
-            const data = passenger ? state.PassengersInformations  : state.StaffersInformations
+            const data = passenger ? state.PassengersInformations : state.StaffersInformations
             const information = passenger ? data.find(item => item.id === id) : data.find(item => item.EmployeeId === id)
             if (information) {
                 if (field in information) {
@@ -287,21 +291,21 @@ const EmployeesStore = createSlice({
                 },
                 ...state.Passengers]
 
-                state.PassengersInformations = [
-                    {
-                        id: id,
-                        Name: '',
-                        Surname: '',
-                        MiddleName: '',
-                        IsActive: true
-                    },
-                    ...state.Passengers]
-                
+            state.PassengersInformations = [
+                {
+                    id: id,
+                    Name: '',
+                    Surname: '',
+                    MiddleName: '',
+                    IsActive: true
+                },
+                ...state.Passengers]
+
         },
         setPassengersInformations: (state, action) => {
             state.PassengersInformations = action.payload
         },
-        
+
         setActiveFilter: (state, action) => {
             state.activeFilter = action.payload
         },
@@ -314,7 +318,46 @@ const EmployeesStore = createSlice({
             state.gender = changeCheckbox(state.gender, id, oneChoise);
         },
         setDocument: (state, action) => {
-            state.documents = changeCheckbox(state.documents, action.payload, true);
+            state.documents = changeCheckbox(state.documents, action.payload.id, true);
+            const document = state.documents.find(item => item.id === action.payload.id)
+
+            if (document) {
+                const findStafferDocuments = state.StaffersDocuments.find(item => item.EmployeeId === action.payload.user_id)
+                if (findStafferDocuments) {
+                    findStafferDocuments.Documents = [
+                        {
+                            id: Date.now(),
+                            DocumentType: document.code || '',
+                            Type: '',
+                            Nationality: '',
+                            Species: '',
+                            Number: '',
+                            ValidityDeadline: null,
+                            Surname: '',
+                            Name: '',
+                            MiddleName: '',
+                            DateOfIssue: null,
+                            New: true
+                        },
+                        ...findStafferDocuments.Documents]
+                }
+
+            }
+
+        },
+
+        delDocument: (state, action) => {
+
+            const { id_document, id, passenger } = action.payload;
+
+            if (!passenger) {
+                const data = state.StaffersDocuments.find(item => item.EmployeeId === id)
+                if (data) {
+
+                    data.Documents = data.Documents.filter(item => item.id !== id_document)
+                }
+            }
+
         },
         setCategoryDocument: (state, action) => {
             state.categoryDocuments = changeCheckbox(state.categoryDocuments, action.payload, true);
@@ -343,7 +386,7 @@ const EmployeesStore = createSlice({
             const { id, oneChoise } = action.payload;
             state.tickets = changeCheckbox(state.tickets, id, oneChoise);
         },
-        
+
         changeAccessEmployees: (state, action) => {
             const { field, value, id } = action.payload;
 
@@ -396,6 +439,7 @@ export const {
     setPassengersInformations,
     setCategoryDocument,
     setDocument,
-    changeStaffersDocuments
+    changeStaffersDocuments,
+    delDocument
 } = EmployeesStore.actions
 export default EmployeesStore.reducer;
