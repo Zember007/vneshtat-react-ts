@@ -1,7 +1,7 @@
 import AccessImg from '@/assets/icons/access.svg?react'
 import SuccessBlueImg from '@/assets/icons/success-blue.svg?react'
 
-const AccessCart = () => {
+const AccessCart = ({active}:{active:boolean}) => {
     return (
         <>
             <div className="grow flex flex-col gap-[10px] items-center justify-center">
@@ -13,7 +13,7 @@ const AccessCart = () => {
                     </p>
                 </div>
             </div>
-            <div className="bg-[#ECEEF1] rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]">
+            <div className={`transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px] ${active ? 'bg-primary' : 'bg-[#ECEEF1]'}`}>
                 <SuccessBlueImg />
                 <span className="text-[14px]">Нет изменений</span>
             </div>

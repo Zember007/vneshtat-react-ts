@@ -1,8 +1,8 @@
- import { useState } from "react";
+import { useState } from "react";
 import ImportTeam from "./modals/ImportTeam";
 import { getAccessToken } from "@/shared/utils";
 import { useDispatch } from "react-redux";
-import { addPassengers } from "../../model/index.store";
+import { addPassengers, changeStaffers } from "../../model/index.store";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 
@@ -10,10 +10,13 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
 
     const dispatch = useDispatch();
     const PassengerInformation = useSelector((state: RootState) => state.employees.PassengersInformations).find(item => item.id === selectedPassengerId);
-
+    const activeFilter = useSelector((state: RootState) => state.employees.activeFilter);
     const [importTeam, setImportTeam] = useState<boolean>(false)
     const AccessToken = getAccessToken()
     const EmployeeId = localStorage.getItem('EmployeeId')
+
+    const Documents = useSelector((state: RootState) => state.employees.PassengersDocuments).find(item => item.EmployeeId === selectedPassengerId);
+
     const ExportTeam = async () => {
 
         try {
@@ -79,7 +82,10 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
 
             if (data.status === "success") {
                 console.log(data);
-
+                dispatch(changeStaffers({ field:'Name', value: PassengerInformation?.Name, id: selectedPassengerId, passenger: true }))
+                dispatch(changeStaffers({ field:'Surname', value: PassengerInformation?.Surname, id: selectedPassengerId, passenger: true }))
+                dispatch(changeStaffers({ field:'MiddleName', value: PassengerInformation?.MiddleName, id: selectedPassengerId, passenger: true }))
+                safePersonalInformations(data.data.id)
             }
 
         } catch (error) {
@@ -89,7 +95,7 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
         }
     }
 
-    const safePersonalInformations = async () => {
+    const safePersonalInformations = async (id:number) => {
         const formdata = new FormData();
 
         let url = 'create_passenger_personal_information'
@@ -97,7 +103,7 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
 
 
         formdata.append('EmployeeId', EmployeeId ?? '')
-        formdata.append('PassengerId', selectedPassengerId?.toString() ?? '')
+        formdata.append('PassengerId', id?.toString() ?? '')
 
 
         if (PassengerInformation.Type === 'Update') {
@@ -144,12 +150,116 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
         }
     }
 
+    const safeDocuments = () => {
+
+
+        const Documents_new = Documents?.Documents.filter(item => item.New)
+        const Documents_edit = Documents?.Documents.filter(item => item.Edit)
+
+        if (Documents_new && Documents_new.length > 0) {
+            Documents_new.forEach(async (el) => {
+
+                const formdata = new FormData()
+
+                formdata.append('EmployeeId', EmployeeId || '')
+                formdata.append('DocumentType', el.DocumentType)
+                formdata.append('Number', el.Number)
+                formdata.append('DateOfIssue', el.DateOfIssue || '')
+                formdata.append('MiddleName', el.MiddleName)
+                formdata.append('Nationality', el.Nationality)
+                formdata.append('ValidityDeadline', el.ValidityDeadline || '')
+                formdata.append('Name', el.Name)
+                formdata.append('Surname', el.Surname)
+                formdata.append('Species', el.Species)
+
+
+
+                try {
+                    const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/create_passengers_document', {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${AccessToken}`,
+                        },
+                        body: formdata
+                    });
+                    const data = await res.json();
+                    if (data.status === "error") {
+                        console.log("error", data);
+                    }
+
+                    if (data.status === "success") {
+                        console.log(data);
+
+                    }
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            })
+        }
+
+        if (Documents_edit && Documents_edit.length > 0) {
+            Documents_edit.forEach(async (el) => {
+
+                const formdata = new FormData()
+
+                formdata.append('EmployeeId', EmployeeId || '')
+                formdata.append('DocumentType', el.DocumentType)
+                formdata.append('DocumentId', el.id?.toString() || '')
+                formdata.append('Type', el.Type)
+                formdata.append('Number', el.Number)
+                formdata.append('DateOfIssue', el.DateOfIssue || '')
+                formdata.append('MiddleName', el.MiddleName)
+                formdata.append('Nationality', el.Nationality)
+                formdata.append('ValidityDeadline', el.ValidityDeadline || '')
+                formdata.append('Name', el.Name)
+                formdata.append('Surname', el.Surname)
+                formdata.append('Species', el.Species)
+
+
+
+                try {
+                    const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/edit_passengers_document', {
+                        method: "PATCH",
+                        headers: {
+                            Authorization: `Bearer ${AccessToken}`,
+                        },
+                        body: formdata
+                    });
+                    const data = await res.json();
+                    if (data.status === "error") {
+                        console.log("error", data);
+                    }
+
+                    if (data.status === "success") {
+                        console.log(data);
+
+                    }
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            })
+        }
+
+    }
+
 
     const safePassenger = () => {
-        if (PassengerInformation.Type === 'Create') {
-            Create()
-        } else {
-            safePersonalInformations()
+        if (activeFilter === 'user') {
+            if (PassengerInformation.Type === 'New') {
+                Create()
+            } else {
+                safePersonalInformations(selectedPassengerId || 0)
+            }
+        }
+
+        if (activeFilter === 'document') {
+            safeDocuments()
         }
 
     }
@@ -177,7 +287,7 @@ const PassengersNavigation = ({ selectedPassengerId, select }: { selectedPasseng
             </div>}
 
             {selectedPassengerId && <button
-                onClick={() => {safePassenger()}}
+                onClick={() => { safePassenger() }}
                 className="py-[13px] text-center rounded-[18px] bg-[#292933] w-full">
                 <p className="text-[16px] text-primary">
                     Сохранить

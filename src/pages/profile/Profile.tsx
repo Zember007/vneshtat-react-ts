@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { SecurityCart, SecurityFilter } from "@/widgets/profile/security";
 import { StatisticsCart, StatisticsFilter } from "@/widgets/profile/statistics";
-import { AccessCart } from "@/widgets/profile/access";
+import { AccessCart, AccessFilter } from "@/widgets/profile/access";
 import { PersonalCart, PersonalFilter } from "@/widgets/profile/personal";
 import { CompanyChoose } from "@/widgets/company";
 
@@ -68,7 +68,7 @@ const Profile = () => {
                             onClick={() => {ResetFilter(); setAccessView(true)}}
                             className={`cursor-pointer rounded-[26px] transition-all duration-300 ${accessView ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col`}>
 
-                                <AccessCart  />
+                                <AccessCart  active={accessView}/>
 
                             </div>
                             <div className={`rounded-[26px] transition-all duration-300 ${personalView ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col`}>
@@ -86,6 +86,7 @@ const Profile = () => {
                                 {staticsticsView && <StatisticsFilter close={() => { ResetFilter(); setInformationView(false) }} />}
                                 {securityView && <SecurityFilter close={() => { ResetFilter(); setInformationView(false) }} />}
                                 {personalView && <PersonalFilter close={() => { ResetFilter(); setInformationView(false) }} />}
+                                {accessView && <AccessFilter close={() => { ResetFilter(); setInformationView(false) }} />}
                             </div>
                         }
                     </>

@@ -1,18 +1,17 @@
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/app/config/store";
-import {Input, Switch} from "@/shared/UI";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/config/store";
+import { Input, Switch } from "@/shared/UI";
 import LogoIdImg from "@/assets/icons/logo-id.svg?react";
-import AlphaImg from "@/assets/icons/alpha.svg?react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import ArrowImg from "@/assets/icons/arrow-long.svg?react";
-import {FormEvent, useRef, useState} from "react";
-import {updateLoginState, updateRestoreState} from "../model/login.store";
-import {getDeviceAndBrowserInfo, setAccessToken, setRefreshToken} from "@/shared/utils";
-import {useNavigate} from "react-router-dom";
-import {setCompanies, setUser} from "@/app/model/user.store";
-import {getUser, getUserCompanies} from "@/shared/utils/methods";
+import { FormEvent, useRef, useState } from "react";
+import { updateLoginState, updateRestoreState } from "../model/login.store";
+import { getDeviceAndBrowserInfo, setAccessToken, setRefreshToken } from "@/shared/utils";
+import { useNavigate } from "react-router-dom";
+import { setCompanies, setUser } from "@/app/model/user.store";
+import { getUser, getUserCompanies } from "@/shared/utils/methods";
 import ReCAPTCHA from "react-google-recaptcha";
-import {useTimer} from "@/shared/hooks/use-timer";
+import { useTimer } from "@/shared/hooks/use-timer";
 
 const LoginUser = () => {
     const {
@@ -34,7 +33,7 @@ const LoginUser = () => {
         isSubmitted,
         isLoginReady: isRestoreLoginReady,
     } = useSelector((state: RootState) => state.login.restore);
-    const {companies} = useSelector((state: RootState) => state.user)
+    const { companies } = useSelector((state: RootState) => state.user)
     const [isLoginClicked, setIsLoginClicked] = useState(false);
     const [phoneStatus, setPhoneStatus] = useState<"error" | "success" | null>(null);
     const [loginStatus, setLoginStatus] = useState<"error" | "success" | null>(null);
@@ -51,7 +50,7 @@ const LoginUser = () => {
         const formdata = new FormData();
         formdata.append("Username", login);
         formdata.append("Password", password);
-        const {browserName, deviceName} = getDeviceAndBrowserInfo();
+        const { browserName, deviceName } = getDeviceAndBrowserInfo();
         formdata.append("DeviceName", deviceName);
         formdata.append("Browser", browserName);
 
@@ -91,7 +90,7 @@ const LoginUser = () => {
         const formdata = new FormData();
         if (smsToken) formdata.append("Token", smsToken);
         formdata.append("SMSCode", sms);
-        const {browserName, deviceName} = getDeviceAndBrowserInfo();
+        const { browserName, deviceName } = getDeviceAndBrowserInfo();
         formdata.append("DeviceName", deviceName);
         formdata.append("Browser", browserName);
 
@@ -153,13 +152,13 @@ const LoginUser = () => {
         });
         const url = `${import.meta.env.VITE_API_URL}/auth/sign_up/check_vneshtat_id_credentials_available?${queryParams.toString()}`;
         const res = await fetch(url);
-        const {data} = await res.json();
+        const { data } = await res.json();
         return data ? "error" : "success";
     }
 
     const handleInputChange = async (field: string, value: string) => {
         const upperField = field === "phone" ? "PhoneNumber" : field === "login" ? "Username" : "";
-        dispatch(updateLoginState({field, value} as any));
+        dispatch(updateLoginState({ field, value } as any));
 
         if (field === "phone" && value.length !== 12) return;
 
@@ -189,18 +188,20 @@ const LoginUser = () => {
                     <h1 className={"text-[30px] text-center"}>В какую компанию войти?</h1>
                     <form className={"flex items-center justify-center w-full gap-4 relative"} autoComplete={"on"}>
                         <button className={"absolute right-[calc(100%+14px)] top-2.5"}
-                                onClick={() => setIsLoginClicked(false)}>
-                            <ArrowImg/>
+                            onClick={() => setIsLoginClicked(false)}>
+                            <ArrowImg />
                         </button>
                         {companies?.map((item) => (
                             <div className={"bg-primary p-6 rounded-[35px] w-[320px]"} key={item.EmployeeId}>
-                                <div className={"flex justify-center items-center"}>
-                                    <AlphaImg/>
+                                <div className="w-[95px] h-[95px] flex items-center justify-center rounded-[50%] border border-solid border-[#E5E7EA]">
+                                    <span className="font-medium text-[54px] text-[#9B9FAD]">
+                                        {item.CompanyName.split(' ')[0][0]}
+                                    </span>
                                 </div>
                                 <div
                                     className={"flex items-center justify-between pl-6 py-4 pr-4 mt-5 h-[50px] rounded-[16px] border border-solid border-[#E5E7EA]"}>
                                     <h2 className={"text-lg text-[#9B9FAD]"}>{item.CompanyName}</h2>
-                                    <SuccessImg className={"min-w-6 min-h-6 blue-fill"}/>
+                                    <SuccessImg className={"min-w-6 min-h-6 blue-fill"} />
                                 </div>
                                 <button
                                     className={"w-full flex justify-center items-center py-3 mt-2.5 h-[50px] rounded-primary bg-[#292933]"}
@@ -231,11 +232,11 @@ const LoginUser = () => {
                                 {isSubmitted ? (
                                     <>
                                         <button className={"absolute -left-12 top-6"}
-                                                onClick={() => dispatch(updateRestoreState({
-                                                    field: "isSubmitted",
-                                                    value: false
-                                                }))}>
-                                            <ArrowImg/>
+                                            onClick={() => dispatch(updateRestoreState({
+                                                field: "isSubmitted",
+                                                value: false
+                                            }))}>
+                                            <ArrowImg />
                                         </button>
                                         <Input
                                             extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] text-blue !bg-primary first-letter-black`}
@@ -263,18 +264,18 @@ const LoginUser = () => {
                                             }))}
                                         />
                                         <div className={"flex flex-col items-center my-1"}>
-                                        <span className={"flex items-center gap-2 w-[190px]"}>
-                                            <p className={`text-xs font-medium text-[#787B86] ${restorePassword && "text-blue"}`}>6+</p>
-                                            <p className={"text-xs text-[#787B86]"}>Не менее 6 символов</p>
-                                        </span>
                                             <span className={"flex items-center gap-2 w-[190px]"}>
-                                            <p className={`text-xs font-medium text-[#787B86] ${restorePassword && "text-blue"}`}>Ff</p>
-                                            <p className={"text-xs text-[#787B86]"}>Строчные и прописные буквы</p>
-                                        </span>
+                                                <p className={`text-xs font-medium text-[#787B86] ${restorePassword && "text-blue"}`}>6+</p>
+                                                <p className={"text-xs text-[#787B86]"}>Не менее 6 символов</p>
+                                            </span>
                                             <span className={"flex items-center gap-2 w-[190px]"}>
-                                             <p className={`text-xs font-medium text-[#787B86] ${restorePassword && "text-blue"}`}>1#!</p>
-                                             <p className={"text-xs text-[#787B86]"}>Цифры и другие символы</p>
-                                        </span>
+                                                <p className={`text-xs font-medium text-[#787B86] ${restorePassword && "text-blue"}`}>Ff</p>
+                                                <p className={"text-xs text-[#787B86]"}>Строчные и прописные буквы</p>
+                                            </span>
+                                            <span className={"flex items-center gap-2 w-[190px]"}>
+                                                <p className={`text-xs font-medium text-[#787B86] ${restorePassword && "text-blue"}`}>1#!</p>
+                                                <p className={"text-xs text-[#787B86]"}>Цифры и другие символы</p>
+                                            </span>
                                         </div>
                                         <button
                                             className={"transition w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
@@ -292,11 +293,11 @@ const LoginUser = () => {
                                 ) : (
                                     <>
                                         <button className={"absolute -left-12 top-6"}
-                                                onClick={() => dispatch(updateLoginState({
-                                                    field: "isRestore",
-                                                    value: false
-                                                }))}>
-                                            <ArrowImg/>
+                                            onClick={() => dispatch(updateLoginState({
+                                                field: "isRestore",
+                                                value: false
+                                            }))}>
+                                            <ArrowImg />
                                         </button>
                                         <Switch
                                             extraClass={"w-full h-[50px] !bg-[#FAFAFA] border border-solid border-[#E5E7EA]"}
@@ -422,10 +423,10 @@ const LoginUser = () => {
                     ) : (
                         <div className={"flex flex-col bg-primary gap-5 p-6 rounded-[35px] relative"}>
                             <div className={"flex justify-center"}>
-                                <LogoIdImg/>
+                                <LogoIdImg />
                             </div>
                             <form className={"flex flex-col"} autoComplete={"on"}
-                                  onSubmit={!withPhone ? sendSMScode : handleLogin}>
+                                onSubmit={!withPhone ? sendSMScode : handleLogin}>
                                 <Switch
                                     extraClass={"w-full h-[50px] !bg-[#FAFAFA] border border-solid border-[#E5E7EA]"}
                                     extraChildClass={"py-2.5 h-full w-[50%]"}
@@ -470,18 +471,18 @@ const LoginUser = () => {
                                                 таким
                                                 ID не найдено</p>
                                         ) : <div className={"flex flex-col mt-2.5 items-center my-1"}>
-                                        <span className={"flex items-center gap-2 w-[190px]"}>
-                                            <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>6+</p>
-                                            <p className={"text-xs text-[#787B86]"}>Не менее 6 символов</p>
-                                        </span>
                                             <span className={"flex items-center gap-2 w-[190px]"}>
-                                            <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>Ff</p>
-                                            <p className={"text-xs text-[#787B86]"}>Строчные и прописные буквы</p>
-                                        </span>
+                                                <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>6+</p>
+                                                <p className={"text-xs text-[#787B86]"}>Не менее 6 символов</p>
+                                            </span>
                                             <span className={"flex items-center gap-2 w-[190px]"}>
-                                             <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>1#!</p>
-                                             <p className={"text-xs text-[#787B86]"}>Цифры и другие символы</p>
-                                        </span>
+                                                <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>Ff</p>
+                                                <p className={"text-xs text-[#787B86]"}>Строчные и прописные буквы</p>
+                                            </span>
+                                            <span className={"flex items-center gap-2 w-[190px]"}>
+                                                <p className={`text-xs font-medium text-[#787B86] ${password && "text-blue"}`}>1#!</p>
+                                                <p className={"text-xs text-[#787B86]"}>Цифры и другие символы</p>
+                                            </span>
                                         </div>
                                         }
                                         <button
@@ -571,4 +572,4 @@ const LoginUser = () => {
     )
 };
 
-export {LoginUser};
+export { LoginUser };

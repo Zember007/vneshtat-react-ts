@@ -51,7 +51,9 @@ const FilterAccess = ({ selectId }: { selectId: number | null }) => {
     }
 
     useEffect(() => {
-        getAccess()
+        if(!AccessStaffer) {
+            getAccess()
+        }
     },[selectId])
 
     return (

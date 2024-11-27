@@ -9,7 +9,7 @@ import { getAccessToken } from '@/shared/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/config/store';
 import { groups } from '../../utils';
-import { changeGroup, setGroups, setGroupsInformation } from '../../model/index.store';
+import { changeGroup, setGroups } from '../../model/index.store';
 
 
 
@@ -78,85 +78,10 @@ const Groups = ({ select, active }: { select: Function, active: number | null })
 
     }
 
-    // const deleteSection = async (id: number) => {
-        
-
-    //     const formdata = new FormData();
-
-    //     formdata.append('EmployeeId', EmployeeId ?? '')
-    //     formdata.append('DepartmentId', id.toString())
-
-    //     try {
-    //         const res = await fetch(import.meta.env.VITE_API_URL + '/company/employees_profile/delete_employees_profile_department', {
-    //             method: "DELETE",
-    //             headers: {
-    //                 Authorization: `Bearer ${AccessToken}`
-    //             },
-    //             body: formdata
-    //         });
-    //         const data = await res.json();
-    //         if (data.status === "error") {
-    //             console.log("error", data);
-    //         }
-
-    //         if (data.status === "success") {
-    //             console.log(data);
-    //             dispatch(delSection(id))
-    //         }
-
-    //     } catch (error) {
-
-    //         console.log(error);
-
-    //     }
-    // }
-
-    const getInformation = async () => {
-
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_group_info');
-        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
-
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
-
-            if (data.status === "success" && data.data) {
-
-                console.log(data.data);
-
-                const information: any[] = data.data
-
-                information.forEach(el => {
-
-                    el.Supervisor.content = `${el.Supervisor.Surname} ${el.Supervisor.Name}`
-
-                    const Passengers: any[] = el.Passengers
-                    Passengers.forEach(el => {
-                        el.content = `${el.Surname} ${el.Name}`
-                    })
-                })
-
-                dispatch(setGroupsInformation(data.data))
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    }
+    
 
     useEffect(() => {
         getGroups()
-        getInformation()
     }, [])
 
     const ArchiveMove = async (id: number, active?: boolean) => {

@@ -5,7 +5,7 @@ import TrashImg from "@/assets/icons/trash.svg?react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import InputSelect from "@/widgets/jobs/UI/InputSelect";
-import { changeStaffersDocuments, delDocument, setCategoryDocument, setDocument, setStaffersDocuments } from "../../model/index.store";
+import { changeStaffersDocuments, delDocument, setCategoryDocument, setDocument, setPassengersDocuments, setStaffersDocuments } from "../../model/index.store";
 import InputDate from "@/widgets/jobs/UI/InputDate";
 import { getNameDocument } from "../../utils";
 import { getAccessToken } from "@/shared/utils";
@@ -21,11 +21,12 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
     const categorySelect = categoryDocuments.find(item => item.isSelected);
     const documentsAdds = useSelector((state: RootState) => state.employees.documents).filter(item => item.category === categorySelect?.code);
 
+    const documents_user = passenger ? useSelector((state: RootState) => state.employees.PassengersDocuments) : useSelector((state: RootState) => state.employees.StaffersDocuments)
 
-    const documents = useSelector((state: RootState) => state.employees.StaffersDocuments).find(item => item.EmployeeId === selectId)?.Documents;
+    const documents = documents_user.find(item => item.EmployeeId === selectId)?.Documents;
 
     const documents_rf = documents?.find(item => item.Type === 'documents_rf')
-    const international_document  = documents?.find(item => item.Type === 'international_document')
+    const international_document = documents?.find(item => item.Type === 'international_document')
 
     const AccessToken = getAccessToken()
     const EmployeeId = localStorage.getItem('EmployeeId')
@@ -33,9 +34,10 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
 
 
     const getDocuments = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_documents');
+        const url = passenger ? new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_documents') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_documents');
+        const user = passenger ? 'PassengerId' : 'EmployeesId'
         url.searchParams.append('EmployeeId', EmployeeId || '');
-        url.searchParams.append('EmployeesId', selectId?.toString() || '');
+        url.searchParams.append(user, selectId?.toString() || '');
         try {
             const res = await fetch(url, {
                 method: "GET",
@@ -54,8 +56,48 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
                 documents.forEach(el => {
                     el.content = getNameDocument(el.DocumentType)
                 })
-                dispatch(setStaffersDocuments(information))
+                if (passenger) {
+                    dispatch(setPassengersDocuments(information))
+                } else {
+                    dispatch(setStaffersDocuments(information))
+                }
                 console.log(information)
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    const delDocuments = async (id: number) => {
+        const url = passenger ? new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/revoke_passenger_documents') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/revoke_employees_profile_documents');
+
+        const formdata = new FormData()
+
+        formdata.append('EmployeeId', EmployeeId || '')
+        formdata.append('DocumentId', id.toString())
+
+        if (passenger) {
+            formdata.append('PassengerId', selectId?.toString() || '')
+        }
+
+        try {
+            const res = await fetch(url, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                dispatch(delDocument({ id_document: id, id: selectId, passenger: passenger }))
             }
         } catch (error) {
 
@@ -91,33 +133,27 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
                             dispatch(setCategoryDocument(id))
                         }} center={true} default="Категория документа" />
                         <InputSelect data={documentsAdds} change={(id: number) => {
-                            dispatch(setDocument({ id: id, user_id: selectId }))
+                            dispatch(setDocument({ id: id, user_id: selectId,passenger: passenger }))
                             setDocumentAdd(false)
                         }} center={true} default="Документ" />
                     </div>
                 }
-                {/* <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
-                    <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
-                        <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Паспорт РФ</span>
-                        <input value={'5017 574839'} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
-                    </div>
-                </div> */}
                 {documents?.map(item => (
                     <div className="rounded-[23px] flex flex-col gap-[6px] p-[13px] bg-[#ECEEF1]">
                         <div className="flex items-center justify-between pb-[4px]">
                             <span className="font-medium text-[14px]">
                                 {getNameDocument(item.DocumentType)}
                             </span>
-                            <button
+                           {(selectId == EmployeeId || passenger) && <button
                                 onClick={() => {
                                     if (item.New) {
-                                        dispatch(delDocument({ id_document: item.id, id: selectId, passenger: false }))
+                                        dispatch(delDocument({ id_document: item.id, id: selectId, passenger: passenger }))
                                     } else {
-
+                                        delDocuments(item.id || 0)
                                     }
                                 }}>
                                 <TrashImg />
-                            </button>
+                            </button>}
                         </div>
                         {(item.DocumentType === 'residence_permit' || item.DocumentType === 'service_passport' || item.DocumentType === 'diplomatic_passport') && <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Гражданство</span>
@@ -159,21 +195,21 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
                         {(item.DocumentType === 'birth_certificate' || item.DocumentType === 'medical_birth_certificate') && <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Дата выдачи</span>
                             <InputDate
-                            disabled={selectId != EmployeeId}
-                            value={item.ValidityDeadline ? new Date(item.ValidityDeadline) : null} ClassCalendar="!w-[260px] translate-x-[23px]" change={(date: Date) => {
-                                const data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-                                dispatch(changeStaffersDocuments({ id_document: item.id, passenger: passenger, id: selectId, field: 'ValidityDeadline', value: data }))
-                            }} />
+                                disabled={selectId != EmployeeId}
+                                value={item.ValidityDeadline ? new Date(item.ValidityDeadline) : null} ClassCalendar="!w-[260px] translate-x-[23px]" change={(date: Date) => {
+                                    const data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+                                    dispatch(changeStaffersDocuments({ id_document: item.id, passenger: passenger, id: selectId, field: 'ValidityDeadline', value: data }))
+                                }} />
                         </div>}
 
                         {(item.DocumentType === 'transpartncy_rf' || item.DocumentType === 'foreign_passport' || item.DocumentType === 'seafarers_id_card' || item.DocumentType === 'servicemans_id_card') && <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Срок действия</span>
                             <InputDate
-                            disabled={selectId != EmployeeId}
-                            value={item.DateOfIssue ? new Date(item.DateOfIssue) : null} ClassCalendar="!w-[260px] translate-x-[23px]" change={(date: Date) => {
-                                const data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-                                dispatch(changeStaffersDocuments({ id_document: item.id, passenger: passenger, id: selectId, field: 'DateOfIssue', value: data }))
-                            }} />
+                                disabled={selectId != EmployeeId}
+                                value={item.DateOfIssue ? new Date(item.DateOfIssue) : null} ClassCalendar="!w-[260px] translate-x-[23px]" change={(date: Date) => {
+                                    const data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+                                    dispatch(changeStaffersDocuments({ id_document: item.id, passenger: passenger, id: selectId, field: 'DateOfIssue', value: data }))
+                                }} />
                         </div>}
                         {(item.DocumentType === 'transpartncy_rf' || item.DocumentType === 'foreign_passport') && <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                             <span className=" text-[12px] font-medium text-[#9B9FAD] whitespace-nowrap">Фамилия (лат.)</span>

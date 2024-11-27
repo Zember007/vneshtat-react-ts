@@ -75,7 +75,7 @@ const FilterPeriod = () => {
     }, [])
 
     return (
-        <div className="grow flex flex-col justify-between gap-[10px]">
+        <div className="grow h-full flex flex-col justify-between gap-[10px]">
             <div className="flex flex-col gap-[10px]">
                 {Periods.map(item => (
                     <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">

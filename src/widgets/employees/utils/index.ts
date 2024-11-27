@@ -42,8 +42,9 @@ export interface access_staffers {
 }
 
 export interface documents_staffers {   
-    EmployeeId: number,
-    Documents: documents[]
+    EmployeeId?: number,
+    Passengerid?: number,
+    Documents: documents[] 
 }
 
 export interface documents {

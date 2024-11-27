@@ -23,6 +23,7 @@ export interface FlightState {
     StaffersDocuments: documents_staffers[];
     Passengers: staffers[];
     PassengersInformations: any[];
+    PassengersDocuments: documents_staffers[];
     Periods: periods[];
     Sections: sections[];
     SectionsInformation: sections[];
@@ -50,6 +51,7 @@ const initialState: FlightState = {
     StaffersDocuments: [],
     Passengers: [],
     PassengersInformations: [],
+    PassengersDocuments: [],
     Sections: [],
     SectionsInformation: [],
     Groups: [],
@@ -65,7 +67,7 @@ const EmployeesStore = createSlice({
             state.Groups = action.payload
         },
         setGroupsInformation: (state, action) => {
-            state.GroupsInformation = action.payload
+            state.GroupsInformation.push(action.payload[0])
         },
         changeGroup: (state, action) => {
             const { field, value, id } = action.payload;
@@ -237,9 +239,12 @@ const EmployeesStore = createSlice({
         setStaffersDocuments: (state, action) => {
             state.StaffersDocuments.push(action.payload[0])
         },
+        setPassengersDocuments: (state, action) => {
+            state.PassengersDocuments.push(action.payload[0])
+        },
         changeStaffersDocuments: (state, action) => {
             const { field, value, id, id_document, passenger } = action.payload;
-            const data = passenger ? state.StaffersDocuments : state.StaffersDocuments
+            const data = passenger ? state.PassengersDocuments : state.StaffersDocuments
             const information = data.find(item => item.EmployeeId === id)?.Documents.find(item => item.id === id_document)
             if (information) {
                 if (field in information) {
@@ -252,7 +257,7 @@ const EmployeesStore = createSlice({
             }
         },
         setAccessEmployees: (state, action) => {
-            state.StaffersAccess = action.payload
+            state.StaffersAccess.push(action.payload[0])
         },
         changeStaffersInformations: (state, action) => {
 
@@ -297,9 +302,17 @@ const EmployeesStore = createSlice({
                     Name: '',
                     Surname: '',
                     MiddleName: '',
-                    IsActive: true
+                    IsActive: true,
+                    Type: 'New',
+                    PersonalInfoBirthDate: '',
+                    PersonalInfoGender: 'male',
+                    PersonalInfoName: '',
+                    PersonalInfoNationality: '',
+                    PersonalInfoSurname: '',
+
                 },
                 ...state.Passengers]
+
 
         },
         setPassengersInformations: (state, action) => {
@@ -322,7 +335,8 @@ const EmployeesStore = createSlice({
             const document = state.documents.find(item => item.id === action.payload.id)
 
             if (document) {
-                const findStafferDocuments = state.StaffersDocuments.find(item => item.EmployeeId === action.payload.user_id)
+              
+                const findStafferDocuments =  action.payload.passenger ? state.PassengersDocuments.find(item => item.Passengerid === action.payload.user_id) : state.StaffersDocuments.find(item => item.EmployeeId === action.payload.user_id)
                 if (findStafferDocuments) {
                     findStafferDocuments.Documents = [
                         {
@@ -430,6 +444,7 @@ export const {
     setActiveFilter,
     changeStaffersInformations,
     setStaffersDocuments,
+    setPassengersDocuments,
     setStaffersInformations,
     setGender,
     setStaffers,

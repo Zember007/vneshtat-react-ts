@@ -8,14 +8,14 @@ import InputSelect from '@/widgets/jobs/UI/InputSelect';
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import FilterTravel from "./FilterTravel";
-import { addGroupEmployee, changeGroup, delGroupEmployee } from "../../model/index.store";
+import { addGroupEmployee, changeGroup, delGroupEmployee, setGroupsInformation } from "../../model/index.store";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import TrashImg from '@/assets/icons/trash.svg?react'
 import PlusImg from '@/assets/icons/plus.svg?react'
 import { getAccessToken } from "@/shared/utils";
 
-const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) => { 
+const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) => {
 
     const dispatch = useDispatch();
 
@@ -35,7 +35,59 @@ const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) =
     const [activeFilter, setActiveFilter] = useState<string>('user')
     const [employeeAdd, setEmployeeAdd] = useState<boolean>(false)
 
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const AccessToken = getAccessToken()
 
+
+    const getInformation = async () => {
+
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_group_info');
+        url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
+        url.searchParams.append('GroupId', selectedGroupId?.toString() ?? '');
+
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+
+                console.log(data.data);
+
+                const information: any[] = data.data
+
+                information.forEach(el => {
+
+                    el.Supervisor.content = `${el.Supervisor.Surname} ${el.Supervisor.Name}`
+
+                    const Passengers: any[] = el.Passengers
+                    Passengers.forEach(el => {
+                        el.content = `${el.Surname} ${el.Name}`
+                    })
+                })
+
+                dispatch(setGroupsInformation(data.data))
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    useEffect(() => {
+        if (!Group) {
+            getInformation()
+        }
+    }, [])
 
 
     return (
@@ -59,7 +111,7 @@ const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) =
                                 <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
                                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                                         <input value={Group?.Name ?? ''} placeholder='Название отдела'
-                                            onInput={(e) => { dispatch(changeGroup({id: Group?.id, field: 'Name', value: e.currentTarget.value})) }}
+                                            onInput={(e) => { dispatch(changeGroup({ id: Group?.id, field: 'Name', value: e.currentTarget.value })) }}
                                             type="text" className="w-full bg-[transparent] text-[12px] font-medium" />
                                     </div>
                                 </div>
@@ -68,7 +120,7 @@ const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) =
                                     <InputSelect data={Group?.Passengers && Group?.Supervisor ? [
                                         Group?.Supervisor,
                                         ...Group?.Passengers
-                                    ]  : []} activeId={Group?.Supervisor?.id} change={(id: number) => {if(Group?.Supervisor?.id !== id) dispatch(changeGroup({ id: Group?.id, field: 'Supervisor', value: Group?.Passengers?.find(item => item.id === id)}))}} />
+                                    ] : []} activeId={Group?.Supervisor?.id} change={(id: number) => { if (Group?.Supervisor?.id !== id) dispatch(changeGroup({ id: Group?.id, field: 'Supervisor', value: Group?.Passengers?.find(item => item.id === id) })) }} />
                                 </div>
                                 <span className='mt-[5px] font-medium'>Сотрудники отдела</span>
                                 <div className="flex flex-col gap-[6px]">
@@ -263,7 +315,7 @@ const CartEmployee = (props: props) => {
                         <button
                             onClick={() => {
                                 dispatch(addGroupEmployee({
-                                    id: props.departamentId, 
+                                    id: props.departamentId,
                                     employee: {
                                         id: item.id,
                                         Surname: item.Surname,
@@ -273,7 +325,7 @@ const CartEmployee = (props: props) => {
                                         content: `${item.Surname} ${item.Name}`
                                     }
                                 }))
-                                
+
 
                                 if (props.add) props.add(true)
                             }}
