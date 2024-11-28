@@ -1,6 +1,7 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import EraserImg from "@/assets/icons/eraser.svg?react";
 import ArrowImg from "@/assets/icons/arrow-top.svg?react";
+import { useClickAway } from "@/shared/hooks/use-click-away";
 
 interface DropdownProps {
     isChanged?: boolean,
@@ -18,10 +19,15 @@ const Dropdown = ({
 }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
+    const box = useRef<HTMLDivElement | null>(null)
+
+    useClickAway(box, () => { setIsOpen(false) })
+
     return (
         <div
-            className={` p-3 rounded-[18px] bg-secondary flex flex-col justify-center cursor-pointer ${extraClass}`}>
-            <div className="flex flex-row justify-between items-center" onClick={() => setIsOpen((prev) => !prev)}>
+            ref={box}
+            className={`  rounded-[18px] bg-secondary flex flex-col justify-center cursor-pointer `}>
+            <div className={`p-3 flex flex-row justify-between items-center ${extraClass}`} onClick={() => setIsOpen((prev) => !prev)}>
                 <div
                     className="flex flex-row items-center gap-1 relative"
                     onClick={() => setIsOpen((prev) => !prev)}
@@ -71,7 +77,7 @@ const Dropdown = ({
                 </div>
             ) : (
                 <div
-                    className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isOpen ? "max-h-screen mt-2.5" : "max-h-0 mt-0"}`}
+                    className={`px-3 transition-max-height duration-300 ease-in-out overflow-hidden ${isOpen ? "max-h-screen my-2.5" : "max-h-0 my-0"}`}
                 >
                     {children}
                 </div>

@@ -1,5 +1,6 @@
 import FlightImg from '@/assets/icons/fligt/flight-avialogo.svg?react'
 import RouteImg from '@/assets/icons/route.svg?react'
+import TrashImg from '@/assets/icons/trash.svg?react'
 import CloseImg from '@/assets/icons/close.svg?react'
 import FilterImg from '@/assets/icons/filter.svg?react'
 import { Services } from '../utils';
@@ -22,6 +23,12 @@ const TemplateCartService = ({ data, select, clear, active }: { data: Services, 
                 >
                     <RoutePlusImg />
                 </button>
+                {clear && <button
+                    className="w-[35px] h-[35px] rounded-[11px] bg-[#ECEEF1] flex items-center justify-center"
+                    onClick={() => {clear('type')}}
+                >
+                    <TrashImg className='*:fill-[#FF64A3] *:stroke-[#FF64A3] w-[19px] h-[19px]'/>
+                </button>}
             </div>
             <div className="grid grid-cols-[1fr_1fr_220px] gap-[10px] grow *:leading-[1.2]">
                 <div className={`rounded-[23px] bg-[#ECEEF1] p-[15px] flex items-center min-h-[97px] relative ${active === 'type' && '!bg-[#DCE0E5]'}`}>
@@ -44,7 +51,7 @@ const TemplateCartService = ({ data, select, clear, active }: { data: Services, 
                         <div className="flex gap-[10px] justify-between">
                             <p className='text-[#787B86] text-[14px]'>Самолёт, поезд, автобус или отель</p>
 
-                            <button onClick={() => select('type')} className='py-[7.5px] px-[22px] rounded-[10px] bg-primary'>
+                            <button onClick={() => select('type')} className={`transition-all duration-300 hover:bg-[#F5F5F5] py-[7.5px] px-[22px] rounded-[10px] bg-primary`}>
                                 <p className='text-[#007BFB] text-[14px]'>Выбрать</p>
                             </button>
 
@@ -61,7 +68,7 @@ const TemplateCartService = ({ data, select, clear, active }: { data: Services, 
                     {(!data.team && select) ? <div className="flex gap-[10px] justify-between mt-[5px]">
                         <p className='text-[#787B86] text-[14px]'>Если это шаблон для конкретных сотрудников</p>
                         {(data.route.class || data.city) &&
-                            <button onClick={() => select('team')} className='py-[7.5px] px-[22px] rounded-[10px] bg-primary'>
+                            <button onClick={() => select('team')} className={`hover:*:bg-[#F5F5F5] py-[7.5px] px-[22px] rounded-[10px] bg-primary`}>
                                 <p className='text-[#007BFB] text-[14px]'>Выбрать</p>
                             </button>
                         }
@@ -140,7 +147,7 @@ const TemplateCartService = ({ data, select, clear, active }: { data: Services, 
 
                         <p className='text-[#787B86] text-[14px]'>Населённые пункты</p>
                         {data.type &&
-                            <button onClick={() => select('route')} className='py-[7.5px] px-[22px] rounded-[10px] bg-primary'>
+                            <button onClick={() => select('route')} className={`hover:*:bg-[#F5F5F5] py-[7.5px] px-[22px] rounded-[10px] bg-primary`}>
                                 <p className='text-[#007BFB] text-[14px]'>Выбрать</p>
                             </button>
                         }
@@ -173,7 +180,7 @@ const TemplateCartService = ({ data, select, clear, active }: { data: Services, 
                     {(!data.filters && select) ? <div className="flex gap-[10px] justify-between mt-[5px]">
                         <p className='text-[#787B86] text-[14px]'>Если это шаблон для конкретных сотрудников</p>
                         {data.team &&
-                            <button onClick={() => select('filters')} className='py-[7.5px] px-[22px] rounded-[10px] bg-primary'>
+                            <button onClick={() => select('filters')} className={`hover:*:bg-[#F5F5F5] py-[7.5px] px-[22px] rounded-[10px] bg-primary`}>
                                 <p className='text-[#007BFB] text-[14px]'>Выбрать</p>
                             </button>
                         }

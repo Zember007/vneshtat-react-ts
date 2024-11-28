@@ -2,13 +2,49 @@ import clsx from "clsx";
 import Fix from "./Fix";
 import Procent from "./Procent";
 import Elite from "./Elite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseIcon from '@/assets/icons/close.svg?react'
 import { Link } from "react-router-dom";
+import { getAccessToken } from "@/shared/utils";
 
 const Tariffs = () => {
 
     const [active, setActive] = useState<string>('fix')
+
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const AccessToken = getAccessToken()
+
+
+    const getInformation = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_tariffs');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                console.log(data.data);                
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    useEffect(() => {
+        getInformation()
+    },[])
 
     return (
         <div className="grow p-[60px] pl-[35px] bg-primary rounded-[40px] flex gap-[25px] items-center relative leading-[1]">
@@ -38,8 +74,8 @@ const Tariffs = () => {
                 </div>
             </div>
             <div className="grow p-[30px] rounded-[50px] border border-solid border-[#E5E7EA] h-full w-full">
-                {active === 'fix' && <Fix setStatus={() => {}} status="" />}
-                {active === 'procent' && <Procent setStatus={() => {}} status="" />}
+                {active === 'fix' && <Fix setStatus={() => { }} status="" />}
+                {active === 'procent' && <Procent setStatus={() => { }} status="" />}
                 {active === 'elite' && <Elite />}
             </div>
 

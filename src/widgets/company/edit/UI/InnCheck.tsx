@@ -112,7 +112,7 @@ const InnCheck = ({ information, next }: { next: Function; information: any }) =
     return (
         <>
             <div className="flex flex-col gap-[15px] items-center grow justify-center">
-                {!companyInformation.LegalName && (
+                {!companyInformation.Inn && (
                     <>
                         <img src={ImgWrite} alt="write" className="mb-[10px] max-h-[100%]" />
                         <input type="text" placeholder="Введите ИНН" value={inn} onInput={(e) => { setInn(e.currentTarget.value) }} className="border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
@@ -123,7 +123,7 @@ const InnCheck = ({ information, next }: { next: Function; information: any }) =
                     </>
                 )}
 
-                {companyInformation.LegalName && (
+                {companyInformation.Inn && (
                     <>
 
                         <div className='flex flex-col gap-[10px] w-[520px] scroll overflow-y-auto max-h-[calc(100vh-430px)]'>
@@ -247,8 +247,8 @@ const InnCheck = ({ information, next }: { next: Function; information: any }) =
                 )}
             </div>
             <div className="pt-[20px]  border-[#ECEEF1] border-0 border-t border-solid">
-                {!companyInformation.LegalName && (<button onClick={() => getInformation()} className='w-full bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Найти реквизиты</button>)}
-                {companyInformation.LegalName && (
+                {!companyInformation.Inn && (<button onClick={() => getInformation()} className='w-full bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Найти реквизиты</button>)}
+                {companyInformation.Inn && (
                     <div className='flex gap-[10px]'>
                         <button onClick={() => {setInn(''); setActive(false); setCompanyInformation(
                             {

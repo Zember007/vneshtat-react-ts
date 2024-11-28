@@ -15,7 +15,7 @@ const TemplateAdd = () => {
     const dispatch = useDispatch();
 
     const services = useSelector((state: RootState) => state.template.services);
-
+    
     const [serviceActive, setServiceActive] = useState<number | null>(null)
     const [activeFilter, setActiveFilter] = useState<string | null>(null)
 
@@ -45,6 +45,30 @@ const TemplateAdd = () => {
 
     }
 
+    const checkDisabled = () => {
+        if(activeFilter === 'route' && (!service_select?.route.items[0].cityBefore || !service_select?.route.items[0].cityFrom)) {
+            return true
+        }
+
+        if(activeFilter === 'type' && (!service_select?.type)) {
+            return true
+        }
+
+        if(activeFilter === 'team' && (!service_select?.team)) {
+            return true
+        }
+
+        if(activeFilter === 'filters' && (!service_select?.filters)) {
+            return true
+        }
+
+        if(activeFilter === 'option' && (!service_select?.option)) {
+            return true
+        }
+
+        return false
+    }
+
     return (
         <Layout
             component={
@@ -57,7 +81,7 @@ const TemplateAdd = () => {
                                 <div className="flex flex-col gap-[15px]">
                                     {services.map((item, index) => (
                                         <>
-                                            <TemplateCartService active={serviceActive === item.id ? activeFilter : null} key={item.id} data={item} clear={(data: string) => { clearService(data, item.id) }} select={(filter: string) => { setActiveFilter(filter); setServiceActive(item.id); }} />
+                                            <TemplateCartService active={service_select?.id === item.id ? activeFilter : null} key={item.id} data={item} clear={(data: string) => { clearService(data, item.id) }} select={(filter: string) => { setActiveFilter(filter); setServiceActive(item.id); }} />
                                             {(index !== services.length - 1 && services.length !== 0) && (
                                                 <div className="flex gap-[10px] pl-[50px]">
                                                     <button className="py-[15px] px-[35px] rounded-[18px] bg-[#ECEEF1]">
@@ -85,7 +109,7 @@ const TemplateAdd = () => {
             }
             information={
                 <div className="p-[20px] flex flex-col gap-[20px] h-full">
-                    {activeFilter && <Filters activeFilter={activeFilter} setActiveFilter={setActiveFilter} data={service_select} close={() => { }} />}
+                    {activeFilter && <Filters activeFilter={activeFilter} setActiveFilter={setActiveFilter} data={service_select} close={() => { setActiveFilter(null) }} />}
                     {!activeFilter &&
                         <p className="text-[#787B86] my-auto px-[20px]">
                             В шаблоне вы можете создавать элементы поездки и заполнять их с разной степенью подробности.
@@ -116,8 +140,10 @@ const TemplateAdd = () => {
                     {activeFilter &&
                         <button onClick={() => {
                             activeFilter === 'type' ? setActiveFilter('route') : activeFilter === 'route' ? setActiveFilter('team') : activeFilter === 'team' ? setActiveFilter('filters') : setActiveFilter(null)
-                        }} className="rounded-[18px] bg-[#121212] py-[15px] w-full">
-                            <p className="text-primary">
+                        }}
+                        disabled={checkDisabled()}
+                        className={`${checkDisabled() ? 'bg-[#ECEEF1]' : 'bg-[#121212] *:text-primary'} transition-all duration-300 rounded-[18px]  py-[15px] w-full `}>
+                            <p>
                                 {activeFilter === 'type' && 'Выбрать маршрут'}
                                 {activeFilter === 'route' && 'Выбрать пассажиров'}
                                 {activeFilter === 'team' && 'Выбрать фильтры'}

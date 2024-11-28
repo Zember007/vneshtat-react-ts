@@ -48,7 +48,7 @@ const index = ({ activeFilter, setActiveFilter, close, data }: { activeFilter: s
             <div className="flex gap-[10px]">
                 {
                     filterNav.map(item => (
-                        <button onClick={() => { setActiveFilter(item.code) }} className={clsx('w-[44px] h-[44px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]')}>
+                        <button onClick={() => { setActiveFilter(item.code) }} className={clsx('w-[44px] h-[44px] transition-all duration-300 flex items-center justify-center rounded-[13px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]')}>
                             <item.Img className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all *:fill-[#121212]', activeFilter === item.code && '*:fill-[#FAFAFA]')} />
                         </button>
                     ))
