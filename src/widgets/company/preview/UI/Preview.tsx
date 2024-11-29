@@ -1,21 +1,30 @@
 import Layout from '@/app/layouts/layout';
 import ImgWrite from '@/assets/img/company/write.webp'
+import ImgContract from '@/assets/img/company/contract.webp'
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Infornation from '@/widgets/jobs/UI/Infornation';
 import Modal from '@/widgets/jobs/UI/Modal';
 import clsx from 'clsx';
 import ImgTravels from '@/assets/img/company/travels.webp'
 import { Link } from 'react-router-dom';
+import { getAccessToken } from '@/shared/utils';
+
+interface company {
+    LegalName: string;
+    Inn: string;
+    ContractId: number;
+}
+
+interface tariff {
+    TariffName: string;
+    id: number;
+}
 
 
-const Preview = ({ information }: { information: any }) => {
+const Preview = ({ companyInformation, tariffInformation }: { companyInformation: company | boolean; tariffInformation: tariff | boolean }) => {
 
-    // const location = useLocation().pathname
 
-    useEffect(() => {
-
-    }, [])
 
     const [viewInfornation, setViewInfornation] = useState<boolean>(true)
     const [viewContracts, setViewContracts] = useState<boolean>(false)
@@ -29,7 +38,7 @@ const Preview = ({ information }: { information: any }) => {
 
                     <>
                         <div className="  h-full bg-[#FAFAFA] rounded-[26px] ">
-                            {!information &&
+                            {!companyInformation &&
                                 <div className='text-center py-[50px] flex items-center justify-center flex-col gap-[15px]'>
                                     <span className='text-[44px] font-medium'>Добро пожаловать во Внештат!</span>
                                     <Link to={'/jobs/company/edit'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Заполнить данные компании</Link>
@@ -38,14 +47,14 @@ const Preview = ({ information }: { information: any }) => {
                                     </p>
                                 </div>
                             }
-                            {information &&
+                            {typeof companyInformation !== 'boolean' &&
                                 <div className='py-[30px] px-[35px] flex items-center justify-between'>
-                                    <div className="flex flex-col gap-[10px]">
+                                    <div className="flex flex-col gap-[10px] items-start">
                                         <span className='text-[#9B9FAD] text-[25px] font-medium'>Договор подписан</span>
-                                        <h1 className='text-[#000] text-[44px] font-medium'>{information.LegalName}</h1>
+                                        <h1 className='text-[#000] text-[44px] font-medium'>{companyInformation.LegalName}</h1>
                                         <p className='text-[18px] text-[#9B9FAD]'>
-                                            ИНН: {information.Inn} <br />
-                                            Номер договора: {information.Inn}
+                                            ИНН: {companyInformation.Inn} <br />
+                                            Номер договора: {companyInformation.ContractId}
                                         </p>
                                         <Link to={'/jobs/company/edit'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium mt-[10px]'>Смотреть данные и договор</Link>
                                     </div>
@@ -54,13 +63,38 @@ const Preview = ({ information }: { information: any }) => {
                                 </div>
                             }
                         </div>
-                        <div className="pt-[36px] pb-[16px] bg-[#FAFAFA] relative rounded-[26px] flex items-center justify-center">
-                            <img src={ImgTravels} alt="travels" />
-                            <div className="absolute top-[0] right-[0] left-[0] bottom-[0] flex items-center justify-center flex-col gap-[15px]">
-                                <span className='text-[44px] font-medium'>Подключайтесь и путешествуйте!</span>
-                                <Link to={'/jobs/company/tariffs'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Смотреть тарифы</Link>
-                            </div>
+
+                        <div className="bg-[#FAFAFA] relative rounded-[26px] ">
+                            {!tariffInformation &&
+                                <div className="pt-[36px] pb-[16px] flex items-center justify-center">
+                                    <img src={ImgTravels} alt="travels" />
+                                    <div className="absolute top-[0] right-[0] left-[0] bottom-[0] flex items-center justify-center flex-col gap-[15px]">
+                                        <span className='text-[44px] font-medium'>Подключайтесь и путешествуйте!</span>
+                                        <Link to={'/jobs/company/tariffs'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Смотреть тарифы</Link>
+                                    </div>
+                                </div>
+                            }
+                            {typeof tariffInformation !== 'boolean' &&
+                                <div className='py-[30px] px-[35px] flex items-center justify-between'>
+                                    <div className="flex flex-col gap-[30px] items-start">
+                                        <div className="flex flex-col gap-[10px]">
+                                            <span className='text-[25px] font-medium text-[#9B9FAD]'>У вас подключен тариф</span>
+                                            <h2 className='text-[44px] font-medium text-[#000000]'>Фикс Стандарт</h2>
+                                            <p className='text-[18px] text-[#9B9FAD]'>Бронирование билетов и отелей - бесплатно.</p>
+                                        </div>
+                                        <div className="flex items-center gap-[20px]">
+                                            <div className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium mt-[10px]'>15 000 ₽/месяц</div>
+                                            <Link to={'/jobs/company/tariffs'} className='text-[#9B9FAD] font-medium'>Подробнее</Link>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-center w-1/2">
+                                        <img src={ImgContract} alt="write" className="max-w-[100%]" />
+                                    </div>
+                                </div>
+                            }
                         </div>
+
                     </>
 
 

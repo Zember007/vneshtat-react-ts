@@ -147,7 +147,7 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
                 </>
             }
 
-            {status === 'in_progress' &&
+            {(status === 'in_progress' || status === 'on_review') &&
                 <div className='flex flex-col gap-[15px] items-center justify-center grow'>
                     <span className='text-[30px] font-medium'>Договор отправлен!</span>
                     <p className='text-[18px] max-w-[355px] text-center'>
@@ -161,7 +161,7 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
                 </div>
             }
 
-            {status === 'on_review' &&
+            {status === 'declined' &&
                 <div className='flex flex-col gap-[15px] items-center justify-center grow'>
                     <span className='text-[30px] font-medium'>Договор был отклонен</span>
                     <p className='text-[18px] max-w-[355px] text-center'>
@@ -169,7 +169,9 @@ const Contract = ({ status, setStatus }: { status?: string, setStatus: Function 
                         в подписанном договоре.
                         Подробнее читайте в  <Link to={'/messages'} className='text-[#007BFB]'>Мессенджере</Link>.
                     </p>
-                    <button className='py-[14px] px-[30px] rounded-[14px] bg-[#ECEEF1]'>
+                    <button
+                    onClick={() => setStatus('')}
+                    className='py-[14px] px-[30px] rounded-[14px] bg-[#ECEEF1]'>
                         <span className='text-[#007BFB] font-medium mt-[10px]'>Вернуться к подписанию</span>
                     </button>
                 </div>

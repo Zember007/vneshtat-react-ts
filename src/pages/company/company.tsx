@@ -5,20 +5,29 @@ import { Tariffs } from "@/widgets/company/tariffs";
 import { useEffect, useState } from "react";
 import { getAccessToken } from "@/shared/utils";
 
+interface company {
+    LegalName: string;
+    Inn: string;
+    ContractId: number;
+}
+
+interface tariff {
+    TariffName: string;
+    id: number;
+}
+
 const company = () => {
 
     const location = useLocation().pathname
 
-
-    const [companyInformation, setCompanyInformation] = useState()
-    const [bills, setBills] = useState()
-    const [contractStatus, setContractStatus] = useState<string>()
+    const [companyInformation, setCompanyInformation] = useState<company | boolean>(true)
+    const [tariffActive, setTariffActive] = useState<tariff | boolean>(true)
 
     const EmployeeId = localStorage.getItem('EmployeeId')
     const AccessToken = getAccessToken()
 
     const getInformation = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_company_information');
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_active_company');
         url.searchParams.append('EmployeeId', EmployeeId || '');
 
         try {
@@ -35,7 +44,7 @@ const company = () => {
 
             if (data.status === "success" && data.data) {
                 console.log(data.data);
-                
+
                 setCompanyInformation(data.data)
             }
         } catch (error) {
@@ -46,8 +55,8 @@ const company = () => {
 
     }
 
-    const getInformationBills = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_company_bank_accounts');
+    const getTariff = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_active_company_tariff');
         url.searchParams.append('EmployeeId', EmployeeId || '');
 
         try {
@@ -63,13 +72,9 @@ const company = () => {
             }
 
             if (data.status === "success" && data.data) {
-
                 console.log(data.data);
 
-                if (data.data.length) {
-                    setBills(data.data)
-                }
-
+                setTariffActive(data.data)
             }
         } catch (error) {
 
@@ -80,40 +85,11 @@ const company = () => {
     }
 
 
-    const getStatusContract = async() => {
-        
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/get_company_treaty_status');
-        url.searchParams.append('EmployeeId', EmployeeId || '');
-
-        try {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${AccessToken}`
-                }
-            });
-            const data = await res.json();
-            if (data.status === "error") {
-                console.log("error", data);
-            }
-
-            if (data.status === "success" && data.data) {
-
-                console.log(data.data);
-                setContractStatus(data.data.Status)
-
-            }
-        } catch (error) {
-
-            console.log(error);
-
-        }
-    }
     useEffect(() => {
         getInformation()
-        getInformationBills()
-        getStatusContract()
-    },[])
+        getTariff()
+    }, [])
+    
 
 
     return (
@@ -121,7 +97,7 @@ const company = () => {
 
             {(location === '/jobs/company' || location === '/jobs/company/') && (
 
-                <Preview information={companyInformation && bills && contractStatus === 'accepted' ? companyInformation : null}/>
+                <Preview companyInformation={companyInformation} tariffInformation={tariffActive}/>
 
             )}
 
@@ -129,13 +105,13 @@ const company = () => {
 
             {(location == '/jobs/company/edit' || location == '/jobs/company/edit/') && (
 
-                <Edit companyInformation={companyInformation} bills={bills} contractStatus={contractStatus} setBills={setBills} setCompanyInformation={setCompanyInformation}  setContractStatus={setContractStatus} />
+                <Edit activeCompany={companyInformation}/>
 
             )}
 
             {(location == '/jobs/company/tariffs' || location == '/jobs/company/tariffs/') && (
 
-                <Tariffs />
+                <Tariffs tariffActive={tariffActive} />
 
             )}
 

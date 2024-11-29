@@ -5,7 +5,8 @@ import { useState } from 'react';
 import Contract from './Contract';
 
 
-const Procent = ({ status, setStatus }: { status?: string; setStatus: Function }) => {
+
+const Procent = ({ status, setStatus, id }: { status?: string; setStatus: Function, id:string }) => {
 
     const [select, setSelect] = useState<boolean>(false)
 
@@ -46,7 +47,7 @@ const Procent = ({ status, setStatus }: { status?: string; setStatus: Function }
                     </div>
                 </div>
                 :
-                <Contract TarrifId=''  setStatus={() => setStatus()} status=''/>
+                <Contract TarrifId={id}  setStatus={(status:string) => setStatus(status)} status={status}/>
             }
         </>
     );

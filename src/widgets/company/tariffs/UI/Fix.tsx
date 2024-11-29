@@ -4,7 +4,7 @@ import Img2 from '@/assets/img/company/calendar.webp'
 import Contract from './Contract';
 import { useState } from 'react';
 
-const Fix = ({ status, setStatus }: { status?: string; setStatus: Function }) => {
+const Fix = ({ status, setStatus, id }: { status?: string; setStatus: Function; id:string }) => {
 
     const [select, setSelect] = useState<boolean>(false)
 
@@ -45,7 +45,7 @@ const Fix = ({ status, setStatus }: { status?: string; setStatus: Function }) =>
                     </div>
                 </div>
                 :
-                <Contract TarrifId='' setStatus={() => { setStatus() }} status='' />
+                <Contract TarrifId={id} setStatus={() => { setStatus() }} status={status} />
             }
         </>
     );

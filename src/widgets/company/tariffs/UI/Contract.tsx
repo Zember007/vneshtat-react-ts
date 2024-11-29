@@ -2,6 +2,7 @@
 // import { useEffect, useRef, useState } from "react";
 import TrashIcon from '@/assets/icons/trash.svg?react'
 import ImgContract from '@/assets/img/company/write.webp'
+import ImgAccepted from '@/assets/img/company/contract.webp'
 import { getAccessToken } from '@/shared/utils';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,7 @@ interface File extends Blob {
     readonly name: string;
 }
 
-const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus: Function; TarrifId:string }) => {
+const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus: Function; TarrifId: string }) => {
 
     const EmployeeId = localStorage.getItem('EmployeeId')
     const AccessToken = getAccessToken()
@@ -62,8 +63,8 @@ const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus:
 
         formdata.append('EmployeeId', EmployeeId || '')
         formdata.append('TariffId', TarrifId || '')
-        formdata.append('TreatyFile', file || '')
-        
+        formdata.append('TariffTreatyFile', file || '')
+
         const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/create_company_tariff_treaty')
 
         url.searchParams.append('EmployeeId', EmployeeId || '')
@@ -96,7 +97,38 @@ const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus:
 
     }
 
-    const disableTariff = async() => {}
+    const disableTariff = async () => {
+
+
+
+        const url = new URL(import.meta.env.VITE_API_URL + '/company/company_profile/disable_company_tariff')
+
+        url.searchParams.append('EmployeeId', EmployeeId || '')
+
+        try {
+            const res = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+
+                setStatus('')
+
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
     return (
         <>
 
@@ -121,7 +153,7 @@ const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus:
                             </div>
 
                             <p className="text-center text-[18px] max-w-[300px]">
-                            Чтобы подключить тариф, нужно подписать дополнительный договор к основному.
+                                Чтобы подключить тариф, нужно подписать дополнительный договор к основному.
                             </p>
 
                         </div>
@@ -150,21 +182,21 @@ const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus:
                 </>
             }
 
-            {status === 'in_progress' &&
+            {(status === 'in_progress' || status === 'on_review') &&
                 <div className='flex flex-col gap-[15px] items-center justify-center grow'>
                     <span className='text-[30px] font-medium'>Договор отправлен!</span>
                     <p className='text-[18px] max-w-[355px] text-center'>
                         Мы проверим его и если всё в порядке, модератор оповестит вас в <Link to={'/messages'} className='text-[#007BFB]'>Мессенджере</Link>.
                     </p>
                     <button
-                    onClick={() => setStatus('')}
-                    className='py-[14px] px-[30px]  rounded-[14px] bg-[#ECEEF1] '>
+                        onClick={() => setStatus('')}
+                        className='py-[14px] px-[30px]  rounded-[14px] bg-[#ECEEF1] '>
                         <span className='text-[#787B86] font-medium mt-[10px]'>Отмена</span>
                     </button>
                 </div>
             }
 
-            {status === 'on_review' &&
+            {status === 'declined' &&
                 <div className='flex flex-col gap-[15px] items-center justify-center grow'>
                     <span className='text-[30px] font-medium'>Договор был отклонен</span>
                     <p className='text-[18px] max-w-[355px] text-center'>
@@ -179,29 +211,25 @@ const Contract = ({ status, setStatus, TarrifId }: { status?: string, setStatus:
             }
 
             {status === 'accepted' &&
-                <div className="flex flex-col gap-[15px] items-center justify-center grow">
-                    <img src={ImgContract} alt="contract" className="mb-[20px] max-w-[160px] mb-[20px]" />
+                <div className="flex flex-col gap-[15px] items-center justify-center grow h-full">
+                    <img src={ImgAccepted} alt="contract" className="mb-[20px] max-w-[160px] mb-[20px]" />
 
                     <div className="flex flex-col gap-[10px] items-center">
                         <span className='text-[30px] font-medium'>Договор подписан!</span>
-                        <p className='text-[18px] max-w-[355px] text-center'>
-                            Мы очень рады сотрудничеству, теперь вы можете выбрать подходящий тариф.Вы можете сменить тариф, если окажется, что он вам не подходит. Менять тариф можно не чаще одного раза в месяц.
+                        <p className='text-[14px] text-[#787B86] max-w-[355px] text-center'>
+                            Вы можете сменить тариф, если окажется, что он вам не подходит. Менять тариф можно не чаще одного раза в месяц.
                         </p>
                     </div>
 
                     <div className="flex gap-[10px]">
                         <button
                             onClick={() => { DownloadContract() }}
-                            className='w-full bg-[#292933] px-[30px] py-[14px] rounded-[16px] text-primary text-[18px] font-medium whitespace-nowrap'>Скачать договор</button>
+                            className='w-full bg-[#292933] px-[26px] py-[14px] rounded-[16px] text-primary text-[18px] font-medium whitespace-nowrap'>Скачать договор</button>
                         <button
                             onClick={() => { disableTariff() }}
-                            className='w-full bg-[#292933] px-[30px] py-[14px] rounded-[16px] text-primary text-[18px] font-medium whitespace-nowrap'>Отключить тариф</button>
+                            className='w-full bg-[#ECEEF1] px-[26px] py-[14px] rounded-[16px] text-[#787B86] text-[18px] font-medium whitespace-nowrap'>Отключить тариф</button>
 
                     </div>
-
-                    <button className='text-[14px] font-medium text-[#9B9FAD] text-center'>
-                        Прекратить сотрудничество
-                    </button>
 
                 </div>
             }
