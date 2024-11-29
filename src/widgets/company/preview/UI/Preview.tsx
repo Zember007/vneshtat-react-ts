@@ -8,7 +8,7 @@ import Modal from '@/widgets/jobs/UI/Modal';
 import clsx from 'clsx';
 import ImgTravels from '@/assets/img/company/travels.webp'
 import { Link } from 'react-router-dom';
-import { getAccessToken } from '@/shared/utils';
+
 
 interface company {
     LegalName: string;
