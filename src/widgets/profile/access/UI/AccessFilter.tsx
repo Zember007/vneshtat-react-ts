@@ -29,6 +29,9 @@ const AccessFilter = ({ close }: { close: Function }) => {
 
     const [selectFilter, setSelectFilter] = useState<string>('access')
 
+    const EmployeeId = localStorage.getItem('EmployeeId')
+
+
     return (
         <>
             <div className="flex gap-[10px]">
@@ -54,7 +57,7 @@ const AccessFilter = ({ close }: { close: Function }) => {
             <div className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto max-h-[calc(100vh-342px)]")}>
                 {selectFilter === 'access' ?
                     (
-                        <FilterAccess selectId={null} />
+                        <FilterAccess profile={true} selectId={Number(EmployeeId)} />
                     ) : selectFilter === 'travel-policy' ?
                         (
                             <FilterTravel />

@@ -27,6 +27,9 @@ const PersonalFilter = ({ close }: { close: Function }) => {
 
     const [selectFilter, setSelectFilter] = useState<string>('user')
 
+    const EmployeeId = localStorage.getItem('EmployeeId')
+
+
     return (
         <>
             <div className="flex gap-[10px]">
@@ -52,10 +55,10 @@ const PersonalFilter = ({ close }: { close: Function }) => {
             <div className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto max-h-[calc(100vh-342px)]")}>
                 {selectFilter === 'user' ?
                     (
-                        <FilterUser selectId={null} passenger={false} />
+                        <FilterUser selectId={Number(EmployeeId)} passenger={false} profile={true} />
                     ) : selectFilter === 'document' ?
                         (
-                            <FilterDocument selectId={null} passenger={false} />
+                            <FilterDocument selectId={Number(EmployeeId)} passenger={false} profile={true} />
                         ) :
                         (
                             <FilterCarts />

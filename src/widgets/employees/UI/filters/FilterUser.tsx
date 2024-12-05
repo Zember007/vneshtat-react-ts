@@ -6,7 +6,7 @@ import Lock from "@/assets/icons/lock.svg?react";
 import { ChangeEvent, useEffect } from "react";
 import { getAccessToken } from "@/shared/utils";
 
-const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: number | null }) => {
+const FilterUser = ({ passenger, selectId, profile }: { passenger?: boolean, selectId: number | null, profile?: boolean }) => {
 
     const dispatch = useDispatch();
     const EmployeesInformation = useSelector((state: RootState) => state.employees.StaffersInformations).find(item => item.EmployeeId === selectId);
@@ -17,7 +17,7 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
 
 
     useEffect(() => {
-        dispatch(changeStaffersInformations({passenger: passenger ,field: 'PersonalInfoGender', value: GenderSelect?.code, id: selectId }))
+        dispatch(changeStaffersInformations({ passenger: passenger, field: 'PersonalInfoGender', value: GenderSelect?.code, id: selectId }))
     }, [GenderSelect])
 
     const formatDisplayDate = (value: string): string => {
@@ -36,17 +36,17 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
 
     const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        dispatch(changeStaffersInformations({passenger: passenger ,field: 'PersonalInfoBirthDate', value: formatDisplayDate(value), id: selectId }))
+        dispatch(changeStaffersInformations({ passenger: passenger, field: 'PersonalInfoBirthDate', value: formatDisplayDate(value), id: selectId }))
     };
 
     const AccessToken = getAccessToken()
     const EmployeeId = localStorage.getItem('EmployeeId')
 
     const getInformation = async () => {
-        const url = passenger ? new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_personal_info') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_personal_information');
-        const userId = passenger ? 'PassengerId'  : 'EmployeesId'
+        const url = passenger ? new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_personal_info') : profile ? new URL(import.meta.env.VITE_API_URL + '/user/profile/get_profile_personal_information') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_personal_information');
+        const userId = passenger ? 'PassengerId' : 'EmployeesId'
         url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
-        url.searchParams.append( userId , selectId?.toString() ?? '');
+        url.searchParams.append(userId, selectId?.toString() ?? '');
         try {
             const res = await fetch(url, {
                 method: "GET",
@@ -59,21 +59,20 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
                 console.log("error", data);
             }
 
-            if (data.status === "success" && data.data) {  
-                const information:any[] = data.data
-                information.forEach(item => {
-                    item.PersonalInfoBirthDate = item.PersonalInfoBirthDate ? item.PersonalInfoBirthDate.split('-').reverse().join('-') : null
+            if (data.status === "success" && data.data) {
+                const information: any = profile ? data.data : data.data[0]
 
-                    item.Type = item.PersonalInfoSurname && item.PersonalInfoName ? 'Update' : 'Create'
-                })        
+                information.PersonalInfoBirthDate = information.PersonalInfoBirthDate ? information.PersonalInfoBirthDate.split('-').reverse().join('-') : null
+                information.Type = information.PersonalInfoSurname && information.PersonalInfoName ? 'Update' : 'Create'
+
                 console.log('information', information);
 
-                if(passenger) {
+                if (passenger) {
                     dispatch(setPassengersInformations(information))
                 } else {
-                    dispatch(setStaffersInformations(information))        
+                    dispatch(setStaffersInformations(information))
                 }
-                
+
             }
         } catch (error) {
 
@@ -84,10 +83,10 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
     }
 
     useEffect(() => {
-        if(selectId){
+        if (selectId && !StaffersInformation) {
             getInformation()
         }
-    },[selectId])
+    }, [selectId])
 
     return (
         <>
@@ -95,15 +94,15 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
                 <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                         <span className=" text-[12px] font-medium text-[#9B9FAD]">Фамилия</span>
-                        <input value={StaffersInformation.Surname} onInput={(e) => { dispatch(changeStaffersInformations({passenger: passenger ,id: selectId, field: 'Surname', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
+                        <input value={StaffersInformation.Surname} onInput={(e) => { dispatch(changeStaffersInformations({ passenger: passenger, id: selectId, field: 'Surname', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
                     </div>
                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                         <span className=" text-[12px] font-medium text-[#9B9FAD]">Имя</span>
-                        <input value={StaffersInformation.Name} onInput={(e) => { dispatch(changeStaffersInformations({passenger: passenger ,id: selectId, field: 'Name', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
+                        <input value={StaffersInformation.Name} onInput={(e) => { dispatch(changeStaffersInformations({ passenger: passenger, id: selectId, field: 'Name', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
                     </div>
                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                         <span className=" text-[12px] font-medium text-[#9B9FAD]">Отчество</span>
-                        <input value={StaffersInformation.MiddleName} onInput={(e) => { dispatch(changeStaffersInformations({passenger: passenger ,id: selectId, field: 'MiddleName', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
+                        <input value={StaffersInformation.MiddleName} onInput={(e) => { dispatch(changeStaffersInformations({ passenger: passenger, id: selectId, field: 'MiddleName', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
                     </div>
                 </div>
 
@@ -122,11 +121,11 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
                 <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                         <span className=" text-[12px] font-medium text-[#9B9FAD]">Surname</span>
-                        <input value={StaffersInformation.PersonalInfoSurname ?? ''} placeholder="Не указано" onInput={(e) => { dispatch(changeStaffersInformations({passenger: passenger ,id: selectId, field: 'PersonalInfoSurname', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
+                        <input value={StaffersInformation.PersonalInfoSurname ?? ''} placeholder="Не указано" onInput={(e) => { dispatch(changeStaffersInformations({ passenger: passenger, id: selectId, field: 'PersonalInfoSurname', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
                     </div>
                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                         <span className=" text-[12px] font-medium text-[#9B9FAD]">Name</span>
-                        <input value={StaffersInformation.PersonalInfoName ?? ''} placeholder="Не указано" onInput={(e) => { dispatch(changeStaffersInformations({passenger: passenger ,id: selectId, field: 'PersonalInfoName', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
+                        <input value={StaffersInformation.PersonalInfoName ?? ''} placeholder="Не указано" onInput={(e) => { dispatch(changeStaffersInformations({ passenger: passenger, id: selectId, field: 'PersonalInfoName', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
                     </div>
                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                         <span className="whitespace-nowrap text-[12px] font-medium text-[#9B9FAD]">Дата рождения</span>
@@ -135,7 +134,7 @@ const FilterUser = ({ passenger, selectId }: { passenger?: boolean, selectId: nu
                     <InputSelect title="Пол" data={Gender} change={(id: number) => dispatch(setGender({ id, oneChoise: true }))} />
                     <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
                         <span className=" text-[12px] font-medium text-[#9B9FAD]">Гражданство</span>
-                        <input value={StaffersInformation.PersonalInfoNationality ?? ''} placeholder="Не указано" onInput={(e) => { dispatch(changeStaffersInformations({passenger: passenger ,id: selectId, field: 'PersonalInfoNationality', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
+                        <input value={StaffersInformation.PersonalInfoNationality ?? ''} placeholder="Не указано" onInput={(e) => { dispatch(changeStaffersInformations({ passenger: passenger, id: selectId, field: 'PersonalInfoNationality', value: e.currentTarget.value })) }} type="text" className="w-full bg-[transparent] text-[12px] font-medium text-right" />
                     </div>
                 </div>
 

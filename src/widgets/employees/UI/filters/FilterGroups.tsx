@@ -83,6 +83,8 @@ const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) =
 
     }
 
+    const passengers = Group?.Passengers ?? []
+
     useEffect(() => {
         if (!Group) {
             getInformation()
@@ -117,10 +119,15 @@ const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) =
                                 </div>
                                 <span className='mt-[5px] font-medium'>Руководитель отдела</span>
                                 <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
-                                    <InputSelect data={Group?.Passengers && Group?.Supervisor ? [
+                                    <InputSelect data={  Group?.Supervisor ? [
                                         Group?.Supervisor,
-                                        ...Group?.Passengers
-                                    ] : []} activeId={Group?.Supervisor?.id} change={(id: number) => { if (Group?.Supervisor?.id !== id) dispatch(changeGroup({ id: Group?.id, field: 'Supervisor', value: Group?.Passengers?.find(item => item.id === id) })) }} />
+                                        ...passengers
+                                    ] : passengers} activeId={Group?.Supervisor?.id} change={(id: number) => {
+                                        if (Group?.Supervisor?.id !== id) {
+                                            dispatch(changeGroup({ id: selectedGroupId, field: 'Supervisor', value: Group?.Passengers?.find(item => item.id === id) })) 
+                                            dispatch(delGroupEmployee({ id: selectedGroupId, id_employee: id }))
+                                        }
+                                    }} />
                                 </div>
                                 <span className='mt-[5px] font-medium'>Сотрудники отдела</span>
                                 <div className="flex flex-col gap-[6px]">

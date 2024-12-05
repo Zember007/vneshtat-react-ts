@@ -22,12 +22,15 @@ const Reports = lazy(() => import("@/pages/reports/reports"));
 const Employees = lazy(() => import("@/pages/employees/employees"));
 const Company = lazy(() => import("@/pages/company/company"));
 const Templates = lazy(() => import("@/pages/templates/templates"));
+const Settings = lazy(() => import("@/pages/settings/Settings"));
 
 const Layout = () => {
     return (
         <Suspense fallback={<div></div>}>
             <Routes>
                 <Route path="/" element={<Home/>}/>
+                <Route path="/settings" element={<Settings/>}/>
+                <Route path="/settings/notifications" element={<Settings/>}/>
                 <Route path="/journeys" element={<Journeys/>}/>
                 <Route path="/journeys/all" element={<Journeys/>}/>
                 <Route path="/journeys/create" element={<Journeys/>}/>

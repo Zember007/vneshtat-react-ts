@@ -4,7 +4,7 @@ import { Input, Switch } from "@/shared/UI";
 import LogoIdImg from "@/assets/icons/logo-id.svg?react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import ArrowImg from "@/assets/icons/arrow-long.svg?react";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { updateLoginState, updateRestoreState } from "../model/login.store";
 import { getDeviceAndBrowserInfo, setAccessToken, setRefreshToken } from "@/shared/utils";
 import { useNavigate } from "react-router-dom";
@@ -180,6 +180,10 @@ const LoginUser = () => {
             setPhoneStatus("error");
         }
     };
+
+    useEffect(() => {
+        localStorage.clear()
+    },[])
 
     return (
         <div className={"h-[calc(100vh-54px)] flex justify-center items-center"}>

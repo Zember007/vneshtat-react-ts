@@ -1,7 +1,7 @@
 import SuccessBlueImg from '@/assets/icons/success-blue.svg?react'
 import SecurityImg from '@/assets/icons/security.svg?react'
 
-const SecurityCart = ({active}:{active:boolean}) => {
+const SecurityCart = ({active, status}:{active:boolean; status: string}) => {
     return (
         <>
             <div className="grow flex flex-col gap-[10px] items-center justify-center">
@@ -15,7 +15,7 @@ const SecurityCart = ({active}:{active:boolean}) => {
             </div>
             <div className={`${active ? 'bg-primary' : 'bg-[#ECEEF1]'} transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]`}>
                 <SuccessBlueImg />
-                <span className="text-[14px]">Под защитой</span>
+                <span className="text-[14px]">{status}</span>
             </div>
         </>
     );

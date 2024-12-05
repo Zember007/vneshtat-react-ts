@@ -208,13 +208,13 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
                             </div>
                         )}
                     </Link>
-                    <Link to={"/filter"}
+                    <Link to={"/settings"}
                           onClick={handleLinkClick}
                           className={`min-h-[45px] h-[45px] flex items-center justify-center p-2.5 ultra:px-5 ${isOpen ? "flex items-center justify-between w-full rounded-primary hover:bg-secondary transition group" : "rounded-primary hover:bg-secondary transition group"}`}>
                         <div className="flex gap-2.5 items-center">
                             <SettingsImg
-                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location === "/filter" && "blue-fill"}`}/>
-                            {isOpen && <p className={`text-sm ${location === "/filter" && "text-blue"}`}>Настройки</p>}
+                                className={`blue-fill-hover transition min-w-5 min-h-5 ultra:min-w-7 ultra:min-h-7 ${location.includes("/settings") && "blue-fill"}`}/>
+                            {isOpen && <p className={`text-sm ${location.includes("/settings") && "text-blue"}`}>Настройки</p>}
                         </div>
                         {isOpen && (
                             <div className={"h-8 w-8 bg-primary flex items-center justify-center rounded-[9px]"}>

@@ -234,13 +234,13 @@ const EmployeesStore = createSlice({
             state.Staffers = action.payload
         },
         setStaffersInformations: (state, action) => {
-            state.StaffersInformations = action.payload
+            state.StaffersInformations.push(action.payload)
         },
         setStaffersDocuments: (state, action) => {
-            state.StaffersDocuments.push(action.payload[0])
+            state.StaffersDocuments.push(action.payload)
         },
         setPassengersDocuments: (state, action) => {
-            state.PassengersDocuments.push(action.payload[0])
+            state.PassengersDocuments.push(action.payload)
         },
         changeStaffersDocuments: (state, action) => {
             const { field, value, id, id_document, passenger } = action.payload;
@@ -257,7 +257,7 @@ const EmployeesStore = createSlice({
             }
         },
         setAccessEmployees: (state, action) => {
-            state.StaffersAccess.push(action.payload[0])
+            state.StaffersAccess.push(action.payload)
         },
         changeStaffersInformations: (state, action) => {
 
@@ -316,7 +316,7 @@ const EmployeesStore = createSlice({
 
         },
         setPassengersInformations: (state, action) => {
-            state.PassengersInformations = action.payload
+            state.PassengersInformations.push(action.payload)
         },
 
         setActiveFilter: (state, action) => {
@@ -337,6 +337,8 @@ const EmployeesStore = createSlice({
             if (document) {
               
                 const findStafferDocuments =  action.payload.passenger ? state.PassengersDocuments.find(item => item.Passengerid === action.payload.user_id) : state.StaffersDocuments.find(item => item.EmployeeId === action.payload.user_id)
+                console.log(findStafferDocuments);
+                
                 if (findStafferDocuments) {
                     findStafferDocuments.Documents = [
                         {

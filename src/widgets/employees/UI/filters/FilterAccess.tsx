@@ -7,7 +7,7 @@ import { changeAccessEmployees, setAccessEmployees } from '../../model/index.sto
 import { useEffect } from 'react';
 import { getAccessToken } from '@/shared/utils';
 
-const FilterAccess = ({ selectId }: { selectId: number | null }) => {
+const FilterAccess = ({ selectId, profile }: { selectId: number | null, profile?:boolean }) => {
 
     const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const FilterAccess = ({ selectId }: { selectId: number | null }) => {
     
 
     const getAccess = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_access');
+        const url = profile ? new URL(import.meta.env.VITE_API_URL + '/user/profile/get_profile_access') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_access');
         url.searchParams.append('EmployeeId', EmployeeId || '');
         url.searchParams.append('EmployeesId', selectId?.toString() || '');
         try {
@@ -37,9 +37,9 @@ const FilterAccess = ({ selectId }: { selectId: number | null }) => {
 
             if (data.status === "success" && data.data) {
 
-                console.log(data.data);
+                const access = profile ? data.data : data.data[0]
                 
-                dispatch(setAccessEmployees(data.data))
+                dispatch(setAccessEmployees(access))
                 
             }
         } catch (error) {

@@ -1,4 +1,4 @@
-import { Sidebar } from "@/widgets/sidebar";
+import { OpenInformation, Sidebar } from "@/widgets/sidebar";
 import { Header } from "@/widgets/header";
 import { useState } from "react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
@@ -30,16 +30,9 @@ const BasicLayout = ({ component }: { component: JSX.Element }) => {
                     />
 
                     <div
-                        className={`absolute max-h-[calc(100vh-60px)] z-10 ${isOpen ? "w-[calc(100vw-116px)] ultra:w-[calc(100vw-160px)]" : "w-0"}`}>
+                        className={`absolute h-full max-h-[calc(100vh-60px)] z-10 ${isOpen ? "w-[calc(100vw-116px)] ultra:w-[calc(100vw-160px)]" : "w-0"}`}>
                         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-                        <div
-                            className={`overflow-hidden transition-all ml-[241px] mt-[85px] ultra:ml-[255px] flex flex-col gap-4 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
-                            <div className={"h-[calc(50vh-115px)] w-full bg-primary rounded-primary"}></div>
-                            <div className={"flex gap-4"}>
-                                <div className={"h-[calc(50vh-115px)] w-[70%] bg-primary rounded-primary"}></div>
-                                <div className={"h-[calc(50vh-115px)] w-full bg-primary rounded-primary"}></div>
-                            </div>
-                        </div>
+                        <OpenInformation isOpen={isOpen} />
                     </div>
 
                     <div

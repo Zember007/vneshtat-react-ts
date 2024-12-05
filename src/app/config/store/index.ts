@@ -14,6 +14,7 @@ import taxiStore from "@/widgets/taxi/taxi-operations/model/taxi.store";
 import EmployeesStore from "@/widgets/employees/model/index.store";
 import ProfileStore from "@/widgets/profile/model/profile.store";
 import TemplateStore from "@/widgets/templates/model/template.store";
+import SettingsStore from "@/widgets/settings/model/settings.store";
 
 
 const rootReducer = combineReducers({
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
     registrationCompany: registrationCompanyStore,
     employees: EmployeesStore,
     template:TemplateStore,
-    profile:ProfileStore
+    profile:ProfileStore,
+    settings: SettingsStore,
 })
 
 export const store = configureStore({

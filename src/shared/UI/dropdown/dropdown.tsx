@@ -1,6 +1,7 @@
 import { ReactNode, useRef, useState } from "react";
 import EraserImg from "@/assets/icons/eraser.svg?react";
 import ArrowImg from "@/assets/icons/arrow-top.svg?react";
+import LockImg from "@/assets/icons/lock.svg?react";
 import { useClickAway } from "@/shared/hooks/use-click-away";
 
 interface DropdownProps {
@@ -11,11 +12,12 @@ interface DropdownProps {
     children: ReactNode
     isAbsoluteDrop?: boolean
     extraClass?: string
+    disable?: boolean
 }
 
 const Dropdown = ({
     isChanged = false, onErase = () => {
-    }, title, selectedText, children, isAbsoluteDrop = false, extraClass
+    }, title, selectedText, children, isAbsoluteDrop = false, extraClass, disable
 }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -23,29 +25,35 @@ const Dropdown = ({
 
     useClickAway(box, () => { setIsOpen(false) })
 
+    const actionDropdown = () => {
+        if(!disable) {
+            setIsOpen((prev) => !prev)
+        }
+    }
+
     return (
         <div
             ref={box}
             className={`  rounded-[18px] bg-secondary flex flex-col justify-center cursor-pointer `}>
-            <div className={`p-3 flex flex-row justify-between items-center ${extraClass}`} onClick={() => setIsOpen((prev) => !prev)}>
+            <div className={`p-3 flex flex-row justify-between items-center ${extraClass}`} onClick={() => actionDropdown()}>
                 <div
                     className="flex flex-row items-center gap-1 relative"
-                    onClick={() => setIsOpen((prev) => !prev)}
+                    onClick={() => actionDropdown()}
                 >
                     {isChanged && (
                         <span className="absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3" />
                     )}
                     {
                         title && <h6
-                            className="text-[14px] font-medium whitespace-nowrap ml-2"
-                            onClick={() => setIsOpen((prev) => !prev)}
+                            className={`text-[14px] font-medium whitespace-nowrap ml-2 ${disable && 'text-[#787B86]'}`}
+                            onClick={() => actionDropdown()}
                         >
                             {title}
                         </h6>
                     }
                     {selectedText && (
                         <p className="text-[14px] font-medium whitespace-nowrap text-[#9B9FAD]"
-                            onClick={() => setIsOpen((prev) => !prev)}>
+                            onClick={() => actionDropdown()}>
                             {selectedText}
                         </p>
                     )}
@@ -61,11 +69,12 @@ const Dropdown = ({
                         </button>
                     )}
                 </div>
-                <button type={"button"}>
+                {!disable ? <button type={"button"}>
                     <ArrowImg
                         className={`transform transition-transform duration-300 ${!isOpen ? "rotate-180" : ""}`}
                     />
-                </button>
+                </button> :
+                <LockImg className="w-[14px] h-[14px]"/>}
             </div>
             {isAbsoluteDrop ? (
                 <div

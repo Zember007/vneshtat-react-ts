@@ -10,7 +10,7 @@ import InputDate from "@/widgets/jobs/UI/InputDate";
 import { getNameDocument } from "../../utils";
 import { getAccessToken } from "@/shared/utils";
 
-const FilterDocument = ({ selectId, passenger }: { selectId: number | null, passenger?: boolean }) => {
+const FilterDocument = ({ passenger, selectId, profile }: { passenger?: boolean, selectId: number | null, profile?: boolean }) => {
 
     const dispatch = useDispatch()
 
@@ -34,7 +34,7 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
 
 
     const getDocuments = async () => {
-        const url = passenger ? new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_documents') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_documents');
+        const url = passenger ? new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_company_passengers_documents') :profile? new URL(import.meta.env.VITE_API_URL + '/user/profile/get_profile_documents') : new URL(import.meta.env.VITE_API_URL + '/company/employees_profile/get_employees_profile_documents');
         const user = passenger ? 'PassengerId' : 'EmployeesId'
         url.searchParams.append('EmployeeId', EmployeeId || '');
         url.searchParams.append(user, selectId?.toString() || '');
@@ -51,17 +51,24 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
             }
 
             if (data.status === "success" && data.data) {
-                const information: any[] = data.data
-                const documents: any[] = information[0].Documents
-                documents.forEach(el => {
-                    el.content = getNameDocument(el.DocumentType)
-                })
-                if (passenger) {
-                    dispatch(setPassengersDocuments(information))
-                } else {
-                    dispatch(setStaffersDocuments(information))
+                const information: any = profile?{
+                    EmployeeId: selectId,
+                    Documents: data.data
+                } : data.data[0]
+                if (information) {
+                    const documents: any[] = information.Documents
+                    documents.forEach(el => {
+                        el.content = getNameDocument(el.DocumentType)
+                    })
+                    if (passenger) {
+                        dispatch(setPassengersDocuments(information))
+                    } else {
+                        dispatch(setStaffersDocuments(information))
+                        
+                    }
+                    console.log(information)
                 }
-                console.log(information)
+               
             }
         } catch (error) {
 
@@ -110,7 +117,7 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
 
     useEffect(() => {
 
-        if (!documents) {
+        if (!documents && selectId) {
             getDocuments()
         }
 
@@ -133,7 +140,7 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
                             dispatch(setCategoryDocument(id))
                         }} center={true} default="Категория документа" />
                         <InputSelect data={documentsAdds} change={(id: number) => {
-                            dispatch(setDocument({ id: id, user_id: selectId,passenger: passenger }))
+                            dispatch(setDocument({ id: id, user_id: selectId, passenger: passenger }))
                             setDocumentAdd(false)
                         }} center={true} default="Документ" />
                     </div>
@@ -144,7 +151,7 @@ const FilterDocument = ({ selectId, passenger }: { selectId: number | null, pass
                             <span className="font-medium text-[14px]">
                                 {getNameDocument(item.DocumentType)}
                             </span>
-                           {(selectId == EmployeeId || passenger) && <button
+                            {(selectId == EmployeeId || passenger) && <button
                                 onClick={() => {
                                     if (item.New) {
                                         dispatch(delDocument({ id_document: item.id, id: selectId, passenger: passenger }))
