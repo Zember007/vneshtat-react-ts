@@ -66,12 +66,12 @@ const Header = () => {
 
 
     return (
-        <div className="flex flex-row justify-between items-center py-2.5">
+        <div className="flex flex-row justify-between items-center py-2.5 min-h-[65px]">
             <div className={"flex items-center gap-2.5"}>
-                <button className="flex items-center bg-primary py-2.5 px-4 rounded-primary gap-1 h-[45px]">
+                {location !== '/' && <button className="flex items-center bg-primary py-2.5 px-4 rounded-primary gap-1 h-[45px]">
                     <p className={"text-base leading-none font-medium"}>{localStorage.getItem("CompanyName")}</p>
-                    <LockImg className={"min-h-[18px] min-w-[18px]"} />
-                </button>
+                    <LockImg className={"min-h-[18px] min-w-[18px]"} />                    
+                </button>}
 
                 {location.includes('/journeys') ? (
                     <>
