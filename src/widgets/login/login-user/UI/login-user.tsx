@@ -55,7 +55,7 @@ const LoginUser = () => {
         formdata.append("Browser", browserName);
 
         try {
-            const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/auth_token_by_username", {
+            const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/start_sign_in_proccess/username", {
                 method: "POST",
                 body: formdata,
                 redirect: "follow"

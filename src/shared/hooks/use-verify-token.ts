@@ -14,6 +14,7 @@ export const useVerifyToken = () => {
 
         const verifyToken = async () => {
             const token = getAccessToken();
+            
             if (token) {
                 const {exp} = decodeJWT(token) as { exp: number };
                 const currentTime = Math.floor(Date.now() / 1000);

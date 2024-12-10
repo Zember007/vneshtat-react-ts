@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 
 const Registration = () => {
     const { status, companyName } = useConfirmToken(localStorage.getItem("ConfirmToken") || "");
-    localStorage.setItem("Status", status);
     localStorage.setItem("RegistrationCompanyName", companyName);
     const dispatch = useDispatch();
 

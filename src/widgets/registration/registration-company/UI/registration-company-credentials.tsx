@@ -3,7 +3,7 @@ import {updateCredentialsState} from "../model/registration-company.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {Dispatch, SetStateAction, useState} from "react";
-import {getDeviceAndBrowserInfo, setAccessToken, setRefreshToken, validateEmail} from "@/shared/utils";
+import {getDeviceAndBrowserInfo, setAccessToken,  validateEmail} from "@/shared/utils";
 
 interface RegistrationCompanyCredentialsProps {
     setHasAccount: Dispatch<SetStateAction<boolean>>;
@@ -42,15 +42,15 @@ const RegistrationCompanyCredentials = ({
         formdata.append("Browser", browserName);
 
         try {
-            const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/auth_token_by_username", {
+            const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/start_sign_in_proccess/username", {
                 method: "POST",
                 body: formdata,
                 redirect: "follow"
             });
             const data = await res.json();
             if (data.status === "success" && data.data) {
-                setAccessToken(data.data.access_token);
-                setRefreshToken(data.data.refresh_token);
+                setAccessToken(data.data.SecretKey);
+                /* setRefreshToken(data.data.refresh_token); */
             }
         } catch (error) {
         }
