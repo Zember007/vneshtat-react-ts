@@ -2,7 +2,7 @@ import {useConfirmToken} from "@/shared/hooks/use-confirm-token";
 import {useSearchParams} from "react-router-dom";
 
 const RegistrationConfirm = () => {
-    console.log('connect');
+    localStorage.clear();
     const [query] = useSearchParams();
     const token = query.get("token") || "";
 
