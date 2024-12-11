@@ -4,12 +4,12 @@ import { Input, Switch } from "@/shared/UI";
 import LogoIdImg from "@/assets/icons/logo-id.svg?react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import ArrowImg from "@/assets/icons/arrow-long.svg?react";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { updateLoginState, updateRestoreState } from "../model/login.store";
 import { getDeviceAndBrowserInfo, setAccessToken, setRefreshToken } from "@/shared/utils";
 import { useNavigate } from "react-router-dom";
-import { setCompanies, setUser } from "@/app/model/user.store";
-import { getUser, getUserCompanies } from "@/shared/utils/methods";
+import { Company, setCompanies, setUser } from "@/app/model/user.store";
+import { getUser } from "@/shared/utils/methods";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useTimer } from "@/shared/hooks/use-timer";
 
@@ -40,7 +40,6 @@ const LoginUser = () => {
     const [startTimer, setStartTimer] = useState(false);
     const second = useTimer(60, startTimer);
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-    const [smsToken, setSmsToken] = useState<string | null>(null);
     const recaptchaRef = useRef<ReCAPTCHA | null>(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -66,38 +65,33 @@ const LoginUser = () => {
             }
 
             if (data.status === "success" && data.data) {
-                setAccessToken(data.data.access_token);
-                setRefreshToken(data.data.refresh_token);
-                const user = await getUser();
-                dispatch(setUser(user));
 
-                const companiesData = await getUserCompanies();
-                if (companiesData.status === "success") {
-                    if (!companiesData.data.length) navigate("/")
-                    else dispatch(setCompanies(companiesData.data));
-                    setIsLoginClicked(true)
-                } else {
-                    setLoginStatus("error")
-                }
+                localStorage.setItem("SecretKey", data.data.SecretKey.toString());
+
+                if (!data.data.Companies.length) navigate("/")
+                else dispatch(setCompanies(data.data.Companies));
+                setIsLoginClicked(true)
             }
         } catch (error) {
             setLoginStatus("error")
         }
     }
 
+
+
     const sendSMScode = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formdata = new FormData();
-        if (smsToken) formdata.append("Token", smsToken);
-        formdata.append("SMSCode", sms);
-        const { browserName, deviceName } = getDeviceAndBrowserInfo();
-        formdata.append("DeviceName", deviceName);
-        formdata.append("Browser", browserName);
+
+
+
+        const url = new URL(import.meta.env.VITE_API_URL + "/auth/sign_in/apply_sms_code_or_2fa")
+
+        url.searchParams.set('SecretKey', localStorage.getItem("SecretKey") || '')
+        url.searchParams.set('VerificationCode', sms)
 
         try {
-            const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_in/auth_token_by_phone", {
-                method: "POST",
-                body: formdata
+            const res = await fetch(url, {
+                method: "GET"
             });
             const data = await res.json();
             if (data.status === "error") {
@@ -105,19 +99,13 @@ const LoginUser = () => {
             }
 
             if (data.status === "success" && data.data) {
-                setAccessToken(data.data.access_token);
-                setRefreshToken(data.data.refresh_token);
-                const user = await getUser();
-                dispatch(setUser(user));
 
-                const companiesData = await getUserCompanies();
-                if (companiesData.status === "success") {
-                    if (!companiesData.data.length) navigate("/")
-                    else dispatch(setCompanies(companiesData.data));
-                    setIsLoginClicked(true)
-                } else {
-                    setPhoneStatus("error")
-                }
+
+
+                if (!data.data.Companies.length) navigate("/")
+                else dispatch(setCompanies(data.data.Companies));
+                setIsLoginClicked(true)
+
             }
         } catch (error) {
             setPhoneStatus("error")
@@ -128,12 +116,22 @@ const LoginUser = () => {
         if (captchaToken && phone) {
             try {
                 setStartTimer(true);
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/auth/sign_in/auth_token_by_phone?PhoneNumber=${encodeURIComponent(phone)}&ReCaptchaResponse=${encodeURIComponent(captchaToken)}`
-                );
+
+                const url = new URL(`${import.meta.env.VITE_API_URL}/auth/sign_in/start_sign_in_proccess/phone_number`)
+                    
+                url.searchParams.set('PhoneNumber', encodeURIComponent(phone))
+                url.searchParams.set('ReCaptchaResponse', encodeURIComponent(captchaToken))
+
+                const { browserName, deviceName } = getDeviceAndBrowserInfo();
+                url.searchParams.set("DeviceName", deviceName);
+                url.searchParams.set("Browser", browserName);
+
+                const response = await fetch(url,{
+                    method: "GET"
+                });
                 const data = await response.json();
                 if (data.status === "success") {
-                    setSmsToken(data.data.token);
+                    localStorage.setItem("SecretKey", data.data.SecretKey.toString());
                 }
             } catch (error) {
                 setStartTimer(false);
@@ -181,9 +179,39 @@ const LoginUser = () => {
         }
     };
 
-    useEffect(() => {
-        localStorage.clear()
-    },[])
+    const LoginCompany = async (company: Company) => {
+
+        const url = new URL(import.meta.env.VITE_API_URL + "/auth/sign_in/authorize_user");
+        url.searchParams.append('EmployeeId', company.EmployeeId.toString() || '');
+        url.searchParams.append('SecretKey', localStorage.getItem("SecretKey") || '');
+
+        try {
+            const res = await fetch(url, {
+                method: "GET"
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                setLoginStatus("error")
+            }
+
+            if (data.status === "success" && data.data) {
+                setAccessToken(data.data.AccessToken);
+                setRefreshToken(data.data.RefreshToken);
+                const user = await getUser();
+                dispatch(setUser(user));
+
+                localStorage.setItem("EmployeeId", company.EmployeeId.toString());
+                localStorage.setItem("CompanyName", company.CompanyName.toString());
+
+                navigate("/")
+
+
+            }
+        } catch (error) {
+            setLoginStatus("error")
+        }
+    }
+
 
     return (
         <div className={"h-[calc(100vh-54px)] flex justify-center items-center"}>
@@ -209,10 +237,9 @@ const LoginUser = () => {
                                 </div>
                                 <button
                                     className={"w-full flex justify-center items-center py-3 mt-2.5 h-[50px] rounded-primary bg-[#292933]"}
-                                    onClick={() => {
-                                        localStorage.setItem("EmployeeId", item.EmployeeId.toString());
-                                        localStorage.setItem("CompanyName", item.CompanyName.toString());
-                                        navigate("/")
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        LoginCompany(item)
                                     }}
                                 >
                                     <p className={`text-lg font-medium text-primary`}>Войти</p>

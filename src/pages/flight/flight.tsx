@@ -1,12 +1,25 @@
 import {FlightTickets} from "@/widgets/flight/flight-tickets";
-import {FlightOperations} from "@/widgets/flight/flight-operations";
+import {FlightOperations, FlightNavigations} from "@/widgets/flight/flight-operations";
+import Layout from "@/app/layouts/layout";
+import { useState } from "react";
+import { ActiveOperation } from "@/shared/types";
 
 const Flight = () => {
+
+    const [activeOperation, setActiveOperation] = useState<ActiveOperation>("route");
+
     return (
-        <div className={"flex flex-row gap-4"}>
-            <FlightTickets />
-            <FlightOperations/>
-        </div>
+        <Layout
+        component={
+            <FlightTickets />            
+        }
+        information={
+            <FlightOperations activeOperation={activeOperation} setActiveOperation={setActiveOperation}/>
+        }
+        navigation={
+            <FlightNavigations activeOperation={activeOperation}/>
+        }
+        />
     )
 };
 

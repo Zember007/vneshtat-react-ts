@@ -2,7 +2,8 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export interface Company {
     CompanyName: string,
-    EmployeeId: number
+    EmployeeId: number,
+    Status?: string
 }
 
 interface UserStore {

@@ -51,8 +51,7 @@ const RegistrationCompanyHasAccount = ({isLoginClicked, setIsLoginClicked, setHa
             });
             const data = await res.json();
             if (data.status === "success" && data.data) {
-                setAccessToken(data.data.access_token);
-                setRefreshToken(data.data.refresh_token);
+                localStorage.setItem('SecretKey',data.data.SecretKey);
             }
             return data;
         } catch (error) {

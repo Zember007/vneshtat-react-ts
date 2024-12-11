@@ -1,24 +1,23 @@
-import {useState} from "react";
+
 import {ActiveOperation} from "@/shared/types";
 import RouteImg from "@/assets/icons/route.svg?react";
 import PassengersImg from "@/assets/icons/users.svg?react";
 import FilterImg from "@/assets/icons/filter.svg?react";
 import TicketImg from "@/assets/icons/ticket.svg?react";
 import AddImg from "@/assets/icons/add.svg?react";
-import RadarImg from "@/assets/icons/radar.svg?react";
-import ReloadImg from "@/assets/icons/reload.svg?react";
+
 import {FlightRoute} from "./flight-route";
 import {FlightPassenger} from "./flight-passenger";
 import {FlightFilter} from "./flight-filter";
 import {FlightDecor} from "./flight-decor";
 import {FlightAdd} from "./flight-add";
 
-const FlightOperations = () => {
-    const [activeOperation, setActiveOperation] = useState<ActiveOperation>("route");
+const FlightOperations = ({activeOperation, setActiveOperation}:{activeOperation: ActiveOperation, setActiveOperation: Function}) => {
+
 
     return (
-        <aside>
-            <div className={"w-[300px] rounded-[26px] p-5 bg-primary flex flex-col gap-5 relative z-0"}>
+        
+            <div className={"flex flex-col gap-5 relative z-0 p-[20px] h-full"}>
                 <div className={"flex flex-row gap-2.5"}>
                     <button
                         onClick={() => setActiveOperation("route")}
@@ -52,29 +51,8 @@ const FlightOperations = () => {
                 {activeOperation === "decor" && <FlightDecor/>}
                 {activeOperation === "add" && <FlightAdd/>}
             </div>
-            {activeOperation === "route" && (
-                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
-                    <p className={"text-lg text-[#fff] leading-none"}>Выбрать пассажиров</p>
-                </button>
-            )}
-            {activeOperation === "passengers" && (
-                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
-                    <p className={"text-lg text-[#fff]"}>Поиск!</p>
-                </button>
-            )}
-            {activeOperation === "filter" && (
-                <div className={"h-[50px] flex flex-row gap-4 mt-4"}>
-                    <button className={"h-full w-[50px] px-3 bg-[#dce0e5] rounded-[21px]"}>
-                        <RadarImg/>
-                    </button>
-                    <button
-                        className={"h-full w-full flex flex-row items-center justify-center bg-[#dce0e5] rounded-[21px] gap-1"}>
-                        <ReloadImg/>
-                        <p className={"text-base"}>Обновить</p>
-                    </button>
-                </div>
-            )}
-        </aside>
+            
+
     )
 };
 

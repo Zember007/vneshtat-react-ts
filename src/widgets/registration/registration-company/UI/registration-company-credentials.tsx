@@ -3,7 +3,7 @@ import {updateCredentialsState} from "../model/registration-company.store";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/config/store";
 import {Dispatch, SetStateAction, useState} from "react";
-import {getDeviceAndBrowserInfo, setAccessToken,  validateEmail} from "@/shared/utils";
+import {getDeviceAndBrowserInfo,  validateEmail} from "@/shared/utils";
 
 interface RegistrationCompanyCredentialsProps {
     setHasAccount: Dispatch<SetStateAction<boolean>>;
@@ -49,8 +49,7 @@ const RegistrationCompanyCredentials = ({
             });
             const data = await res.json();
             if (data.status === "success" && data.data) {
-                setAccessToken(data.data.SecretKey);
-                /* setRefreshToken(data.data.refresh_token); */
+                localStorage.setItem('SecretKey',data.data.SecretKey);
             }
         } catch (error) {
         }

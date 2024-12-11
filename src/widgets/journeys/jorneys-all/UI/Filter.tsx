@@ -53,7 +53,7 @@ const Filter = () => {
                     />
                     <InputDate
                         placeholder={"Дата до"}
-                        extraClass={"px-[10px] py-[5px] h-[26px] min-w-full max-w-full !rounded-[13px] !bg-primary *:text-[12px]"}
+                        extraClass={"px-[10px]  py-[5px] h-[26px] min-w-full max-w-full !rounded-[13px] !bg-primary *:text-[12px]"}
                         extraClassIcon='!w-[20px] !h-[20px]'
                         inputValue={dates}
                         viewValue={dates[1]}

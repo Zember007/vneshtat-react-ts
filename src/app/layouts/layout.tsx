@@ -14,12 +14,12 @@ const Layout = ({ component, information, navigation, links, extraClassBar }: { 
                     </div>
                 ) : component}
             </div>
-            <div className={"flex flex-col gap-[15px] justify-between w-[300px] min-w-[300px] " + extraClassBar}>
+            <aside className={"flex flex-col gap-[15px] justify-between w-[300px] min-w-[300px] " + extraClassBar}>
                 <div className={clsx('grow rounded-[26px] bg-[#FAFAFA]', typeof information == 'string' && 'flex items-center justify-center')}>
                     {information}
                 </div>
                 {typeof navigation === 'undefined' ? <div className={'h-[50px] rounded-[18px] bg-[#FAFAFA]'}></div> : navigation}
-            </div>
+            </aside>
 
 
         </main>

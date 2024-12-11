@@ -8,8 +8,6 @@ import {ChangeEvent, useState} from "react";
 import {RegistrationCompanyHasAccount} from "./registration-company-has-account";
 import {RegistrationCompanyCredentials} from "./registration-company-credentials";
 import {getAccessToken} from "@/shared/utils";
-import {getUser, getUserCompanies} from "@/shared/utils/methods";
-import {setCompanies, setUser} from "@/app/model/user.store";
 import {useNavigate} from "react-router-dom";
 
 const formatDisplayDate = (value: string): string => {
@@ -76,6 +74,7 @@ const RegistrationCompanySecond = () => {
         const formdata = new FormData();
         const confirmToken = localStorage.getItem("ConfirmToken");
         const formattedData = convertToInternalDate(birthday);
+        const SecretKey = localStorage.getItem('SecretKey')
         formdata.append("Name", name);
         formdata.append("Surname", surname);
         formdata.append("MiddleName", middlename);
@@ -85,6 +84,11 @@ const RegistrationCompanySecond = () => {
         if (confirmToken) {
             formdata.append("Token", confirmToken)
         }
+
+
+        formdata.append("SecretKey", SecretKey || '')
+
+        
 
         let url = ''
 
@@ -105,11 +109,7 @@ const RegistrationCompanySecond = () => {
         if (data.status === "success") {
             localStorage.removeItem("RegistrationCompanyName");
             localStorage.removeItem("ConfirmToken");
-            const companiesData = await getUserCompanies();
-            dispatch(setCompanies(companiesData.data))
-            const user = await getUser();
-            dispatch(setUser(user));
-            navigate("/")
+            navigate("/sign-in")
         }
     };
 
