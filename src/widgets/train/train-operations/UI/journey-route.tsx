@@ -2,6 +2,7 @@ import { InputCity, InputDate } from "@/shared/UI";
 import { useDispatch, useSelector } from "react-redux";
 import { setCityFrom, setCityFromName, setCityTo, setCityToName, setDateBack, setDateTo } from "../model/journey.store";
 import { RootState } from "@/app/config/store";
+import SimpleBar from "simplebar-react";
 
 const JourneyRoute = ({ template }: { template?: boolean }) => {
     const { dateTo, dateBack, cityFromName, cityToName } = useSelector((state: RootState) => state.journey);
@@ -13,7 +14,7 @@ const JourneyRoute = ({ template }: { template?: boolean }) => {
                 <h3>Маршрут</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"} />
-            <div className={"h-[calc(100vh-270px)] overflow-y-auto scroll py-2.5"}>
+            <SimpleBar className={"h-[calc(100vh-270px)] py-2.5"}>
                 <div className={"flex flex-col gap-4"}>
                     <h4 className={"text-base font-medium"}>Направления</h4>
                     <div className={"flex flex-col gap-2.5"}>
@@ -59,7 +60,7 @@ const JourneyRoute = ({ template }: { template?: boolean }) => {
                         </div>
                     </div>
                 </>}
-            </div>
+            </SimpleBar>
         </div>
     )
 };

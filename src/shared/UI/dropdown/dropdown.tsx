@@ -12,12 +12,13 @@ interface DropdownProps {
     children: ReactNode
     isAbsoluteDrop?: boolean
     extraClass?: string
+    extraClassBox?: string
     disable?: boolean
 }
 
 const Dropdown = ({
     isChanged = false, onErase = () => {
-    }, title, selectedText, children, isAbsoluteDrop = false, extraClass, disable
+    }, title, selectedText, children, isAbsoluteDrop = false, extraClass, disable, extraClassBox
 }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +35,7 @@ const Dropdown = ({
     return (
         <div
             ref={box}
-            className={`  rounded-[18px] bg-secondary flex flex-col justify-center cursor-pointer `}>
+            className={`  rounded-[18px] bg-secondary flex flex-col justify-center cursor-pointer ${extraClassBox}`}>
             <div className={`p-3 flex flex-row justify-between items-center ${extraClass}`} onClick={() => actionDropdown()}>
                 <div
                     className="flex flex-row items-center gap-1 relative"
@@ -45,7 +46,7 @@ const Dropdown = ({
                     )}
                     {
                         title && <h6
-                            className={`text-[14px] font-medium whitespace-nowrap ml-2 ${disable && 'text-[#787B86]'}`}
+                            className={`text-[14px] font-medium whitespace-nowrap  ${disable && 'text-[#787B86]'}`}
                             onClick={() => actionDropdown()}
                         >
                             {title}

@@ -1,6 +1,8 @@
 import SuccessBlueImg from '@/assets/icons/success-blue.svg?react'
 import { getAccessToken } from '@/shared/utils';
 import { useEffect, useState } from 'react';
+import PasswordChange from '../PasswordChange'
+import SimpleBar from 'simplebar-react';
 
 interface informationPassword {
     IsSecurePassword: string,
@@ -35,7 +37,7 @@ const PasswordFilter = () => {
 
             if (data.status === "success" && data.data) {
 
-                const information =  data.data
+                const information = data.data
                 information.PasswordLastUpdate = information.PasswordLastUpdate.split('-').reverse().join('.')
                 setInformationPassword(information)
             }
@@ -51,35 +53,44 @@ const PasswordFilter = () => {
         getInformation()
     }, [])
 
+    const [ChangePassword, setChangePassword] = useState(false)
+
     return (
-        <div className="flex flex-col gap-[15px] justify-between grow ">
+        <>
+            <div className="flex flex-col gap-[15px] justify-between grow ">
 
-            <div className="flex flex-col gap-[10px] mt-[15px] h-full overflow-y-auto scroll max-h-[calc(100vh-330px)]">
+                <SimpleBar className=' max-h-[calc(100vh-330px)]'>
+                    <div className="flex flex-col gap-[10px] mt-[15px] h-full">
 
-                <div className={`bg-[#ECEEF1] transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]`}>
-                    <SuccessBlueImg />
-                    <span className="text-[14px]">{informationPassword.IsSecurePassword}</span>
+                        <div className={`bg-[#ECEEF1] transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]`}>
+                            <SuccessBlueImg />
+                            <span className="text-[14px]">{informationPassword.IsSecurePassword}</span>
+                        </div>
+                        <div className={`bg-[#ECEEF1] transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]`}>
+                            <SuccessBlueImg />
+                            <span className="text-[14px]">Обновлён {informationPassword.PasswordLastUpdate}</span>
+                        </div>
+                        <p className='text-center text-[11px] text-[#787B86]'>
+                            Старайтесь обновлять пароль как минимум раз в 4 месяца. Так вас будет сложнее взломать.
+                        </p>
+                    </div>
+                </SimpleBar>
+
+                <div className="flex flex-col gap-[10px] pt-[15px] border-0 border-t border-solid border-[#D9D9D9]">
+                    <button
+                        onClick={() => { setChangePassword(true) }}
+                        className='text-[14px] text-primary bg-black rounded-[13px] py-[11px]'
+                    >Изменить пароль</button>
+                    <p
+                        className='text-[11px] text-[#787B86] text-center'
+                    >
+                        Чтобы изменить пароль, нужно подтверждение через телефон или почту.
+                    </p>
                 </div>
-                <div className={`bg-[#ECEEF1] transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]`}>
-                    <SuccessBlueImg />
-                    <span className="text-[14px]">Обновлён {informationPassword.PasswordLastUpdate}</span>
-                </div>
-                <p className='text-center text-[11px] text-[#787B86]'>
-                    Старайтесь обновлять пароль как минимум раз в 4 месяца. Так вас будет сложнее взломать.
-                </p>
             </div>
 
-            <div className="flex flex-col gap-[10px] pt-[15px] border-0 border-t border-solid border-[#D9D9D9]">
-                <button
-                    className='text-[14px] text-primary bg-black rounded-[13px] py-[11px]'
-                >Изменить пароль</button>
-                <p
-                    className='text-[11px] text-[#787B86] text-center'
-                >
-                    Чтобы изменить пароль, нужно подтверждение через телефон или почту.
-                </p>
-            </div>
-        </div>
+            <PasswordChange active={ChangePassword} close={() => { setChangePassword(false) }} />
+        </>
     );
 };
 

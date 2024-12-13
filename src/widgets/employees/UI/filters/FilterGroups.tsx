@@ -14,6 +14,7 @@ import { RootState } from "@/app/config/store";
 import TrashImg from '@/assets/icons/trash.svg?react'
 import PlusImg from '@/assets/icons/plus.svg?react'
 import { getAccessToken } from "@/shared/utils";
+import SimpleBar from "simplebar-react";
 
 const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) => {
 
@@ -104,58 +105,60 @@ const FilterGroups = ({ selectedGroupId }: { selectedGroupId: number | null }) =
                 }
             </div>
             <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]"></div>
-            <div className="flex flex-col gap-[10px] justify-between grow h-full overflow-y-auto scroll max-h-[calc(100vh-330px)]">
-                {activeFilter === 'user' ?
-                    (
-                        <>
-                            <div className="flex flex-col gap-[10px]">
-                                <span className='mt-[5px] font-medium'>Название</span>
-                                <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
-                                    <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
-                                        <input value={Group?.Name ?? ''} placeholder='Название отдела'
-                                            onInput={(e) => { dispatch(changeGroup({ id: Group?.id, field: 'Name', value: e.currentTarget.value })) }}
-                                            type="text" className="w-full bg-[transparent] text-[12px] font-medium" />
+            <SimpleBar className="max-h-[calc(100vh-330px)]">
+                <div className="flex flex-col gap-[10px] justify-between grow h-full">
+                    {activeFilter === 'user' ?
+                        (
+                            <>
+                                <div className="flex flex-col gap-[10px]">
+                                    <span className='mt-[5px] font-medium'>Название</span>
+                                    <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
+                                        <div className="flex items-center justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                                            <input value={Group?.Name ?? ''} placeholder='Название отдела'
+                                                onInput={(e) => { dispatch(changeGroup({ id: Group?.id, field: 'Name', value: e.currentTarget.value })) }}
+                                                type="text" className="w-full bg-[transparent] text-[12px] font-medium" />
+                                        </div>
+                                    </div>
+                                    <span className='mt-[5px] font-medium'>Руководитель отдела</span>
+                                    <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
+                                        <InputSelect data={Group?.Supervisor ? [
+                                            Group?.Supervisor,
+                                            ...passengers
+                                        ] : passengers} activeId={Group?.Supervisor?.id} change={(id: number) => {
+                                            if (Group?.Supervisor?.id !== id) {
+                                                dispatch(changeGroup({ id: selectedGroupId, field: 'Supervisor', value: Group?.Passengers?.find(item => item.id === id) }))
+                                                dispatch(delGroupEmployee({ id: selectedGroupId, id_employee: id }))
+                                            }
+                                        }} />
+                                    </div>
+                                    <span className='mt-[5px] font-medium'>Сотрудники отдела</span>
+                                    <div className="flex flex-col gap-[6px]">
+                                        {
+                                            Group?.Passengers && Group?.Passengers.map(item => (
+                                                <CartEmployee name={item.Name} surname={item.Surname} middlename={item.MiddleName} id={item.id} departamentId={Group.id} />
+                                            ))
+                                        }
+                                        {employeeAdd &&
+                                            <CartEmployee add={() => { setEmployeeAdd(false) }} departamentId={Group?.id} />
+                                        }
                                     </div>
                                 </div>
-                                <span className='mt-[5px] font-medium'>Руководитель отдела</span>
-                                <div className="flex flex-col gap-[6px] rounded-[23px] p-[13px] bg-[#ECEEF1]">
-                                    <InputSelect data={  Group?.Supervisor ? [
-                                        Group?.Supervisor,
-                                        ...passengers
-                                    ] : passengers} activeId={Group?.Supervisor?.id} change={(id: number) => {
-                                        if (Group?.Supervisor?.id !== id) {
-                                            dispatch(changeGroup({ id: selectedGroupId, field: 'Supervisor', value: Group?.Passengers?.find(item => item.id === id) })) 
-                                            dispatch(delGroupEmployee({ id: selectedGroupId, id_employee: id }))
-                                        }
-                                    }} />
-                                </div>
-                                <span className='mt-[5px] font-medium'>Сотрудники отдела</span>
-                                <div className="flex flex-col gap-[6px]">
-                                    {
-                                        Group?.Passengers && Group?.Passengers.map(item => (
-                                            <CartEmployee name={item.Name} surname={item.Surname} middlename={item.MiddleName} id={item.id} departamentId={Group.id} />
-                                        ))
-                                    }
-                                    {employeeAdd &&
-                                        <CartEmployee add={() => { setEmployeeAdd(false) }} departamentId={Group?.id} />
-                                    }
-                                </div>
-                            </div>
 
-                            <button
-                                onClick={() => { setEmployeeAdd(true) }}
-                                className='rounded-[23px] border border-solid border-[#E5E7EA] p-[13px] flex justify-between items-center'>
-                                <span className='text-[#787B86] text-[12px] font-normal'>Добавить сотрудника</span>
-                                <PlusImg className='w-[14px] h-auto' />
-                            </button>
-                        </>
-                    ) :
-                    (
-                        <FilterTravel />
-                    )
-                }
+                                <button
+                                    onClick={() => { setEmployeeAdd(true) }}
+                                    className='rounded-[23px] border border-solid border-[#E5E7EA] p-[13px] flex justify-between items-center'>
+                                    <span className='text-[#787B86] text-[12px] font-normal'>Добавить сотрудника</span>
+                                    <PlusImg className='w-[14px] h-auto' />
+                                </button>
+                            </>
+                        ) :
+                        (
+                            <FilterTravel />
+                        )
+                    }
 
-            </div >
+                </div>
+            </SimpleBar>
         </>
     );
 };

@@ -7,6 +7,7 @@ import clsx from "clsx";
 import FilterAccess from "@/widgets/employees/UI/filters/FilterAccess";
 import FilterTravel from "@/widgets/employees/UI/filters/FilterTravel";
 import FilterPeriod from "@/widgets/employees/UI/filters/FilterPeriod";
+import SimpleBar from "simplebar-react";
 
 const AccessFilter = ({ close }: { close: Function }) => {
     const filterNav = [
@@ -54,20 +55,22 @@ const AccessFilter = ({ close }: { close: Function }) => {
                     <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>}
             </div>
-            <div className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto max-h-[calc(100vh-342px)]")}>
-                {selectFilter === 'access' ?
-                    (
-                        <FilterAccess profile={true} selectId={Number(EmployeeId)} />
-                    ) : selectFilter === 'travel-policy' ?
+            <SimpleBar className="max-h-[calc(100vh-342px)]">
+                <div className={clsx("flex flex-col gap-[10px] grow h-full")}>
+                    {selectFilter === 'access' ?
                         (
-                            <FilterTravel />
-                        ) :
-                        (
-                            <FilterPeriod />
-                        )
-                }
+                            <FilterAccess profile={true} selectId={Number(EmployeeId)} />
+                        ) : selectFilter === 'travel-policy' ?
+                            (
+                                <FilterTravel />
+                            ) :
+                            (
+                                <FilterPeriod />
+                            )
+                    }
 
-            </div>
+                </div>
+            </SimpleBar>
         </>
     );
 };

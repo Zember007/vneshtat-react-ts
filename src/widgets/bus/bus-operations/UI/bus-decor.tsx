@@ -5,6 +5,7 @@ import TrashImg from "@/assets/icons/trash.svg?react";
 import TimeImg from "@/assets/icons/time-grey.svg?react";
 import {useState} from "react";
 import {Passenger} from "@/shared/types";
+import SimpleBar from "simplebar-react";
 
 const BusDecor = () => {
     const [passengers, setPassengers] = useState<Passenger[]>([
@@ -43,7 +44,8 @@ const BusDecor = () => {
                 </button>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"flex flex-col gap-2.5 h-[calc(100vh-278px)] py-2.5 overflow-y-auto scroll"}>
+            <SimpleBar className="h-[calc(100vh-278px)]">
+            <div className={"flex flex-col gap-2.5  py-2.5"}>
                 <Dropdown title={"Тариф"}>
                     <div className={"flex flex-col gap-2.5"}>
                         <div className={"rounded-primary bg-primary p-2.5"}>
@@ -106,6 +108,7 @@ const BusDecor = () => {
                     </div>
                 </Dropdown>
             </div>
+            </SimpleBar>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px]"}/>
         </div>
     )

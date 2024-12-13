@@ -1,6 +1,7 @@
 import ImgWrite from '@/assets/img/company/write.webp'
 import { getAccessToken } from '@/shared/utils';
 import { useEffect, useState } from "react";
+import SimpleBar from 'simplebar-react';
 
 const InnCheck = ({ information, next }: { next: Function; information: any }) => {
 
@@ -67,7 +68,7 @@ const InnCheck = ({ information, next }: { next: Function; information: any }) =
     }
 
     const nextStep = async () => {
-        if(!active) {
+        if (!active) {
             setActive(true)
         } else {
             try {
@@ -100,14 +101,14 @@ const InnCheck = ({ information, next }: { next: Function; information: any }) =
     }
 
     useEffect(() => {
-        if(information) {
+        if (information) {
             setCompanyInformation({
                 ...information,
                 EmployeeId: EmployeeId
             })
             setActive(true)
         }
-    },[information])
+    }, [information])
 
     return (
         <>
@@ -125,120 +126,121 @@ const InnCheck = ({ information, next }: { next: Function; information: any }) =
 
                 {companyInformation.Inn && (
                     <>
-
-                        <div className='flex flex-col gap-[10px] w-[520px] scroll overflow-y-auto max-h-[calc(100vh-430px)]'>
-                            <div className="grid grid-cols-[1fr_1fr] items-center">
-                                <span className='text-[18px] font-medium text-[#9B9FAD]'>Название компании</span>
-                                <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.LegalName || '-'}</div>
+                        <SimpleBar className=' max-h-[calc(100vh-430px)]'>
+                            <div className='flex flex-col gap-[10px] w-[520px] '>
+                                <div className="grid grid-cols-[1fr_1fr] items-center">
+                                    <span className='text-[18px] font-medium text-[#9B9FAD]'>Название компании</span>
+                                    <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.LegalName || '-'}</div>
+                                </div>
+                                <div className="grid grid-cols-[1fr_1fr] items-center">
+                                    <span className='text-[18px] font-medium text-[#9B9FAD]'>ИНН</span>
+                                    {/* <input type="text" value={companyInformation.Inn} className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" /> */}
+                                    <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.Inn || '-'}</div>
+                                </div>
+                                <div className="grid grid-cols-[1fr_1fr] items-center">
+                                    <span className='text-[18px] font-medium text-[#9B9FAD]'>ОГРН</span>
+                                    {/* <input type="text" value={companyInformation.OGRN} className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" /> */}
+                                    <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.OGRN || '-'}</div>
+                                </div>
+                                <div className="grid grid-cols-[1fr_1fr] items-center">
+                                    <span className='text-[18px] font-medium text-[#9B9FAD]'>ОКПО</span>
+                                    {/* <input type="text" value={companyInformation.OKPO} className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" /> */}
+                                    <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.OKPO || '-'}</div>
+                                </div>
+                                {
+                                    active && <>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>КПП</span>
+                                            <input type="text" value={companyInformation.Kpp} placeholder='Введите КПП'
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        Kpp: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>Полное название</span>
+                                            <input type="text" value={companyInformation.LegalName} placeholder='ООО “Альфа Групп”'
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        LegalName: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>Краткое название</span>
+                                            <input type="text" value={companyInformation.ShortName} placeholder='Альфа Групп'
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        ShortName: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>Юридический адрес</span>
+                                            <input type="text" value={companyInformation.LegalAddress} placeholder='Ваш юридический адрес'
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        LegalAddress: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>Фактический адрес</span>
+                                            <input type="text" value={companyInformation.PhysicalAddress} placeholder='Ваш фактический адрес'
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        PhysicalAddress: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>ФИО для подписи</span>
+                                            <input type="text" value={companyInformation.ShortFIO} placeholder='Иванов И.И.'
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        ShortFIO: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>В лице</span>
+                                            <input type="text" value={companyInformation.FIO} placeholder='Иванова Ивана Ивановича'
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        FIO: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                        <div className="grid grid-cols-[1fr_1fr] items-center">
+                                            <span className='text-[18px] font-medium text-[#9B9FAD]'>Паспортные данные</span>
+                                            <input type="text" value={companyInformation.PassportData} placeholder=''
+                                                onInput={(e) => {
+                                                    setCompanyInformation({
+                                                        ...companyInformation,
+                                                        PassportData: e.currentTarget.value
+                                                    })
+                                                }}
+                                                className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
+                                        </div>
+                                    </>
+                                }
                             </div>
-                            <div className="grid grid-cols-[1fr_1fr] items-center">
-                                <span className='text-[18px] font-medium text-[#9B9FAD]'>ИНН</span>
-                                {/* <input type="text" value={companyInformation.Inn} className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" /> */}
-                                <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.Inn || '-'}</div>
-                            </div>
-                            <div className="grid grid-cols-[1fr_1fr] items-center">
-                                <span className='text-[18px] font-medium text-[#9B9FAD]'>ОГРН</span>
-                                {/* <input type="text" value={companyInformation.OGRN} className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" /> */}
-                                <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.OGRN || '-'}</div>
-                            </div>
-                            <div className="grid grid-cols-[1fr_1fr] items-center">
-                                <span className='text-[18px] font-medium text-[#9B9FAD]'>ОКПО</span>
-                                {/* <input type="text" value={companyInformation.OKPO} className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" /> */}
-                                <div className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]">{companyInformation.OKPO || '-'}</div>
-                            </div>
-                            {
-                                active && <>
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>КПП</span>
-                                        <input type="text" value={companyInformation.Kpp} placeholder='Введите КПП'
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                Kpp: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div>  
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>Полное название</span>
-                                        <input type="text" value={companyInformation.LegalName} placeholder='ООО “Альфа Групп”'
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                LegalName: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div> 
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>Краткое название</span>
-                                        <input type="text" value={companyInformation.ShortName} placeholder='Альфа Групп'
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                ShortName: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div> 
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>Юридический адрес</span>
-                                        <input type="text" value={companyInformation.LegalAddress} placeholder='Ваш юридический адрес'
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                LegalAddress: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div>     
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>Фактический адрес</span>
-                                        <input type="text" value={companyInformation.PhysicalAddress} placeholder='Ваш фактический адрес'
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                PhysicalAddress: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div>  
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>ФИО для подписи</span>
-                                        <input type="text" value={companyInformation.ShortFIO} placeholder='Иванов И.И.'
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                ShortFIO: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div> 
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>В лице</span>
-                                        <input type="text" value={companyInformation.FIO} placeholder='Иванова Ивана Ивановича'
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                FIO: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div> 
-                                    <div className="grid grid-cols-[1fr_1fr] items-center">
-                                        <span className='text-[18px] font-medium text-[#9B9FAD]'>Паспортные данные</span>
-                                        <input type="text" value={companyInformation.PassportData} placeholder=''
-                                        onInput={(e) => {
-                                            setCompanyInformation({
-                                                ...companyInformation,
-                                                PassportData: e.currentTarget.value
-                                            })
-                                        }}
-                                        className="w-full border-[#ECEEF1] border border-solid bg-[transparent] px-[30px] py-[14px] text-[18px] text-center font-medium rounded-[15px] placeholder:text-[#787B86]" />
-                                    </div>                                                                   
-                                </>
-                            }
-                        </div>
+                        </SimpleBar>
 
                         <p className="text-center text-[14px] text-[#787B86] mt-[5px]">
                             Данные подставлены автоматически
@@ -250,22 +252,24 @@ const InnCheck = ({ information, next }: { next: Function; information: any }) =
                 {!companyInformation.Inn && (<button onClick={() => getInformation()} className='w-full bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Найти реквизиты</button>)}
                 {companyInformation.Inn && (
                     <div className='flex gap-[10px]'>
-                        <button onClick={() => {setInn(''); setActive(false); setCompanyInformation(
-                            {
-                                EmployeeId: EmployeeId,
-                                LegalName: '',
-                                ShortName: '',
-                                Inn: '',
-                                OGRN: '',
-                                OKPO: '',
-                                Kpp: '',
-                                LegalAddress: '',
-                                PhysicalAddress: '',
-                                ShortFIO: '',
-                                FIO: '',
-                                PassportData: '',
-                            }
-                        )}} className='w-full bg-[#ECEEF1] px-[60px] py-[15px] rounded-[16px] text-[18px] font-medium text-[#787B86]'>Назад</button>
+                        <button onClick={() => {
+                            setInn(''); setActive(false); setCompanyInformation(
+                                {
+                                    EmployeeId: EmployeeId,
+                                    LegalName: '',
+                                    ShortName: '',
+                                    Inn: '',
+                                    OGRN: '',
+                                    OKPO: '',
+                                    Kpp: '',
+                                    LegalAddress: '',
+                                    PhysicalAddress: '',
+                                    ShortFIO: '',
+                                    FIO: '',
+                                    PassportData: '',
+                                }
+                            )
+                        }} className='w-full bg-[#ECEEF1] px-[60px] py-[15px] rounded-[16px] text-[18px] font-medium text-[#787B86]'>Назад</button>
                         <button onClick={() => { nextStep() }} className='w-full bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Далее</button>
                     </div>
                 )}

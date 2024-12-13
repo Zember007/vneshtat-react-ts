@@ -3,6 +3,7 @@ import { useState } from 'react';
 import TemplateCart from './TemplateCart';
 import TemplateCartService from './TemplateCartService';
 import {  useLocation } from 'react-router-dom';
+import SimpleBar from 'simplebar-react';
 
 
 
@@ -53,7 +54,7 @@ const TemplateAll = () => {
                 />
             </div>
             <div className="p-[20px] rounded-[26px] bg-primary grow flex flex-col ">
-                <div className="max-h-[calc(100vh-340px)] scroll overflow-y-auto">
+                <SimpleBar className="max-h-[calc(100vh-340px)]">
                     <div className="flex flex-col gap-[9px] grow ">
                         {
                             location.includes('/templates/all') ?                                
@@ -63,7 +64,7 @@ const TemplateAll = () => {
                         }
 
                     </div>
-                </div>
+                </SimpleBar>
 
                 {/* <div className="flex flex-col gap-[12px] items-center mt-[74px] mb-[54px] text-center">
                     <Link to={'/templates/create'} className='bg-[#ECEEF1] py-[15px] rounded-[18px] w-[250px]'>

@@ -8,7 +8,7 @@ import NightImg from '@/assets/icons/night.svg?react'
 
 import { useState } from 'react'
 
-import PasswordChange from './PasswordChange'
+
 import PasswordFilter from './filters/PasswordFilter'
 import AuthenticationFilter from './filters/AuthenticationFilter'
 import AutoexitFilter from './filters/AutoexitFilter'
@@ -31,10 +31,11 @@ const SecurityFilter = ({ close }: { close: Function }) => {
     const [selectFilter, setSelectFilter] = useState<string>('lock')
 
    
+   
 
     return (
         <>
-        <PasswordChange active={false} />
+        
             <div className="flex gap-[10px]">
                 {filters.map(item => (
                     <button

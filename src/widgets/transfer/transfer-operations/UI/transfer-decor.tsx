@@ -5,6 +5,7 @@ import TimeImg from "@/assets/icons/time-grey.svg?react";
 import ArrowImg from "@/assets/icons/arrow-top.svg?react"
 import {useState} from "react";
 import {Passenger} from "@/shared/types";
+import SimpleBar from "simplebar-react";
 
 const TransferDecor = () => {
     const [passengers, setPassengers] = useState<Passenger[]>([
@@ -35,8 +36,8 @@ const TransferDecor = () => {
     ]);
 
     return (
-        <div>
-            <div className={"flex flex-col gap-2.5 h-[calc(100vh-348px)] overflow-y-auto scroll"}>
+        <SimpleBar className="h-[calc(100vh-348px)]">
+            <div className={"flex flex-col gap-2.5"}>
                 <Dropdown title={"Тариф"}>
                     <div className={"flex flex-col gap-2.5"}>
                         <div className={"rounded-primary bg-primary p-2.5"}>
@@ -114,7 +115,7 @@ const TransferDecor = () => {
                     </div>
                 </Dropdown>
             </div>
-        </div>
+        </SimpleBar>
     )
 };
 

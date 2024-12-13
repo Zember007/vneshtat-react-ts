@@ -1,19 +1,22 @@
 import SuccessBlueImg from '@/assets/icons/success-blue.svg?react'
+import SimpleBar from 'simplebar-react';
 
 const AuthenticationFilter = () => {
     return (
         <div className="flex flex-col gap-[15px] justify-between grow ">
 
-            <div className="flex flex-col gap-[10px] mt-[15px] h-full overflow-y-auto scroll max-h-[calc(100vh-330px)]">
+            <SimpleBar className='max-h-[calc(100vh-330px)]'>
+                <div className="flex flex-col gap-[10px] mt-[15px] h-full">
 
-                <div className={`bg-[#ECEEF1] transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]`}>
-                    <SuccessBlueImg />
-                    <span className="text-[14px]">Подключено</span>
+                    <div className={`bg-[#ECEEF1] transition-all duration-300 rounded-[13px] flex items-center gap-[5px] justify-center py-[9px]`}>
+                        <SuccessBlueImg />
+                        <span className="text-[14px]">Подключено</span>
+                    </div>
+                    <p className='text-center text-[11px] text-[#787B86]'>
+                        Для входа в ваш аккаунт одного пароля теперь недостаточно.
+                    </p>
                 </div>
-                <p className='text-center text-[11px] text-[#787B86]'>
-                    Для входа в ваш аккаунт одного пароля теперь недостаточно.
-                </p>
-            </div>
+            </SimpleBar>
 
             <div className="flex flex-col gap-[10px] pt-[15px] border-0 border-t border-solid border-[#D9D9D9]">
                 <button

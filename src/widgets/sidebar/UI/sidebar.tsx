@@ -235,7 +235,7 @@ const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: Dispatch<SetS
             </div>
             {isOpen ? (
                 <div
-                    className={"w-full rounded-[23px] min-h-[65px] ultra:min-h-[92px] py-3 pl-3 pr-4 flex justify-between items-center bg-black"}>
+                    className={"w-full rounded-[23px] min-h-[65px] ultra:min-h-[92px] py-3 pl-[13px] pr-4 flex justify-between items-center bg-black"}>
                     <div className={"flex items-center gap-2.5"}>
                         <div className={"bg-section h-[39px] w-[39px] ultra:h-[60px] ultra:w-[60px] flex items-center justify-center rounded-[100%] py-1.5 px-2"}>
                             <p className={"text-lg tracking-[-0.1em]"}>{fullname.name[0].toUpperCase()}{fullname.surname[0].toUpperCase()}</p>

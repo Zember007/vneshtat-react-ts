@@ -1,7 +1,7 @@
 
 import {ActiveOperation} from "@/shared/types";
 import RouteImg from "@/assets/icons/route.svg?react";
-import PassengersImg from "@/assets/icons/users.svg?react";
+import PassengersImg from "@/assets/icons/team.svg?react";
 import FilterImg from "@/assets/icons/filter.svg?react";
 import TicketImg from "@/assets/icons/ticket.svg?react";
 import AddImg from "@/assets/icons/add.svg?react";
@@ -17,7 +17,7 @@ const FlightOperations = ({activeOperation, setActiveOperation}:{activeOperation
 
     return (
         
-            <div className={"flex flex-col gap-5 relative z-0 p-[20px] h-full"}>
+            <div className={"flex flex-col gap-5 z-0 p-[20px] h-full"}>
                 <div className={"flex flex-row gap-2.5"}>
                     <button
                         onClick={() => setActiveOperation("route")}
@@ -27,7 +27,7 @@ const FlightOperations = ({activeOperation, setActiveOperation}:{activeOperation
                     <button
                         onClick={() => setActiveOperation("passengers")}
                         className={`${activeOperation === "passengers" ? "bg-black" : "bg-section"} transition p-2 rounded-primary w-11 h-11 flex justify-center items-center`}>
-                        <PassengersImg className={`${activeOperation === "passengers" ? "white-fill" : undefined} min-h-5 min-w-5`}/>
+                        <PassengersImg className={`${activeOperation === "passengers" ? "white-fill" : undefined} w-5 h-5`}/>
                     </button>
                     <button
                         onClick={() => setActiveOperation("filter")}

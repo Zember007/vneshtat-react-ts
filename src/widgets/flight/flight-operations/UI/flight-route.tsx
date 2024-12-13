@@ -7,6 +7,7 @@ import { addFlight, removeFlight, setCityFrom, setCityTo, setClass, updateFlight
 import { useState, useEffect } from "react";
 import { City } from "@/shared/types";
 import { addRoute, changeCity, removeRoute, setClassRoutes } from "@/widgets/templates/model/template.store";
+import SimpleBar from "simplebar-react";
 
 interface FlightRouteItemProps {
     flight: any;
@@ -138,7 +139,6 @@ const FlightRouteItem = ({ flight, index, onRemove, template }: FlightRouteItemP
                     inputValue={flightDate}
                     viewValue={flightDate}
                     calendarOpt={calendarOptions}
-                    extraCalendarClass={"right-[180px] -translate-y-[200px]"}
                     placeholder={"Дата"}
                     noNeedButton={true}
                 />}
@@ -179,8 +179,8 @@ const FlightRoute = ({ template }: { template?: template }) => {
 
     return (
         <div className={"flex flex-col justify-between h-full"}>
-            <div className={"max-h-[calc(100vh-418px)] overflow-y-auto scroll "}>
-                <Dropdown title={"Класс"} selectedText={activeClass && activeClass.content} extraClass={"py-2 rounded-primary"}>
+            <SimpleBar className={"max-h-[calc(100vh-418px)]"}>
+                <Dropdown title={"Класс"} selectedText={activeClass && activeClass.content} extraClass={'!p-2'} extraClassBox={" !rounded-primary"}>
                     <Checkbox items={classes} onChange={(id: number) => dispatch(setClass({ id, oneChoise: true }))} />
                 </Dropdown>
                 {flights.map((flight, i) => ( 
@@ -192,7 +192,7 @@ const FlightRoute = ({ template }: { template?: template }) => {
                         onRemove={handleRemoveFlight}
                     />
                 ))}
-            </div>
+            </SimpleBar>
             <div>
                 <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mb-[15px]"} />
                 <button

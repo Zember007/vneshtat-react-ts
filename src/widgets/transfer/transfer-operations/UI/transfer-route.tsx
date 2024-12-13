@@ -3,6 +3,7 @@ import {RootState} from "@/app/config/store";
 import {Input, InputDate, InputTime} from "@/shared/UI";
 import PlusImg from "@/assets/icons/plus.svg?react";
 import {setAddressFrom, setAddressTo, setDate} from "@/widgets/transfer/transfer-content/model/transfer.store";
+import SimpleBar from "simplebar-react";
 
 const TransferRoute = () => {
     const {addressFrom, addressTo, date, time} = useSelector((state: RootState) => state.transfer);
@@ -14,7 +15,7 @@ const TransferRoute = () => {
                 <h3>Маршрут</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"h-[calc(100vh-417px)] overflow-y-auto scroll pb-2.5"}>
+            <SimpleBar className={"h-[calc(100vh-417px)] pb-2.5"}>
                 <div className={"flex flex-col py-2.5 gap-4"}>
                     <h4 className={"text-base font-medium"}>Адрес отправления</h4>
                     <Input
@@ -45,7 +46,7 @@ const TransferRoute = () => {
                         <InputTime time={time} extraClass={"max-h-7"}/>
                     </div>
                 </div>
-            </div>
+            </SimpleBar>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px]"}/>
             <button
                 className={"w-full border border-solid border-[#e5e7ea] rounded-[23px] flex justify-between items-center py-4 px-4 mt-4"}

@@ -8,6 +8,7 @@ import { addService } from "../model/template.store";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import { FlightTickets } from "@/widgets/flight/flight-tickets";
+import SimpleBar from "simplebar-react";
 
 
 const TemplateAdd = () => {
@@ -77,7 +78,7 @@ const TemplateAdd = () => {
                         <FlightTickets template={true} />
                         :
                         <div className="p-[20px] bg-primary rounded-[26px] flex flex-col h-full ">
-                            <div className="max-h-[calc(100vh-185px)] scroll overflow-y-auto">
+                            <SimpleBar className="max-h-[calc(100vh-185px)]">
                                 <div className="flex flex-col gap-[15px]">
                                     {services.map((item, index) => (
                                         <>
@@ -101,7 +102,7 @@ const TemplateAdd = () => {
                                     <button onClick={() => { dispatch(addService()) }} className="w-[255px] py-[15px] rounded-[18px] bg-[#ECEEF1]">Добавить элемент</button>
                                     <button className="w-[255px] py-[15px] rounded-[18px] bg-[#ECEEF1]">Выбрать из поездки</button>
                                 </div>
-                            </div>
+                            </SimpleBar>
                         </div>
                     }
 

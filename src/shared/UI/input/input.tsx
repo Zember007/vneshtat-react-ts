@@ -35,7 +35,7 @@ const cleanPhoneNumber = (formattedValue: string): string => {
     return formattedValue.replace(/[^+\d]/g, '');
 };
 
-const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
+const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}: InputProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState(rest.value || '');
 
@@ -85,8 +85,9 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
 
     return rest.type === "password" ? (
         <label className="relative w-full">
+            {title && <span className="text-[14px] text-[#9B9FAD] font-medium absolute top-1/2 transform -translate-y-1/2 left-[18px] ">{title}</span>}
             <input
-                className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass)}
+                className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass, title && '!pl-[50%] !pr-[45px] text-right')}
                 {...rest}
                 type={isOpen ? "text" : "password"}
             />
@@ -110,6 +111,12 @@ const Input = ({extraClass, withEraser = true, ...rest}: InputProps) => {
             maxLength={18}
             value={inputValue}
             onChange={handlePhoneChange}
+            onFocus={(e) => {
+                const value = e.target.value
+                if(value === '') {
+                    setInputValue('+7 (')
+                }
+            }}
         />
     ) : rest.type === "number" ? (
         <input

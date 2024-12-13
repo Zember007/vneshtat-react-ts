@@ -12,5 +12,6 @@ export interface InputDateProps extends InputHTMLAttributes<HTMLInputElement>{
     placeholder?: string
     extraCalendarClass?: string
     extraClass?: string
+    extraClassBox?: string
     extraClassIcon?:string;
 }

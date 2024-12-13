@@ -2,12 +2,12 @@ import PassengerImg from "@/assets/icons/users.svg?react";
 import RouteImg from "@/assets/icons/route.svg?react";
 import CopyImg from "@/assets/icons/copy.svg?react";
 import ArrowImg from "@/assets/icons/arrow-right.svg?react";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/app/config/store";
-import {InputCity, InputDate} from "@/shared/UI";
-import {handleScrollToTop} from "@/shared/utils";
-import {BusTicket, BusTicketPreload} from "@/entities/bus-ticket";
-import {useEffect, useRef, useState, WheelEvent} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/config/store";
+import { InputCity, InputDate } from "@/shared/UI";
+import { handleScrollToTop } from "@/shared/utils";
+import { BusTicket, BusTicketPreload } from "@/entities/bus-ticket";
+import { useEffect, useRef, useState, WheelEvent } from "react";
 import {
     setCityTo,
     setCityFrom,
@@ -15,9 +15,10 @@ import {
     setCityToName,
     setJourneyDate
 } from "../../bus-operations/model/bus.store";
+import SimpleBar from "simplebar-react";
 
 const BusTickets = () => {
-    const {journeyDate, cityFromName, cityToName, cityFrom, cityTo } = useSelector((state: RootState) => state.bus);
+    const { journeyDate, cityFromName, cityToName, cityFrom, cityTo } = useSelector((state: RootState) => state.bus);
     const tickets = 1;
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const ticketContainerRef = useRef<HTMLDivElement | null>(null);
@@ -83,7 +84,7 @@ const BusTickets = () => {
                     <div className={"flex flex-row items-center gap-2.5"}>
                         <div
                             className={"flex flex-row items-center py-3 px-2.5 gap-2 h-11 rounded-[16px] bg-secondary"}>
-                            <PassengerImg/>
+                            <PassengerImg />
                             <p className={"text-xs"}>+0</p>
                         </div>
                         <InputCity
@@ -93,7 +94,7 @@ const BusTickets = () => {
                             callback={(city) => dispatch(setCityFrom(city))}
                         />
                         <button onClick={swapCities}>
-                            <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"}/>
+                            <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"} />
                         </button>
                         <InputCity
                             placeholder={"Прибытие"}
@@ -127,36 +128,37 @@ const BusTickets = () => {
                         </div>
                         <div
                             className={"flex items-center gap-2.5 px-4 py-2 rounded-primary bg-secondary cursor-pointer"}>
-                            <CopyImg/>
+                            <CopyImg />
                             <h6 className={"text-xs font-medium"}>Выбрать из шаблонов</h6>
                         </div>
                     </div>
                 </div>
-                <hr className={"h-[1px] bg-[#e5e7ea] rounded-[1px] mt-4"}/>
+                <hr className={"h-[1px] bg-[#e5e7ea] rounded-[1px] mt-4"} />
             </div>
             <div className={"bg-primary overflow-hidden rounded-b-[26px]"}>
                 {tickets ? (
-                    <div
-                        ref={ticketContainerRef}
-                        className="flex flex-col gap-4 px-5 py-5 overflow-y-auto scroll max-h-[calc(100vh-270px)] relative h-full">
-                        {showScrollButton && (
-                            <button
-                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10"
-                                onClick={() => {
-                                    handleScrollToTop(ticketContainerRef);
-                                    setShowScrollButton(false)
-                                }}
-                            >
-                                <ArrowImg className="-rotate-90" />
-                            </button>
-                        )}
-                        <BusTicketPreload />
-                        <BusTicket/>
-                        <BusTicket/>
-                        <BusTicket/>
-                        <BusTicket/>
-                        <BusTicket/>
-                    </div>
+                    <SimpleBar className="max-h-[calc(100vh-270px)]" scrollableNodeProps={{ ref: ticketContainerRef }}>
+                        <div
+                            className="flex flex-col gap-4 px-5 py-5 relative h-full">
+                            {showScrollButton && (
+                                <button
+                                    className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10"
+                                    onClick={() => {
+                                        handleScrollToTop(ticketContainerRef);
+                                        setShowScrollButton(false)
+                                    }}
+                                >
+                                    <ArrowImg className="-rotate-90" />
+                                </button>
+                            )}
+                            <BusTicketPreload />
+                            <BusTicket />
+                            <BusTicket />
+                            <BusTicket />
+                            <BusTicket />
+                            <BusTicket />
+                        </div>
+                    </SimpleBar>
                 ) : (
                     <div>
 
@@ -167,4 +169,4 @@ const BusTickets = () => {
     )
 };
 
-export {BusTickets};
+export { BusTickets };

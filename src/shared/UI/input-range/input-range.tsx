@@ -28,7 +28,7 @@ const InputRange: React.FC<InputRangeProps> = ({
         [min, max]
     );
 
-    const getLeftValue = (val: number) => {
+    /* const getLeftValue = (val: number) => {
         const percent = getPercent(val);
         let leftValue;
 
@@ -55,7 +55,7 @@ const InputRange: React.FC<InputRangeProps> = ({
         }
 
         return leftValue;
-    };
+    }; */
 
     useEffect(() => {
         const minPercent = getPercent(left);
@@ -138,7 +138,7 @@ const InputRange: React.FC<InputRangeProps> = ({
                     style={{zIndex: left > max - 100 ? "5" : "4"}}
                     disabled={isLeftFixed}
                 />
-                {!isLeftFixed && <div ref={thumbLeft} className="thumb-indicator" style={{left: getLeftValue(left)}}/>}
+              {/*   {!isLeftFixed && <div ref={thumbLeft} className="thumb-indicator" style={{left: getLeftValue(left)}}/>} */}
 
                 <input
                     type="range"
@@ -154,8 +154,8 @@ const InputRange: React.FC<InputRangeProps> = ({
                     className="thumb thumb--right"
                     disabled={isRightFixed}
                 />
-                {!isRightFixed &&
-                    <div ref={thumbRight} className="thumb-indicator" style={{left: getLeftValue(right)}}/>}
+              {/*   {!isRightFixed &&
+                    <div ref={thumbRight} className="thumb-indicator" style={{left: getLeftValue(right)}}/>} */}
 
                 <div className="slider">
                     <div className="slider__track"/>

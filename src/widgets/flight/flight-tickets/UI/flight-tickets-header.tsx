@@ -129,7 +129,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                     <InputDate
                         placeholder={"Туда"}
                         extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                        extraCalendarClass={"-translate-y-[72px]"}
+
                         inputValue={dates}
                         viewValue={firstFlight.flightDate}
                         noNeedButton={dates.length !== 2}
@@ -148,7 +148,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                     <InputDate
                         placeholder={"Обратно"}
                         extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                        extraCalendarClass={"-translate-y-[72px]"}
+                        
                         inputValue={dates}
                         viewValue={secondFlight?.flightDate}
                         noNeedButton={dates.length !== 2}

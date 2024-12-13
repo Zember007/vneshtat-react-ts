@@ -365,3 +365,13 @@ a {
 .scroll_information {
     max-height: calc(100vh - 258px);
 }
+
+.simplebar-track.simplebar-vertical {
+    width: 6px;
+}
+
+.simplebar-scrollbar::before {
+    width: 3px;
+    background-color: rgb(211, 212, 214);
+    right: 0px;
+  }

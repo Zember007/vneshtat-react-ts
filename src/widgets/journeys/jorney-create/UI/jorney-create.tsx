@@ -48,19 +48,28 @@ const JorneyCreate = () => {
                                 <div className="flex flex-col gap-[10px]">
                                     <span className="text-[14px] text-[#787B86] font-medium">Центр затрат</span>
                                     <div className="flex flex-col gap-[6px]">
-                                        <Dropdown
-                                            title="Продукт">
-                                            <></>
-                                        </Dropdown>
-                                        <Dropdown
-                                            title="Проект">
-                                            <></>
-                                        </Dropdown>
+                                        <div className="relative">
+                                            <Dropdown
+                                                isAbsoluteDrop={true}
+                                                title="Продукт">
+                                                <></>
+                                            </Dropdown>
+                                        </div>
+                                        <div className="relative">
+                                            <Dropdown
+                                                isAbsoluteDrop={true}
+                                                title="Проект">
+                                                <></>
+                                            </Dropdown>
+                                        </div>
+                                        <div className="relative">
 
-                                        <Dropdown
-                                            title="Цель">
-                                            <></>
-                                        </Dropdown>
+                                            <Dropdown
+                                                isAbsoluteDrop={true}
+                                                title="Цель">
+                                                <></>
+                                            </Dropdown>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -1,5 +1,6 @@
 import Switcher from "@/widgets/jobs/UI/Switcher";
 import { useState } from "react";
+import SimpleBar from "simplebar-react";
 
 const Services = () => {
 
@@ -19,8 +20,8 @@ const Services = () => {
                 <Switcher items={['Всё', 'По услугам']} change={setSwitcher} checked={switcher} />
 
 
+                <SimpleBar className="grow h-[calc(100vh-320px)]">
 
-                <div  className="grow h-[calc(100vh-320px)] overflow-y-auto scroll">
                     <div className="p-[15px] bg-[#ECEEF1] rounded-[13px]">
                         <div className="h-full bg-[#FBFBFBD1] p-[15px] rounded-[13px] flex flex-col gap-[10px]">
                             <div className="*:text-[12px] gap-[10px] *:font-medium *:text-[#9B9FAD] grid grid-cols-[1fr_1fr_1fr_3fr_1.5fr_1.5fr_1.5fr_1fr] pb-[10px] border-0 border-b border-solid border-[#E5E7EA]">
@@ -162,7 +163,8 @@ const Services = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+
+                </SimpleBar>
             </div>
 
         </>

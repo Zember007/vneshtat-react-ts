@@ -4,15 +4,16 @@ import PlaneImg from "@/assets/icons/plane.svg?react";
 import ArrowImg from "@/assets/icons/arrow-right.svg?react";
 import BusImg from "@/assets/icons/bus.svg?react";
 import { useEffect, useRef, useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {handleScrollToTop} from "@/shared/utils";
-import {AppDispatch, RootState} from "@/app/config/store";
-import {JourneyTicket, JourneyTicketPreload} from "@/entities/journey-ticket";
-import {JourneyTicketsHeader} from "@/widgets/train/train-tickets/UI/journey-tickets-header";
-import {fetchJourneyTickets} from "@/widgets/train/train-operations/model/journey.store";
+import { useDispatch, useSelector } from "react-redux";
+import { handleScrollToTop } from "@/shared/utils";
+import { AppDispatch, RootState } from "@/app/config/store";
+import { JourneyTicket, JourneyTicketPreload } from "@/entities/journey-ticket";
+import { JourneyTicketsHeader } from "@/widgets/train/train-tickets/UI/journey-tickets-header";
+import { fetchJourneyTickets } from "@/widgets/train/train-operations/model/journey.store";
+import SimpleBar from "simplebar-react";
 
 const TrainTickets = () => {
-    const {dateTo, dateBack} = useSelector((state: RootState) => state.journey);
+    const { dateTo, dateBack } = useSelector((state: RootState) => state.journey);
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const ticketContainerRef = useRef<HTMLDivElement | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -61,19 +62,19 @@ const TrainTickets = () => {
     }, [])
 
     useEffect(() => {
-       dispatch(fetchJourneyTickets())
+        dispatch(fetchJourneyTickets())
     }, []);
 
     return (
-        <div className={"w-full flex flex-col h-full"} ref={scrollRef}>
+        <div className={"w-full flex flex-col h-full grow"} ref={scrollRef}>
             <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
                 <JourneyTicketsHeader />
                 <hr className={"h-[1px] bg-[#e5e7ea] rounded-[1px] mt-4"} />
             </div>
-            <div className={"bg-primary overflow-hidden rounded-b-[26px]"}>
+            <div className={"bg-primary overflow-hidden rounded-b-[26px] pb-5"}>
                 {dateBack && dateTo ? (
                     <div className="flex flex-col px-5 py-5 h-[calc(100vh-330px)]">
-                        <div className="flex flex-col p-7 h-full rounded-[23px] bg-secondary">
+                        <div className="flex flex-col p-7  rounded-[23px] bg-secondary">
                             <h1 className={"text-2xl"}>Билетов на эти даты уже нет в продаже</h1>
                             <h3 className={"text-lg mt-4 font-normal"}>Что можно сделать?</h3>
                             <div className={"flex flex-col gap-2.5 mt-6"}>
@@ -102,25 +103,27 @@ const TrainTickets = () => {
                         </div>
                     </div>
                 ) : (
-                    <div ref={ticketContainerRef} className="flex flex-col gap-4 px-5 py-5 overflow-y-auto scroll max-h-[calc(100vh-250px)] relative h-full">
-                        {showScrollButton && (
-                            <button
-                                className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10"
-                                onClick={() => {
-                                    handleScrollToTop(ticketContainerRef);
-                                    setShowScrollButton(false)
-                                }}
-                            >
-                                <ArrowImg className="-rotate-90" />
-                            </button>
-                        )}
-                        <JourneyTicketPreload />
-                        <JourneyTicket />
-                        <JourneyTicket />
-                        <JourneyTicket />
-                        <JourneyTicket />
-                        <JourneyTicket />
-                    </div>
+                    <SimpleBar className="max-h-[calc(100vh-250px)]" scrollableNodeProps={{ ref: ticketContainerRef }}>
+                        <div className="flex flex-col gap-4 px-5 py-5  relative h-full">
+                            {showScrollButton && (
+                                <button
+                                    className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10"
+                                    onClick={() => {
+                                        handleScrollToTop(ticketContainerRef);
+                                        setShowScrollButton(false)
+                                    }}
+                                >
+                                    <ArrowImg className="-rotate-90" />
+                                </button>
+                            )}
+                            <JourneyTicketPreload />
+                            <JourneyTicket />
+                            <JourneyTicket />
+                            <JourneyTicket />
+                            <JourneyTicket />
+                            <JourneyTicket />
+                        </div>
+                    </SimpleBar>
                 )}
             </div>
         </div>

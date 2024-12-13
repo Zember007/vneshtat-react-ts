@@ -16,8 +16,9 @@ import FilterUser from "./FilterUser";
 import { setActiveFilter } from '../../model/index.store'
 import { RootState } from '@/app/config/store'
 import { useSelector, useDispatch } from 'react-redux'
+import SimpleBar from 'simplebar-react'
 
-const FilterUsers = ({ close, passenger, selectId }: { close: Function; passenger?: boolean; selectId:number | null }) => {
+const FilterUsers = ({ close, passenger, selectId }: { close: Function; passenger?: boolean; selectId: number | null }) => {
 
     const dispatch = useDispatch();
 
@@ -54,13 +55,13 @@ const FilterUsers = ({ close, passenger, selectId }: { close: Function; passenge
         },
     ]
 
-    
+
 
     return (
         <>
             <div className="flex gap-[10px]">
                 {
-                    filterNav.map((item,index) => (
+                    filterNav.map((item, index) => (
                         <button onClick={() => { dispatch(setActiveFilter(item.code)) }} className={clsx('w-[35px] h-[35px] transition-all duration-300 flex items-center justify-center rounded-[11px] bg-[#ECEEF1]', activeFilter == item.code && '!bg-[#121212]', ((passenger && item.no_passanger) || item.disabled) && 'pointer-events-none')}>
                             <item.Img key={index} className={clsx('w-[19px] h-[19px] *:duration-300 *:transition-all', activeFilter === item.code && '*:fill-[#FAFAFA]', ((passenger && item.no_passanger) || item.disabled) ? '*:fill-[#8C909C]' : activeFilter !== item.code ? '*:fill-[#121212]' : '')} />
                         </button>
@@ -80,29 +81,31 @@ const FilterUsers = ({ close, passenger, selectId }: { close: Function; passenge
                     <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>}
             </div>
-            <div className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto max-h-[calc(100vh-342px)]")}>
-                {activeFilter === 'user' ?
-                    (
-                        <FilterUser selectId={selectId} passenger={passenger}/>
-                    ) : activeFilter === 'document' ?
+            <SimpleBar className=' max-h-[calc(100vh-342px)]'>
+                <div className={clsx("flex flex-col gap-[10px] grow h-full")}>
+                    {activeFilter === 'user' ?
                         (
-                            <FilterDocument selectId={selectId} passenger={passenger}/>
-                        ) : activeFilter === 'ad-cart' ?
+                            <FilterUser selectId={selectId} passenger={passenger} />
+                        ) : activeFilter === 'document' ?
                             (
-                                <FilterCarts />
-                            ) : activeFilter === 'access' ?
+                                <FilterDocument selectId={selectId} passenger={passenger} />
+                            ) : activeFilter === 'ad-cart' ?
                                 (
-                                    <FilterAccess selectId={selectId}/>
-                                ) : activeFilter === 'travel-policy' ?
+                                    <FilterCarts />
+                                ) : activeFilter === 'access' ?
                                     (
-                                        <FilterTravel />
-                                    ) :
-                                    (
-                                        <FilterPeriod />
-                                    )
-                }
+                                        <FilterAccess selectId={selectId} />
+                                    ) : activeFilter === 'travel-policy' ?
+                                        (
+                                            <FilterTravel />
+                                        ) :
+                                        (
+                                            <FilterPeriod />
+                                        )
+                    }
 
-            </div>
+                </div>
+            </SimpleBar>
         </>
     );
 };

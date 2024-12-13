@@ -7,6 +7,7 @@ import clsx from "clsx";
 import FilterUser from "@/widgets/employees/UI/filters/FilterUser";
 import FilterDocument from "@/widgets/employees/UI/filters/FilterDocument";
 import FilterCarts from "@/widgets/employees/UI/filters/FilterCarts";
+import SimpleBar from "simplebar-react";
 
 
 const PersonalFilter = ({ close }: { close: Function }) => {
@@ -52,20 +53,22 @@ const PersonalFilter = ({ close }: { close: Function }) => {
                     <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
                 </button>
             </div>
-            <div className={clsx("flex flex-col gap-[10px] grow h-full scroll overflow-y-auto max-h-[calc(100vh-342px)]")}>
-                {selectFilter === 'user' ?
-                    (
-                        <FilterUser selectId={Number(EmployeeId)} passenger={false} profile={true} />
-                    ) : selectFilter === 'document' ?
+            <SimpleBar className="max-h-[calc(100vh-342px)]">
+                <div className={clsx("flex flex-col gap-[10px] grow h-full ")}>
+                    {selectFilter === 'user' ?
                         (
-                            <FilterDocument selectId={Number(EmployeeId)} passenger={false} profile={true} />
-                        ) :
-                        (
-                            <FilterCarts />
-                        )
-                }
+                            <FilterUser selectId={Number(EmployeeId)} passenger={false} profile={true} />
+                        ) : selectFilter === 'document' ?
+                            (
+                                <FilterDocument selectId={Number(EmployeeId)} passenger={false} profile={true} />
+                            ) :
+                            (
+                                <FilterCarts />
+                            )
+                    }
 
-            </div>
+                </div>
+            </SimpleBar>
         </>
     );
 };

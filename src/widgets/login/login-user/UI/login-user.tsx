@@ -225,7 +225,7 @@ const LoginUser = () => {
                         </button>
                         {companies?.map((item) => (
                             <div className={"bg-primary p-6 rounded-[35px] w-[320px]"} key={item.EmployeeId}>
-                                <div className="w-[95px] h-[95px] flex items-center justify-center rounded-[50%] border border-solid border-[#E5E7EA]">
+                                <div className="w-[95px] mx-auto h-[95px] flex items-center justify-center rounded-[50%] border border-solid border-[#E5E7EA]">
                                     <span className="font-medium text-[54px] text-[#9B9FAD]">
                                         {item.CompanyName.split(' ')[0][0]}
                                     </span>

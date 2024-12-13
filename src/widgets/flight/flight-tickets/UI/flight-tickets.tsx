@@ -9,11 +9,12 @@ import { FlightTicket, FlightTicketPreload } from "@/entities/flight-ticket";
 import { setCityFrom, setCityTo } from "@/widgets/flight/flight-operations/model/flight.store";
 import { FlightTicketsHeader } from "@/widgets/flight/flight-tickets/UI/flight-tickets-header";
 import { FlightChart } from "@/widgets/flight/flight-tickets/UI/flight-chart";
-import {PriceData} from "../utils";
+import { PriceData } from "../utils";
+import SimpleBar from "simplebar-react";
 
 export type ShowedGraph = "graph" | "dashboard" | null;
 
-const FlightTickets = ({template}:{template?: boolean}) => {
+const FlightTickets = ({ template }: { template?: boolean }) => {
     const { flights } = useSelector((state: RootState) => state.flight);
     const firstFlight = flights[0];
     const tickets = 1;
@@ -80,31 +81,32 @@ const FlightTickets = ({template}:{template?: boolean}) => {
             <hr className={"h-[1px] bg-[#e5e7ea] rounded-[1px] mt-4 mx-5"} />
             <div className={"bg-primary overflow-hidden rounded-b-[26px]"}>
                 {showedGraph ? (
-                    <FlightChart showedGraph={showedGraph} setShowedGraph={setShowedGraph} activeRate={activeRate}/>
+                    <FlightChart showedGraph={showedGraph} setShowedGraph={setShowedGraph} activeRate={activeRate} />
                 ) : (
                     <>
                         {tickets ? (
-                            <div
-                                ref={ticketContainerRef}
-                                className="flex flex-col gap-4 p-5 overflow-y-auto scroll h-[calc(100vh-320px)] relative">
-                                {showScrollButton && (
-                                    <button
-                                        className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10"
-                                        onClick={() => {
-                                            handleScrollToTop(ticketContainerRef);
-                                            setShowScrollButton(false);
-                                        }}
-                                    >
-                                        <ArrowImg className="-rotate-90" />
-                                    </button>
-                                )}
-                                <FlightTicketPreload />
-                                <FlightTicket />
-                                <FlightTicket />
-                                <FlightTicket />
-                                <FlightTicket />
-                                <FlightTicket />
-                            </div>
+                            <SimpleBar scrollableNodeProps={{ ref: ticketContainerRef }} className="h-[calc(100vh-320px)]">
+                                <div                                    
+                                    className="flex flex-col gap-4 p-5   relative">
+                                    {showScrollButton && (
+                                        <button
+                                            className="rounded-secondary w-9 min-h-9 bg-black flex justify-center items-center fixed bottom-10"
+                                            onClick={() => {
+                                                handleScrollToTop(ticketContainerRef);
+                                                setShowScrollButton(false);
+                                            }}
+                                        >
+                                            <ArrowImg className="-rotate-90" />
+                                        </button>
+                                    )}
+                                    <FlightTicketPreload />
+                                    <FlightTicket />
+                                    <FlightTicket />
+                                    <FlightTicket />
+                                    <FlightTicket />
+                                    <FlightTicket />
+                                </div>
+                            </SimpleBar>
                         ) : (
                             <div className="flex flex-col px-5 py-5 h-[calc(100vh-400px)]">
                                 <div className="flex flex-col p-7 h-full rounded-[23px] bg-secondary">

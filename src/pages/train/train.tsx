@@ -1,12 +1,21 @@
-import {TrainTickets} from "@/widgets/train/train-tickets";
-import {TrainOperations} from "@/widgets/train/train-operations";
+import { TrainTickets } from "@/widgets/train/train-tickets";
+import { TrainOperations } from "@/widgets/train/train-operations";
+import Layout from "@/app/layouts/layout";
 
 const Train = () => {
     return (
-        <div className={"flex flex-row gap-4"}>
-            <TrainTickets/>
-            <TrainOperations/>
-        </div>
+
+        <Layout
+            component={
+                <TrainTickets />
+            }
+            information={
+                <TrainOperations />
+            }
+            navigation={
+                <></>
+            }
+        />
     )
 };
 

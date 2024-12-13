@@ -9,6 +9,7 @@ import { useState } from 'react'
 import Summary from './Filters/Summary'
 import Route from './Filters/Route'
 import Jorneys from './Filters/Jorneys'
+import SimpleBar from 'simplebar-react'
 
 
 const StatisticsFilter = ({ close }: { close: Function }) => {
@@ -44,11 +45,13 @@ const StatisticsFilter = ({ close }: { close: Function }) => {
                 </button>
             </div>
 
-            <div className="flex flex-col gap-[15px] grow h-full overflow-y-auto scroll max-h-[calc(100vh-330px)]">
-                {selectFilter === 'warn' && <Summary />}
-                {selectFilter === 'route' && <Route />}
-                {selectFilter === 'plane' && <Jorneys />}
-            </div>
+            <SimpleBar className='max-h-[calc(100vh-330px)]'>
+                <div className="flex flex-col gap-[15px] grow h-full ">
+                    {selectFilter === 'warn' && <Summary />}
+                    {selectFilter === 'route' && <Route />}
+                    {selectFilter === 'plane' && <Jorneys />}
+                </div>
+            </SimpleBar>
         </>
     );
 };

@@ -1,3 +1,4 @@
+import 'simplebar-react/dist/simplebar.min.css'
 import "./styles/index.css";
 import {Layout} from "@/app/config/routes/layout";
 import BasicLayout from "@/app/layouts/basic-layout";

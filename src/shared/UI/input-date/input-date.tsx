@@ -7,6 +7,7 @@ import { useClickAway } from "@/shared/hooks/use-click-away";
 
 const InputDate = ({
     extraClass,
+    extraClassBox,
     extraCalendarClass,
     inputValue,
     viewValue,
@@ -52,16 +53,16 @@ const InputDate = ({
     useEffect(() => {
 
         let position = containerRef.current?.getBoundingClientRect()
-        console.log(position);
 
         let top = position?.top
         let right = position?.x
         let height = containerRef.current?.clientHeight
         let width = containerRef.current?.clientWidth
+        const inner = document.body
 
         if (typeof top === 'number' && typeof height === 'number' && typeof right === 'number' && typeof width === 'number') {
             setTop((top + height + window.pageYOffset) + 'px')
-            setRight((window.innerWidth - right - width) + 'px')
+            setRight((inner.clientWidth - right - width ) + 'px')
         }
 
 
@@ -70,11 +71,11 @@ const InputDate = ({
     }, [containerRef])
 
     return (
-        <div className={`flex flex-col min-h-7 cursor-none grow`} ref={containerRef} {...rest}>
+        <div ref={containerRef} className={`flex flex-col min-h-7 cursor-none ${extraClassBox}`}  {...rest}>
 
-            <label className="relative flex justify-end items-center w-full cursor-pointer">
-                <div
-                    className={`${extraClass} w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}
+            <label  className="relative flex justify-end items-center w-full cursor-pointer">
+                <div 
+                    className={`${extraClass} min-h-[36px] w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}
                     onClick={() => setIsOpen(prev => !prev)}>
                     {viewValue && Array.isArray(viewValue) && viewValue.length ? (
                         viewValue.map(renderDate)

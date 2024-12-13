@@ -12,8 +12,9 @@ import { AppDispatch, RootState } from "@/app/config/store";
 import { setDepartments, setNoDepartments, setServices, setCenters, setProjects, setStructure } from "../../model/reports.store";
 import { CheckboxItem } from "@/shared/UI/checkbox/checkbox.props";
 import { useState } from "react";
+import SimpleBar from "simplebar-react";
 
-const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number | null; setFilterStep: Function;}) => {
+const ServicesFilters = ({ filterStep, setFilterStep }: { filterStep: number | null; setFilterStep: Function; }) => {
     const dispatch: AppDispatch = useDispatch();
     const Departments = useSelector((state: RootState) => state.reports.departments);
     const NoDepartments = useSelector((state: RootState) => state.reports.noDepartments);
@@ -64,97 +65,104 @@ const ServicesFilters = ({filterStep, setFilterStep}: {filterStep:number | null;
             </div>
 
             {filterStep == 0 && (
-                <div className="flex flex-col gap-[10px] h-[calc(100vh-320px)] scroll overflow-y-auto">
-                    <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
-                        <span className="font-medium ">Параметры</span>
-                        <button onClick={() => { setFilterStep(null) }}>
-                            <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
-                        </button>
-                    </div>
-                    <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
-                        <div className=" flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
-                            <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата от</span>
-                            <InputDate ClassCalendar="!w-[260px] translate-x-[23px]" value={dateFrom} change={setDateFrom} />
+                <SimpleBar className="h-[calc(100vh-320px)]">
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
+                            <span className="font-medium ">Параметры</span>
+                            <button onClick={() => { setFilterStep(null) }}>
+                                <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
+                            </button>
                         </div>
-                        <div className=" flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
-                            <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата до</span>
-                            <InputDate ClassCalendar="!w-[260px] translate-x-[23px]" value={dateBefore} change={setDateBefore} />
-                        </div>
-                    </div>
-                    <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
-
-                        <div className="flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
-                            <span className="text-[#9B9FAD] text-[12px] font-medium">Компания</span>
-                            <div className="flex items-center gap-[6px]">
-                                <span className=" text-[12px] font-medium">{localStorage.getItem("CompanyName")}</span>
-                                <Lock />
+                        <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
+                            <div className=" flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                                <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата от</span>
+                                <InputDate ClassCalendar="!w-[260px] translate-x-[23px]" value={dateFrom} change={setDateFrom} />
+                            </div>
+                            <div className=" flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                                <span className="text-[#9B9FAD] text-[12px] font-medium whitespace-nowrap">Дата до</span>
+                                <InputDate ClassCalendar="!w-[260px] translate-x-[23px]" value={dateBefore} change={setDateBefore} />
                             </div>
                         </div>
+                        <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
 
-                        <InputSelect data={centers} title="Центры затрат" default="Не выбрано" change={(id:number) => dispatch(setCenters({id,oneChoise: true}))} />
+                            <div className="flex items-center gap-[20px] justify-between rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA]">
+                                <span className="text-[#9B9FAD] text-[12px] font-medium">Компания</span>
+                                <div className="flex items-center gap-[6px]">
+                                    <span className=" text-[12px] font-medium">{localStorage.getItem("CompanyName")}</span>
+                                    <Lock />
+                                </div>
+                            </div>
 
-                        <InputSelect data={projects} title="Проект" default="Не выбрано" change={(id:number) => dispatch(setProjects({id,oneChoise: true}))} />
+                            <InputSelect data={centers} title="Центры затрат" default="Не выбрано" change={(id: number) => dispatch(setCenters({ id, oneChoise: true }))} />
 
-                        <InputSelect data={structure} title="Структурные аналитики " default="Не выбрано" change={(id:number) => dispatch(setStructure({id,oneChoise: true}))} />
+                            <InputSelect data={projects} title="Проект" default="Не выбрано" change={(id: number) => dispatch(setProjects({ id, oneChoise: true }))} />
 
+                            <InputSelect data={structure} title="Структурные аналитики " default="Не выбрано" change={(id: number) => dispatch(setStructure({ id, oneChoise: true }))} />
+
+                        </div>
                     </div>
-                </div>
+                </SimpleBar>
+
             )}
 
             {filterStep == 1 && (
-                <div className="flex flex-col gap-[10px] h-[calc(100vh-320px)] scroll overflow-y-auto">
-                    <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]"></div>
-                    <div className="flex items-center justify-between">
-                        <span className="font-medium">Отделы</span>
-                        <button
-                            onClick={() => SelectAll(Departments.data, setDepartments)}>
-                            <span className="text-[#787B86] text-[10px] font-medium">Выбрать все</span>
-                        </button>
-                    </div>
-                    <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
+                <SimpleBar className="h-[calc(100vh-320px)]">
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]"></div>
+                        <div className="flex items-center justify-between">
+                            <span className="font-medium">Отделы</span>
+                            <button
+                                onClick={() => SelectAll(Departments.data, setDepartments)}>
+                                <span className="text-[#787B86] text-[10px] font-medium">Выбрать все</span>
+                            </button>
+                        </div>
+                        <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
 
-                        <Checkbox
-                            items={Departments.data}
-                            onChange={(id: number) => dispatch(setDepartments({ id, oneChoise: false }))}
-                        />
+                            <Checkbox
+                                items={Departments.data}
+                                onChange={(id: number) => dispatch(setDepartments({ id, oneChoise: false }))}
+                            />
 
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="font-medium">Без отдела</span>
-                        <button
-                            onClick={() => SelectAll(NoDepartments.data, setNoDepartments)}>
-                            <span className="text-[#787B86] text-[10px] font-medium">Выбрать всеx</span>
-                        </button>
-                    </div>
-                    <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="font-medium">Без отдела</span>
+                            <button
+                                onClick={() => SelectAll(NoDepartments.data, setNoDepartments)}>
+                                <span className="text-[#787B86] text-[10px] font-medium">Выбрать всеx</span>
+                            </button>
+                        </div>
+                        <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
 
-                        <Checkbox
-                            items={NoDepartments.data}
-                            onChange={(id: number) => dispatch(setNoDepartments({ id, oneChoise: false }))}
-                        />
+                            <Checkbox
+                                items={NoDepartments.data}
+                                onChange={(id: number) => dispatch(setNoDepartments({ id, oneChoise: false }))}
+                            />
 
+                        </div>
                     </div>
-                </div>
+                </SimpleBar>
             )}
 
 
             {filterStep == 2 && (
-                <div className="flex flex-col gap-[10px] h-[calc(100vh-320px)] scroll overflow-y-auto">
-                    <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
-                        <span className="font-medium ">Услуги</span>
-                        <button onClick={() => { setFilterStep(null) }}>
-                            <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
-                        </button>
-                    </div>
-                    <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
+                <SimpleBar className="h-[calc(100vh-320px)]">
+                    <div className="flex flex-col gap-[10px] ">
+                        <div className="flex items-center justify-between border-b-[#E5E7EA] border-solid border-0 border-b pb-[10px]">
+                            <span className="font-medium ">Услуги</span>
+                            <button onClick={() => { setFilterStep(null) }}>
+                                <CloseImg className="*:fill-[#BDBFC7] h-[18px] w-[18px]" />
+                            </button>
+                        </div>
+                        <div className="rounded-[23px] p-[13px] bg-[#ECEEF1] flex flex-col gap-[6px]">
 
-                        <Checkbox
-                            items={Services.data}
-                            onChange={(id: number) => dispatch(setServices({ id, oneChoise: false }))}
-                        />
+                            <Checkbox
+                                items={Services.data}
+                                onChange={(id: number) => dispatch(setServices({ id, oneChoise: false }))}
+                            />
 
+                        </div>
                     </div>
-                </div>
+                </SimpleBar>
             )}
 
 

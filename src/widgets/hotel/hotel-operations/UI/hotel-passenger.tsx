@@ -6,6 +6,7 @@ import PlusImg from "@/assets/icons/plus.svg?react";
 import CrossImg from "@/assets/icons/cross.svg?react";
 import {Passenger} from "@/shared/types";
 import {CountdownCircle} from "@/shared/UI";
+import SimpleBar from "simplebar-react";
 
 const HotelPassenger = () => {
     const [activePassenger, setActivePassenger] = useState<number | null>(null);
@@ -116,7 +117,8 @@ const HotelPassenger = () => {
                 <h3>Выбор гостей</h3>
             </div>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5"}/>
-            <div className={"w-full h-[calc(100vh-393px)] overflow-y-auto scroll flex flex-col py-2.5"}>
+            <SimpleBar className="h-[calc(100vh-393px)]">
+            <div className={"w-full flex flex-col py-2.5"}>
                 {rooms.map((room, i) => (
                     <div key={room.id} className={"flex flex-col"}>
                         {i === 1 && <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] my-2.5"}/>}
@@ -253,6 +255,7 @@ const HotelPassenger = () => {
                     </div>
                 ))}
             </div>
+            </SimpleBar>
             <hr className={"h-[1px] bg-[#E5E7EA] rounded-[1px] mb-3"}/>
             <div className={"flex items-center gap-1"}>
                 <button
