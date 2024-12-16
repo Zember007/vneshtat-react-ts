@@ -18,12 +18,12 @@ const Registration = () => {
     }, [status])
 
     return (
-        <div className={"px-[100px] h-[100vh]"}>
-            <header className={"py-[30px] w-full flex justify-center"}>
+        <div className={"px-[100px]"}>
+            <header className={"py-[40px] w-full flex justify-center"}>
                 <VneshtatImg className={"grey-fill"} />
             </header>
             <RegistrationCompany />
-            <footer className={"flex items-center justify-between"}>
+            <footer className={"flex items-center justify-between py-[30px]"}>
                 <p className={"text-base text-[#787B86]"}>Внештат - часть за пределами целого</p>
                 <span className={"flex gap-4"}>
                     <p className={"text-base text-[#787B86]"}>Ru</p>

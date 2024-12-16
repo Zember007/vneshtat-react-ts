@@ -7,7 +7,7 @@ const RegistrationCompany = () => {
     const {progress, page} = useSelector((state: RootState) => state.registrationCompany);
 
     return (
-        <div className="flex flex-col items-center justify-center gap-5 h-[calc(100%-110px)]">
+        <div className="flex flex-col items-center justify-center gap-5">
             {page === 2 ? <RegistrationCompanyFirst /> : null}
             {page === 1 ? <RegistrationCompanySecond /> : null}
             <div className="w-[700px] flex items-center gap-[5px]">

@@ -27,6 +27,7 @@ const Dropdown = ({
     useClickAway(box, () => { setIsOpen(false) })
 
     const actionDropdown = () => {
+        
         if(!disable) {
             setIsOpen((prev) => !prev)
         }
@@ -36,10 +37,9 @@ const Dropdown = ({
         <div
             ref={box}
             className={`  rounded-[18px] bg-secondary flex flex-col justify-center cursor-pointer ${extraClassBox}`}>
-            <div className={`p-3 flex flex-row justify-between items-center ${extraClass}`} onClick={() => actionDropdown()}>
+            <button className={`p-3 flex flex-row justify-between items-center ${extraClass}`} onClick={() => actionDropdown()}>
                 <div
                     className="flex flex-row items-center gap-1 relative"
-                    onClick={() => actionDropdown()}
                 >
                     {isChanged && (
                         <span className="absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3" />
@@ -47,14 +47,13 @@ const Dropdown = ({
                     {
                         title && <h6
                             className={`text-[14px] font-medium whitespace-nowrap  ${disable && 'text-[#787B86]'}`}
-                            onClick={() => actionDropdown()}
+                           
                         >
                             {title}
                         </h6>
                     }
                     {selectedText && (
-                        <p className="text-[14px] font-medium whitespace-nowrap text-[#9B9FAD]"
-                            onClick={() => actionDropdown()}>
+                        <p className="text-[14px] font-medium whitespace-nowrap text-[#9B9FAD]">
                             {selectedText}
                         </p>
                     )}
@@ -76,7 +75,7 @@ const Dropdown = ({
                     />
                 </button> :
                 <LockImg className="w-[14px] h-[14px]"/>}
-            </div>
+            </button>
             {isAbsoluteDrop ? (
                 <div
                     className={`transition-all duration-300 ease-in-out overflow-hidden absolute top-full left-0 p-3 z-10 w-full  !bg-secondary rounded-[18px]

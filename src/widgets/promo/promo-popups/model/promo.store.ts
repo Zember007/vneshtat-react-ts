@@ -20,9 +20,10 @@ const initialState: PromoStoreState = {
         fullname: "",
         companyName: "",
         travelFrequency: [
-            {content: "До 10 в месяц", isSelected: false, id: 1},
-            {content: "От 10 до 100 в месяц", isSelected: true, id: 2},
-            {content: "Более 100 в месяц", isSelected: false, id: 3},
+            {content: "До 10 командировок в месяц", isSelected: false, id: 1},
+            {content: "От 10 до 100 командировок в месяц", isSelected: false, id: 2},
+            {content: "Более 100 командировок в месяц", isSelected: false, id: 3},
+            {content: "Затрудняюсь ответить", isSelected: false, id: 4},
         ],
         phone: "",
         email: "",

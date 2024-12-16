@@ -1,10 +1,10 @@
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/app/config/store";
-import {Checkbox, Dropdown, Input, Popup, Switch} from "@/shared/UI";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/config/store";
+import { Checkbox, CountdownCircle, Dropdown, Input, Popup, Switch } from "@/shared/UI";
 import CrossImg from "@/assets/icons/cross.svg?react";
-import {changeTravelFrequency, setIsCeo, setIsOpen, updateInfo} from "../model/promo.store";
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { changeTravelFrequency, setIsCeo, setIsOpen, updateInfo } from "../model/promo.store";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ProposalResult {
     ConsultationProposalId: number
@@ -13,7 +13,7 @@ interface ProposalResult {
 
 const PromoPopups = () => {
     const isCeo = useSelector((store: RootState) => store.promo.isCeo);
-    const {fullname, companyName, travelFrequency, phone, email} = useSelector((store: RootState) => store.promo.info);
+    const { fullname, companyName, travelFrequency, phone, email } = useSelector((store: RootState) => store.promo.info);
     const activeTravelFrequency = travelFrequency.find((item) => item.isSelected);
     const [proposalResult, setProposalResult] = useState<ProposalResult | null>(null);
     const [status, setStatus] = useState<"success" | "error" | "revoked" | null>(null);
@@ -22,10 +22,10 @@ const PromoPopups = () => {
 
     const resetInformation = () => {
         dispatch(setIsCeo(true));
-        dispatch(updateInfo({field: "fullname", value: ""}))
-        dispatch(updateInfo({field: "companyName", value: ""}))
-        dispatch(updateInfo({field: "phone", value: ""}))
-        dispatch(updateInfo({field: "email", value: ""}))
+        dispatch(updateInfo({ field: "fullname", value: "" }))
+        dispatch(updateInfo({ field: "companyName", value: "" }))
+        dispatch(updateInfo({ field: "phone", value: "" }))
+        dispatch(updateInfo({ field: "email", value: "" }))
         dispatch(changeTravelFrequency(2))
     }
 
@@ -53,24 +53,33 @@ const PromoPopups = () => {
         resetInformation();
     }
 
+    const [cancelTimer, setCancelTimer] = useState<number | null>(null)
+
+    const successForm = () => {{
+        setStatus("success")
+
+        setCancelTimer(5)
+
+        const interval = setInterval(() => {
+            
+                setCancelTimer(prev => {
+                    if(prev === 1) {
+                        clearInterval(interval)  
+                        createConsultingProposal()
+                        return null
+                    }
+                    if(typeof prev === 'number') {
+                        return prev - 1
+                    } else {
+                        return null
+                    }
+                })
+            
+        }, 1000)
+    }}
+
     const revokeConsultingProposal = async () => {
-        const formData = new FormData();
-        if (proposalResult) {
-            formData.append("ConsultationProposalId", proposalResult.ConsultationProposalId.toString());
-            formData.append("SecretKey", proposalResult.SecretKey);
-        }
-
-        const res = await fetch(import.meta.env.VITE_API_URL + "/auth/sign_up/revoke_consultation_proposal", {
-            method: 'DELETE',
-            body: formData,
-            redirect: 'follow'
-        });
-        const data = await res.json();
-        if (!res.ok || !(data.status === "success")) setStatus("error")
-        if (data.status === "success") {
-            setStatus("revoked")
-        }
-
+        setStatus("revoked")
         resetInformation();
     }
 
@@ -102,7 +111,7 @@ const PromoPopups = () => {
                             <div className={"flex items-center justify-between"}>
                                 <h1 className={"text-2xl text-[#787B86]"}>Знакомство</h1>
                                 <button onClick={handleClose}>
-                                    <CrossImg className={"grey-fill min-h-6 min-w-6"}/>
+                                    <CrossImg className={"grey-fill min-h-6 min-w-6"} />
                                 </button>
                             </div>
                             <p className={"text-sm text-[#787B86]"}>Расскажите пару слов о себе и мы позвоним вам в
@@ -128,7 +137,7 @@ const PromoPopups = () => {
                                     extraClass={"w-full bg-[#F5F5F5] text-[#9B9AD] font-medium px-6 py-3 placeholder:text-md"}
                                     placeholder="Как к вам обращаться?"
                                     value={fullname}
-                                    onChange={(e) => dispatch(updateInfo({field: "fullname", value: e.target.value}))}
+                                    onChange={(e) => dispatch(updateInfo({ field: "fullname", value: e.target.value }))}
                                 />
                                 {!fullname && (
                                     <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
@@ -154,9 +163,9 @@ const PromoPopups = () => {
                             </label>
                             <label className="relative">
                                 <Dropdown
-                                    title={"Кол-во командировок"}
-                                    selectedText={activeTravelFrequency?.content}
-                                    extraClass={"h-11 rounded-primary pl-1 pr-5"}
+                                    selectedText={activeTravelFrequency?.content || "Кол-во командировок"}
+                                    extraClass="px-6 py-3"
+                                    extraClassBox="!rounded-primary"
                                     isAbsoluteDrop={true}
                                 >
                                     <Checkbox
@@ -164,11 +173,7 @@ const PromoPopups = () => {
                                         onChange={(id: number) => dispatch(changeTravelFrequency(id))}
                                     />
                                 </Dropdown>
-                                {!travelFrequency && (
-                                    <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
-                                        Более 100 в месяц
-                                    </span>
-                                )}
+
                             </label>
                             <label className="relative">
                                 <Input
@@ -176,7 +181,7 @@ const PromoPopups = () => {
                                     placeholder={"Номер телефона"}
                                     type={"phone"}
                                     value={phone}
-                                    onChange={(e) => dispatch(updateInfo({field: "phone", value: e.target.value}))}
+                                    onChange={(e) => dispatch(updateInfo({ field: "phone", value: e.target.value }))}
                                 />
                                 {!phone && (
                                     <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
@@ -190,7 +195,7 @@ const PromoPopups = () => {
                                     type={"email"}
                                     placeholder={"Email"}
                                     value={email}
-                                    onChange={(e) => dispatch(updateInfo({field: "email", value: e.target.value}))}
+                                    onChange={(e) => dispatch(updateInfo({ field: "email", value: e.target.value }))}
                                 />
                                 {!email && (
                                     <span className="absolute right-6 top-3 text-[#9B9FAD] text-sm font-medium">
@@ -201,7 +206,7 @@ const PromoPopups = () => {
                         </div>
                         <button
                             className={"w-full flex justify-center items-center py-3 h-[42px] rounded-primary bg-black"}
-                            onClick={createConsultingProposal}>
+                            onClick={successForm}>
                             <p className={"text-sm text-primary"}>Отправить форму</p>
                         </button>
                     </div>
@@ -220,7 +225,7 @@ const PromoPopups = () => {
                                 сервиса.
                             </li>
                         </ul>
-                        <div className={"rounded-primary bg-secondary mt-[25px] h-full w-full"}/>
+                        <div className={"rounded-primary bg-secondary mt-[25px] h-full w-full"} />
                     </div>
                 </>
             ) : status === "success" ? (
@@ -229,7 +234,7 @@ const PromoPopups = () => {
                         className={"h-[542px] pt-7 px-7 pb-9 bg-primary flex flex-col rounded-[35px] w-[440px] justify-between"}>
                         <div className={"flex justify-end"}>
                             <button onClick={handleClose}>
-                                <CrossImg className={"grey-fill min-h-6 min-w-6"}/>
+                                <CrossImg className={"grey-fill min-h-6 min-w-6"} />
                             </button>
                         </div>
                         <div className={"flex flex-col gap-[14px] px-2"}>
@@ -237,7 +242,12 @@ const PromoPopups = () => {
                             <p className={"text-sm text-[#787B86]"}>В течение 15 минут наш менеджер позвонит вам,
                                 ответит на все ваши вопросы, подберет тариф и предоставит демо-доступ к сервису.</p>
                         </div>
-                        <div className={"flex justify-end px-2"}>
+                        <div className={"flex justify-end px-2 items-center gap-[5px]"}>
+                            {cancelTimer && <CountdownCircle
+                                extraTextClass="!text-[#9B9FAD]"
+                                extraCircleClass="*:stroke-[#9B9FAD]"
+                                countdown={cancelTimer}
+                            />}
                             <button
                                 className={"flex justify-center items-center py-3 px-10 h-[42px] rounded-primary bg-[#F5F5F5]"}
                                 onClick={revokeConsultingProposal}>
@@ -250,7 +260,7 @@ const PromoPopups = () => {
                         <p className={"text-sm text-[#787B86] mt-[14px]"}>Если вам предстоит согласовывать с
                             руководством подключение вашей компании к Внештату , мы готовы с этим помочь. Прочитайте
                             статью о том, как именно мы можем это сделать.</p>
-                        <div className={"rounded-primary bg-secondary mt-[25px] h-full w-full"}/>
+                        <div className={"rounded-primary bg-secondary mt-[25px] h-full w-full"} />
                     </div>
                 </>
             ) : status === "revoked" ? (
@@ -259,7 +269,7 @@ const PromoPopups = () => {
                         className={"h-[542px] pt-7 px-7 pb-9 bg-primary flex flex-col rounded-[35px] w-[440px] justify-between"}>
                         <div className={"flex justify-end"}>
                             <button onClick={handleClose}>
-                                <CrossImg className={"grey-fill min-h-6 min-w-6"}/>
+                                <CrossImg className={"grey-fill min-h-6 min-w-6"} />
                             </button>
                         </div>
                         <div className={"flex flex-col gap-[14px] px-2"}>
@@ -282,7 +292,7 @@ const PromoPopups = () => {
                         className={"h-[542px] pt-7 px-7 pb-9 bg-primary flex flex-col rounded-[35px] w-[440px] justify-between"}>
                         <div className={"flex justify-end"}>
                             <button onClick={handleClose}>
-                                <CrossImg className={"grey-fill min-h-6 min-w-6"}/>
+                                <CrossImg className={"grey-fill min-h-6 min-w-6"} />
                             </button>
                         </div>
                         <div className={"flex flex-col gap-[14px] px-2"}>
@@ -299,9 +309,9 @@ const PromoPopups = () => {
                         </div>
                     </div>
                     <div className={"h-[542px] pt-5 px-9 pb-9 bg-primary flex flex-col w-[340px] rounded-[35px]"}>
-                        <div className={"rounded-primary bg-secondary mt-3 h-[10%] w-full"}/>
-                        <div className={"rounded-primary bg-secondary mt-3 h-[20%] w-full"}/>
-                        <div className={"rounded-primary bg-secondary mt-3 h-full w-full"}/>
+                        <div className={"rounded-primary bg-secondary mt-3 h-[10%] w-full"} />
+                        <div className={"rounded-primary bg-secondary mt-3 h-[20%] w-full"} />
+                        <div className={"rounded-primary bg-secondary mt-3 h-full w-full"} />
                     </div>
                 </>
             )}
@@ -309,4 +319,4 @@ const PromoPopups = () => {
     )
 };
 
-export {PromoPopups};
+export { PromoPopups };
