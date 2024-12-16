@@ -6,11 +6,6 @@ import { changeTravelFrequency, setIsCeo, setIsOpen, updateInfo } from "../model
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface ProposalResult {
-    ConsultationProposalId: number
-    SecretKey: string
-}
-
 const PromoPopups = () => {
     const isCeo = useSelector((store: RootState) => store.promo.isCeo);
     const { fullname, companyName, travelFrequency, phone, email } = useSelector((store: RootState) => store.promo.info);
