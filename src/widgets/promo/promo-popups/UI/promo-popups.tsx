@@ -15,7 +15,6 @@ const PromoPopups = () => {
     const isCeo = useSelector((store: RootState) => store.promo.isCeo);
     const { fullname, companyName, travelFrequency, phone, email } = useSelector((store: RootState) => store.promo.info);
     const activeTravelFrequency = travelFrequency.find((item) => item.isSelected);
-    const [proposalResult, setProposalResult] = useState<ProposalResult | null>(null);
     const [status, setStatus] = useState<"success" | "error" | "revoked" | null>(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -47,7 +46,6 @@ const PromoPopups = () => {
         if (!res.ok || !(data.status === "success")) setStatus("error")
         if (data.status === "success") {
             setStatus("success")
-            setProposalResult(data.data)
         }
 
         resetInformation();
