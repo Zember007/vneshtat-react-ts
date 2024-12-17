@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-// import TrashImg from "@/assets/icons/trash.svg?react";
+import TrashImg from "@/assets/icons/trash.svg?react";
 import { AppDispatch, RootState } from "@/app/config/store";
 import { Checkbox, Dropdown, Input, InputRange } from "@/shared/UI";
 import { priceRanges, timeOnWayRanges } from "../utils";
@@ -8,7 +8,7 @@ import { setAirportFrom, setAirportTo, setPriceRange, setTimeFrom, setTimeTo } f
 import { useState } from "react";
 import SimpleBar from "simplebar-react";
 
-const FlightFilter = () => {
+const FlightFilter = ({template}:{template?:boolean}) => {
     const priceRange = useSelector((state: RootState) => state.flight.priceRange);
     const timeFrom = useSelector((state: RootState) => state.flight.timeFrom);
     const timeTo = useSelector((state: RootState) => state.flight.timeTo);
@@ -17,8 +17,28 @@ const FlightFilter = () => {
     const [customPriceRange, setCustomPriceRange] = useState<Range>(priceRanges);
     const dispatch: AppDispatch = useDispatch();
 
+    const handleClearFilter = () => {
+        dispatch(setPriceRange(priceRanges))
+        dispatch(setTimeFrom(timeOnWayRanges))
+        dispatch(setTimeTo(timeOnWayRanges))
+        setCustomPriceRange(priceRanges)
+        dispatch(setAirportFrom("default"));
+        dispatch(setAirportTo("default"));
+    }
+
     return (
         <div className="w-full">
+            { !template &&
+                <>
+                    <div className="flex justify-between items-center">
+                        <h3>Фильтры</h3>
+                        <button onClick={handleClearFilter}>
+                            <TrashImg className={"transition black-fill-hover black-stroke-hover"} />
+                        </button>
+                    </div>
+                    <hr className="h-[1px] bg-[#E5E7EA] rounded-[1px] mt-2.5 mb-3" />
+                </>
+            }
             <SimpleBar className="h-[calc(100vh-343px)]">
                 <div className=" flex flex-col gap-2.5 ">
                     <Dropdown
@@ -37,7 +57,7 @@ const FlightFilter = () => {
                                         value={priceRange.data.min ? priceRange.data.min : ""}
                                         type={"number"}
                                         onChange={e => {
-                                            const value = Number(e.target.value)                                           
+                                            const value = Number(e.target.value)
                                             if (value < priceRange.data.max && value >= customPriceRange.min) {
                                                 dispatch(setPriceRange({
                                                     min: value,

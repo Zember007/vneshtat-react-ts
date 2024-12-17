@@ -3,9 +3,19 @@ import TelegramImg from "@/assets/icons/telegram.svg?react";
 import CalendarImg from "@/assets/icons/google_calendar.svg?react";
 import MailImg from "@/assets/icons/mail.svg?react";
 import NotificationsImg from "@/assets/icons/notifications_desktop.svg?react";
+import { useEffect, useState } from "react";
+import Telegram from "./services_notifications/Telegram";
 
 
 const Notifications = ({ active }: { active: boolean }) => {
+
+    const [activeTab, setActiveTab] = useState<string | null>(null)
+
+    useEffect(() => {
+        if(!active) {
+            setActiveTab(null)
+        }
+    },[active])
     return (
         <div className={`flex gap-[15px] transition-all duration-300 ${active && 'grow'}`}>
             <div className="rounded-[26px] bg-primary grow p-[30px] ">
@@ -35,8 +45,10 @@ const Notifications = ({ active }: { active: boolean }) => {
                                         <span className="font-medium text-[#787B86]">Чат-бот Внештата</span>
                                     </div>
                                 </div>
-                                <button className="py-[9px] px-[25px] rounded-[13px] bg-black">
-                                    <p className="text-[14px] font-medium text-primary">Привязать</p>
+                                <button 
+                                onClick={() => setActiveTab('telegram')}
+                                className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'telegram' && '!bg-primary'}`}>
+                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === 'telegram' && '!text-[#007BFB]'}`}>{activeTab === 'telegram' ? 'Инфо' : 'Привязать'}</p>
                                 </button>
                             </div>
                             <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
@@ -47,8 +59,8 @@ const Notifications = ({ active }: { active: boolean }) => {
                                         <span className="font-medium text-[#787B86]">Все дела в единой системе</span>
                                     </div>
                                 </div>
-                                <button className="py-[9px] px-[25px] rounded-[13px] bg-black">
-                                    <p className="text-[14px] font-medium text-primary">Привязать</p>
+                                <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
+                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
                                 </button>
                             </div>
                             <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
@@ -59,8 +71,8 @@ const Notifications = ({ active }: { active: boolean }) => {
                                         <span className="font-medium text-[#787B86]">Настройка категорий писем</span>
                                     </div>
                                 </div>
-                                <button className="py-[9px] px-[25px] rounded-[13px] bg-black">
-                                    <p className="text-[14px] font-medium text-primary">Привязать</p>
+                                <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
+                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
                                 </button>
                             </div>
                             <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
@@ -71,8 +83,8 @@ const Notifications = ({ active }: { active: boolean }) => {
                                         <span className="font-medium text-[#787B86]">Браузерные уведомления</span>
                                     </div>
                                 </div>
-                                <button className="py-[9px] px-[25px] rounded-[13px] bg-black">
-                                    <p className="text-[14px] font-medium text-primary">Привязать</p>
+                                <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
+                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
                                 </button>
                             </div>
                         </div>
@@ -80,7 +92,9 @@ const Notifications = ({ active }: { active: boolean }) => {
                     
                 }
             </div>
-            <div className="rounded-[26px] bg-primary min-w-[300px] p-[20px]"></div>
+            <div className="rounded-[26px] bg-primary w-[300px] p-[20px]">
+                {activeTab === 'telegram' && <Telegram close={() => {setActiveTab(null)}}/>}
+            </div>
         </div>
     );
 };

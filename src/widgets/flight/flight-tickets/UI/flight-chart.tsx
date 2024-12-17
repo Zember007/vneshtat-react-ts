@@ -223,7 +223,8 @@ const FlightChart = ({ showedGraph, setShowedGraph, activeRate }: {
                                     height={30}
                                     fill={"none"}
                                     travellerWidth={0}
-                                    stroke={"#BFBEFC"}
+                                    traveller={<></>}
+                                    stroke={"#000"}
                                     tickFormatter={() => ''}
                                 />
                             </BarChart>
@@ -247,7 +248,7 @@ const FlightChart = ({ showedGraph, setShowedGraph, activeRate }: {
                     <div className={"w-full flex gap-[5px]"}>
                         <div className={"flex flex-col gap-[5px]"}>
                             <div className={"relative flex flex-col gap-2.5"}>
-                                <p className={"text-center text-[#787B86] leading-none text-xs font-medium"}>Туда</p>
+                                <p className={"text-center text-[#787B86] leading-none text-sm font-medium"}>Туда</p>
                                 <div className={"flex items-center gap-[5px]"}>
                                     <button onClick={horizPrevPage} className={"absolute -left-5"}>
                                         <ArrowLeftImg className={"min-h-4 min-w-4 grey-stroke"} />
@@ -279,7 +280,7 @@ const FlightChart = ({ showedGraph, setShowedGraph, activeRate }: {
                             </div>
                         </div>
                         <div className={"max-w-[190px] w-full flex flex-row-reverse items-center"}>
-                            <p className={"text-center text-[#787B86] leading-none text-xs rotate-90 font-medium -translate-x-2"}>Обратно</p>
+                            <p className={"text-center text-[#787B86] leading-none text-sm rotate-90 font-medium -translate-x-2"}>Обратно</p>
                             <div
                                 className={"min-w-[90px] max-w-[140px] w-full flex flex-col items-center gap-[5px] mt-[62px] relative"}>
                                 <button onClick={prevPage} className={"flex justify-center"}>

@@ -38,8 +38,8 @@ const InputDate = ({
                 </div>
             ) : (
                 <div className="flex items-center gap-1" key={date.toISOString()}>
-                    <p className="text-xs leading-none">{formatDate(date)}</p>
-                    <p className="text-xs leading-none text-[#787B86]">{getDayOfWeek(date)}</p>
+                    <p className="text-sm leading-none">{formatDate(date)}</p>
+                    <p className="text-sm leading-none text-[#787B86]">{getDayOfWeek(date)}</p>
                 </div>
             )
         } catch (e) {

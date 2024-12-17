@@ -30,8 +30,8 @@ const FlightTicket = () => {
                 className={`w-full flex flex-col bg-secondary rounded-[38px] p-5`}>
                 <div className={"w-full flex gap-2.5"}>
                     <div className={"flex items-center gap-2.5 mb-5"}>
-                        <button>
-                            <VariationImg className={"transition black-stroke-hover"}/>
+                        <button className="group">
+                            <VariationImg className={"group-hover:*:fill-[#000] *:transition-all"}/>
                         </button>
                         <button>
                             <AvialogoImg/>
@@ -70,8 +70,8 @@ const FlightTicket = () => {
                 </div>
                 <div className={"w-full flex gap-2.5 mt-7"}>
                     <div className={"flex items-center gap-2.5 mb-5"}>
-                        <button>
-                            <VariationImg className={"transition black-stroke-hover"}/>
+                        <button className="group">
+                            <VariationImg className={"group-hover:*:fill-[#000] *:transition-all"}/>
                         </button>
                         <button>
                             <AvialogoImg/>
