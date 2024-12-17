@@ -27,8 +27,8 @@ const Dropdown = ({
     useClickAway(box, () => { setIsOpen(false) })
 
     const actionDropdown = () => {
-        
-        if(!disable) {
+
+        if (!disable) {
             setIsOpen((prev) => !prev)
         }
     }
@@ -47,7 +47,7 @@ const Dropdown = ({
                     {
                         title && <h6
                             className={`text-[14px] font-medium whitespace-nowrap  ${disable && 'text-[#787B86]'}`}
-                           
+
                         >
                             {title}
                         </h6>
@@ -74,13 +74,17 @@ const Dropdown = ({
                         className={`transform transition-transform duration-300 ${!isOpen ? "rotate-180" : ""}`}
                     />
                 </button> :
-                <LockImg className="w-[14px] h-[14px]"/>}
+                    <LockImg className="w-[14px] h-[14px]" />}
             </button>
             {isAbsoluteDrop ? (
                 <div
-                    className={`transition-all duration-300 ease-in-out overflow-hidden absolute top-full left-0 p-3 z-10 w-full  !bg-secondary rounded-[18px]
-                ${isOpen ? "opacity-100 visible mt-2" : "opacity-0 invisible mt-0"}
-                 bg-secondary`}
+                    className={`transition-all duration-300 ease-in-out overflow-hidden absolute top-full left-0 p-3 z-10 w-full  rounded-[18px]
+                ${isOpen ? "opacity-100 visible mt-2" : "opacity-0 invisible mt-0"}`}
+                    style={{
+                        background: "rgba(245, 245, 245, 0.82)",
+                        boxShadow: "0px 4px 6.5px 2px rgba(0, 0, 0, 0.08)",
+                        backdropFilter: "blur(4.849999904632568px)",
+                    }}
                 >
                     {children}
                 </div>

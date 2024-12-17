@@ -56,28 +56,32 @@ const TemplateCreate = () => {
                                 <div className="flex flex-col gap-[30px] w-[250px]">
                                     <div className="flex flex-col gap-[10px] relative">
                                         <span className="text-[14px] text-[#787B86] font-medium">Проект</span>
-                                        <Dropdown
-                                            selectedText={projects_select ? projects_select.content : 'Выбрать проект'}
-                                            isAbsoluteDrop={true}
-                                        >
-                                            <Checkbox
-                                                items={projects}
-                                                onChange={(id: number) => dispatch(setProject({ id, oneChoise: true }))}
-                                            />
-                                        </Dropdown>
+                                        <label className="relative">
+                                            <Dropdown
+                                                selectedText={projects_select ? projects_select.content : 'Выбрать проект'}
+                                                isAbsoluteDrop={true}
+                                            >
+                                                <Checkbox
+                                                    items={projects}
+                                                    onChange={(id: number) => dispatch(setProject({ id, oneChoise: true }))}
+                                                />
+                                            </Dropdown>
+                                        </label>
                                     </div>
 
                                     <div className="flex flex-col gap-[10px] relative">
                                         <span className="text-[14px] text-[#787B86] font-medium">Центр затрат</span>
-                                        <Dropdown
-                                            selectedText={center_costs_select ? center_costs_select.content : 'Выбрать центр затрат'}
-                                            isAbsoluteDrop={true}
-                                        >
-                                            <Checkbox
-                                                items={center_costs}
-                                                onChange={(id: number) => dispatch(setCenterCosts({ id, oneChoise: true }))}
-                                            />
-                                        </Dropdown>
+                                        <label className="relative">
+                                            <Dropdown
+                                                selectedText={center_costs_select ? center_costs_select.content : 'Выбрать центр затрат'}
+                                                isAbsoluteDrop={true}
+                                            >
+                                                <Checkbox
+                                                    items={center_costs}
+                                                    onChange={(id: number) => dispatch(setCenterCosts({ id, oneChoise: true }))}
+                                                />
+                                            </Dropdown>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
