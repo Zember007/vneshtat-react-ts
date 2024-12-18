@@ -44,8 +44,8 @@ const LoginUser = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    async function handleLogin(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
+    async function handleLogin() {
+        
         const formdata = new FormData();
         formdata.append("Username", login);
         formdata.append("Password", password);
@@ -79,8 +79,7 @@ const LoginUser = () => {
 
 
 
-    const sendSMScode = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const sendSMScode = async () => {
 
 
 
@@ -118,7 +117,7 @@ const LoginUser = () => {
                 setStartTimer(true);
 
                 const url = new URL(`${import.meta.env.VITE_API_URL}/auth/sign_in/start_sign_in_proccess/phone_number`)
-                    
+
                 url.searchParams.set('PhoneNumber', encodeURIComponent(phone))
                 url.searchParams.set('ReCaptchaResponse', encodeURIComponent(captchaToken))
 
@@ -126,7 +125,7 @@ const LoginUser = () => {
                 url.searchParams.set("DeviceName", deviceName);
                 url.searchParams.set("Browser", browserName);
 
-                const response = await fetch(url,{
+                const response = await fetch(url, {
                     method: "GET"
                 });
                 const data = await response.json();
@@ -156,13 +155,22 @@ const LoginUser = () => {
 
     const handleInputChange = async (field: string, value: string) => {
         const upperField = field === "phone" ? "PhoneNumber" : field === "login" ? "Username" : "";
-        dispatch(updateLoginState({ field, value } as any));
 
         if (field === "phone" && value.length !== 12) return;
 
         const availability = await handleCheckCredentials(upperField, value);
-        if (field === "login") setLoginStatus(availability);
-        if (field === "phone") setPhoneStatus(availability);
+        if (field === "login") {
+            setLoginStatus(availability);
+            if(availability === 'success') {
+                handleLogin()
+            }
+        }
+        if (field === "phone") {
+            setPhoneStatus(availability);
+            if(availability === 'success') {
+                sendSMScode()
+            }
+        }
     };
 
     const handleCaptchaChange = (token: string | null) => {
@@ -255,7 +263,7 @@ const LoginUser = () => {
                 <div className={"w-[350px] flex flex-col gap-6"}>
                     <h1 className={"text-[30px] text-center"}>Войти в аккаунт</h1>
                     {isRestore ? (
-                        <div className={"flex flex-col bg-primary gap-5 p-6 rounded-[35px] h-[520px] relative"}>
+                        <div className={"flex flex-col bg-primary gap-5 p-6 rounded-[35px]  relative"}>
                             <div className={"flex justify-center"}>
                                 <h2 className={"text-[25px] text-center leading-7"}>Восстановление</h2>
                             </div>
@@ -395,7 +403,7 @@ const LoginUser = () => {
                                                     )
                                                 ) : null}
                                                 <button
-                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center mt-20"}
+                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
                                                     onClick={() => navigate("/sign-up")}
                                                 >
                                                     <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
@@ -440,7 +448,7 @@ const LoginUser = () => {
                                                     <p className={`text-lg font-medium text-primary ${!isRestoreLoginReady && "!text-[#9B9FAD]"}`}>Подтвердить</p>
                                                 </button>
                                                 <button
-                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center mt-20"}
+                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
                                                     onClick={() => navigate("/sign-up")}
                                                 >
                                                     <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
@@ -457,7 +465,14 @@ const LoginUser = () => {
                                 <LogoIdImg />
                             </div>
                             <form className={"flex flex-col"} autoComplete={"on"}
-                                onSubmit={!withPhone ? sendSMScode : handleLogin}>
+                                onSubmit={(e) => {
+                                    e.preventDefault()
+                                    if (!withPhone) {
+                                        handleInputChange("phone", phone)                                        
+                                    } else {
+                                        handleInputChange("login", login)                                        
+                                    }
+                                }}>
                                 <Switch
                                     extraClass={"w-full h-[50px] !bg-[#FAFAFA] border border-solid border-[#E5E7EA]"}
                                     extraChildClass={"py-2.5 h-full w-[50%]"}
@@ -482,7 +497,7 @@ const LoginUser = () => {
                                             extraClass={`!text-lg !font-medium mt-2.5 h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] ${loginStatus === "error" ? "#FF64A3" : "text-blue"} !bg-primary first-letter-black`}
                                             placeholder="Логин"
                                             value={login ? `@${login}` : ""}
-                                            onChange={e => handleInputChange("login", e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value)}
+                                            onChange={e => dispatch(updateLoginState({ field:"login", value: e.target.value } as any))}
                                             autoComplete={"on"}
                                         />
                                         <Input
@@ -549,7 +564,7 @@ const LoginUser = () => {
                                             placeholder={"+7 (___) ___ - __ -__"}
                                             type={"phone"}
                                             value={phone}
-                                            onChange={e => handleInputChange("phone", e.target.value)}
+                                            onChange={e => dispatch(updateLoginState({ field: "phone", value: e.target.value } as any))}
                                         />
                                         {!captchaToken ? (
                                             <ReCAPTCHA

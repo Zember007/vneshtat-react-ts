@@ -224,7 +224,7 @@ const FlightChart = ({ showedGraph, setShowedGraph, activeRate }: {
                                     fill={"none"}
                                     travellerWidth={0}
                                     traveller={<></>}
-                                    stroke={"#000"}
+                                    stroke={"#BFBEFC"}
                                     tickFormatter={() => ''}
                                 />
                             </BarChart>

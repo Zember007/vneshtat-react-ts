@@ -12,88 +12,83 @@ const Notifications = ({ active }: { active: boolean }) => {
     const [activeTab, setActiveTab] = useState<string | null>(null)
 
     useEffect(() => {
-        if(!active) {
+        if (!active) {
             setActiveTab(null)
         }
-    },[active])
+    }, [active])
     return (
         <div className={`flex gap-[15px] transition-all duration-300 ${active && 'grow'}`}>
-            <div className="rounded-[26px] bg-primary grow p-[30px] ">
-                {!active &&
-                    <div className="flex flex-col gap-[35px]">
+            <div className="rounded-[26px] bg-primary grow p-[20px] ">
+
+                <div className={`flex flex-col overflow-hidden transition-all duration-300`}>
+                    <div className="flex justify-between">
                         <div className="flex flex-col gap-[10px]">
-                            <span className="text-[#787B86] text-[25px] font-medium">Настройки уведомлений</span>
-                            <p className="text-[#787B86] max-w-[350px]">Здесь можно настроить категории уведомлений, привязать к ним почту и мессенджеры.</p>
+                            <span className={`${!active && 'text-[#787B86]'} text-[25px] font-medium`}>Настройки уведомлений</span>
+                            {!active && <p className="text-[#787B86] max-w-[530px]">Здесь можно настроить категории уведомлений, привязать к ним почту и мессенджеры.</p>}
                         </div>
 
-                        <Link to={'/settings/notifications'} className="text-center self-end w-[255px] rounded-[18px] bg-[#ECEEF1] py-[15px]">
+                        {!active && <Link to={'/settings/notifications'} className="text-center self-end w-[255px] rounded-[18px] bg-[#ECEEF1] py-[15px]">
                             <p>Перейти к настройкам</p>
-                        </Link>
+                        </Link>}
                     </div>
-                }
-                {
-                    active &&
-                    
-                    <div className="flex flex-col gap-[20px]">
-                        <span className="text-[25px] font-medium">Настройки уведомлений</span>
-                        <div className="flex flex-col gap-[10px]">
-                            <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
-                                <div className="flex gap-[20px] items-center">
-                                    <TelegramImg />
-                                    <div className="flex flex-col *:leading-[1.2]">
-                                        <span className="font-medium">Привязка Telegram</span>
-                                        <span className="font-medium text-[#787B86]">Чат-бот Внештата</span>
-                                    </div>
+                    <div className={`flex flex-col gap-[10px] transition-all duration-300 mt-[20px] overflow-hidden max-h-[330px] ${!active && '!max-h-[0px] !mt-[0px]'}`}>
+                        <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
+                            <div className="flex gap-[20px] items-center">
+                                <TelegramImg />
+                                <div className="flex flex-col *:leading-[1.2]">
+                                    <span className="font-medium">Привязка Telegram</span>
+                                    <span className="font-medium text-[#787B86]">Чат-бот Внештата</span>
                                 </div>
-                                <button 
+                            </div>
+                            <button
                                 onClick={() => setActiveTab('telegram')}
                                 className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'telegram' && '!bg-primary'}`}>
-                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === 'telegram' && '!text-[#007BFB]'}`}>{activeTab === 'telegram' ? 'Инфо' : 'Привязать'}</p>
-                                </button>
-                            </div>
-                            <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
-                                <div className="flex gap-[20px] items-center">
-                                    <CalendarImg />
-                                    <div className="flex flex-col *:leading-[1.2]">
-                                        <span className="font-medium">Google Календарь</span>
-                                        <span className="font-medium text-[#787B86]">Все дела в единой системе</span>
-                                    </div>
+                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === 'telegram' && '!text-[#007BFB]'}`}>{activeTab === 'telegram' ? 'Инфо' : 'Привязать'}</p>
+                            </button>
+                        </div>
+                        <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
+                            <div className="flex gap-[20px] items-center">
+                                <CalendarImg />
+                                <div className="flex flex-col *:leading-[1.2]">
+                                    <span className="font-medium">Google Календарь</span>
+                                    <span className="font-medium text-[#787B86]">Все дела в единой системе</span>
                                 </div>
-                                <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
-                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
-                                </button>
                             </div>
-                            <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
-                                <div className="flex gap-[20px] items-center">
-                                    <MailImg />
-                                    <div className="flex flex-col *:leading-[1.2]">
-                                        <span className="font-medium">Привязка почты</span>
-                                        <span className="font-medium text-[#787B86]">Настройка категорий писем</span>
-                                    </div>
+                            <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
+                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
+                            </button>
+                        </div>
+                        <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
+                            <div className="flex gap-[20px] items-center">
+                                <MailImg />
+                                <div className="flex flex-col *:leading-[1.2]">
+                                    <span className="font-medium">Привязка почты</span>
+                                    <span className="font-medium text-[#787B86]">Настройка категорий писем</span>
                                 </div>
-                                <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
-                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
-                                </button>
                             </div>
-                            <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
-                                <div className="flex gap-[20px] items-center">
-                                    <NotificationsImg />
-                                    <div className="flex flex-col *:leading-[1.2]">
-                                        <span className="font-medium">Уведомления на рабочем столе</span>
-                                        <span className="font-medium text-[#787B86]">Браузерные уведомления</span>
-                                    </div>
+                            <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
+                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
+                            </button>
+                        </div>
+                        <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
+                            <div className="flex gap-[20px] items-center">
+                                <NotificationsImg />
+                                <div className="flex flex-col *:leading-[1.2]">
+                                    <span className="font-medium">Уведомления на рабочем столе</span>
+                                    <span className="font-medium text-[#787B86]">Браузерные уведомления</span>
                                 </div>
-                                <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
-                                    <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
-                                </button>
                             </div>
+                            <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
+                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
+                            </button>
                         </div>
                     </div>
-                    
-                }
+                </div>
+
+
             </div>
             <div className="rounded-[26px] bg-primary w-[300px] p-[20px]">
-                {activeTab === 'telegram' && <Telegram close={() => {setActiveTab(null)}}/>}
+                {activeTab === 'telegram' && <Telegram close={() => { setActiveTab(null) }} />}
             </div>
         </div>
     );

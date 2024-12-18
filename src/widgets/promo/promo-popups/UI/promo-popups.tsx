@@ -48,30 +48,37 @@ const PromoPopups = () => {
 
     const [cancelTimer, setCancelTimer] = useState<number | null>(null)
 
-    const successForm = () => {{
+    const [interval, setinterval] = useState<NodeJS.Timeout>()
+
+    const successForm = () => {
+
         setStatus("success")
 
         setCancelTimer(5)
 
-        const interval = setInterval(() => {
-            
-                setCancelTimer(prev => {
-                    if(prev === 1) {
-                        clearInterval(interval)  
-                        createConsultingProposal()
-                        return null
-                    }
-                    if(typeof prev === 'number') {
-                        return prev - 1
-                    } else {
-                        return null
-                    }
-                })
-            
-        }, 1000)
-    }}
+        setinterval(setInterval(() => {
+
+            setCancelTimer(prev => {
+
+                if (prev === 1) {
+                    clearInterval(interval)
+                    createConsultingProposal()
+                    return null
+                }
+                if (typeof prev === 'number') {
+                    return prev - 1
+                } else {
+                    return null
+                }
+            })
+
+        }, 1000))
+
+    }
 
     const revokeConsultingProposal = async () => {
+
+        clearInterval(interval)
         setStatus("revoked")
         resetInformation();
     }
@@ -84,7 +91,7 @@ const PromoPopups = () => {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Enter") {
-                createConsultingProposal();
+                successForm();
             }
         };
 

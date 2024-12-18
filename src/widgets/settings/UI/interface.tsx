@@ -23,32 +23,24 @@ const Interface = ({ active }: { active: boolean }) => {
     const TimeZoneJorneysActive = time_zone_jorneys.find(item => item.isSelected);
 
     return (
-        <div className={`rounded-[26px] bg-primary  p-[20px]  transition-all duration-300 overflow-hidden  ${active ? 'max-h-full' : 'max-h-[130px]'}`}>
+        <div className={`rounded-[26px] bg-primary  p-[20px]  transition-all duration-300 overflow-hidden  ${active && 'grow'}`}>
 
-            <div className={`flex justify-between gap-[15px] transition-all duration-300 overflow-hidden ${active ? 'max-h-[0px] opacity-0' : 'max-h-full'}`}>
-                <div className="flex flex-col gap-[10px]">
-                    <span className="text-[#787B86] text-[25px] font-medium">Настройки интерфейса</span>
-                    <p className="text-[#787B86] max-w-[530px]">И подобрать все элементы шаблона в ручном режиме. У вас останется возможность создавать шаблоны услуг из существующих поездок.</p>
-                </div>
+            <div className={`flex justify-between gap-[15px]`}>
+                <div className={`flex flex-col transition-all duration-300 ${active && 'gap-[20px] p-[10px]'}`}>
+                    <div className="flex flex-col gap-[10px]">
+                        <span className={`${!active && 'text-[#787B86]'} text-[25px] font-medium`}>Настройки интерфейса</span>
+                        {!active && <p className="text-[#787B86] max-w-[530px]">И подобрать все элементы шаблона в ручном режиме. У вас останется возможность создавать шаблоны услуг из существующих поездок.</p>}
+                    </div>
 
-                <Link to={'/settings'} className="text-center self-end w-[255px] rounded-[18px] bg-[#ECEEF1] py-[15px]">
-                    <p>Перейти к настройкам</p>
-                </Link>
-
-            </div>
-
-            <div className={`flex justify-between gap-[15px] transition-all duration-300 overflow-hidden ${active ? 'max-h-full' : 'max-h-[0px] opacity-0'}`}>
-                <div className="flex flex-col gap-[30px] p-[10px]">
-                    <span className="text-[25px] font-medium">Настройки интерфейса</span>
-                    <div className="flex gap-[30px]">
+                    <div className={`flex gap-[30px] transition-all duration-300 overflow-hidden max-h-[270px] ${!active && '!max-h-[0px]'}`}>
                         <div className="flex flex-col gap-[25px] min-w-[240px]">
-                            <div className="flex flex-col gap-[10px] relative">
+                            <div className="flex flex-col gap-[5px] relative">
                                 <span className="text-[#787B86] text-[14px] font-medium">Язык</span>
                                 <Dropdown isAbsoluteDrop={true} title={activeLang && activeLang.content}>
                                     <Checkbox items={langs} onChange={(id: number) => dispatch(setLang(id))} />
                                 </Dropdown>
                             </div>
-                            <div className="flex flex-col gap-[10px] relative">
+                            <div className="flex flex-col gap-[5px] relative">
                                 <span className="text-[#787B86] text-[14px] font-medium">Валюта</span>
                                 <Dropdown isAbsoluteDrop={true} title={activeCurrency && activeCurrency.content}>
                                     <Checkbox items={currency} onChange={(id: number) => dispatch(setLang(id))} />
@@ -83,14 +75,20 @@ const Interface = ({ active }: { active: boolean }) => {
                         </div>
                     </div>
                 </div>
-                <div className="self-end flex gap-[15px]">
+
+                {!active && <Link to={'/settings'} className="text-center self-end w-[255px] rounded-[18px] bg-[#ECEEF1] py-[15px]">
+                    <p>Перейти к настройкам</p>
+                </Link>}
+
+                {active && <div className="self-end flex gap-[15px]">
                     <button className="w-[255px] rounded-[18px] bg-[#ECEEF1] py-[15px]">
                         <p>Стандартные</p>
                     </button>
                     <button className="w-[255px] rounded-[18px] bg-black py-[15px]">
                         <p className="text-primary">Сохранить</p>
                     </button>
-                </div>
+                </div>}
+
             </div>
 
         </div>

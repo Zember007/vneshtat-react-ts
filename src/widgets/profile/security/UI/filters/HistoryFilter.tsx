@@ -6,7 +6,7 @@ const HistoryFilter = () => {
     return (
         <div className="flex flex-col gap-[15px] justify-between grow ">
 
-            <SimpleBar className='max-h-[calc(100vh-420px)]'>
+            <SimpleBar className='max-h-[calc(100vh-490px)]'>
                 <div className="flex flex-col gap-[20px] mt-[15px] h-full ">
 
                     <div className="flex flex-col gap-[10px]">

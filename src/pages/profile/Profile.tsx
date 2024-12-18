@@ -28,11 +28,9 @@ interface profileInformation2Part {
 const Profile = () => {
 
     const [changeCompany, setChangeCompany] = useState(false)
-    const [accessView, setAccessView] = useState(false)
-    const [staticsticsView, setStaticsticsView] = useState(false)
-    const [personalView, setPersonalView] = useState(false)
-    const [securityView, setSecurityView] = useState(false)
     const [informationView, setInformationView] = useState(false)
+    const [activeBlock, setActiveBlock] = useState<string | null>(null)
+
 
     const [profileInformation1Part, setProfileInformation1Part] = useState<profileInformation1Part>(
         {
@@ -53,10 +51,7 @@ const Profile = () => {
 
     const ResetFilter = () => {
         setInformationView(true)
-        setAccessView(false)
-        setStaticsticsView(false)
-        setPersonalView(false)
-        setSecurityView(false)
+        setActiveBlock(null)
     }
 
     const AccessToken = getAccessToken()
@@ -65,7 +60,7 @@ const Profile = () => {
     const getInformation1Part = async () => {
         const url = new URL(import.meta.env.VITE_API_URL + '/user/profile/get_profile_1_part');
         url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
-        
+
         try {
             const res = await fetch(url, {
                 method: "GET",
@@ -79,7 +74,7 @@ const Profile = () => {
             }
 
             if (data.status === "success" && data.data) {
-        
+
                 setProfileInformation1Part(data.data)
 
             }
@@ -94,7 +89,7 @@ const Profile = () => {
     const getInformation2Part = async () => {
         const url = new URL(import.meta.env.VITE_API_URL + '/user/profile/get_profile_2_part');
         url.searchParams.append('EmployeeId', EmployeeId?.toString() ?? '');
-        
+
         try {
             const res = await fetch(url, {
                 method: "GET",
@@ -108,7 +103,7 @@ const Profile = () => {
             }
 
             if (data.status === "success" && data.data) {
-        
+
                 setProfileInformation2Part(data.data)
 
             }
@@ -140,7 +135,7 @@ const Profile = () => {
                         <div className="grid gap-[15px] grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr] grow">
                             <div className="rounded-[26px] bg-primary p-[15px] w-full h-full flex flex-col justify-center gap-[10px]">
                                 <div className="rounded-[23px] bg-[#121212] h-full max-h-[75px] flex items-center justify-center text-center">
-                                    <span className="text-primary text-[18px] font-medium">{profileInformation1Part.CompanyName}</span>
+                                    <span className="text-primary text-[18px] font-medium">{profileInformation1Part.CompanyName || localStorage.getItem('CompanyName')}</span>
                                 </div>
                                 <div className="rounded-[13px] bg-[#ECEEF1] py-[9px] text-center">
                                     <span className="text-[14px] font-medium text-[#007BFB]">@{profileInformation1Part.Username}</span>
@@ -155,28 +150,28 @@ const Profile = () => {
                                     <span className="text-[14px] text-primary">Переключиться</span>
                                 </button>
                             </div>
-                            <div className={`rounded-[26px] transition-all duration-300 ${securityView ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col cursor-pointer`}
-                                onClick={() => { ResetFilter(); setSecurityView(true) }}
+                            <div className={`rounded-[26px] transition-all duration-300 ${activeBlock === 'security' ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col cursor-pointer`}
+                                onClick={() => { ResetFilter(); setActiveBlock('security') }}
                             >
 
-                                <SecurityCart status={profileInformation2Part?.SecurityStatus || ''} active={securityView} />
+                                <SecurityCart status={profileInformation2Part?.SecurityStatus || ''} active={activeBlock === 'security'} />
 
                             </div>
-                            <div className={`rounded-[26px] transition-all duration-300 ${staticsticsView ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full row-span-2 flex flex-col gap-[10px]`}>
+                            <div className={`rounded-[26px] transition-all duration-300 ${activeBlock === 'security' ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full row-span-2 flex flex-col gap-[10px]`}>
 
-                                <StatisticsCart active={staticsticsView} select={() => { ResetFilter(); setStaticsticsView(true) }} />
+                                <StatisticsCart active={activeBlock === 'security'} select={() => { ResetFilter(); setActiveBlock('staticstics') }} />
 
                             </div>
                             <div
-                                onClick={() => { ResetFilter(); setAccessView(true) }}
-                                className={`cursor-pointer rounded-[26px] transition-all duration-300 ${accessView ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col`}>
+                                onClick={() => { ResetFilter(); setActiveBlock('access') }}
+                                className={`cursor-pointer rounded-[26px] transition-all duration-300 ${activeBlock === 'access' ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col`}>
 
-                                <AccessCart status={profileInformation2Part?.AccessLastChange || ''} active={accessView} />
+                                <AccessCart status={profileInformation2Part?.AccessLastChange || ''} active={activeBlock === 'access'} />
 
                             </div>
-                            <div className={`rounded-[26px] transition-all duration-300 ${personalView ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col`}>
+                            <div className={`rounded-[26px] transition-all duration-300 ${activeBlock === 'personal' ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full flex flex-col`}>
 
-                                <PersonalCart select={() => { ResetFilter(); setPersonalView(true) }} />
+                                <PersonalCart select={() => { ResetFilter(); setActiveBlock('personal') }} />
 
                             </div>
                         </div>
@@ -186,12 +181,13 @@ const Profile = () => {
                     <>
                         {informationView &&
                             <div className="p-[20px] flex flex-col gap-[15px] h-full">
-                                {staticsticsView && <StatisticsFilter close={() => { ResetFilter(); setInformationView(false) }} />}
-                                {securityView && <SecurityFilter close={() => { ResetFilter(); setInformationView(false) }} />}
-                                {personalView && <PersonalFilter close={() => { ResetFilter(); setInformationView(false) }} />}
-                                {accessView && <AccessFilter close={() => { ResetFilter(); setInformationView(false) }} />}
+                                {activeBlock === 'staticstics' && <StatisticsFilter close={() => { ResetFilter(); setInformationView(false) }} />}
+                                {activeBlock === 'security' && <SecurityFilter close={() => { ResetFilter(); setInformationView(false) }} />}
+                                {activeBlock === 'personal' && <PersonalFilter close={() => { ResetFilter(); setInformationView(false) }} />}
+                                {activeBlock === 'access' && <AccessFilter close={() => { ResetFilter(); setInformationView(false) }} />}
                             </div>
                         }
+
                     </>
                 }
                 navigation={<>
@@ -203,6 +199,11 @@ const Profile = () => {
                         className="py-[15px] rounded-[18px] bg-[#DCE0E5]">
                         <span>Выйти из аккаунта</span>
                     </button>}
+                    {(activeBlock === 'personal' || activeBlock === 'access') &&
+                        <button className="py-[15px] rounded-[18px] bg-[#DCE0E5]">
+                            <span>Сохранить</span>
+                        </button>
+                    }
                 </>}
             />
         </>
