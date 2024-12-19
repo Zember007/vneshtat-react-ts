@@ -470,7 +470,7 @@ const LoginUser = () => {
                                     if (!withPhone) {
                                         handleInputChange("phone", phone)                                        
                                     } else {
-                                        handleInputChange("login", login)                                        
+                                        handleInputChange("login", login.startsWith('@') ? login.slice(1) : login)                                        
                                     }
                                 }}>
                                 <Switch
@@ -497,7 +497,7 @@ const LoginUser = () => {
                                             extraClass={`!text-lg !font-medium mt-2.5 h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] ${loginStatus === "error" ? "#FF64A3" : "text-blue"} !bg-primary first-letter-black`}
                                             placeholder="Логин"
                                             value={login ? `@${login}` : ""}
-                                            onChange={e => dispatch(updateLoginState({ field:"login", value: e.target.value } as any))}
+                                            onChange={e => dispatch(updateLoginState({ field:"login", value:  e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value } as any))}
                                             autoComplete={"on"}
                                         />
                                         <Input
