@@ -141,7 +141,6 @@ const FlightRouteItem = ({ flight, index, onRemove, template }: FlightRouteItemP
                     viewValue={flightDate}
                     calendarOpt={calendarOptions}
                     placeholder={"Дата"}
-                    noNeedButton={true}
                 />}
             </div>
         </div>

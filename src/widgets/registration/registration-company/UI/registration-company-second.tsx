@@ -128,24 +128,25 @@ const RegistrationCompanySecond = () => {
                         <div>
                             <h2 className={"text-lg text-center"}>Личные данные</h2>
                             <div className={"flex flex-col gap-2.5 mt-4"}>
-                                <Input
+                            <Input
                                     extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                     placeholder={"Фамилия"}
-                                    value={name}
-                                    onChange={e => dispatch(updateInfoState({
-                                        field: "name",
-                                        value: e.target.value
-                                    }))}
-                                />
-                                <Input
-                                    extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
-                                    placeholder={"Имя"}
                                     value={surname}
                                     onChange={e => dispatch(updateInfoState({
                                         field: "surname",
                                         value: e.target.value
                                     }))}
                                 />
+                                <Input
+                                    extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
+                                    placeholder={"Имя"}
+                                    value={name}
+                                    onChange={e => dispatch(updateInfoState({
+                                        field: "name",
+                                        value: e.target.value
+                                    }))}
+                                />
+                                
                                 <Input
                                     extraClass={"!text-lg !font-medium text-center h-[50px] rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary"}
                                     placeholder={"Отчество"}

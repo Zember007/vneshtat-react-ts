@@ -132,7 +132,7 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                         extraCalendarClass="translate-x-[110px]"
                         inputValue={dates}
                         viewValue={firstFlight.flightDate}
-                        noNeedButton={dates.length !== 2}
+                        noNeedButton={firstFlight?.flightDate ? true : false}
                         noNeedHandler={() => dispatch(removeFlight(2))}
                         isShortDate={true}
                         withIcon={false}
@@ -151,7 +151,7 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
 
                         inputValue={dates}
                         viewValue={secondFlight?.flightDate}
-                        noNeedButton={dates.length !== 2}
+                        noNeedButton={firstFlight?.flightDate ? true : false}
                         noNeedHandler={() => dispatch(removeFlight(2))}
                         isShortDate={true}
                         withIcon={false}
