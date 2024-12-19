@@ -79,7 +79,7 @@ const Messages = () => {
                             className="p-[8px] rounded-[11px] bg-[#ECEEF1]">
                             <SearchImg className="w-[19px] h-[19px] *:fill-[#8C909C]" />
                         </button>
-                        <div className={`min-w-[140px] absolute  left-[50%] translate-x-[-50%] translate-y-[100%] bg-[#F5F5F5D1] rounded-[23px] p-[13px] flex flex-col gap-[5px] transition-all duration-300 ${openList ? 'bottom-[-5px]' : 'bottom-[0px] opacity-0 invisible'}`}>
+                        <div className={`min-w-[140px] absolute  left-[50%] translate-x-[-50%] translate-y-[100%] bg-[#F5F5F5D1] rounded-[23px] p-[13px] flex flex-col gap-[5px] transition-all duration-300 z-[1] ${openList ? 'bottom-[-5px]' : 'bottom-[0px] opacity-0 invisible'}`}>
                             <button className="rounded-[13px] px-[9px] py-[6px] bg-[#ECEEF1] flex gap-[5px] items-center">
                                 <TeamImg className="w-[18px] h-[18px] *:fill-[#8C909C]" />
                                 <span className="text-[12px] font-medium">Профиль</span>
@@ -105,8 +105,8 @@ const Messages = () => {
                         <CloseImg className="w-[19px] h-[19px] *:fill-[#8C909C]" />
                     </button>
                 </div>
-                <SimpleBar className="max-h-[calc(100vh-290px)]">
-                    <div className="flex flex-col gap-[10px] grow border-0 border-solid border-[#D9D9D9] border-t border-b   py-[10px]">
+                <SimpleBar className="max-h-[calc(100vh-290px)] border-0 border-solid border-[#D9D9D9] border-t border-b   py-[10px]">
+                    <div className="flex flex-col gap-[10px] grow ">
 
                         <Message owner={false} text="Вот ваша бронь. Сделал ее специально на 15 минут позже, чтобы вы точно не опоздали. Не в обиду вашей пунктуальности, просто там реально тяжело найти вход." time="17:45" view={false} />
                         <Message owner={true} text="Иван, кажется вы забыли приложить файл к сообщению)" time="17:45" view={true} />

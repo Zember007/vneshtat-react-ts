@@ -36,6 +36,7 @@ const Filter = () => {
                 <div className="flex flex-row gap-2.5 w-full">
                     <InputDate
                         placeholder={"Дата от "}
+                        extraClassBox='grow'
                         extraClass={"px-[10px] py-[5px] h-[26px] min-w-full max-w-full !rounded-[13px] !bg-primary *:text-[12px]"}
                         extraClassIcon='!w-[20px] !h-[20px]'
                         inputValue={dates}
@@ -53,6 +54,7 @@ const Filter = () => {
                     />
                     <InputDate
                         placeholder={"Дата до"}
+                        extraClassBox='grow'
                         extraClass={"px-[10px]  py-[5px] h-[26px] min-w-full max-w-full !rounded-[13px] !bg-primary *:text-[12px]"}
                         extraClassIcon='!w-[20px] !h-[20px]'
                         inputValue={dates}
@@ -78,6 +80,7 @@ const Filter = () => {
                 <div className="flex flex-row gap-2.5 w-full">
                     <InputDate
                         placeholder={"Дата от "}
+                        extraClassBox='grow'
                         extraClass={"px-[10px] py-[5px] h-[26px] min-w-full max-w-full !rounded-[13px] !bg-primary *:text-[12px]"}
                         extraClassIcon='!w-[20px] !h-[20px]'
                         inputValue={dates}
@@ -95,6 +98,7 @@ const Filter = () => {
                     />
                     <InputDate
                         placeholder={"Дата до"}
+                        extraClassBox='grow'
                         extraClass={"px-[10px] py-[5px] h-[26px] min-w-full max-w-full !rounded-[13px] !bg-primary *:text-[12px]"}
                         extraClassIcon='!w-[20px] !h-[20px]'
                         inputValue={dates}

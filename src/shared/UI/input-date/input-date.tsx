@@ -50,8 +50,7 @@ const InputDate = ({
     const [top, setTop] = useState('')
     const [right, setRight] = useState('')
 
-    useEffect(() => {
-
+    const setPosition = () => {
         let position = containerRef.current?.getBoundingClientRect()
 
         let top = position?.top
@@ -61,22 +60,23 @@ const InputDate = ({
         const inner = document.body
 
         if (typeof top === 'number' && typeof height === 'number' && typeof right === 'number' && typeof width === 'number') {
-            setTop((top + height + window.pageYOffset) + 'px')
+            setTop((top + height + window.pageYOffset + 4) + 'px')
             setRight((inner.clientWidth - right - width ) + 'px')
         }
+    }
 
+    useEffect(() => {
 
-
+        setPosition()
 
     }, [containerRef])
 
     return (
         <div ref={containerRef} className={`flex flex-col min-h-7 cursor-none ${extraClassBox}`}  {...rest}>
 
-            <label  className="relative flex justify-end items-center w-full cursor-pointer">
+            <label onClick={() => {setPosition();setIsOpen(prev => !prev)}}  className="relative flex justify-end items-center w-full cursor-pointer">
                 <div 
-                    className={`${extraClass} min-h-[36px] w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}
-                    onClick={() => setIsOpen(prev => !prev)}>
+                    className={`${extraClass} min-h-[36px] w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}>
                     {viewValue && Array.isArray(viewValue) && viewValue.length ? (
                         viewValue.map(renderDate)
                     ) : viewValue && !Array.isArray(viewValue) ? (
@@ -86,14 +86,14 @@ const InputDate = ({
                     )}
                 </div>
                 {withIcon ? (
-                    <button className={`absolute pr-1.5`} onClick={() => setIsOpen(prev => !prev)}>
+                    <button className={`absolute pr-1.5`}>
                         <CalendarImg className={`w-[24px] h-[24px] ${extraClassIcon}`} />
                     </button>
                 ) : null}
             </label>
             {isOpen && (
                 <div
-                    className={`absolute rounded-[23px] p-5 z-50 flex flex-col gap-2.5 ${extraCalendarClass}`}
+                    className={`fixed rounded-[23px] p-5 z-50 flex flex-col gap-2.5 ${extraCalendarClass}`}
                     style={{
                         background: "rgba(245, 245, 245, 0.82)",
                         boxShadow: "0px 4px 6.5px 0px rgba(0, 0, 0, 0.04)",

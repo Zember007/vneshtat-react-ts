@@ -4,7 +4,7 @@ import {City} from "@/shared/types";
 import {InputCityProps} from "./input-city.props";
 import {debounce} from "@/shared/utils";
 
-const InputCity = ({extraClass = '', inputClass = '', value, setValue, callback, ...rest}: InputCityProps) => {
+const InputCity = ({extraClass = '', inputClass = '',withEraser, value, setValue, callback, ...rest}: InputCityProps) => {
     const [cities, setCities] = useState<null | City[]>(null);
 
     const debouncedGetCities = useCallback(
@@ -29,6 +29,7 @@ const InputCity = ({extraClass = '', inputClass = '', value, setValue, callback,
             <Input
                 className={`py-3 px-2.5 text-sm h-11 rounded-[16px] bg-secondary w-full placeholder:text-[#787B86] ${inputClass}`}
                 value={value}
+                withEraser={withEraser}
                 onChange={(e) => {
                     const newValue = e.target.value;
                     setValue(newValue);

@@ -14,6 +14,8 @@ import { Structure, StructureNavigation, StructureInfornation } from '@/widgets/
 import { useDispatch } from 'react-redux';
 import { getAccessToken } from '@/shared/utils';
 import { setPassengers, setStaffers } from '@/widgets/employees/model/index.store';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/config/store';
 
 
 const employees = () => {
@@ -21,6 +23,8 @@ const employees = () => {
     const location = useLocation().pathname
     const dispatch = useDispatch();
 
+    const PassengersUsers = useSelector((state: RootState) => state.employees.Passengers);
+    const StaffersUsers = useSelector((state: RootState) => state.employees.Staffers);
 
     const links = [
         { Img: TeamImg, title: 'Сотрудники', to: '/jobs/employees' },
@@ -146,9 +150,9 @@ const employees = () => {
             }
 
             if (data.status === "success" && data.data) {
-                
+
                 console.log(data.data);
-                
+
                 dispatch(setPassengers(data.data))
 
             }
@@ -161,11 +165,15 @@ const employees = () => {
     }
 
     useEffect(() => {
-        getOnline().then((res) => {
-            getStaffers(res)
-        })
-
-        getPassengers()
+        if (!StaffersUsers) {
+            getOnline().then((res) => {
+                getStaffers(res)
+            })
+        }
+        
+        if (!PassengersUsers) {
+            getPassengers()
+        }
     }, [])
 
     return (

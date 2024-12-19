@@ -47,7 +47,7 @@ const AeroOperations = ({ selectedTariffId }: {
 
         const countdownInterval = setInterval(() => {
             const updatedPassengers = passengers.map((passenger) =>
-                passenger.deleteCountdown !== null && passenger.deleteCountdown > 0
+                passenger.deleteCountdown && passenger.deleteCountdown !== null && passenger.deleteCountdown > 0
                     ? { ...passenger, deleteCountdown: passenger.deleteCountdown - 1 }
                     : passenger
             );

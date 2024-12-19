@@ -46,7 +46,7 @@ const Dropdown = ({
                     )}
                     {
                         title && <h6
-                            className={`text-[14px] font-medium whitespace-nowrap  ${disable && 'text-[#787B86]'}`}
+                            className={`text-[14px] font-medium whitespace-nowrap  ${disable && 'text-[#787B86]'} ${isChanged && 'pl-[5px]'}`}
 
                         >
                             {title}

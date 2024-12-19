@@ -136,6 +136,7 @@ const FlightRouteItem = ({ flight, index, onRemove, template }: FlightRouteItemP
 
                 {!template?.status && <InputDate
                     setter={(value: Date) => handleInputChange('flightDate', value)}
+                    extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
                     inputValue={flightDate}
                     viewValue={flightDate}
                     calendarOpt={calendarOptions}

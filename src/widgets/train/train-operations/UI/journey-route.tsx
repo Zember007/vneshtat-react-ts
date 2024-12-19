@@ -19,6 +19,7 @@ const JourneyRoute = ({ template }: { template?: boolean }) => {
                     <h4 className={"text-base font-medium"}>Направления</h4>
                     <div className={"flex flex-col gap-2.5"}>
                         <InputCity
+                            withEraser={false}
                             placeholder={"Откуда"}
                             extraClass={"min-w-full"}
                             inputClass={"rounded-[13px] max-h-8"}
@@ -27,6 +28,7 @@ const JourneyRoute = ({ template }: { template?: boolean }) => {
                             callback={(city) => dispatch(setCityFrom(city))}
                         />
                         <InputCity
+                            withEraser={false}
                             placeholder={"Куда"}
                             extraClass={"min-w-full"}
                             inputClass={"rounded-[13px] max-h-8"}
@@ -42,7 +44,7 @@ const JourneyRoute = ({ template }: { template?: boolean }) => {
                         <h4 className={"text-base font-medium"}>Даты</h4>
                         <div className={"flex flex-col gap-2.5"}>
                             <InputDate
-                                extraCalendarClass={"right-[210px]"}
+                                extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
                                 setter={(value: Date) => dispatch(setDateTo(value))}
                                 calendarOpt={{ maxDate: dateBack }}
                                 inputValue={dateTo}
@@ -50,7 +52,7 @@ const JourneyRoute = ({ template }: { template?: boolean }) => {
                                 placeholder={"Туда"}
                             />
                             <InputDate
-                                extraCalendarClass={"right-[210px]"}
+                                extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
                                 setter={(value: Date) => dispatch(setDateBack(value))}
                                 inputValue={dateBack}
                                 viewValue={dateBack}

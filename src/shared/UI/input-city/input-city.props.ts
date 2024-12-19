@@ -6,4 +6,5 @@ export interface InputCityProps extends InputHTMLAttributes<HTMLInputElement>{
     setValue: (str: string) => void;
     extraClass?: string
     inputClass?: string
+    withEraser?: boolean
 }

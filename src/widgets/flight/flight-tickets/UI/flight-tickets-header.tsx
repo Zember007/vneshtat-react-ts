@@ -1,4 +1,4 @@
-import {InputCity, InputDate, Switch, TagFilter} from "@/shared/UI";
+import { InputCity, InputDate, Switch, TagFilter } from "@/shared/UI";
 import {
     addFlight,
     removeFlight,
@@ -6,10 +6,10 @@ import {
     setCityTo,
     updateFlight
 } from "@/widgets/flight/flight-operations/model/flight.store";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/app/config/store";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Tag } from "@/shared/UI/tag-filter/tag-filter.props";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/config/store";
 import BurgerImg from "@/assets/icons/burger.svg?react";
 import HeartImg from "@/assets/icons/heart.svg?react";
 import RouteImg from "@/assets/icons/route.svg?react";
@@ -19,26 +19,26 @@ import PassengerImg from "@/assets/icons/users.svg?react";
 import CopyImg from "@/assets/icons/copy.svg?react";
 import ArrowLeftImg from "@/assets/icons/arrow-left.svg?react";
 import GraphImg from "@/assets/icons/graph.svg?react";
-import {ShowedGraph} from "./flight-tickets";
-import {usePagination} from "@/shared/hooks/use-pagination";
-import {PriceData, priceData} from "../utils";
+import { ShowedGraph } from "./flight-tickets";
+import { usePagination } from "@/shared/hooks/use-pagination";
+import { PriceData, priceData } from "../utils";
 
-const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActiveRate, template}: {
+const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiveRate, template }: {
     showedGraph: ShowedGraph | null,
     setShowedGraph: Dispatch<SetStateAction<ShowedGraph | null>>,
     activeRate: PriceData | null,
     setActiveRate: Dispatch<SetStateAction<PriceData | null>>,
-    template?:boolean
+    template?: boolean
 }) => {
-    const {flights, cityFrom, cityTo} = useSelector((state: RootState) => state.flight);
+    const { flights, cityFrom, cityTo } = useSelector((state: RootState) => state.flight);
     const [byQueue, setByQueue] = useState(true);
     const [isChair, setIsChair] = useState(true);
-    const [tags, setTags] = useState<Tag>({tags: ["Только прямые", "Дешевле", "Быстрее"], selectedTags: []});
+    const [tags, setTags] = useState<Tag>({ tags: ["Только прямые", "Дешевле", "Быстрее"], selectedTags: [] });
     const firstFlight = flights[0];
     const secondFlight = flights[1];
     const [dates, setDates] = useState<Date[]>([]);
     const dispatch = useDispatch();
-    const {currentItems, nextPage, prevPage} = usePagination(priceData, 6, 1);
+    const { currentItems, nextPage, prevPage } = usePagination(priceData, 6, 1);
 
     useEffect(() => {
         if (firstFlight.flightDate) {
@@ -78,17 +78,17 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
         if (updatedDates.length === 2) {
             updatedDates = [];
             setDates([]);
-            dispatch(updateFlight({id: firstFlight.id, field: "flightDate", value: null}));
-            dispatch(updateFlight({id: secondFlight?.id, field: "flightDate", value: null}));
+            dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: null }));
+            dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: null }));
         }
         if (!firstFlight.flightDate || updatedDates.length === 0) {
-            dispatch(updateFlight({id: firstFlight.id, field: "flightDate", value: date}));
+            dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: date }));
             if (!secondFlight) dispatch(addFlight());
             updatedDates = [date];
         } else {
             updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
-            dispatch(updateFlight({id: firstFlight.id, field: "flightDate", value: updatedDates[0]}));
-            dispatch(updateFlight({id: secondFlight?.id, field: "flightDate", value: updatedDates[1]}));
+            dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: updatedDates[0] }));
+            dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: updatedDates[1] }));
         }
 
         setDates(updatedDates);
@@ -100,7 +100,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                 <div className={"flex flex-row items-center gap-2.5"}>
                     <div
                         className={"flex flex-row items-center py-3 px-2.5 gap-2 max-h-11 rounded-[16px] bg-secondary"}>
-                        <PassengerImg/>
+                        <PassengerImg />
                         <p className={"text-xs"}>+0</p>
                     </div>
                     <InputCity
@@ -114,7 +114,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                         }))}
                     />
                     <button onClick={swapFlightCities}>
-                        <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"}/>
+                        <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"} />
                     </button>
                     <InputCity
                         placeholder={"Прилет"}
@@ -129,7 +129,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                     <InputDate
                         placeholder={"Туда"}
                         extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-
+                        extraCalendarClass="translate-x-[110px]"
                         inputValue={dates}
                         viewValue={firstFlight.flightDate}
                         noNeedButton={dates.length !== 2}
@@ -148,7 +148,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                     <InputDate
                         placeholder={"Обратно"}
                         extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                        
+
                         inputValue={dates}
                         viewValue={secondFlight?.flightDate}
                         noNeedButton={dates.length !== 2}
@@ -167,16 +167,16 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                 </div>
                 <div className={"flex flex-row items-center gap-2.5"}>
                     <Switch
-                        firstChild={<BurgerImg className={"h-5 w-5"}/>}
-                        secondChild={<HeartImg className={"h-5 w-5"}/>}
+                        firstChild={<BurgerImg className={"h-5 w-5"} />}
+                        secondChild={<HeartImg className={"h-5 w-5"} />}
                         isSelected={byQueue}
                         setter={setByQueue}
                         extraClass={"max-h-9"}
                     />
                     <div className={"flex bg-[#F5F5F5] rounded-primary"}>
                         <Switch
-                            firstChild={<ChairExistsImg className={`${!isChair && "grey-fill"}`}/>}
-                            secondChild={<ChairAwayImg className={`${isChair ? "grey-fill" : "black-fill"}`}/>}
+                            firstChild={<ChairExistsImg className={`${!isChair && "grey-fill"}`} />}
+                            secondChild={<ChairAwayImg className={`${isChair ? "grey-fill" : "black-fill"}`} />}
                             isSelected={isChair}
                             setter={setIsChair}
                             extraClass={"max-h-9"}
@@ -185,11 +185,11 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                             <p className={"text-xs font-medium text-[#9B9FAD]"}>Найдено: 215</p>
                         </div>
                     </div>
-                    <TagFilter tags={tags} setter={setTags} extraClass={"max-h-9"}/>
+                    <TagFilter tags={tags} setter={setTags} extraClass={"max-h-9"} />
                     <div
                         className={`px-2.5 py-2 max-h-9 flex items-center justify-between gap-1 rounded-primary cursor-pointer ml-auto ${showedGraph ? "bg-secondary" : "bg-primary border-solid border-secondary border-[1px]"}`}
                         onClick={() => setShowedGraph(prev => prev ? null : "graph")}>
-                        <GraphImg className={"min-w-5 min-h-5"}/>
+                        <GraphImg className={"min-w-5 min-h-5"} />
                         <p className={"text-xs select-none"}>График цен</p>
                     </div>
                 </div>
@@ -202,7 +202,7 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                             }}
                             className={`transition p-3 rounded-[18px] ${showedGraph === "graph" ? "bg-black" : "bg-secondary"} cursor-pointer`}>
                             <GraphImg
-                                className={`min-h-[26px] min-w-[26px] ${showedGraph === "graph" ? "white-fill" : "black-fill"}`}/>
+                                className={`min-h-[26px] min-w-[26px] ${showedGraph === "graph" ? "white-fill" : "black-fill"}`} />
                         </button>
                         {currentItems.map((item) => (
                             <button
@@ -215,10 +215,10 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                         ))}
                         <div className={"flex items-center justify-center gap-2 px-1 ml-auto"}>
                             <button onClick={prevPage}>
-                                <ArrowLeftImg className={"min-h-4 min-w-4 black-stroke"}/>
+                                <ArrowLeftImg className={"min-h-4 min-w-4 black-stroke"} />
                             </button>
                             <button onClick={nextPage}>
-                                <ArrowLeftImg className={"min-h-4 min-w-4 black-stroke rotate-180"}/>
+                                <ArrowLeftImg className={"min-h-4 min-w-4 black-stroke rotate-180"} />
                             </button>
                         </div>
                     </div>
@@ -236,9 +236,9 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
                         </div>
                         {!template && (<div
                             className={"flex items-center h-[50px] gap-2.5 px-4 py-2.5 rounded-primary bg-secondary cursor-pointer"}>
-                            <CopyImg/>
+                            <CopyImg />
                             <h6 className={"text-xs font-medium"}>Выбрать из шаблонов</h6>
-                        </div> )}
+                        </div>)}
                     </div>
                 )}
             </div>
@@ -246,4 +246,4 @@ const FlightTicketsHeader = ({showedGraph, setShowedGraph, activeRate, setActive
     )
 };
 
-export {FlightTicketsHeader};
+export { FlightTicketsHeader };

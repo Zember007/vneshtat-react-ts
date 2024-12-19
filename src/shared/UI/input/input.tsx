@@ -139,7 +139,7 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
                     onClick={handleClear}
                     type={"button"}
                     tabIndex={-1}
-                    className="absolute w-4 right-2 top-2 bottom-2 bg-primary flex items-center justify-center">
+                    className="absolute w-4 right-2 top-2 bottom-2 flex items-center justify-center">
                     <CrossImg className={"black-fill"}/>
                 </button>
             ) : null}

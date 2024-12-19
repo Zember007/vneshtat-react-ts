@@ -20,7 +20,7 @@ export interface Passenger {
     surname: string,
     password: string,
     internationalPw: string,
-    deleteCountdown: null | number
+    deleteCountdown?: null | number
 }
 
 export interface FilterData<T> {
