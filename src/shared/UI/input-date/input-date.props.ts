@@ -9,6 +9,7 @@ export interface InputDateProps extends InputHTMLAttributes<HTMLInputElement>{
     isShortDate?: boolean
     withIcon?: boolean
     calendarOpt?: any
+    openAction?:Function
     placeholder?: string
     extraCalendarClass?: string
     extraClass?: string

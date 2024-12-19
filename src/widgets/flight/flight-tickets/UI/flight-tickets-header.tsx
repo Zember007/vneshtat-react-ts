@@ -148,7 +148,9 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                     <InputDate
                         placeholder={"Обратно"}
                         extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-
+                        openAction={
+                            () => {secondFlight?.flightDate && dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: null }))}
+                        }
                         inputValue={dates}
                         viewValue={secondFlight?.flightDate}
                         noNeedButton={firstFlight?.flightDate ? true : false}

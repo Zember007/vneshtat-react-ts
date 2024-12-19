@@ -19,6 +19,7 @@ const InputDate = ({
     noNeedButton = false,
     noNeedHandler,
     extraClassIcon,
+    openAction,
     ...rest
 }: InputDateProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +62,7 @@ const InputDate = ({
 
         if (typeof top === 'number' && typeof height === 'number' && typeof right === 'number' && typeof width === 'number') {
             setTop((top + height + window.pageYOffset + 4) + 'px')
-            setRight((inner.clientWidth - right - width ) + 'px')
+            setRight((inner.clientWidth - right - width) + 'px')
         }
     }
 
@@ -74,8 +75,11 @@ const InputDate = ({
     return (
         <div ref={containerRef} className={`flex flex-col min-h-7 cursor-none ${extraClassBox}`}  {...rest}>
 
-            <label onClick={() => {setPosition();setIsOpen(prev => !prev)}}  className="relative flex justify-end items-center w-full cursor-pointer">
-                <div 
+            <label onClick={() => {
+                setPosition(); setIsOpen(prev => !prev)
+                openAction && openAction()
+            }} className="relative flex justify-end items-center w-full cursor-pointer">
+                <div
                     className={`${extraClass} min-h-[36px] w-full bg-secondary flex items-center rounded-primary text-sm py-2 px-2.5`}>
                     {viewValue && Array.isArray(viewValue) && viewValue.length ? (
                         viewValue.map(renderDate)
