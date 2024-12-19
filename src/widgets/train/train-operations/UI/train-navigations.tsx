@@ -5,12 +5,12 @@ const TrainNavigations = ({activeOperation}:{activeOperation:string}) => {
     return (
         <>
             {activeOperation === "passengers" && (
-                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black mt-4"}>
+                <button className={"h-[50px] w-full flex justify-center items-center py-4 rounded-[21px] bg-black"}>
                     <p className={"text-lg text-[#fff] leading-none"}>Поиск!</p>
                 </button>
             )}
             {activeOperation === "filter" && (
-                <div className={"h-[50px] flex flex-row gap-4 mt-4"}>
+                <div className={"h-[50px] flex flex-row gap-4"}>
                     <button className={"h-full px-3 bg-[#dce0e5] rounded-[21px]"}>
                         <RadarImg />
                     </button>
