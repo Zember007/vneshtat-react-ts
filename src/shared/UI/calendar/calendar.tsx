@@ -63,7 +63,7 @@ const Calendar = ({ value, setter, ...opt }: CalendarProps) => {
         <LibCalendar
             className={"!border-none"}
             {...(Array.isArray(value) && !allowPartialOptions ? { onClickDay, tileClassName } : { value, onChange: setter })}
-            goToRangeStartOnSelect={false}
+            goToRangeStartOnSelect={true}
             next2Label={null}
             prev2Label={null}
             prevLabel={
