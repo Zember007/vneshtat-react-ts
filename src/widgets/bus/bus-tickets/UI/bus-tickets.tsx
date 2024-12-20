@@ -105,7 +105,6 @@ const BusTickets = () => {
                         <InputDate
                             placeholder={"Дата"}
                             extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                            extraCalendarClass={"-translate-y-[72px]"}
                             inputValue={journeyDate}
                             viewValue={journeyDate}
                             isShortDate={true}

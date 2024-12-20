@@ -98,6 +98,11 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
         setDates(updatedDates);
     }
 
+    useEffect(() => {
+        dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: dates[0] }));
+        dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: dates[1] }));
+    },[dates])
+
     return (
         <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
             <div className={"flex flex-col gap-4"}>
@@ -135,9 +140,6 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                         extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
                         extraCalendarClass="translate-x-[110px]"
                         inputValue={dates}
-                        openAction={
-                            () => {secondFlight?.flightDate && dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: null }))}
-                        }
                         viewValue={firstFlight.flightDate}
                         noNeedButton={firstFlight?.flightDate ? true : false}
                         noNeedHandler={() => dispatch(removeFlight(2))}
@@ -164,7 +166,7 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                         calendarOpt={{
                             onClickDay: handleDateClick,
                             allowPartialOptions: true,
-                            selectRange: true
+                            selectRange: true                          
                         }}
                         setter={(dates: Date[]) => {
                             setDates(dates);

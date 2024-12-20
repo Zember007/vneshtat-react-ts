@@ -36,7 +36,7 @@ const HotelRoute = () => {
                                 inputValue={dateTo}
                                 viewValue={dateTo}
                                 placeholder={"Дата заезда"}
-                                extraCalendarClass={"right-[210px]"}
+                                extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
                                 calendarOpt={{ maxDate: dateBack }}
                             />
                             <InputDate
@@ -44,7 +44,7 @@ const HotelRoute = () => {
                                 inputValue={dateBack}
                                 viewValue={dateBack}
                                 placeholder={"Дата выезда"}
-                                extraCalendarClass={"right-[210px]"}
+                                extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
                                 calendarOpt={{ minDate: dateTo }}
                             />
                         </div>

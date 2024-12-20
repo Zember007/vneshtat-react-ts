@@ -9,7 +9,7 @@ interface CalendarProps {
     [key: string]: any;
 }
 
-const Calendar = ({value, setter, ...opt}: CalendarProps) => {
+const Calendar = ({ value, setter, ...opt }: CalendarProps) => {
     // if provide date[] it will be multiple, but just date it will be a single-selectable
     // @ts-ignore
     const allowPartialOptions = opt.allowPartialOptions ?? false;
@@ -31,7 +31,7 @@ const Calendar = ({value, setter, ...opt}: CalendarProps) => {
     };
 
     const datesExcept = (dates: Date[], date: Date): Date[] => {
-    
+
         return dates.filter(d => d.getTime() !== date.getTime());
     };
 
@@ -44,7 +44,7 @@ const Calendar = ({value, setter, ...opt}: CalendarProps) => {
         setter(newDates);
     };
 
-    const tileClassName = ({date}: { date: Date }) => {
+    const tileClassName = ({ date }: { date: Date }) => {
         const valueArray = Array.isArray(value) ? value : (value ? [value] : []);
         const isActive = dateAlreadyClicked(valueArray, date);
         const classNames = [];
@@ -62,24 +62,26 @@ const Calendar = ({value, setter, ...opt}: CalendarProps) => {
         // @ts-ignore
         <LibCalendar
             className={"!border-none"}
-            {...(Array.isArray(value) && !allowPartialOptions ? {onClickDay, tileClassName} : {value, onChange: setter})}
+            {...(Array.isArray(value) && !allowPartialOptions ? { onClickDay, tileClassName } : { value, onChange: setter })}
+            goToRangeStartOnSelect={false}
             next2Label={null}
             prev2Label={null}
             prevLabel={
                 <button className={"controller-button"}>
-                    <ArrowLeftImg className={"black-stroke"}/>
+                    <ArrowLeftImg className={"black-stroke"} />
                 </button>
             }
             nextLabel={
                 <button className={"controller-button"}>
-                    <ArrowLeftImg className={"rotate-180 black-stroke"}/>
+                    <ArrowLeftImg className={"rotate-180 black-stroke"} />
                 </button>
             }
             tileContent={tileContent}
             showNeighboringMonth={false}
             {...opt}
         />
+
     );
 };
 
-export {Calendar};
+export { Calendar };

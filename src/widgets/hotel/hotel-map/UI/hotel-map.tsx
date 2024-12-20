@@ -1,5 +1,5 @@
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/app/config/store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/config/store";
 import PassengerImg from "@/assets/icons/users.svg?react";
 import RouteImg from "@/assets/icons/route.svg?react";
 import ChairAwayImg from "@/assets/icons/chair-away.svg?react";
@@ -7,9 +7,9 @@ import PlaneImg from "@/assets/icons/plane.svg?react";
 import BusImg from "@/assets/icons/bus.svg?react";
 import KeyImg from "@/assets/icons/key.svg?react";
 import CopyImg from "@/assets/icons/copy.svg?react";
-import {useEffect, useRef, useState} from "react";
-import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
-import {Checkbox, InputCity, InputDate, TagFilter} from "@/shared/UI";
+import { useEffect, useRef, useState } from "react";
+import { Tag } from "@/shared/UI/tag-filter/tag-filter.props";
+import { Checkbox, InputCity, InputDate, TagFilter } from "@/shared/UI";
 import {
     setCity,
     setCityName, setDateBack,
@@ -19,10 +19,10 @@ import {
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const HotelMap = ({isSearched}: {
+const HotelMap = ({ isSearched }: {
     isSearched: boolean,
 }) => {
-    const {dateTo, dateBack, cityName} = useSelector((state: RootState) => state.hotel);
+    const { dateTo, dateBack, cityName } = useSelector((state: RootState) => state.hotel);
     const [tags, setTags] = useState<Tag>({
         tags: ["RO", "BB", "HB", "FB", "AI"],
         selectedTags: []
@@ -57,9 +57,9 @@ const HotelMap = ({isSearched}: {
     }, [mapContainerRef.current, mapRef.current, isSearched]);
 
     useEffect(() => {
-        if (dateTo) setDates(prev => [dateTo, prev[1] && prev[1]]);
-        if (dateBack) setDates(prev => [prev[0] && prev[0], dateBack]);
-    }, [dateTo, dateBack]);
+        dispatch(setDateTo(dates[0]))
+        dispatch(setDateBack(dates[1]))
+    }, [dates]);
 
     const handleDateClick = (date: Date) => {
         let updatedDates = dates.filter(d => d !== undefined);
@@ -89,12 +89,12 @@ const HotelMap = ({isSearched}: {
                     <div className={"flex flex-row items-center gap-2.5"}>
                         <div
                             className={"flex flex-row items-center py-3 px-2.5 gap-2 h-11 rounded-[16px] bg-secondary"}>
-                            <PassengerImg/>
+                            <PassengerImg />
                             <p className={"text-xs"}>+2</p>
                         </div>
                         <div
                             className={"flex flex-row items-center py-3 px-2.5 gap-2 h-11 rounded-[16px] bg-secondary"}>
-                            <KeyImg/>
+                            <KeyImg />
                             <p className={"text-xs"}>+0</p>
                         </div>
                         <InputCity
@@ -103,11 +103,11 @@ const HotelMap = ({isSearched}: {
                             setValue={(str) => dispatch(setCityName(str))}
                             callback={(city) => dispatch(setCity(city))}
                         />
-                        <span className={"h-8 bg-[#E5E7EA] w-[1px] rounded-[1px]"}/>
+                        <span className={"h-8 bg-[#E5E7EA] w-[1px] rounded-[1px]"} />
                         <InputDate
                             placeholder={"Заезд"}
                             extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                            extraCalendarClass={"-translate-y-[72px]"}
+                            extraCalendarClass="translate-x-[110px]"
                             noNeedButton={dates.length !== 2}
                             inputValue={dates}
                             viewValue={dateTo}
@@ -125,7 +125,7 @@ const HotelMap = ({isSearched}: {
                         <InputDate
                             placeholder={"Выезд"}
                             extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                            extraCalendarClass={"-translate-y-[72px]"}
+
                             noNeedButton={dates.length !== 2}
                             inputValue={dates}
                             viewValue={dateBack}
@@ -144,7 +144,7 @@ const HotelMap = ({isSearched}: {
                     {isSearched ? (
                         <div className="h-[calc(100vh-230px)]">
                             <div
-                                style={{height: '100%'}}
+                                style={{ height: '100%' }}
                                 ref={mapContainerRef}
                                 className={`map-container`}
                             />
@@ -152,10 +152,10 @@ const HotelMap = ({isSearched}: {
                     ) : (
                         <>
                             <div className={"flex flex-row items-center gap-2.5"}>
-                                <TagFilter tags={tags} setter={setTags} extraClass={"max-h-8"}/>
-                                <span className={"h-7 bg-[#E5E7EA] w-[1px] rounded-[1px]"}/>
-                                <TagFilter tags={stars} setter={setStars} extraClass={"max-h-8"}/>
-                                <span className={"h-7 bg-[#E5E7EA] w-[1px] rounded-[1px]"}/>
+                                <TagFilter tags={tags} setter={setTags} extraClass={"max-h-8"} />
+                                <span className={"h-7 bg-[#E5E7EA] w-[1px] rounded-[1px]"} />
+                                <TagFilter tags={stars} setter={setStars} extraClass={"max-h-8"} />
+                                <span className={"h-7 bg-[#E5E7EA] w-[1px] rounded-[1px]"} />
                                 <Checkbox
                                     items={isFreeCancelOption}
                                     onChange={() => dispatch(setIsFreeCancelFilter(!isFreeCancel))}
@@ -175,7 +175,7 @@ const HotelMap = ({isSearched}: {
                                 </div>
                                 <div
                                     className={"flex items-center gap-2.5 px-4 py-2.5 rounded-primary bg-secondary cursor-pointer"}>
-                                    <CopyImg/>
+                                    <CopyImg />
                                     <h6 className={"text-xs font-medium"}>Выбрать из шаблонов</h6>
                                 </div>
                             </div>
@@ -192,7 +192,7 @@ const HotelMap = ({isSearched}: {
                             <div className={"flex flex-col gap-2.5 mt-6"}>
                                 <div className={"flex items-center gap-2.5"}>
                                     <div className={"p-2 bg-primary rounded-secondary h-9"}>
-                                        <ChairAwayImg className={"black-fill"}/>
+                                        <ChairAwayImg className={"black-fill"} />
                                     </div>
                                     <p className={"text-base max-w-[280px]"}>Посмотреть распроданные билеты и создать
                                         Автобронирование</p>
@@ -200,18 +200,18 @@ const HotelMap = ({isSearched}: {
                                 <div className={"flex items-center gap-2.5"}>
                                     <div
                                         className={"p-2 bg-primary rounded-secondary w-9 h-9 flex justify-center items-center"}>
-                                        <RouteImg/>
+                                        <RouteImg />
                                     </div>
                                     <p className={"text-base max-w-[280px]"}>Изменить даты</p>
                                 </div>
                                 <div className={"flex items-center gap-2.5"}>
                                     <div
                                         className={"p-2 bg-primary rounded-secondary w-9 h-9 flex justify-center items-center"}>
-                                        <PlaneImg/>
+                                        <PlaneImg />
                                     </div>
                                     <div
                                         className={"p-2 bg-primary rounded-secondary w-9 h-9 flex justify-center items-center"}>
-                                        <BusImg/>
+                                        <BusImg />
                                     </div>
                                     <p className={"text-base max-w-[280px]"}>Попробовать другой вид транспорта</p>
                                 </div>
@@ -224,4 +224,4 @@ const HotelMap = ({isSearched}: {
     );
 };
 
-export {HotelMap};
+export { HotelMap };

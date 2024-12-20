@@ -1,7 +1,7 @@
 import {InputHTMLAttributes} from "react";
 
 export interface InputDateProps extends InputHTMLAttributes<HTMLInputElement>{
-    viewValue: Date | Date[] | null
+    viewValue: Date | null
     inputValue: Date | Date[] | null
     setter: any
     noNeedButton?: boolean;

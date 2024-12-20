@@ -1,5 +1,6 @@
 import { InputDateProps } from "./input-date.props";
 import CalendarImg from "@/assets/icons/calendar.svg?react";
+import CloseImg from "@/assets/icons/close.svg?react";
 import { useEffect, useRef, useState } from "react";
 import { Calendar } from "@/shared/UI";
 import { formatDate, getDayOfWeek } from "@/shared/utils";
@@ -27,7 +28,8 @@ const InputDate = ({
     useClickAway(containerRef, () => setIsOpen(false))
 
     useEffect(() => {
-        if (inputValue && !Array.isArray(inputValue)) setIsOpen(false)
+
+        if (Array.isArray(inputValue) && inputValue[1]) setIsOpen(false)
     }, [inputValue])
 
     const renderDate = (date: Date) => {
@@ -74,7 +76,6 @@ const InputDate = ({
 
     return (
         <div ref={containerRef} className={`flex flex-col min-h-7 cursor-none ${extraClassBox}`}  {...rest}>
-
             <label onClick={() => {
                 setPosition(); setIsOpen(prev => !prev)
                 openAction && openAction()
@@ -89,11 +90,23 @@ const InputDate = ({
                         <p className="text-sm text-[#787B86]">{placeholder}</p>
                     )}
                 </div>
-                {withIcon ? (
+                {(withIcon && !viewValue) ? (
                     <button className={`absolute pr-1.5`}>
                         <CalendarImg className={`w-[24px] h-[24px] ${extraClassIcon}`} />
                     </button>
                 ) : null}
+               {
+                 viewValue &&
+                 <button
+                 onClick={() => {
+                     setIsOpen(prev => !prev)
+                     setter(Array.isArray(inputValue) ? inputValue.filter(item => item !== viewValue) : null )
+                 }}
+                 className={`absolute pr-1.5`}>
+                     <CloseImg className={`w-[15px] h-[15px] *:fill-black ${extraClassIcon}`} />
+                 </button>
+                
+               }
             </label>
             {isOpen && (
                 <div

@@ -1,4 +1,4 @@
-import {InputCity, InputDate, Switch, TagFilter} from "@/shared/UI";
+import { InputCity, InputDate, Switch, TagFilter } from "@/shared/UI";
 import BurgerImg from "@/assets/icons/burger.svg?react";
 import HeartImg from "@/assets/icons/heart.svg?react";
 import ChairExistsImg from "@/assets/icons/chair-exists.svg?react";
@@ -11,10 +11,10 @@ import {
     setCityTo,
     setCityToName, setDateBack, setDateTo
 } from "../../train-operations/model/journey.store";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/app/config/store";
-import {useEffect, useState} from "react";
-import {Tag} from "@/shared/UI/tag-filter/tag-filter.props";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/config/store";
+import { useEffect, useState } from "react";
+import { Tag } from "@/shared/UI/tag-filter/tag-filter.props";
 
 const JourneyTicketsHeader = () => {
     const {
@@ -35,10 +35,16 @@ const JourneyTicketsHeader = () => {
     });
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (dateTo) setDates(prev => [dateTo, prev[1] && prev[1]]);
         if (dateBack) setDates(prev => [prev[0] && prev[0], dateBack]);
-    }, [dateTo, dateBack]);
+    }, [dateTo, dateBack]); */
+
+
+    useEffect(() => {
+        dispatch(setDateTo(dates[0]))
+        dispatch(setDateBack(dates[1]))
+    }, [dates]);
 
     const swapCities = () => {
         const temp = cityFromName;
@@ -75,7 +81,7 @@ const JourneyTicketsHeader = () => {
         <div className={"flex flex-col gap-4"}>
             <div className={"flex flex-row items-center gap-2.5"}>
                 <div className={"flex flex-row items-center py-3 px-2.5 gap-2 h-11 rounded-[16px] bg-secondary"}>
-                    <PassengerImg/>
+                    <PassengerImg />
                     <p className={"text-xs"}>+2</p>
                 </div>
                 <InputCity
@@ -85,7 +91,7 @@ const JourneyTicketsHeader = () => {
                     callback={(city) => dispatch(setCityFrom(city))}
                 />
                 <button onClick={swapCities}>
-                    <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"}/>
+                    <RouteImg className={"grey-fill black-fill-hover transition min-w-5 min-h-5"} />
                 </button>
                 <InputCity
                     placeholder={"Город прибытия"}
@@ -96,10 +102,10 @@ const JourneyTicketsHeader = () => {
                 <InputDate
                     placeholder={"Туда"}
                     extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                    extraCalendarClass={"-translate-y-[72px]"}
+                    extraCalendarClass="translate-x-[110px]"
                     inputValue={dates}
                     viewValue={dateTo}
-                    noNeedButton={dates.length !== 2}
+                    noNeedButton={dateTo ? true : false}
                     isShortDate={true}
                     withIcon={false}
                     calendarOpt={{
@@ -114,10 +120,10 @@ const JourneyTicketsHeader = () => {
                 <InputDate
                     placeholder={"Обратно"}
                     extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                    extraCalendarClass={"-translate-y-[72px]"}
+                    
                     inputValue={dates}
                     viewValue={dateBack}
-                    noNeedButton={dates.length !== 2}
+                    noNeedButton={dateTo ? true : false}
                     isShortDate={true}
                     withIcon={false}
                     calendarOpt={{
@@ -140,8 +146,8 @@ const JourneyTicketsHeader = () => {
                     extraClass={"max-h-9"}
                 />
                 <Switch
-                    firstChild={<BurgerImg className={"h-5 w-5"}/>}
-                    secondChild={<HeartImg className={"h-5 w-5"}/>}
+                    firstChild={<BurgerImg className={"h-5 w-5"} />}
+                    secondChild={<HeartImg className={"h-5 w-5"} />}
                     isSelected={byQueue}
                     setter={setByQueue}
                     extraChildClass={"px-1 py-1"}
@@ -149,8 +155,8 @@ const JourneyTicketsHeader = () => {
                 />
                 <div className={"flex bg-[#F5F5F5] rounded-primary"}>
                     <Switch
-                        firstChild={<ChairExistsImg className={`${!isChair && "grey-fill"}`}/>}
-                        secondChild={<ChairAwayImg className={`${isChair ? "grey-fill" : "black-fill"}`}/>}
+                        firstChild={<ChairExistsImg className={`${!isChair && "grey-fill"}`} />}
+                        secondChild={<ChairAwayImg className={`${isChair ? "grey-fill" : "black-fill"}`} />}
                         isSelected={isChair}
                         setter={setIsChair}
                         extraChildClass={"py-1 px-1.5"}
@@ -160,10 +166,10 @@ const JourneyTicketsHeader = () => {
                         <p className={"text-xs font-medium text-[#9B9FAD]"}>Найдено: 215</p>
                     </div>
                 </div>
-                <TagFilter tags={tags} setter={setTags} extraClass={"max-h-9"}/>
+                <TagFilter tags={tags} setter={setTags} extraClass={"max-h-9"} />
             </div>
         </div>
     )
 };
 
-export {JourneyTicketsHeader};
+export { JourneyTicketsHeader };
