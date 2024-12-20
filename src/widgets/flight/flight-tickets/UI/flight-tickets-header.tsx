@@ -74,7 +74,8 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
 
     const handleDateClick = (date: Date) => {
         let updatedDates = dates.filter(d => d !== undefined);
-
+       
+        
         if (updatedDates.length === 2) {
             updatedDates = [];
             setDates([]);
@@ -82,11 +83,14 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
             dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: null }));
         }
         if (!firstFlight.flightDate || updatedDates.length === 0) {
+            
             dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: date }));
             if (!secondFlight) dispatch(addFlight());
             updatedDates = [date];
         } else {
+            
             updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
+           
             dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: updatedDates[0] }));
             dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: updatedDates[1] }));
         }
@@ -131,6 +135,9 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                         extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
                         extraCalendarClass="translate-x-[110px]"
                         inputValue={dates}
+                        openAction={
+                            () => {secondFlight?.flightDate && dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: null }))}
+                        }
                         viewValue={firstFlight.flightDate}
                         noNeedButton={firstFlight?.flightDate ? true : false}
                         noNeedHandler={() => dispatch(removeFlight(2))}
@@ -147,10 +154,7 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                     />
                     <InputDate
                         placeholder={"Обратно"}
-                        extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
-                        openAction={
-                            () => {secondFlight?.flightDate && dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: null }))}
-                        }
+                        extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}                        
                         inputValue={dates}
                         viewValue={secondFlight?.flightDate}
                         noNeedButton={firstFlight?.flightDate ? true : false}

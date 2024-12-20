@@ -26,10 +26,12 @@ const Calendar = ({value, setter, ...opt}: CalendarProps) => {
     };
 
     const dateAlreadyClicked = (dates: Date[], date: Date): boolean => {
+
         return dates.some(d => d.getTime() === date.getTime());
     };
 
     const datesExcept = (dates: Date[], date: Date): Date[] => {
+    
         return dates.filter(d => d.getTime() !== date.getTime());
     };
 
