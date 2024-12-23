@@ -23,7 +23,7 @@ interface template {
 
 const FlightRouteItem = ({ flight, index, onRemove, template }: FlightRouteItemProps) => {
     const dispatch = useDispatch();
-    const flights = useSelector((state: RootState) => state.flight.flights);
+   /*  const flights = useSelector((state: RootState) => state.flight.flights); */
     const [departureCity, setDepartureCity] = useState(flight.departureCity?.nameRu! || "");
     const [arrivalCity, setArrivalCity] = useState(flight.arrivalCity?.nameRu! || "");
     const { cityFrom, cityTo } = useSelector((state: RootState) => state.flight);
