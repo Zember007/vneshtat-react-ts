@@ -29,7 +29,7 @@ const InputDate = ({
 
     useEffect(() => {
 
-        if (Array.isArray(inputValue) && inputValue[1]) setIsOpen(false)
+        if ((Array.isArray(inputValue) && inputValue[1]) || (!Array.isArray(inputValue) && inputValue)) setIsOpen(false)
     }, [inputValue])
 
     const renderDate = (date: Date) => {

@@ -41,9 +41,9 @@ const TransferRoute = () => {
                             setter={(date: Date) => dispatch(setDate(date))}
                             extraClass={"min-w-[170px]"}
                             placeholder={"Дата"}
-                            extraCalendarClass={"right-[250px]"}
+                            extraCalendarClass="translate-x-[-206px] translate-y-[calc(-100%-4px)]"
                         />
-                        <InputTime time={time} extraClass={"max-h-7"}/>
+                        <InputTime time={time} extraClass={"max-h-[36px]"}/>
                     </div>
                 </div>
             </SimpleBar>

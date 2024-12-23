@@ -41,7 +41,7 @@ const BusRoute = () => {
                     <h4 className={"text-base font-medium"}>Дата</h4>
                     <div className={"flex flex-col gap-2.5"}>
                         <InputDate
-                             extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
+                             extraCalendarClass="translate-x-[-300px] translate-y-[-40px]"
                             setter={(value: Date) => dispatch(setJourneyDate(value))}
                             inputValue={journeyDate}
                             viewValue={journeyDate}

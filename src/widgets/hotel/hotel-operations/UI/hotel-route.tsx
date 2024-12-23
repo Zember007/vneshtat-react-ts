@@ -3,10 +3,54 @@ import { RootState } from "@/app/config/store";
 import { InputCity, InputDate } from "@/shared/UI";
 import { setCity, setCityName, setDateBack, setDateTo } from "../model/hotel.store";
 import SimpleBar from "simplebar-react";
+import { useEffect, useState } from "react";
 
 const HotelRoute = () => {
     const { dateTo, dateBack, cityName } = useSelector((state: RootState) => state.hotel);
     const dispatch = useDispatch();
+    const [dates, setDates] = useState<Date[]>([])
+
+    useEffect(() => {
+        const updatedDates = [];
+        if (dateTo) {
+            updatedDates.push(dateTo);
+            setDates(updatedDates);
+        }
+        if (dateBack) {
+            updatedDates.push(dateBack)
+        }
+        setDates(updatedDates);
+    }, [dateTo, dateBack]);
+
+    useEffect(() => {
+        dispatch(setDateTo(dates[0]));
+        dispatch(setDateBack(dates[1]));
+    }, [dates])
+
+    const handleDateClick = (date: Date) => {
+        let updatedDates = dates.filter(d => d !== undefined);
+
+
+        if (updatedDates.length === 2) {
+            updatedDates = [];
+            setDates([]);
+            dispatch(setDateTo(null));
+            dispatch(setDateBack(null));
+        }
+        if (!dateTo || updatedDates.length === 0) {
+
+            dispatch(setDateTo(date));
+            updatedDates = [date];
+        } else {
+
+            updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
+
+            dispatch(setDateTo(updatedDates[0]));
+            dispatch(setDateBack(updatedDates[1]));
+        }
+
+        setDates(updatedDates);
+    }
 
     return (
         <div className={"w-full"}>
@@ -32,20 +76,28 @@ const HotelRoute = () => {
                         <h4 className={"text-base font-medium"}>Даты</h4>
                         <div className={"flex flex-col gap-2.5"}>
                             <InputDate
-                                setter={(value: Date) => dispatch(setDateTo(value))}
-                                inputValue={dateTo}
+                                setter={(value: Date[]) => setDates(value)}
+                                inputValue={dates}
                                 viewValue={dateTo}
                                 placeholder={"Дата заезда"}
-                                extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
-                                calendarOpt={{ maxDate: dateBack }}
+                                extraCalendarClass="translate-x-[-300px] translate-y-[-40px]"
+                                calendarOpt={{
+                                    onClickDay: handleDateClick,
+                                    allowPartialOptions: true,
+                                    selectRange: true
+                                }}
                             />
                             <InputDate
-                                setter={(value: Date) => dispatch(setDateBack(value))}
-                                inputValue={dateBack}
+                                setter={(value: Date[]) => setDates(value)}
+                                inputValue={dates}
                                 viewValue={dateBack}
                                 placeholder={"Дата выезда"}
-                                extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
-                                calendarOpt={{ minDate: dateTo }}
+                                extraCalendarClass="translate-x-[-300px] translate-y-[-40px]"
+                                calendarOpt={{
+                                    onClickDay: handleDateClick,
+                                    allowPartialOptions: true,
+                                    selectRange: true
+                                }}
                             />
                         </div>
                     </div>

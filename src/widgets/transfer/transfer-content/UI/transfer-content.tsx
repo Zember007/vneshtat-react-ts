@@ -81,7 +81,7 @@ const TransferContent = () => {
                 <div
                     style={{height: '100%'}}
                     ref={mapContainerRef}
-                    className={`map-container rounded-primary`}
+                    className={`map-container rounded-primary z-[0]`}
                 />
             </div>
         </div>

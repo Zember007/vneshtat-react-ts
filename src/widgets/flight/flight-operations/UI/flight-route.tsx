@@ -77,13 +77,13 @@ const FlightRouteItem = ({ flight, index, onRemove, template }: FlightRouteItemP
         setCountdown(null);
     };
 
-    const previousFlightDate = index > 0 ? flights[index - 1].flightDate : null;
+    /* const previousFlightDate = index > 0 ? flights[index - 1].flightDate : null;
     const nextFlightDate = index < flights.length - 1 ? flights[index + 1].flightDate : null;
 
     const calendarOptions = {
         minDate: previousFlightDate ? new Date(previousFlightDate) : null,
         maxDate: nextFlightDate ? new Date(nextFlightDate) : null,
-    };
+    }; */
 
     return (
         <div className={"flex flex-col gap-2.5 mt-2.5"}>
@@ -136,10 +136,9 @@ const FlightRouteItem = ({ flight, index, onRemove, template }: FlightRouteItemP
 
                 {!template?.status && <InputDate
                     setter={(value: Date) => handleInputChange('flightDate', value)}
-                    extraCalendarClass="translate-x-[-300px] translate-y-[-50%]"
+                    extraCalendarClass="translate-x-[-300px] translate-y-[-40px]"
                     inputValue={flightDate}
                     viewValue={flightDate}
-                    calendarOpt={calendarOptions}
                     placeholder={"Дата"}
                 />}
             </div>

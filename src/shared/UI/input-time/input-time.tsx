@@ -27,7 +27,7 @@ const InputTime = ({ time, extraClass }: InputTimeProps) => {
     return (
         <div className={`flex flex-col select-none ${extraClass}`} ref={containerRef}>
             <div
-                className="py-2 px-4 rounded-[16px] bg-secondary h-11 flex items-center justify-center cursor-pointer"
+                className="py-2 px-4 rounded-primary bg-secondary h-11 flex items-center justify-center cursor-pointer"
                 onClick={() => setIsOpen(prev => !prev)}
             >
                 {time ? (
@@ -37,7 +37,7 @@ const InputTime = ({ time, extraClass }: InputTimeProps) => {
                 )}
             </div>
             <div
-                className={`flex gap-2 transition-all overflow-hidden duration-400 ${isOpen ? "h-32" : "h-0"} rounded-primary bg-secondary absolute translate-x-0.5 mt-12`}
+                className={`flex gap-2 transition-all overflow-hidden duration-400 ${isOpen ? "h-32" : "h-0"} rounded-primary bg-secondary absolute z-10 translate-x-0.5 mt-12`}
             >
                 <div className="overflow-y-auto hidden-scroll flex flex-col gap-2 py-3 pl-3">
                     {Array.from({ length: 24 }).map((_, i) => (

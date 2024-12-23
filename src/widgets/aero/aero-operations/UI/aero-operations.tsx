@@ -105,7 +105,7 @@ const AeroOperations = ({ selectedTariffId }: {
                                     viewValue={date}
                                     setter={(date: Date) => setDate(date)}
                                     placeholder={"Выберите дату"}
-                                    extraCalendarClass={"right-[210px]"}
+                                    extraCalendarClass="translate-x-[-300px] translate-y-[-45px]"
                                 />
                             </div>
                             <hr className={"h-[1px] w-full rounded-[1px] bg-[#E5E7EA]"} />
