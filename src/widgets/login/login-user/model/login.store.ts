@@ -17,6 +17,7 @@ interface LoginState {
         email: string
         password: string
         rePassword: string,
+        sendCode: boolean
     }
 }
 
@@ -37,6 +38,7 @@ const initialState: LoginState = {
         email: "",
         password: "",
         rePassword: "",
+        sendCode: false
     }
 }
 

@@ -8,6 +8,9 @@ import { AccessCart, AccessFilter } from "@/widgets/profile/access";
 import { PersonalCart, PersonalFilter } from "@/widgets/profile/personal";
 import { CompanyChoose } from "@/widgets/company";
 import { getAccessToken } from "@/shared/utils";
+import { RootState } from "@/app/config/store";
+import { useSelector } from "react-redux";
+import { revokeAccessToken } from "@/shared/utils/methods";
 
 interface profileInformation1Part {
     EmployeeId: string,
@@ -30,6 +33,8 @@ const Profile = () => {
     const [changeCompany, setChangeCompany] = useState(false)
     const [informationView, setInformationView] = useState(false)
     const [activeBlock, setActiveBlock] = useState<string | null>(null)
+
+    const activePersonalFilter = useSelector((state: RootState) => state.profile.activePersonalFilter);
 
 
     const [profileInformation1Part, setProfileInformation1Part] = useState<profileInformation1Part>(
@@ -122,6 +127,166 @@ const Profile = () => {
 
     }, [])
 
+    const StafferInformation = useSelector((state: RootState) => state.employees.StaffersInformations).find(item => item.EmployeeId === Number(EmployeeId));
+
+    const setPersonal = async () => {
+        const formdata = new FormData();
+
+        formdata.append('EmployeeId', EmployeeId ?? '')
+
+        const url = StafferInformation?.Type === 'Update' ? 'edit_profile_personal_information' : 'create_profile_personal_information'
+        const method = StafferInformation?.Type === 'Update' ? 'PATCH' : 'POST'
+
+        if (StafferInformation?.Type === 'Update') {
+            formdata.append('Surname', StafferInformation?.Surname ?? '')
+            formdata.append('MiddleName', StafferInformation?.MiddleName ?? '')
+            formdata.append('Name', StafferInformation?.Name ?? '')
+            formdata.append('PersonalInfoSurname', StafferInformation?.PersonalInfoSurname ?? '')
+            formdata.append('PersonalInfoName', StafferInformation?.PersonalInfoName ?? '')
+            formdata.append('PersonalInfoBirthDate', StafferInformation?.PersonalInfoBirthDate ? StafferInformation.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
+            formdata.append('PersonalInfoGender', StafferInformation?.PersonalInfoGender ?? 'male')
+            formdata.append('PersonalInfoNationality', StafferInformation?.PersonalInfoNationality ?? '')
+            formdata.append('Email', StafferInformation?.Email ?? '')
+            formdata.append('PhoneNumber', StafferInformation?.PhoneNumber ?? '')
+            formdata.append('Username', StafferInformation?.Username ?? '')
+        }
+
+        if (StafferInformation?.Type === 'Create') {
+            formdata.append('Surname', StafferInformation?.PersonalInfoSurname ?? '')
+            formdata.append('Name', StafferInformation?.PersonalInfoName ?? '')
+            formdata.append('BirthDate', StafferInformation?.PersonalInfoBirthDate ? StafferInformation.PersonalInfoBirthDate.split('-').reverse().join('-') : '')
+            formdata.append('Gender', StafferInformation?.PersonalInfoGender ?? 'male')
+            formdata.append('Nationality', StafferInformation?.PersonalInfoNationality ?? '')
+        }
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/user/profile/' + url, {
+                method: method,
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                console.log(data);
+                setProfileInformation1Part((prev) => ({
+                    ...prev,
+                    Name: StafferInformation?.Name,
+                    Surname: StafferInformation?.Surname,
+                    MiddleName: StafferInformation?.MiddleName
+                }))
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+    }
+
+    const Documents = useSelector((state: RootState) => state.employees.StaffersDocuments).find(item => item.EmployeeId === Number(EmployeeId));
+
+    const setDocuments = async () => {
+        const Documents_new = Documents?.Documents.filter(item => item.New)
+        const Documents_edit = Documents?.Documents.filter(item => item.Edit)
+
+        if (Documents_new && Documents_new.length > 0) {
+            Documents_new.forEach(async (el) => {
+                
+                const formdata = new FormData()
+
+                formdata.append('EmployeeId', EmployeeId || '')
+                formdata.append('DocumentType', el.DocumentType)
+                formdata.append('Number', el.Number)
+                formdata.append('DateOfIssue', el.DateOfIssue || '')
+                formdata.append('MiddleName', el.MiddleName)
+                formdata.append('Nationality', el.Nationality)
+                formdata.append('ValidityDeadline', el.ValidityDeadline || '')
+                formdata.append('Name', el.Name)
+                formdata.append('Surname', el.Surname)       
+                formdata.append('Species', el.Species)
+                
+
+
+                try {
+                    const res = await fetch(import.meta.env.VITE_API_URL + '/user/profile/create_profile_document', {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${AccessToken}`,
+                        },
+                        body: formdata
+                    });
+                    const data = await res.json();
+                    if (data.status === "error") {
+                        console.log("error", data);
+                    }
+
+                    if (data.status === "success") {
+                        console.log(data);
+
+                    }
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            })
+        }
+
+        if (Documents_edit && Documents_edit.length > 0) {
+            Documents_edit.forEach(async (el) => {
+                
+                const formdata = new FormData()
+
+                formdata.append('EmployeeId', EmployeeId || '')
+                formdata.append('DocumentType', el.DocumentType)
+                formdata.append('DocumentId', el.id?.toString() || '')
+                formdata.append('Type', el.Type)
+                formdata.append('Number', el.Number)
+                formdata.append('DateOfIssue', el.DateOfIssue || '')
+                formdata.append('MiddleName', el.MiddleName)
+                formdata.append('Nationality', el.Nationality)
+                formdata.append('ValidityDeadline', el.ValidityDeadline || '')
+                formdata.append('Name', el.Name)
+                formdata.append('Surname', el.Surname)       
+                formdata.append('Species', el.Species)                
+                
+
+
+                try {
+                    const res = await fetch(import.meta.env.VITE_API_URL + '/user/profile/edit_profile_document', {
+                        method: "PATCH",
+                        headers: {
+                            Authorization: `Bearer ${AccessToken}`,
+                        },
+                        body: formdata
+                    });
+                    const data = await res.json();
+                    if (data.status === "error") {
+                        console.log("error", data);
+                    }
+
+                    if (data.status === "success") {
+                        console.log(data);
+
+                    }
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            })
+        }
+
+    }
+
 
     return (
         <>
@@ -157,9 +322,9 @@ const Profile = () => {
                                 <SecurityCart status={profileInformation2Part?.SecurityStatus || ''} active={activeBlock === 'security'} />
 
                             </div>
-                            <div className={`rounded-[26px] transition-all duration-300 ${activeBlock === 'security' ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full row-span-2 flex flex-col gap-[10px]`}>
+                            <div className={`rounded-[26px] transition-all duration-300 ${activeBlock === 'staticstics' ? 'bg-[#ECEEF1]' : 'bg-primary'} p-[15px] w-full h-full row-span-2 flex flex-col gap-[10px]`}>
 
-                                <StatisticsCart active={activeBlock === 'security'} select={() => { ResetFilter(); setActiveBlock('staticstics') }} />
+                                <StatisticsCart active={activeBlock === 'staticstics'} select={() => { ResetFilter(); setActiveBlock('staticstics') }} />
 
                             </div>
                             <div
@@ -193,14 +358,24 @@ const Profile = () => {
                 navigation={<>
                     {!informationView && <button
                         onClick={() => {
-                            localStorage.clear()
-                            window.location.replace('/')
+                            revokeAccessToken()
                         }}
                         className="py-[15px] rounded-[18px] bg-[#DCE0E5]">
                         <span>Выйти из аккаунта</span>
                     </button>}
                     {(activeBlock === 'personal' || activeBlock === 'access') &&
-                        <button className="py-[15px] rounded-[18px] bg-[#DCE0E5]">
+                        <button
+                            onClick={() => {
+                                if (activeBlock === 'personal') {
+                                    if(activePersonalFilter === 'user') {
+                                        setPersonal()
+                                    }
+                                    if(activePersonalFilter === 'document') {
+                                        setDocuments()
+                                    }
+                                }
+                            }}
+                            className="py-[15px] rounded-[18px] bg-[#DCE0E5]">
                             <span>Сохранить</span>
                         </button>
                     }

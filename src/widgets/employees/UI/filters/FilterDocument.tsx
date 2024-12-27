@@ -124,7 +124,7 @@ const FilterDocument = ({ passenger, selectId, profile }: { passenger?: boolean,
     }, [selectId])
 
     return (
-        <div className="flex flex-col grow justify-between">
+        <div className="flex flex-col gap-[20px] grow justify-between">
             <div className="flex flex-col gap-[10px]">
                 {documentAdd &&
                     <div className="rounded-[23px] flex flex-col gap-[6px] p-[13px] bg-[#ECEEF1]">

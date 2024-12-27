@@ -7,17 +7,22 @@ import { autoExitSwith, idleTime } from '../utils';
 export interface FlightState {
     autoExitSwith: CheckboxItem[];
     idleTime: CheckboxItem[];
+    activePersonalFilter: string;
 }
 
 const initialState: FlightState = {
     autoExitSwith: autoExitSwith,
-    idleTime: idleTime
+    idleTime: idleTime,
+    activePersonalFilter: 'user'
 };
 
 const ProfileStore = createSlice({
     name: "profile",
     initialState,
     reducers: {
+        setActivePersonalFilter: (state, action) => {
+            state.activePersonalFilter = action.payload
+        },
         setSwitchExit: (state, action) => {
             state.autoExitSwith = changeCheckbox(state.autoExitSwith, action.payload, true);
         },
@@ -29,6 +34,7 @@ const ProfileStore = createSlice({
 
 export const {
     setSwitchExit,
-    setIdleTime
+    setIdleTime,
+    setActivePersonalFilter
 } = ProfileStore.actions
 export default ProfileStore.reducer;

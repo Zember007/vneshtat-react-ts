@@ -114,6 +114,9 @@ const employees = () => {
 
                 const employees: any[] = data.data
 
+                console.log(employees);
+                
+
                 employees.forEach(el => {
                     const online = onlines.find(item_online => item_online == el.id)
 
@@ -165,13 +168,13 @@ const employees = () => {
     }
 
     useEffect(() => {
-        if (!StaffersUsers) {
+        if (!StaffersUsers.length) {
             getOnline().then((res) => {
                 getStaffers(res)
             })
         }
         
-        if (!PassengersUsers) {
+        if (!PassengersUsers.length) {
             getPassengers()
         }
     }, [])

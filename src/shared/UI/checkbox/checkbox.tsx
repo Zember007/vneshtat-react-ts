@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 const Checkbox = ({ items, onChange, childClass, button }: CheckboxProps) => {
     return (
-        <div className={"flex flex-col gap-[6px] w-full"}>
+        <div className={"flex select-none flex-col gap-[6px] w-full"}>
             {items.map((item) => (
                 <div className="flex gap-[4px] items-center">
                     <div

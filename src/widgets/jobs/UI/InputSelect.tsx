@@ -30,7 +30,7 @@ const InputSelect = (props: InputProps) => {
     useClickAway(box, () => { setActive(false) })
 
     return (
-        <div ref={box} className="flex flex-col  rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA] relative">
+        <div ref={box} className="flex flex-col select-none  rounded-[13px] py-[8px] px-[10px] bg-[#FAFAFA] relative">
 
             <div onClick={() => setActive(!active)} className="flex gap-[10px] justify-between cursor-pointer ">
                {props.title &&  <span className={clsx("text-[#9B9FAD] text-[12px] font-medium transition-all duration-300 flex justify-start ", active && 'justify-center translate-x-[10px] w-full')}>{props.title}</span> }

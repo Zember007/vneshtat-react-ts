@@ -5,6 +5,9 @@ import MailImg from "@/assets/icons/mail.svg?react";
 import NotificationsImg from "@/assets/icons/notifications_desktop.svg?react";
 import { useEffect, useState } from "react";
 import Telegram from "./services_notifications/Telegram";
+import Mail from "./services_notifications/Mail";
+import GoogleCalendar from "./services_notifications/GoogleCalendar";
+import Desktop from "./services_notifications/Desktop";
 
 
 const Notifications = ({ active }: { active: boolean }) => {
@@ -54,8 +57,10 @@ const Notifications = ({ active }: { active: boolean }) => {
                                     <span className="font-medium text-[#787B86]">Все дела в единой системе</span>
                                 </div>
                             </div>
-                            <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
-                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
+                            <button
+                                onClick={() => { setActiveTab('calendar') }}
+                                className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'calendar' && '!bg-primary'}`}>
+                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === 'calendar' && '!text-[#007BFB]'}`}>{activeTab === 'calendar' ? 'Инфо' : 'Привязать'}</p>
                             </button>
                         </div>
                         <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
@@ -66,8 +71,10 @@ const Notifications = ({ active }: { active: boolean }) => {
                                     <span className="font-medium text-[#787B86]">Настройка категорий писем</span>
                                 </div>
                             </div>
-                            <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
-                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
+                            <button
+                                onClick={() => { setActiveTab('mail') }}
+                                className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'mail' && '!bg-primary'}`}>
+                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === 'mail' && '!text-[#007BFB]'}`}>{activeTab === 'mail' ? 'Инфо' : 'Привязать'}</p>
                             </button>
                         </div>
                         <div className="p-[14px] rounded-[23px] bg-[#ECEEF1] flex items-center justify-between">
@@ -78,8 +85,10 @@ const Notifications = ({ active }: { active: boolean }) => {
                                     <span className="font-medium text-[#787B86]">Браузерные уведомления</span>
                                 </div>
                             </div>
-                            <button className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === '' && '!bg-primary'}`}>
-                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === '' && '!text-[#007BFB]'}`}>{activeTab === '' ? 'Инфо' : 'Привязать'}</p>
+                            <button
+                            onClick={() => { setActiveTab('desktop') }}
+                            className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'desktop' && '!bg-primary'}`}>
+                                <p className={`text-[14px] font-medium text-primary duration-300 transition-all ${activeTab === 'desktop' && '!text-[#007BFB]'}`}>{activeTab === 'desktop' ? 'Инфо' : 'Привязать'}</p>
                             </button>
                         </div>
                     </div>
@@ -89,6 +98,16 @@ const Notifications = ({ active }: { active: boolean }) => {
             </div>
             <div className="rounded-[26px] bg-primary w-[300px] p-[20px]">
                 {activeTab === 'telegram' && <Telegram close={() => { setActiveTab(null) }} />}
+                {activeTab === 'mail' && <Mail close={() => { setActiveTab(null) }} />}
+                {activeTab === 'calendar' && <GoogleCalendar close={() => { setActiveTab(null) }} />}
+                {activeTab === 'desktop' && <Desktop close={() => { setActiveTab(null) }} />}
+                {active && !activeTab &&
+                    <div className="h-full flex items-center justify-center">
+                        <p className="text-[#787B86] px-[20px]">
+                            Чтобы точно не пропустить ничего важного. Каждый пользователь может настроить уведомления под себя.
+                        </p>
+                    </div>
+                }
             </div>
         </div>
     );

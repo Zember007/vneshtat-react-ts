@@ -40,9 +40,7 @@ function App() {
             }
             setUserCompanies();
             const intervalId = setInterval(() => {
-                setUserOnline();
-                console.log(123);
-                
+                setUserOnline();                
             }, 60 * 1000);
 
             return () => clearInterval(intervalId);

@@ -2,8 +2,8 @@ import clsx from "clsx";
 import EyeImg from "@/assets/icons/eye.svg?react";
 import EyeClosedImg from "@/assets/icons/eye-closed.svg?react";
 import CrossImg from "@/assets/icons/cross.svg?react";
-import {InputProps} from "./input.props";
-import {useState, useEffect, ChangeEvent} from "react";
+import { InputProps } from "./input.props";
+import { useState, useEffect, ChangeEvent } from "react";
 
 const formatPhoneNumber = (value: string): string => {
     let cleaned = value.replace(/\D/g, '');
@@ -35,7 +35,7 @@ const cleanPhoneNumber = (formattedValue: string): string => {
     return formattedValue.replace(/[^+\d]/g, '');
 };
 
-const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}: InputProps) => {
+const Input = ({ title, extraClass, extraClassInput, withEraser = true, ...rest }: InputProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState(rest.value || '');
 
@@ -55,8 +55,8 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
         const formattedValue = cleanedValue.length === 0 ? "" : formatPhoneNumber(cleanedValue);
         setInputValue(formattedValue);
 
-        if( rest.onChange){
-            if(formattedValue === "+7") rest.onChange({ ...e, target: { ...e.target, value: "" } });
+        if (rest.onChange) {
+            if (formattedValue === "+7") rest.onChange({ ...e, target: { ...e.target, value: "" } });
             else rest.onChange({ ...e, target: { ...e.target, value: cleanedValue } });
         }
     };
@@ -65,7 +65,7 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
         let value = e.target.value.replace(/\D/g, '');
         setInputValue(value);
         if (rest.onChange) {
-            rest.onChange({...e, target: {...e.target, value}});
+            rest.onChange({ ...e, target: { ...e.target, value } });
         }
     };
 
@@ -79,7 +79,7 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
     const handleClear = () => {
         setInputValue("");
         if (rest.onChange) {
-            rest.onChange({target: {value: ""}} as ChangeEvent<HTMLInputElement>);
+            rest.onChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
         }
     };
 
@@ -87,7 +87,7 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
         <label className="relative w-full">
             {title && <span className="text-[14px] text-[#9B9FAD] font-medium absolute top-1/2 transform -translate-y-1/2 left-[18px] ">{title}</span>}
             <input
-                className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass, title && '!pl-[50%] !pr-[45px] text-right')}
+                className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass, title && '!pl-[50%] !pr-[45px] text-center')}
                 {...rest}
                 type={isOpen ? "text" : "password"}
             />
@@ -98,26 +98,29 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
                     tabIndex={-1}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 >
-                    {isOpen ? <EyeClosedImg className={"transition blue-fill-hover"}/> :
-                        <EyeImg className={"transition blue-fill-hover"}/>}
+                    {isOpen ? <EyeClosedImg className={"transition blue-fill-hover"} /> :
+                        <EyeImg className={"transition blue-fill-hover"} />}
                 </button>
             )}
         </label>
     ) : rest.type === "phone" ? (
-        <input
-            className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5", extraClass)}
-            {...rest}
-            type="text"
-            maxLength={18}
-            value={inputValue}
-            onChange={handlePhoneChange}
-            onFocus={(e) => {
-                const value = e.target.value
-                if(value === '') {
-                    setInputValue('+7 (')
-                }
-            }}
-        />
+        <label className="relative w-full">
+            {title && <span className="text-[14px] text-[#9B9FAD] font-medium absolute top-1/2 transform -translate-y-1/2 left-[18px] ">{title}</span>}
+            <input
+                className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass, title && '!pl-[50%] text-center')}
+                {...rest}
+                type="text"
+                maxLength={18}
+                value={inputValue}
+                onChange={handlePhoneChange}
+                onFocus={(e) => {
+                    const value = e.target.value
+                    if (value === '') {
+                        setInputValue('+7 (')
+                    }
+                }}
+            />
+        </label>
     ) : rest.type === "number" ? (
         <input
             className={clsx("bg-secondary rounded-primary text-sm py-2 px-2.5 w-full", extraClass)}
@@ -128,8 +131,9 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
         />
     ) : (
         <label className={"relative w-full overflow-hidden"}>
+            {title && <span className="text-[14px] text-[#9B9FAD] font-medium absolute top-1/2 transform -translate-y-1/2 left-[18px] ">{title}</span>}
             <input
-                className={clsx(`bg-secondary rounded-primary text-sm py-2 px-2.5 w-full`, extraClass)}
+                className={clsx(`bg-secondary rounded-primary text-sm py-2 px-2.5 w-full`, extraClass, title && '!pl-[50%] text-center')}
                 type={rest.type || "text"}
                 {...rest}
                 onChange={handleChange}
@@ -140,11 +144,11 @@ const Input = ({title, extraClass, extraClassInput, withEraser = true, ...rest}:
                     type={"button"}
                     tabIndex={-1}
                     className="absolute w-4 right-2 top-2 bottom-2 flex items-center justify-center">
-                    <CrossImg className={"black-fill"}/>
+                    <CrossImg className={"black-fill"} />
                 </button>
             ) : null}
         </label>
     );
 };
 
-export {Input};
+export { Input };

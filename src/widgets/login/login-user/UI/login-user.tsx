@@ -4,7 +4,7 @@ import { Input, Switch } from "@/shared/UI";
 import LogoIdImg from "@/assets/icons/logo-id.svg?react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import ArrowImg from "@/assets/icons/arrow-long.svg?react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updateLoginState, updateRestoreState } from "../model/login.store";
 import { getDeviceAndBrowserInfo, setAccessToken, setRefreshToken } from "@/shared/utils";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +32,7 @@ const LoginUser = () => {
         rePassword: restoreRePassword,
         isSubmitted,
         isLoginReady: isRestoreLoginReady,
+        sendCode
     } = useSelector((state: RootState) => state.login.restore);
     const { companies } = useSelector((state: RootState) => state.user)
     const [isLoginClicked, setIsLoginClicked] = useState(false);
@@ -45,7 +46,7 @@ const LoginUser = () => {
     const navigate = useNavigate();
 
     async function handleLogin() {
-        
+
         const formdata = new FormData();
         formdata.append("Username", login);
         formdata.append("Password", password);
@@ -161,13 +162,13 @@ const LoginUser = () => {
         const availability = await handleCheckCredentials(upperField, value);
         if (field === "login") {
             setLoginStatus(availability);
-            if(availability === 'success') {
+            if (availability === 'success') {
                 handleLogin()
             }
         }
         if (field === "phone") {
             setPhoneStatus(availability);
-            if(availability === 'success') {
+            if (availability === 'success') {
                 sendSMScode()
             }
         }
@@ -220,6 +221,138 @@ const LoginUser = () => {
         }
     }
 
+    const [timerTimeout, setTimerTimeout] = useState<NodeJS.Timeout>()
+    const [timer, setTimer] = useState<number>(0)
+    useEffect(() => {
+        if(timer === 0) {
+            clearInterval(timerTimeout)
+            dispatch(updateRestoreState({
+                field: "sendCode",
+                value: false
+            }))
+        }
+    },[timer])
+
+    const checkCodeRestore = async () => {
+
+
+        const SecretKey = localStorage.getItem('SecretKey')
+
+        const url_prefix = restoreWithPhone ? 'get_password_recovery_by_sms_key' : 'get_password_recovery_by_email_key'
+        const url = new URL(import.meta.env.VITE_API_URL + '/user/profile/' + url_prefix)
+
+        url.searchParams.append('SecretKey', SecretKey || '')
+        url.searchParams.append(restoreWithPhone ? 'SMSCode' : 'Code', restoreSms)
+
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+
+                dispatch(updateRestoreState({
+                    field: "isSubmitted",
+                    value: true
+                }))
+
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+
+    }
+
+    const sendCodeRestore = async () => {
+
+
+        const formdata = new FormData()
+
+        formdata.append(restoreWithPhone ? 'PhoneNumber' : 'Email', restoreWithPhone ? restorePhone : restoreEmail)
+
+        const url = restoreWithPhone ? 'create_password_recovery_by_sms' : 'create_password_recovery_by_email'
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/user/profile/' + url, {
+                method: "POST",
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+
+                dispatch(updateRestoreState({
+                    field: "sendCode",
+                    value: true
+                }))
+
+                localStorage.setItem('SecretKey', data.data.token as string)
+                setTimer(59)
+                setTimerTimeout(setInterval(() => {
+                    setTimer((prev) => (prev - 1))
+                },1000))
+
+
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+
+    }
+
+    const changePassword = async () => {
+
+        const SecretKey = localStorage.getItem('SecretKey')
+
+        const formdata = new FormData()
+
+        formdata.append( 'SecretKey', SecretKey || '')
+        formdata.append(restoreWithPhone ? 'SMSCode' : 'Code', restoreSms)
+        formdata.append('NewPassword', restorePassword)
+
+        const url = restoreWithPhone ? 'change_password_by_sms_code' : 'change_password_by_email_code'
+
+        try {
+            const res = await fetch(import.meta.env.VITE_API_URL + '/user/profile/' + url, {
+                method: "PATCH",
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                dispatch(updateRestoreState({
+                    field: "isSubmitted",
+                    value: false
+                }))
+                dispatch(updateLoginState({
+                    field: "isRestore",
+                    value: false
+                }))
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+
+    }
 
     return (
         <div className={"h-[calc(100vh-54px)] flex justify-center items-center"}>
@@ -278,11 +411,6 @@ const LoginUser = () => {
                                             <ArrowImg />
                                         </button>
                                         <Input
-                                            extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] text-blue !bg-primary first-letter-black`}
-                                            placeholder="Логин"
-                                            value={"@ivan_voznes"}
-                                        />
-                                        <Input
                                             extraClass={`!text-lg !font-medium h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] !bg-primary first-letter-black`}
                                             placeholder="Новый пароль"
                                             type={"password"}
@@ -318,12 +446,16 @@ const LoginUser = () => {
                                         </div>
                                         <button
                                             className={"transition w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                                            disabled={!restorePassword || !restoreRePassword}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                changePassword()
+                                            }}
+                                            disabled={!restorePassword || (restorePassword !== restoreRePassword)}
                                         >
-                                            <p className={`text-lg font-medium text-primary ${!restorePassword || !restoreRePassword && "!text-[#9B9FAD]"}`}>Сохранить</p>
+                                            <p className={`text-lg font-medium text-primary ${(!restorePassword || (restorePassword !== restoreRePassword)) && "!text-[#9B9FAD]"}`}>Сохранить</p>
                                         </button>
                                         <button
-                                            className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px] absolute bottom-6"}
+                                            className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center w-[270px]"}
                                             onClick={() => navigate("/sign-up")}
                                         >
                                             <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
@@ -374,40 +506,6 @@ const LoginUser = () => {
                                                         value: e.target.value
                                                     }))}
                                                 />
-                                                <button
-                                                    className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                                                    disabled={!!restoreSms}>
-                                                    <p className={`text-lg font-medium text-primary ${restoreSms && "!text-[#9B9FAD]"}`}>{restoreSms ? "Отправить повторно 0:59" : "Получить код"}</p>
-                                                </button>
-                                                <button
-                                                    className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                                                    disabled={!isRestoreLoginReady}
-                                                    onClick={() => {
-                                                        dispatch(updateRestoreState({
-                                                            field: "isSubmitted",
-                                                            value: true
-                                                        }))
-                                                    }}
-                                                >
-                                                    <p className={`text-lg font-medium text-primary ${!isRestoreLoginReady && "!text-[#9B9FAD]"}`}>Подтвердить</p>
-                                                </button>
-                                                {restorePhone ? (
-                                                    restoreSms ? (
-                                                        <p className={"text-center text-[15px] text-[#9B9FAD] px-7"}>Далее
-                                                            вам
-                                                            будет предложено подключить ID к компании</p>
-                                                    ) : (
-                                                        <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
-                                                            привязанного к
-                                                            этому номеру не найдено</p>
-                                                    )
-                                                ) : null}
-                                                <button
-                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
-                                                    onClick={() => navigate("/sign-up")}
-                                                >
-                                                    <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
-                                                </button>
                                             </>
                                         ) : (
                                             <>
@@ -430,31 +528,44 @@ const LoginUser = () => {
                                                         value: e.target.value
                                                     }))}
                                                 />
-                                                <button
-                                                    className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                                                    disabled={!!restoreSms}>
-                                                    <p className={`text-lg font-medium text-primary ${restoreSms && "!text-[#9B9FAD]"}`}>{restoreSms ? "Отправить повторно 0:59" : "Получить код"}</p>
-                                                </button>
-                                                <button
-                                                    className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
-                                                    disabled={!isRestoreLoginReady}
-                                                    onClick={() => {
-                                                        dispatch(updateRestoreState({
-                                                            field: "isSubmitted",
-                                                            value: true
-                                                        }))
-                                                    }}
-                                                >
-                                                    <p className={`text-lg font-medium text-primary ${!isRestoreLoginReady && "!text-[#9B9FAD]"}`}>Подтвердить</p>
-                                                </button>
-                                                <button
-                                                    className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
-                                                    onClick={() => navigate("/sign-up")}
-                                                >
-                                                    <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
-                                                </button>
                                             </>
                                         )}
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                sendCodeRestore()
+                                            }}
+                                            className={"w-full flex justify-center group items-center py-3 h-[50px] rounded-primary bg-[#292933] disabled:bg-secondary"}
+                                            disabled={sendCode}>
+                                            <p className={`text-lg font-medium text-primary group-disabled:text-[#9B9FAD]`}>{!sendCode ? "Получить код" : 'Получить код повторно 0:' + timer}</p>
+                                        </button>
+                                        <button
+                                            className={"w-full flex justify-center items-center py-3 h-[50px] rounded-primary bg-[#292933] group disabled:bg-secondary"}
+                                            disabled={!isRestoreLoginReady}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                checkCodeRestore()
+                                            }}
+                                        >
+                                            <p className={`text-lg font-medium text-primary group-disabled:text-[#9B9FAD] `}>Подтвердить</p>
+                                        </button>
+                                        {/* {restorePhone ? (
+                                            restoreSms ? (
+                                                <p className={"text-center text-[15px] text-[#9B9FAD] px-7"}>Далее
+                                                    вам
+                                                    будет предложено подключить ID к компании</p>
+                                            ) : (
+                                                <p className={"text-center text-[15px] text-[#FF64A3] px-7"}>Аккаунта,
+                                                    привязанного к
+                                                    этому номеру не найдено</p>
+                                            )
+                                        ) : null} */}
+                                        <button
+                                            className={"transition border border-solid border-[#E5E7EA] bg-primary py-4 px-9 rounded-[16px] h-[50px] flex items-center justify-center"}
+                                            onClick={() => navigate("/sign-up")}
+                                        >
+                                            <h3 className={`text-lg font-medium`}>Создать аккаунт</h3>
+                                        </button>
                                     </>
                                 )}
                             </form>
@@ -468,9 +579,9 @@ const LoginUser = () => {
                                 onSubmit={(e) => {
                                     e.preventDefault()
                                     if (!withPhone) {
-                                        handleInputChange("phone", phone)                                        
+                                        handleInputChange("phone", phone)
                                     } else {
-                                        handleInputChange("login", login.startsWith('@') ? login.slice(1) : login)                                        
+                                        handleInputChange("login", login.startsWith('@') ? login.slice(1) : login)
                                     }
                                 }}>
                                 <Switch
@@ -497,7 +608,7 @@ const LoginUser = () => {
                                             extraClass={`!text-lg !font-medium mt-2.5 h-[50px] text-center w-full rounded-[16px] border border-solid border-[#E5E7EA] ${loginStatus === "error" ? "#FF64A3" : "text-blue"} !bg-primary first-letter-black`}
                                             placeholder="Логин"
                                             value={login ? `@${login}` : ""}
-                                            onChange={e => dispatch(updateLoginState({ field:"login", value:  e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value } as any))}
+                                            onChange={e => dispatch(updateLoginState({ field: "login", value: e.target.value.startsWith('@') ? e.target.value.slice(1) : e.target.value } as any))}
                                             autoComplete={"on"}
                                         />
                                         <Input

@@ -1,8 +1,10 @@
 import { RootState } from "@/app/config/store";
 import { Checkbox, Dropdown } from "@/shared/UI";
 import { useDispatch, useSelector } from "react-redux";
-import { setLang } from "../model/settings.store";
+import { setCurrency, setLang, setTimeZone, setTimeZoneJorneys } from "../model/settings.store";
 import { Link } from "react-router-dom";
+import { getAccessToken } from "@/shared/utils";
+import { useEffect } from "react";
 
 const Interface = ({ active }: { active: boolean }) => {
     const dispatch = useDispatch();
@@ -21,6 +23,94 @@ const Interface = ({ active }: { active: boolean }) => {
 
     const time_zone_jorneys = useSelector((state: RootState) => state.settings.time_zone_jorneys);
     const TimeZoneJorneysActive = time_zone_jorneys.find(item => item.isSelected);
+
+    const EmployeeId = localStorage.getItem('EmployeeId')
+    const AccessToken = getAccessToken()
+
+    const getInformation = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/user/settings/get_interface');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {
+                const Language = langs.find(item => item.code === data.data.Language);
+                const Currency = currency.find(item => item.code === data.data.Currency);
+                const TimeZone = time_zone.find(item => item.code === data.data.TimeZone);
+                const TravelTimeZone = time_zone_jorneys.find(item => item.code === data.data.TravelTimeZone);
+
+                if(Language) {
+                    dispatch(setLang(Language.id))
+                }
+
+                if(Currency) {
+                    dispatch(setCurrency(Currency.id))
+                }
+
+                if(TimeZone) {
+                    dispatch(setTimeZone(TimeZone.id))
+                }
+
+                if(TravelTimeZone) {
+                    dispatch(setTimeZoneJorneys(TravelTimeZone.id))
+                }
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    const setInformation = async () => {
+        const url = import.meta.env.VITE_API_URL + '/user/settings/edit_interface';
+
+        const formdata = new FormData()
+
+        formdata.append('EmployeeId', EmployeeId || '')
+        formdata.append('Language', activeLang?.code || '')
+        formdata.append('Currency', activeCurrency?.code || '')
+        formdata.append('TimeZone', TimeZoneActive?.code || '')
+        formdata.append('TravelTimeZone', TimeZoneJorneysActive?.code || '')
+
+        try {
+            const res = await fetch(url, {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                },
+                body: formdata
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success") {
+                console.log(data);                
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    useEffect(() => {
+        getInformation()
+    },[])
 
     return (
         <div className={`rounded-[26px] bg-primary  p-[20px]  transition-all duration-300 overflow-hidden  ${active && 'grow'}`}>
@@ -54,7 +144,7 @@ const Interface = ({ active }: { active: boolean }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-[25px] min-w-[280px]">
-                            <div className="flex flex-col gap-[10px] ">
+                            <div className="flex flex-col gap-[5px] ">
                                 <span className="text-[#787B86] text-[14px] font-medium">Часовой пояс</span>
                                 <div className="relative">
                                     <Dropdown isAbsoluteDrop={true} title={TimeZoneActive && TimeZoneActive.content}>
@@ -66,7 +156,7 @@ const Interface = ({ active }: { active: boolean }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-[10px] relative">
+                            <div className="flex flex-col gap-[5px] relative">
                                 <span className="text-[#787B86] text-[14px] font-medium">Часовой пояс в поездках</span>
                                 <Dropdown isAbsoluteDrop={true} title={TimeZoneJorneysActive && TimeZoneJorneysActive.content}>
                                     <Checkbox items={time_zone_jorneys} onChange={(id: number) => dispatch(setLang(id))} />
@@ -84,7 +174,9 @@ const Interface = ({ active }: { active: boolean }) => {
                     <button className="w-[255px] rounded-[18px] bg-[#ECEEF1] py-[15px]">
                         <p>Стандартные</p>
                     </button>
-                    <button className="w-[255px] rounded-[18px] bg-black py-[15px]">
+                    <button
+                    onClick={() => {setInformation()}}
+                    className="w-[255px] rounded-[18px] bg-black py-[15px]">
                         <p className="text-primary">Сохранить</p>
                     </button>
                 </div>}

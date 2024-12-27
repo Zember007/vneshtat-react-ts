@@ -1,5 +1,5 @@
-import {getAccessToken, getRefreshToken, setAccessToken} from "@/shared/utils/index";
-import {jwtDecode} from "jwt-decode";
+import { getAccessToken, getRefreshToken, setAccessToken } from "@/shared/utils/index";
+import { jwtDecode } from "jwt-decode";
 
 export async function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -28,6 +28,25 @@ export const refreshAccessToken = async () => {
         return false;
     } else {
         return false;
+    }
+};
+
+export const revokeAccessToken = async () => {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) return false;
+    const url = new URL(import.meta.env.VITE_API_URL + "/auth/sign_in/auth_token");
+    const formdata = new FormData()
+    formdata.append("RefreshToken", refreshToken);
+    const res = await fetch(url, {
+        method: "DELETE",
+        body: formdata
+    });
+    const data = await res.json();
+
+    if (data.message === "token_has_been_revoked") {
+        localStorage.clear()
+        window.location.replace('/')
+        return true;
     }
 };
 
@@ -110,11 +129,11 @@ export async function getUserCompanies() {
             }
         });
         const data = await res.json();
-        if(!data.data.length){
+        if (!data.data.length) {
             localStorage.clear();
         } else {
             console.log(data);
-            
+
             return data;
         }
     }
