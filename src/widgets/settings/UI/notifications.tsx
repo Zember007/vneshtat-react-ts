@@ -160,7 +160,7 @@ const Notifications = ({ active }: { active: boolean }) => {
 
             </div>
             <div className="rounded-[26px] bg-primary w-[300px] p-[20px]">
-                {activeTab === 'telegram' && <Telegram  close={() => { setActiveTab(null) }} />}
+                {activeTab === 'telegram' && <Telegram data={null}  close={() => { setActiveTab(null) }} />}
                 {activeTab === 'mail' && <Mail close={() => { setActiveTab(null) }} />}
                 {activeTab === 'calendar' && <GoogleCalendar close={() => { setActiveTab(null) }} />}
                 {activeTab === 'desktop' && <Desktop close={() => { setActiveTab(null) }} />}

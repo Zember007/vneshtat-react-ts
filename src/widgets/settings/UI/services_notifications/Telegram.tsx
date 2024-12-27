@@ -7,7 +7,7 @@ interface telegram {
     "Username": string
 }
 
-const Telegram = ({ close, data }: { close: Function; data: telegram[] }) => {
+const Telegram = ({ close, data }: { close: Function; data?: telegram[] | null }) => {
 
     const AccessToken = getAccessToken()
 
@@ -43,6 +43,8 @@ const Telegram = ({ close, data }: { close: Function; data: telegram[] }) => {
 
     useEffect(() => {
         getInformation()
+        console.log(data);
+        
     }, [])
 
     return (
