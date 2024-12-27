@@ -161,8 +161,7 @@ const RegistrationCompanySecond = () => {
                                     placeholder={"Дата рождения"}
                                     value={birthday}
                                     onChange={handleDateChange}
-                                    maxLength={10}
-                                    title="Формат даты: ГГГГ-М-Д"
+                                    maxLength={10}                                    
                                 />
                             </div>
                         </div>

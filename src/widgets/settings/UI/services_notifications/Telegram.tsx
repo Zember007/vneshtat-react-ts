@@ -3,7 +3,11 @@ import { getAccessToken } from '@/shared/utils';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 
-const Telegram = ({ close }: { close: Function }) => {
+interface telegram {
+    "Username": string
+}
+
+const Telegram = ({ close, data }: { close: Function; data: telegram[] }) => {
 
     const AccessToken = getAccessToken()
 
@@ -25,7 +29,7 @@ const Telegram = ({ close }: { close: Function }) => {
             }
 
             if (data.status === "success" && data.data) {
-                if(data.data.link) {
+                if (data.data.link) {
                     setLinkQr(data.data.link)
                 }
             }
@@ -39,7 +43,7 @@ const Telegram = ({ close }: { close: Function }) => {
 
     useEffect(() => {
         getInformation()
-    },[])
+    }, [])
 
     return (
         <div className="flex flex-col gap-[10px] h-full">
@@ -55,6 +59,8 @@ const Telegram = ({ close }: { close: Function }) => {
                     <p className="text-[#787B86] text-[14px]">
                         Отсканируйте QR-код, чтобы активировать чат-бота. В нём будет доступен базовый функционал сервиса и уведомления.
                     </p>
+
+                    <div className=""></div>
                 </div>
                 {linkQr && <div className="grow h-full flex items-center justify-center flex-col gap-[20px]">
                     <QRCodeSVG
