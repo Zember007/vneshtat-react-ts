@@ -20,7 +20,7 @@ interface calendar {
 
 interface notificationsData {
     "Email": string,
-    "Telegramm": telegram[],
+    "Telegramm": telegram,
     "GoogleCalendar": calendar[]
 }
 
@@ -28,6 +28,7 @@ const Notifications = ({ active }: { active: boolean }) => {
 
     const [activeTab, setActiveTab] = useState<string | null>(null)
     const [notificationsData, setNotificationsData] = useState<notificationsData>()
+    const [notificationDesktop, setNotificationDesktop] = useState<boolean>(false)
 
     useEffect(() => {
         if (!active) {
@@ -39,7 +40,7 @@ const Notifications = ({ active }: { active: boolean }) => {
     const AccessToken = getAccessToken()
 
     const getInformation = async () => {
-        const url = new URL(import.meta.env.VITE_API_URL + '/user/settings/get_email_notifications');
+        const url = new URL(import.meta.env.VITE_API_URL + '/user/settings/get_integrations');
         url.searchParams.append('EmployeeId', EmployeeId || '');
 
         try {
@@ -67,8 +68,38 @@ const Notifications = ({ active }: { active: boolean }) => {
 
     }
 
+    const getDesktop = async () => {
+        const url = new URL(import.meta.env.VITE_API_URL + '/user/settings/get_desktop_notifications');
+        url.searchParams.append('EmployeeId', EmployeeId || '');
+
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${AccessToken}`
+                }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                console.log("error", data);
+            }
+
+            if (data.status === "success" && data.data) {                
+               
+                setNotificationDesktop(data.data.DesktopNotifications) 
+
+            }
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
     useEffect(() => {
         getInformation()
+        getDesktop()
     }, [])
     return (
         <div className={`flex gap-[15px] transition-all duration-300 ${active && 'grow'}`}>
@@ -95,7 +126,7 @@ const Notifications = ({ active }: { active: boolean }) => {
                                 </div>
                             </div>
                             <div className="flex items-center gap-[15px]">
-                                {notificationsData?.Telegramm.length && <span className="text-[#787B86] text-[14px] font-medium">Привязан</span>}
+                                {notificationsData?.Telegramm.Username && <span className="text-[#787B86] text-[14px] font-medium">Привязан</span>}
                                 <button
                                     onClick={() => setActiveTab('telegram')}
                                     className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'telegram' && '!bg-primary'}`}>
@@ -112,7 +143,7 @@ const Notifications = ({ active }: { active: boolean }) => {
                                 </div>
                             </div>
                             <div className="flex items-center gap-[15px]">
-                                {notificationsData?.GoogleCalendar.length && <span className="text-[#787B86] text-[14px] font-medium">Привязан</span>}
+                                {notificationsData?.GoogleCalendar.length ? <span className="text-[#787B86] text-[14px] font-medium">Привязан</span> : null}
                                 <button
                                     onClick={() => { setActiveTab('calendar') }}
                                     className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'calendar' && '!bg-primary'}`}>
@@ -146,7 +177,7 @@ const Notifications = ({ active }: { active: boolean }) => {
                                 </div>
                             </div>
                             <div className="flex items-center gap-[15px]">
-                                {/* <span className="text-[#787B86] text-[14px] font-medium">Включены</span> */}
+                                {notificationDesktop && <span className="text-[#787B86] text-[14px] font-medium">Включены</span>}
                                 <button
                                     onClick={() => { setActiveTab('desktop') }}
                                     className={`py-[9px] px-[25px] rounded-[13px] bg-black w-[119px] duration-300 transition-all ${activeTab === 'desktop' && '!bg-primary'}`}>
@@ -160,10 +191,10 @@ const Notifications = ({ active }: { active: boolean }) => {
 
             </div>
             <div className="rounded-[26px] bg-primary w-[300px] p-[20px]">
-                {activeTab === 'telegram' && <Telegram data={null}  close={() => { setActiveTab(null) }} />}
-                {activeTab === 'mail' && <Mail close={() => { setActiveTab(null) }} />}
-                {activeTab === 'calendar' && <GoogleCalendar close={() => { setActiveTab(null) }} />}
-                {activeTab === 'desktop' && <Desktop close={() => { setActiveTab(null) }} />}
+                {activeTab === 'telegram' && <Telegram data={notificationsData?.Telegramm || null}  close={() => { setActiveTab(null) }} />}
+                {activeTab === 'mail' && <Mail Email={notificationsData?.Email || null} close={() => { setActiveTab(null) }} />}
+                {activeTab === 'calendar' && <GoogleCalendar data={notificationsData?.GoogleCalendar || null} close={() => { setActiveTab(null) }} />}
+                {activeTab === 'desktop' && <Desktop setData={setNotificationDesktop} data={notificationDesktop} close={() => { setActiveTab(null) }} />}
                 {active && !activeTab &&
                     <div className="h-full flex items-center justify-center">
                         <p className="text-[#787B86] px-[20px]">

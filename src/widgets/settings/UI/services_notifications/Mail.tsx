@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SimpleBar from 'simplebar-react';
 import { setEmailJorneys, setEmailJorneysTime, setEmailReserve, setEmailReserveTime, setEmailServices } from '../../model/settings.store';
 
-const Mail = ({ close }: { close: Function }) => {
+const Mail = ({ close, Email }: { close: Function; Email: string | null }) => {
 
     const dispatch: AppDispatch = useDispatch();
     const EmailServices = useSelector((state: RootState) => state.settings.email_services);
@@ -140,6 +140,8 @@ const Mail = ({ close }: { close: Function }) => {
 
     useEffect(() => {
         getInformation()
+        console.log(Email);
+        
     }, [])
     return (
         <div className="flex flex-col gap-[10px] h-full">
