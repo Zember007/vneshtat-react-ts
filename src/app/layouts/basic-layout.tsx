@@ -1,42 +1,29 @@
-import { OpenInformation, Sidebar } from "@/widgets/sidebar";
+import { Sidebar } from "@/widgets/sidebar";
 import { Header } from "@/widgets/header";
-import { useState } from "react";
 import SuccessImg from "@/assets/icons/success-filled.svg?react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import { useNavigate } from "react-router-dom";
 
 const BasicLayout = ({ component }: { component: JSX.Element }) => {
-    const [isOpen, setIsOpen] = useState(false);
     const employeeId = localStorage.getItem("EmployeeId");
     const { companies } = useSelector((state: RootState) => state.user);
 
 
     const navigate = useNavigate();
 
-    const handleCloseSidebar = () => {
-        if (isOpen) {
-            setIsOpen(false);
-        }
-    };
-
     return (
         <div className={"flex flex-row justify-center items-center"}>
             {employeeId ? (
-                <div className={"pt-5 pb-10 flex flex-row gap-7 w-full px-16 ultra:px-24"}>
-                    <div
-                        className={`fixed inset-0 transition-all ${isOpen ? "bg-opacity-50 z-10 bg-[#1212121A]" : "bg-opacity-0 z-[-1] bg-primary"}`}
-                        onClick={handleCloseSidebar}
-                    />
+                <div className={"pt-5 pb-10 flex  gap-7 w-full px-16 ultra:px-24 h-[calc(100vh-60px)] min-h-[664px] "}>
 
                     <div
-                        className={`absolute h-full max-h-[calc(100vh-60px)] z-10 ${isOpen ? "w-[calc(100vw-116px)] ultra:w-[calc(100vw-160px)]" : "w-0"}`}>
-                        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-                        <OpenInformation isOpen={isOpen} />
+                        className={`h-full`}>
+                        <Sidebar />
                     </div>
 
                     <div
-                        className={`h-[calc(100vh-60px)] min-h-[664px] w-full flex flex-col gap-5 transition-all duration-300 ${isOpen ? "bg-[#1212121A] blur-md ml-[84px] ultra:ml-[110px]" : "ml-[84px] ultra:ml-[110px]"}`}>
+                        className={`h-full grow w-full flex flex-col gap-5 transition-all duration-300`}>
                         <Header />
                         {component}
                     </div>

@@ -1,15 +1,24 @@
 import {AeroContent} from "@/widgets/aero/aero-content";
-import {AeroOperations} from "@/widgets/aero/aero-operations";
-import {useState} from "react";
+import {AeroOperations, AeroNavigations} from "@/widgets/aero/aero-operations";
+import Layout from "@/app/layouts/layout";
 
 const Aero = () => {
-    const [selectedTariffId, setSelectedTariffId] = useState<number | null>(null);
 
     return (
-        <div className={"flex flex-row gap-4"}>
-            <AeroContent selectedTariffId={selectedTariffId} setSelectedTariffId={setSelectedTariffId}/>
-            <AeroOperations selectedTariffId={selectedTariffId}/>
-        </div>
+        <Layout 
+        component={
+            <AeroContent />            
+        }
+        information={
+            <AeroOperations />
+        }
+        navigation={
+            <AeroNavigations />
+        }
+
+        extraClassBar="!w-[255px] !min-w-[255px]"
+        
+        />
     )
 };
 

@@ -36,7 +36,6 @@
 
     .logo-animation-container {
         position: relative;
-        bottom: 14px;
         width: 50px;
         height: 50px;
     }
@@ -374,4 +373,52 @@ a {
     width: 3px;
     background-color: rgb(211, 212, 214);
     right: 0px;
+  }
+
+  .select-aeroMap-bottom-line .bottom_line {
+    stroke: #007BFB;
+  }
+
+  .select-aeroMap-top-line .top_line {
+    stroke: #007BFB;
+  }
+
+  .select-aeroMap-top-line .top_line-icon {
+    fill: #007BFB;
+  }
+
+  .select-aeroMap-top-line .top_line-text {
+    fill: black;
+  }
+
+  .select-aeroMap-bottom-line .bottom_line-text {
+    fill: black;
+  }
+
+  .select-aeroMap-bottom-line .bottom_line-icon {
+    fill: #007BFB;
+  }
+
+  .select-aeroMap-route-bottom .route_bottom {
+    stroke: #FAA61A;
+  }
+
+  .select-aeroMap-route-bottom .route_bottom-icon {
+    fill: #FAA61A;
+  }
+
+  .select-aeroMap-route-bottom .route_bottom-text {
+    fill: #ED1C24;
+  }
+
+  .select-aeroMap-route-top .route_top {
+    stroke: #FAA61A;
+  }
+
+  .select-aeroMap-route-top .route_top-icon {
+    fill: #FAA61A;
+  }
+
+  .select-aeroMap-route-top .route_top-text {
+    fill: #ED1C24;
   }

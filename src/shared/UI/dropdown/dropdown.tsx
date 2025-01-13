@@ -14,11 +14,12 @@ interface DropdownProps {
     extraClass?: string
     extraClassBox?: string
     disable?: boolean
+    extraClassTitle?: string
 }
 
 const Dropdown = ({
     isChanged = false, onErase = () => {
-    }, title, selectedText, children, isAbsoluteDrop = false, extraClass, disable, extraClassBox
+    }, title,extraClassTitle, selectedText, children, isAbsoluteDrop = false, extraClass, disable, extraClassBox
 }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -46,7 +47,7 @@ const Dropdown = ({
                     )}
                     {
                         title && <h6
-                            className={`text-[14px] font-medium whitespace-nowrap  ${disable && 'text-[#787B86]'} ${isChanged && 'pl-[5px]'}`}
+                            className={`text-[14px] font-medium whitespace-nowrap ${extraClassTitle}  ${disable && 'text-[#787B86]'} ${isChanged && 'pl-[5px]'}`}
 
                         >
                             {title}

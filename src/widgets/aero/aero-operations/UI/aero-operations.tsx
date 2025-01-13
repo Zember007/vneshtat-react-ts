@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { mockTariff } from "@/widgets/aero/aero-content/utils";
-import ArrowTop from "@/assets/icons/arrow-top.svg?react";
-import TrashImg from "@/assets/icons/trash.svg?react";
-import InfoImg from "@/assets/icons/info.svg?react";
-import CrossImg from "@/assets/icons/cross.svg?react";
-import { CountdownCircle, InputDate } from "@/shared/UI";
+import { useState } from "react";
+/* import { mockTariff } from "@/widgets/aero/aero-content/utils"; */
+import TeamIng from "@/assets/icons/team.svg?react";
+import RouteImg from "@/assets/icons/route.svg?react";
+import TicketImg from "@/assets/icons/ticket.svg?react";
 import { Passenger } from "@/shared/types";
-import SimpleBar from "simplebar-react";
+import { Dropdown, PassengerItem } from "@/shared/UI";
 
-const AeroOperations = ({ selectedTariffId }: {
-    selectedTariffId: null | number,
-}) => {
-    const selectedTariff = mockTariff.find(item => item.id === selectedTariffId);
-    const [date, setDate] = useState<Date | null>(null);
-    const [activePassenger, setActivePassenger] = useState<number | null>(null);
+
+const AeroOperations = () => {
+
     const [passengers, setPassengers] = useState<Passenger[]>([
         {
             id: 1,
@@ -40,197 +35,113 @@ const AeroOperations = ({ selectedTariffId }: {
             deleteCountdown: null,
         },
     ]);
-    const [isCountdownActive, setIsCountdownActive] = useState(false);
 
-    useEffect(() => {
-        if (!isCountdownActive) return;
+    const links = [
+        {
+            icon: RouteImg,
+            code: 'route'
+        },
+        {
+            icon: TeamIng,
+            code: 'team'
+        },
+        {
+            icon: TicketImg,
+            code: 'ticket'
+        }
+    ]
 
-        const countdownInterval = setInterval(() => {
-            const updatedPassengers = passengers.map((passenger) =>
-                passenger.deleteCountdown && passenger.deleteCountdown !== null && passenger.deleteCountdown > 0
-                    ? { ...passenger, deleteCountdown: passenger.deleteCountdown - 1 }
-                    : passenger
-            );
+    const [activeFilter, setActiveFilter] = useState<string>('route')
 
-            const remainingPassengers = updatedPassengers.filter(
-                (passenger) => passenger.deleteCountdown !== 0
-            );
-
-            setPassengers(remainingPassengers);
-
-            if (!remainingPassengers.some((p) => p.deleteCountdown !== null)) {
-                setIsCountdownActive(false);
-            }
-        }, 1000);
-
-        return () => clearInterval(countdownInterval);
-    }, [passengers, isCountdownActive]);
-
-    const handleDelete = (passengerId: number) => {
-        const updatedPassengers = passengers.map((passenger) =>
-            passenger.id === passengerId
-                ? { ...passenger, deleteCountdown: 5 }
-                : passenger
-        );
-        setPassengers(updatedPassengers);
-        setIsCountdownActive(true);
-    };
-
-    const cancelDelete = (passengerId: number) => {
-        const updatedPassengers = passengers.map((passenger) =>
-            passenger.id === passengerId
-                ? { ...passenger, deleteCountdown: null }
-                : passenger
-        );
-        setPassengers(updatedPassengers);
-    };
 
     return (
-        <div className={"min-w-[300px] flex flex-col gap-5"}>
-            <div className={"bg-primary p-5 rounded-[26px] h-full"}>
-                {selectedTariffId ? (
-                    <div className={"h-full"}>
-                        <div className={"flex flex-col gap-2.5"}>
-                            <span className={"flex items-center gap-1"}>
-                                <h2 className={"text-base font-medium leading-none"}>{selectedTariff?.class}</h2>
-                                <p className={"text-[#9B9FAD] text-base font-medium leading-none"}>{selectedTariff?.direction === 1 ? "в одну сторону" : "Туда-обратно"}</p>
-                            </span>
-                            <hr className={"h-[1px] w-full rounded-[1px] bg-[#E5E7EA]"} />
-                        </div>
-                        <div className={"flex flex-col gap-2.5 h-full pt-2.5"}>
-                            <div className={"flex flex-col gap-4"}>
-                                <h6 className={"text-md leading-none font-medium"}>Дата</h6>
-                                <InputDate
-                                    inputValue={date}
-                                    viewValue={date}
-                                    setter={(date: Date) => setDate(date)}
-                                    placeholder={"Выберите дату"}
-                                    extraCalendarClass="translate-x-[-300px] translate-y-[-45px]"
-                                />
-                            </div>
-                            <hr className={"h-[1px] w-full rounded-[1px] bg-[#E5E7EA]"} />
-                            <div className={"flex flex-col gap-4"}>
-                                <h6 className={"text-md leading-none font-medium"}>Пассажиры</h6>
-                                <SimpleBar className="h-[calc(100vh-500px)]">
-                                    <div className=" w-full flex flex-col py-2.5">
-                                        {passengers.map((passenger, i) => (
-                                            <React.Fragment key={passenger.id}>
-                                                <div className={`flex gap-2.5 ${i !== 0 && "mt-2.5"}`}>
-                                                    <div className="w-9 h-9 py-2 px-2.5 flex justify-start rounded-full bg-secondary">
-                                                        <h3 className="text-xs font-medium uppercase">
-                                                            {passenger.surname[0] + passenger.name[1]}
-                                                        </h3>
-                                                    </div>
-                                                    <div
-                                                        onClick={() =>
-                                                            setActivePassenger(
-                                                                passenger.id === activePassenger
-                                                                    ? null
-                                                                    : passenger.id
-                                                            )
-                                                        }
-                                                        className="w-full bg-secondary rounded-primary flex items-center justify-between gap-1 py-2 px-2.5 cursor-pointer"
-                                                    >
-                                                        {passenger.deleteCountdown ? (
-                                                            <div className="flex items-center justify-between w-full" onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                cancelDelete(passenger.id)
-                                                            }}>
-                                                                <h3 className="text-xs font-medium text-[#FF64A3]">
-                                                                    Отменить удаление
-                                                                </h3>
-                                                                <CrossImg className="red-fill min-w-4 min-h-4" />
-                                                            </div>
-                                                        ) : (
-                                                            <>
-                                                                <h3 className="text-xs font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                                                                    {passenger.surname} {passenger.name}
-                                                                </h3>
-                                                                <ArrowTop
-                                                                    className={`min-w-4 min-h-4 transition-transform duration-300 ${passenger.id === activePassenger
-                                                                            ? "rotate-180"
-                                                                            : ""
-                                                                        }`}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    </div>
-                                                    {passenger.deleteCountdown ? (
-                                                        <CountdownCircle
-                                                            countdown={passenger.deleteCountdown}
-                                                            onCancel={() => cancelDelete(passenger.id)}
-                                                        />
-                                                    ) : (
-                                                        <button
-                                                            onClick={() => handleDelete(passenger.id)}
-                                                            className="min-w-5 min-h-5"
-                                                        >
-                                                            <TrashImg className="black-fill-hover black-stroke-hover transition" />
-                                                        </button>
-                                                    )}
-                                                </div>
-                                                <div
-                                                    className={`w-full bg-secondary rounded-primary overflow-hidden transition-all duration-300 ease-in-out ${passenger.id === activePassenger
-                                                            ? "max-h-[500px] py-4 px-5 mt-2.5"
-                                                            : "max-h-0"
-                                                        }`}
-                                                >
-                                                    {passenger.id === activePassenger && (
-                                                        <>
-                                                            <div className="flex justify-between items-center">
-                                                                <h3 className="text-base font-medium">
-                                                                    Документы
-                                                                </h3>
-                                                                <InfoImg className="min-w-6 min-h-6 black-fill-hover" />
-                                                            </div>
-                                                            <div className="flex flex-col gap-1.5 mt-2.5">
-                                                                <div className="bg-primary py-2 px-2.5 gap-1 flex justify-between items-center rounded-primary">
-                                                                    <h6 className="text-xs font-medium whitespace-nowrap">
-                                                                        {passenger.password}
-                                                                    </h6>
-                                                                    <p className="text-xs text-[#9b9fad] whitespace-nowrap overflow-hidden text-ellipsis">
-                                                                        Паспорт РФ
-                                                                    </p>
-                                                                </div>
-                                                                <div className="bg-primary py-2 px-2.5 gap-1 flex justify-between items-center rounded-primary">
-                                                                    <h6 className="text-xs font-medium whitespace-nowrap">
-                                                                        {passenger.internationalPw}
-                                                                    </h6>
-                                                                    <p className="text-xs text-[#9b9fad] whitespace-nowrap overflow-hidden text-ellipsis">
-                                                                        Загранпаспорт
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </React.Fragment>
-                                        ))}
-                                    </div>
-                                </SimpleBar>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className={"h-full"}>
-                        <div className={"flex flex-col gap-2.5"}>
-                            <h2 className={"text-base font-medium leading-none"}>Тариф</h2>
-                            <hr className={"h-[1px] w-full rounded-[1px] bg-[#E5E7EA]"} />
-                        </div>
-                        <div className={"flex items-center justify-center h-full"}>
-                            <p className={"text-[#9B9FAD] text-md font-medium leading-none text-center mx-5"}>
-                                Выберите тариф, чтобы узнать стоимость
-                            </p>
-                        </div>
-                    </div>
-                )}
+
+        <div className={"p-[20px] h-full flex flex-col gap-[20px]"}>
+
+            <div className="flex gap-[10px]">
+                {links.map((item) => (
+                    <button
+                        onClick={() => { setActiveFilter(item.code) }}
+                        className={`w-[35px] h-[35px] flex items-center justify-center rounded-[11px] ${activeFilter !== item.code ? 'bg-[#ECEEF1]' : 'bg-[#121212]'}`}>
+                        <item.icon className={`w-[19px] h-[19px] ${activeFilter === item.code ? '*:fill-[#FAFAFA]' : '*:fill-[#121212]'}`} />
+                    </button>
+                ))}
             </div>
-            <button
-                className={"min-h-[50px] transition w-full flex justify-center items-center py-4 rounded-[18px] bg-black disabled:bg-[#DCE0E5]"}
-                disabled={!selectedTariffId}>
-                <p className={`text-base leading-none ${selectedTariffId ? "text-primary" : "text-black"}`}>Забронировать</p>
-            </button>
+
+            <div className="flex flex-col gap-[10px]">
+                <h3 className="font-medium text-[16px]">{activeFilter === 'route' ? 'Маршрут' : activeFilter === 'team' ? 'Пассажиры' : ''}</h3>
+                <hr className="h-[1px] bg-[#E5E7EA]" />
+                {
+                    activeFilter === 'route' &&
+                    <>
+
+
+                        <div className="flex flex-col gap-[15px]">
+                            <span className="font-medium text-[14px]">Тип транспорта</span>
+                            <Dropdown
+                                isAbsoluteDrop={true}
+                                title="Тип"
+                                extraClassBox="!rounded-[13px] h-[30px] w-full"
+                                extraClass=" !py-[9px] !px-[15px] "
+                                extraClassTitle="!text-[#787B86] !text-[12px]"
+                            >
+                                <></>
+                            </Dropdown>
+                        </div>
+
+                        <hr className="h-[1px] bg-[#E5E7EA]" />
+
+                        <div className="flex flex-col gap-[15px]">
+                            <span className="font-medium text-[14px]">Тип билета</span>
+                            <Dropdown
+                                isAbsoluteDrop={true}
+                                title="Билет"
+                                extraClassBox="!rounded-[13px] h-[30px] w-full"
+                                extraClass=" !py-[9px] !px-[15px] "
+                                extraClassTitle="!text-[#787B86] !text-[12px]"
+                            >
+                                <></>
+                            </Dropdown>
+                        </div>
+
+                        <hr className="h-[1px] bg-[#E5E7EA]" />
+
+                        <div className="flex flex-col gap-[15px]">
+                            <span className="font-medium text-[14px]">Тариф</span>
+                            <Dropdown
+                                isAbsoluteDrop={true}
+                                title="Тариф"
+                                extraClassBox="!rounded-[13px] h-[30px] w-full"
+                                extraClass=" !py-[9px] !px-[15px] "
+                                extraClassTitle="!text-[#787B86] !text-[12px]"
+                            >
+                                <></>
+                            </Dropdown>
+                        </div>
+                    </>
+                }
+
+                {activeFilter === 'team' &&
+                    <>
+                        {passengers.map((item) => ((
+                            <PassengerItem
+                                delete={(id: number) => {setPassengers(passengers.filter(item => item.id !== id))}}
+                                id={item.id}
+                                name={item.name}
+                                internationalPassport={item.internationalPw}
+                                passport={item.password}
+                                surname={item.surname}
+                                key={item.id}
+                                extraClassName="max-w-[100px]"
+                            />
+                        )))}
+                    </>
+                }
+
+            </div>
+
         </div>
+
     )
 };
 

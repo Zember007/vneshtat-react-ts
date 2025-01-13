@@ -12,6 +12,7 @@ interface props {
     internationalPassport: string;
     passport: string;
     delete: Function;
+    extraClassName?: string
 }
 
 const PassengerItem = (props: props) => {
@@ -70,7 +71,7 @@ const PassengerItem = (props: props) => {
                         </div>
                     ) : (
                         <>
-                            <h3 className="text-xs font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                            <h3 className={`text-xs font-medium truncate ${props.extraClassName}`}>
                                 {props.surname} {props.name}
                             </h3>
                             <ArrowTop
