@@ -141,7 +141,7 @@ const AeroContent = () => {
                     <div className="flex items-center gap-[10px]">
                         <InputCity
                             inputClass="!h-[35px] !text-[14px] !rounded-[13px]"
-                            extraClass="min-w-0"
+                            extraClass="!min-w-0"
                             placeholder={"Точка отправления"}
                             value={''}
                             setValue={(str) => { console.log(str); }}
@@ -151,7 +151,7 @@ const AeroContent = () => {
                         <RouteImg className="w-[18px] h-[18px] *:fill-[#BDBFC7]" />
                         <InputCity
                             inputClass="!h-[35px] !text-[14px] !rounded-[13px]"
-                            extraClass="min-w-0"
+                            extraClass="!min-w-0"
                             placeholder={"Точка прибытия"}
                             value={''}
                             setValue={(str) => { console.log(str); }}

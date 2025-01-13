@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAccessToken } from "@/shared/utils";
-import { banks } from "@/widgets/finance/utils";
 
 interface props {
-    selectedBankId?: number | null;
     close: any;
 }
 
@@ -14,9 +12,7 @@ interface Information {
 
 
 
-const Infornation = ({ close, selectedBankId }: props) => {
-
-    const selectedBank = banks.find(item => item.id === selectedBankId);
+const Infornation = ({ close }: props) => {
 
 
     const [infornations, setInfornations] = useState<Array<Information>>([])
@@ -83,41 +79,14 @@ const Infornation = ({ close, selectedBankId }: props) => {
                 </button>
             </div>
             <div className="p-[13px] flex flex-col gap-[6px] bg-[#ECEEF1] rounded-[23px]">
-                {!selectedBank && infornations.map(item => (
+               {  infornations.map(item => (
                     <div className="bg-[#FAFAFA] rounded-[13px] px-[10px] py-[8px] flex justify-between">
                         <span className="font-medium text-[12px] text-[#9B9FAD]">{item.title}</span>
                         <strong className="font-medium text-[12px]">{item.data}</strong>
                     </div>
                 ))}
 
-                {selectedBank && (
-                    <>
-                    <div className="bg-[#FAFAFA] gap-[30px] rounded-[13px] px-[10px] py-[8px] flex justify-between">
-                        <span className="font-medium whitespace-nowrap text-[12px] text-[#9B9FAD]">Номер счёта</span>
-                        <strong className="text-right font-medium text-[12px]">{selectedBank.account_number}</strong>
-                    </div> 
-                    <div className="bg-[#FAFAFA] gap-[30px] rounded-[13px] px-[10px] py-[8px] flex justify-between">
-                        <span className="font-medium whitespace-nowrap text-[12px] text-[#9B9FAD]">Банк</span>
-                        <strong className="text-right font-medium text-[12px]">{selectedBank.bank}</strong>
-                    </div>
-                    <div className="bg-[#FAFAFA] gap-[30px] rounded-[13px] px-[10px] py-[8px] flex justify-between">
-                        <span className="font-medium whitespace-nowrap text-[12px] text-[#9B9FAD]">Город</span>
-                        <strong className="text-right font-medium text-[12px]">{selectedBank.city}</strong>
-                    </div>
-                    <div className="bg-[#FAFAFA] gap-[30px] rounded-[13px] px-[10px] py-[8px] flex justify-between">
-                        <span className="font-medium whitespace-nowrap text-[12px] text-[#9B9FAD]">БИК</span>
-                        <strong className="text-right font-medium text-[12px]">{selectedBank.bic}</strong>
-                    </div>
-                    <div className="bg-[#FAFAFA] gap-[30px] rounded-[13px] px-[10px] py-[8px] flex justify-between">
-                        <span className="font-medium whitespace-nowrap text-[12px] text-[#9B9FAD]">Корр. счёт</span>
-                        <strong className="text-right font-medium text-[12px]">{selectedBank.account_corporate}</strong>
-                    </div>
-                    <div className="bg-[#FAFAFA] gap-[30px] rounded-[13px] px-[10px] py-[8px] flex justify-between">
-                        <span className="font-medium whitespace-nowrap text-[12px] text-[#9B9FAD]">Статус</span>
-                        <strong className="text-right font-medium text-[12px]">{selectedBank.status ? 'Действующий' : 'Недействующий'}</strong>
-                    </div>
-                    </>
-                )}
+               
 
             </div>
         </div>
