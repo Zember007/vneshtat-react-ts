@@ -51,7 +51,7 @@ const ReportCart = ({ date, receipt, writingOff, data }: props) => {
                 <div className={clsx(" rounded-[13px] relative transition-all duration-500", !active && "bg-[#FBFBFB] p-[13px]")}>
                     <ArrowTop onClick={() => setActive(!active)} className={clsx("cursor-pointer w-[22px] h-[22px] absolute top-[13px] right-[13px]  transition-all duration-500", active && "!top-[8px] rotate-[180deg]")} />
                     <div className={clsx("max-h-[500px] overflow-hidden flex flex-col gap-[10px] pb-[10px] transition-all duration-500", active && "!max-h-[0px] !pb-[0px]")} >
-                        <div className="grid grid-cols-[1.5fr_4fr_2fr_2fr_22px] gap-[8px]  pb-[10px] border-0 border-b border-solid border-[#E5E7EA]">
+                        <div className="grid grid-cols-[1.5fr_3fr_2fr_2fr_22px] gap-[8px]  pb-[10px] border-0 border-b border-solid border-[#E5E7EA]">
                             <span className="text-[#9B9FAD] text-[12px] font-medium">Время</span>
                             <span className="text-[#9B9FAD] text-[12px] font-medium">Действие</span>
                             <span className="text-[#9B9FAD] text-[12px] font-medium">Списание</span>
@@ -60,7 +60,7 @@ const ReportCart = ({ date, receipt, writingOff, data }: props) => {
                         </div>
                         {
                             data.map(item => (
-                                <div className="grid grid-cols-[1.5fr_4fr_2fr_2fr_22px] gap-[8px]  pb-[10px] border-0 border-b border-solid border-[#E5E7EA]">
+                                <div className="grid grid-cols-[1.5fr_3fr_2fr_2fr_22px] gap-[8px]  pb-[10px] border-0 border-b border-solid border-[#E5E7EA]">
                                     <span className=" text-[12px] font-medium">{GetTime(item.time)}</span>
                                     <p className=" text-[12px] font-normal">{item.act}</p>
                                     <span className=" text-[12px] font-medium">{(item.receipt + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')} ₽</span>
@@ -70,7 +70,7 @@ const ReportCart = ({ date, receipt, writingOff, data }: props) => {
                         }
                     </div>
 
-                    <div className={clsx("grid grid-cols-[1.5fr_4fr_2fr_2fr_22px] gap-[8px] transition-all duration-500", active && "mr-[13px]")}>
+                    <div className={clsx("grid grid-cols-[1.5fr_3fr_2fr_2fr_22px] gap-[8px] transition-all duration-500", active && "mr-[13px]")}>
                         <div><span className={clsx("text-[12px] font-medium transition-all duration-500", active && "hidden")}>Итого за день</span></div>
                         <div></div>
                         <div className="whitespace-nowrap">

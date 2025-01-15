@@ -116,7 +116,7 @@ const Report = () => {
 
     return (
         <>
-            <div className="rounded-[26px] p-[20px] bg-[#FAFAFA] min-h-[134px]">
+            <div className="rounded-[26px] p-[20px] bg-[#FAFAFA]">
 
                 <div className="flex items-center justify-between gap-[20px] ">
                     <div className="flex gap-[10px]">

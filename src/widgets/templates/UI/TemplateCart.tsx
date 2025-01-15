@@ -28,7 +28,7 @@ const TemplateCart = () => {
                 </button>
             </div>
             <Link to={'/templates/create/add'} className=" bg-[#ECEEF1] rounded-[23px] p-[15px] grow flex flex-col gap-[15px] justify-between h-full">
-                <div className="max-w-[calc(100vw-710px)] flex items-center gap-[32px] justify-between">
+                <div className="max-w-[calc(100vw-980px)] truncate flex items-center gap-[32px] justify-between">
                     <p className="truncate text-[18px] font-medium ">Квартальная инспекция в Самару, шаблон для отдела продаж</p>
                     <PinImg />
                 </div>

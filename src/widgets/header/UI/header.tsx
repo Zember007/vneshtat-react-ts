@@ -115,7 +115,7 @@ const Header = () => {
                     <>
                         <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
                             {links_journeys.map(({ to, img: Icon, label, disabled }) => (
-                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                <Link to={to} className={clsx("flex items-center active:opacity-50", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
                                         <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
@@ -130,7 +130,7 @@ const Header = () => {
                     <>
                         <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
                             {links_templates.map(({ to, img: Icon, label, disabled }) => (
-                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                <Link to={to} className={clsx("flex items-center active:opacity-50", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
                                         <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
@@ -145,7 +145,7 @@ const Header = () => {
                     <>
                         <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
                             {links_messanges.map(({ to, img: Icon, label, disabled }) => (
-                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                <Link to={to} className={clsx("flex items-center active:opacity-50", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
                                         <Icon className={clsx("h-[25px] w-[25px] blue-fill-hover transition ", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>
@@ -160,7 +160,7 @@ const Header = () => {
                     <>
                         <div className="flex flex-row items-center bg-primary py-2.5 px-4 rounded-primary gap-6">
                             {links_company.map(({ to, img: Icon, label, disabled }) => (
-                                <Link to={to} className={clsx("flex items-center", disabled && 'pointer-events-none')} key={to}>
+                                <Link to={to} className={clsx("flex items-center active:opacity-50", disabled && 'pointer-events-none')} key={to}>
                                     <div className="bg-primary relative z-10">
                                         <Icon className={clsx("blue-fill-hover transition", location.includes(to) && "blue-fill", disabled && '*:fill-[#8C909C]')} />
                                     </div>

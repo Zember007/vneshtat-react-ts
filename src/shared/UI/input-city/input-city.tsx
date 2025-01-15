@@ -25,7 +25,7 @@ const InputCity = ({extraClass = '', inputClass = '',withEraser, value, setValue
     );
 
     return (
-        <div className={`min-w-[255px] relative ${extraClass}`}>
+        <div className={`w-full relative ${extraClass}`}>
             <Input
                 className={`py-3 px-2.5 text-sm h-11 rounded-[16px] bg-secondary w-full placeholder:text-[#787B86] ${inputClass}`}
                 value={value}

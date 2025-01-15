@@ -15,7 +15,7 @@ const BasicLayout = ({ component }: { component: JSX.Element }) => {
     return (
         <div className={"flex flex-row justify-center items-center"}>
             {employeeId ? (
-                <div className={"pt-5 pb-10 flex  gap-7 w-full px-16 ultra:px-24 h-[calc(100vh-60px)] min-h-[664px] "}>
+                <div className={"pt-5 pb-5 flex  gap-7 w-full px-16 ultra:px-24 h-[100vh] min-h-[664px] "}>
 
                     <div
                         className={`h-full`}>

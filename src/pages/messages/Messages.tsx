@@ -105,7 +105,7 @@ const Messages = () => {
                         <CloseImg className="w-[19px] h-[19px] *:fill-[#8C909C]" />
                     </button>
                 </div>
-                <SimpleBar className="max-h-[calc(100vh-290px)] border-0 border-solid border-[#D9D9D9] border-t border-b   py-[10px]">
+                <SimpleBar className="max-h-[calc(100vh-350px)] border-0 border-solid border-[#D9D9D9] border-t border-b   py-[10px]">
                     <div className="flex flex-col gap-[10px] grow ">
 
                         <Message owner={false} text="Вот ваша бронь. Сделал ее специально на 15 минут позже, чтобы вы точно не опоздали. Не в обиду вашей пунктуальности, просто там реально тяжело найти вход." time="17:45" view={false} />

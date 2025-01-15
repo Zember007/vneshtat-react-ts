@@ -68,7 +68,7 @@ const Infornation = () => {
 
 
     return (
-        <div className='flex flex-col gap-[7px] w-[300px]'>
+        <div className='flex flex-col gap-[7px] w-[300px] min-w-[300px]'>
             <div className="rounded-[30px] bg-[#ECEEF1] p-[20px] pt-[30px] flex flex-col gap-[15px]">
                 <div className="flex justify-between">
                     <WalletImg />

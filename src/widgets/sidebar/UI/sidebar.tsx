@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import {useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HomeImg from "@/assets/icons/sidebar_pulse.svg?react";
 import SwapImg from "@/assets/icons/sidebar_jorneys.svg?react";
 import CopyImg from "@/assets/icons/sidebar_teamplate.svg?react";
@@ -97,74 +97,74 @@ const Sidebar = () => {
                 className={`flex flex-col gap-[20px] grow`}>
                 <div className={`w-full flex flex-col gap-[6px] ultra:gap-7`}>
                     <Link to={"/"}
-                        
-                        className={`flex items-center p-2.5 gap-[10px] px-[13px] py-[11px] rounded-primary hover:bg-secondary transition group ${location === "/" && "bg-secondary"}`}>
+
+                        className={`flex items-center p-2.5 gap-[10px] px-[10px] py-[7px] rounded-primary hover:bg-secondary transition group ${location === "/" && "bg-secondary"}`}>
                         <HomeImg
-                            className={`group-hover:*:stroke-blue transition w-[22px] h-[22px] ${location === "/" && "blue-stroke"}`} />
-                        <p className={`text-[#787B86] font-medium group-hover:text-blue ${location === "/" && "text-blue"}`}>Пульс</p>
+                            className={` transition w-[30px] h-[30px] ${location === "/" && "blue-stroke"}`} />
+                        <p className={`text-[#787B86] font-medium  text-[16px] ${location === "/" && "text-blue"}`}>Пульс</p>
 
                     </Link>
                     <Link to={"/journeys/all"}
-                        
-                        className={`flex items-center p-2.5 gap-[10px] px-[13px] py-[11px] rounded-primary hover:bg-secondary transition group ${location.includes("/journeys") && "bg-secondary"}`}>
+
+                        className={`flex items-center p-2.5 gap-[10px] px-[10px] py-[7px] rounded-primary hover:bg-secondary transition group ${location.includes("/journeys") && "bg-secondary"}`}>
                         <SwapImg
-                            className={`group-hover:*:stroke-blue transition w-[22px] h-[22px] ${location.includes("/journeys") && "blue-stroke"}`} />
-                        <p className={`text-[#787B86] font-medium group-hover:text-blue ${location.includes("/journeys") && "text-blue"}`}>Поездка</p>
+                            className={` transition w-[30px] h-[30px] ${location.includes("/journeys") && "blue-stroke"}`} />
+                        <p className={`text-[#787B86] font-medium  text-[16px] ${location.includes("/journeys") && "text-blue"}`}>Поездки</p>
 
                     </Link>
 
                     <Link to={"/templates/all"}
-                        
-                        className={`flex items-center p-2.5 gap-[10px] px-[13px] py-[11px] rounded-primary hover:bg-secondary transition group ${location.includes("/templates") && "bg-secondary"}`}>
+
+                        className={`flex items-center p-2.5 gap-[10px] px-[10px] py-[7px] rounded-primary hover:bg-secondary transition group ${location.includes("/templates") && "bg-secondary"}`}>
                         <CopyImg
-                            className={`group-hover:*:fill-blue transition w-[22px] h-[22px] ${location.includes("/templates") && "blue-fill"}`} />
-                        <p className={`text-[#787B86] font-medium group-hover:text-blue ${location.includes("/templates") && "text-blue"}`}>Шаблоны</p>
+                            className={` transition w-[30px] h-[30px] ${location.includes("/templates") && "blue-fill"}`} />
+                        <p className={`text-[#787B86] font-medium  text-[16px] ${location.includes("/templates") && "text-blue"}`}>Шаблоны</p>
 
                     </Link>
                 </div>
                 <hr className={"h-[1px] w-full bg-[#e5e7ea]"} />
                 <div className={`w-full flex flex-col gap-[6px] ultra:gap-7`}>
                     <Link to={"/messages"}
-                        
-                        className={`flex items-center p-2.5 gap-[10px] px-[13px] py-[11px] rounded-primary hover:bg-secondary transition group ${location.includes("/messages") && "bg-secondary"}`}>
+
+                        className={`flex items-center p-2.5 gap-[10px] px-[10px] py-[7px] rounded-primary hover:bg-secondary transition group ${location.includes("/messages") && "bg-secondary"}`}>
                         <MessageImg
-                            className={`group-hover:*:fill-blue transition w-[22px] h-[22px] ${location.includes("/messages") && "blue-fill"}`} />
-                        <p className={`text-[#787B86] font-medium group-hover:text-blue ${location.includes("/messages") && "text-blue"}`}>Мессенджер</p>
+                            className={` transition w-[30px] h-[30px] ${location.includes("/messages") && "blue-fill"}`} />
+                        <p className={`text-[#787B86] font-medium  text-[16px] ${location.includes("/messages") && "text-blue"}`}>Мессенджер</p>
 
                     </Link>
 
                     <Link to={"/jobs/company"}
-                        
-                        className={`flex items-center p-2.5 gap-[10px] px-[13px] py-[11px] rounded-primary hover:bg-secondary transition group ${location.includes("/jobs") && "bg-secondary"}`}>
+
+                        className={`flex items-center gap-[10px] p-2.5 px-[10px] py-[7px] rounded-primary hover:bg-secondary transition group ${location.includes("/jobs") && "bg-secondary"}`}>
                         <JobImg
-                            className={`group-hover:*:stroke-blue transition w-[22px] h-[22px] ${location.includes("/jobs") && "blue-stroke"}`} />
-                        <p className={`text-[#787B86] font-medium group-hover:text-blue ${location.includes("/jobs") && "text-blue"}`}>Компания</p>
+                            className={` transition w-[30px] h-[30px] ${location.includes("/jobs") && "blue-stroke"}`} />
+                        <p className={`text-[#787B86] font-medium  text-[16px] ${location.includes("/jobs") && "text-blue"}`}>Компания</p>
 
                     </Link>
                 </div>
                 <hr className={"h-[1px] w-full bg-[#e5e7ea]"} />
                 <div className={`w-full flex flex-col gap-[6px] ultra:gap-7`}>
                     <Link to={"/scope"}
-                        
-                        className={`flex items-center p-2.5 gap-[10px] px-[13px] py-[11px] rounded-primary hover:bg-secondary transition group ${location.includes("/scope") && "bg-secondary"}`}>
+
+                        className={`flex items-center p-2.5 gap-[10px] px-[10px] py-[7px] rounded-primary hover:bg-secondary transition group ${location.includes("/scope") && "bg-secondary"}`}>
                         <ScopeImg
-                            className={`group-hover:*:stroke-blue transition w-[22px] h-[22px] ${location.includes("/scope") && "blue-stroke"}`} />
-                        <p className={`text-[#787B86] font-medium group-hover:text-blue ${location.includes("/scope") && "text-blue"}`}>Учебник</p>
+                            className={` transition w-[30px] h-[30px] ${location.includes("/scope") && "blue-stroke"}`} />
+                        <p className={`text-[#787B86] font-medium  text-[16px] ${location.includes("/scope") && "text-blue"}`}>Учебник</p>
 
                     </Link>
                     <Link to={"/settings"}
-                        
-                        className={`flex items-center p-2.5 gap-[10px] px-[13px] py-[11px] rounded-primary hover:bg-secondary transition group ${location.includes("/settings") && "bg-secondary"}`}>
+
+                        className={`flex items-center p-2.5 gap-[10px] px-[10px] py-[7px] rounded-primary hover:bg-secondary transition group ${location.includes("/settings") && "bg-secondary"}`}>
                         <SettingsImg
-                            className={`group-hover:*:stroke-blue transition w-[22px] h-[22px] ${location.includes("/settings") && "blue-stroke"}`} />
-                        <p className={`text-[#787B86] font-medium group-hover:text-blue ${location.includes("/settings") && "text-blue"}`}>Настройки</p>
+                            className={` transition w-[30px] h-[30px] ${location.includes("/settings") && "blue-stroke"}`} />
+                        <p className={`text-[#787B86] font-medium  text-[16px] ${location.includes("/settings") && "text-blue"}`}>Настройки</p>
 
                     </Link>
                 </div>
             </div>
 
             {fullname.surname && fullname.name &&
-                <div className="flex items-center justify-between rounded-[13px] p-[5px] bg-[#ECEEF1] relative">
+                <div className="relative">
                     <div className={`absolute flex flex-col gap-[5px] top-[-10px] rounded-[23px] p-[13px] translate-y-[-100%] bg-[#F5F5F5D1] trnsition-all duration-300 ${!openOptions && 'opacity-0 invisible'}`}
                         style={{
                             boxShadow: '0px 4px 6.5px 0px rgba(0, 0, 0, 0.04)',
@@ -172,13 +172,13 @@ const Sidebar = () => {
                         }}
                     >
                         <Link to={'/profile'}
-                        onClick={() => {setOpenOptions(prev => !prev)}}
+                            onClick={() => { setOpenOptions(prev => !prev) }}
                             className="py-[6px] px-[9px] rounded-[13px] bg-[#ECEEF1] flex gap-[5px] items-center"
                         >
                             <UserImg className="w-[19px] h-[19px] *:fill-[#8C909C]" />
                             <span className="text-[12px] text-[#787B86] font-medium whitespace-nowrap">Открыть профиль</span>
                         </Link>
-                        <button onClick={() => {setOpenOptions(prev => !prev);revokeAccessToken()}}
+                        <button onClick={() => { setOpenOptions(prev => !prev); revokeAccessToken() }}
                             className="py-[6px] px-[9px] rounded-[13px] bg-[#ECEEF1] flex gap-[5px] items-center"
                         >
                             <div className="p-[3px]">
@@ -187,14 +187,17 @@ const Sidebar = () => {
                             <span className="text-[12px] text-[#FF64A3] font-medium whitespace-nowrap">Выйти из аккаунта</span>
                         </button>
                     </div>
-                    <div className="text-[#9B9FAD] w-[37px] h-[37px] rounded-[13px] bg-primary flex items-center justify-center">
-                        {fullname.name[0].toLocaleUpperCase()}{fullname.surname[0].toLocaleUpperCase()}
-                    </div>
-                    <span className="text-[13px] font-medium text-[#787B86]">{fullname.name} {fullname.surname[0].toLocaleUpperCase()}.</span>
-                    <button
-                        onClick={() => {setOpenOptions(prev => !prev)}}>
-                        <OptionsImg className="w-[18px] h-[18px] rotate-[90deg] *:fill-[#8C909C]" />
-                    </button>
+                    <Link to={'/profile'} className="flex items-center justify-between rounded-[13px] p-[5px] bg-[#ECEEF1] relative">
+
+                        <div className="text-[#9B9FAD] w-[37px] h-[37px] rounded-[13px] bg-primary flex items-center justify-center">
+                            {fullname.name[0].toLocaleUpperCase()}{fullname.surname[0].toLocaleUpperCase()}
+                        </div>
+                        <span className="text-[13px] font-medium text-[#787B86]">{fullname.name} {fullname.surname[0].toLocaleUpperCase()}.</span>
+                        <button
+                            onClick={(e) => { e.preventDefault(); setOpenOptions(prev => !prev) }}>
+                            <OptionsImg className="w-[18px] h-[18px] rotate-[90deg] *:fill-[#8C909C]" />
+                        </button>
+                    </Link>
                 </div>
             }
         </div>

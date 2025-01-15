@@ -226,7 +226,7 @@ const HotelFilter = () => {
                         onClick={() => dispatch(setIsFreeCancelFilter(!isFreeCancel))}>
                         <div className={"flex items-center gap-1 relative"}>
                             {isFreeCancel && <span className={"absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-3"} />}
-                            <h6 className={"text-base font-medium ml-2"}>Бесплатная отмена</h6>
+                            <h6 className={` ${isFreeCancel && 'ml-2'} font-medium text-[14px] `}>Бесплатная отмена</h6>
                         </div>
                         <SuccessImg className={`transition ${isFreeCancel ? "black-fill" : "grey-fill"} min-w-7 min-h-7`} />
                     </div>
@@ -235,7 +235,7 @@ const HotelFilter = () => {
                         onClick={() => dispatch(setForTrips(!forTrips))}>
                         <div className={"flex items-center gap-1 relative"}>
                             {forTrips && <span className={"absolute h-[5px] w-[5px] rounded-[100%] bg-red mb-4"} />}
-                            <h6 className={"text-base font-medium ml-2 leading-none"}>Рекомендовано для командировок</h6>
+                            <h6 className={`font-medium text-[14px] ${forTrips && 'ml-2'}  leading-none`}>Рекомендовано для командировок</h6>
                         </div>
                         <SuccessImg className={`transition ${forTrips ? "black-fill" : "grey-fill"} min-w-7 min-h-7`} />
                     </div>
