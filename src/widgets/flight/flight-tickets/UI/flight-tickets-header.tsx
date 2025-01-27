@@ -1,13 +1,13 @@
-import { InputCity, InputDate, Switch, TagFilter } from "@/shared/UI";
+import { Checker, InputCity, InputDate, Switch } from "@/shared/UI";
 import {
     addFlight,
     removeFlight,
     setCityFrom,
     setCityTo,
+    setFilters,
     updateFlight
 } from "@/widgets/flight/flight-operations/model/flight.store";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Tag } from "@/shared/UI/tag-filter/tag-filter.props";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import BurgerImg from "@/assets/icons/burger.svg?react";
@@ -30,10 +30,7 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
     setActiveRate: Dispatch<SetStateAction<PriceData | null>>,
     template?: boolean
 }) => {
-    const { flights, cityFrom, cityTo } = useSelector((state: RootState) => state.flight);
-    const [byQueue, setByQueue] = useState(true);
-    const [isChair, setIsChair] = useState(true);
-    const [tags, setTags] = useState<Tag>({ tags: ["Только прямые", "Дешевле", "Быстрее"], selectedTags: [] });
+    const { flights, cityFrom, cityTo, filters } = useSelector((state: RootState) => state.flight);
     const firstFlight = flights[0];
     const secondFlight = flights[1];
     const [dates, setDates] = useState<Date[]>([]);
@@ -74,8 +71,8 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
 
     const handleDateClick = (date: Date) => {
         let updatedDates = dates.filter(d => d !== undefined);
-       
-        
+
+
         if (updatedDates.length === 2) {
             updatedDates = [];
             setDates([]);
@@ -83,14 +80,14 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
             dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: null }));
         }
         if (!firstFlight.flightDate || updatedDates.length === 0) {
-            
+
             dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: date }));
             if (!secondFlight) dispatch(addFlight());
             updatedDates = [date];
         } else {
-            
+
             updatedDates = [...updatedDates, date].sort((a, b) => a.getTime() - b.getTime());
-           
+
             dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: updatedDates[0] }));
             dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: updatedDates[1] }));
         }
@@ -101,7 +98,7 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
     useEffect(() => {
         dispatch(updateFlight({ id: firstFlight.id, field: "flightDate", value: dates[0] }));
         dispatch(updateFlight({ id: secondFlight?.id, field: "flightDate", value: dates[1] }));
-    },[dates])
+    }, [dates])
 
     return (
         <div className={"bg-primary px-5 pt-5 rounded-t-[26px]"}>
@@ -156,7 +153,7 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                     />
                     <InputDate
                         placeholder={"Обратно"}
-                        extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}                        
+                        extraClass={"py-3 px-2.5 h-11 min-w-[100px] max-w-[100px] !rounded-[16px]"}
                         inputValue={dates}
                         viewValue={secondFlight?.flightDate}
                         noNeedButton={firstFlight?.flightDate ? true : false}
@@ -166,36 +163,40 @@ const FlightTicketsHeader = ({ showedGraph, setShowedGraph, activeRate, setActiv
                         calendarOpt={{
                             onClickDay: handleDateClick,
                             allowPartialOptions: true,
-                            selectRange: true                          
+                            selectRange: true
                         }}
                         setter={(dates: Date[]) => {
                             setDates(dates);
                         }}
                     />
                 </div>
-                <div className={"flex flex-row items-center gap-2.5"}>
-                    <Switch
-                        firstChild={<BurgerImg className={"h-5 w-5"} />}
-                        secondChild={<HeartImg className={"h-5 w-5"} />}
-                        isSelected={byQueue}
-                        setter={setByQueue}
-                        extraClass={"max-h-9"}
-                    />
-                    <div className={"flex bg-[#F5F5F5] rounded-primary"}>
+                <div className={"flex flex-row items-center gap-2.5 justify-between flex-wrap"}>
+                    <div className="flex items-center gap-2.5">
                         <Switch
-                            firstChild={<ChairExistsImg className={`${!isChair && "grey-fill"}`} />}
-                            secondChild={<ChairAwayImg className={`${isChair ? "grey-fill" : "black-fill"}`} />}
-                            isSelected={isChair}
-                            setter={setIsChair}
+                            firstChild={<BurgerImg className={"h-5 w-5"} />}
+                            secondChild={<HeartImg className={"h-5 w-5"} />}
+                            isSelected={filters.byQueue}
+                            setter={(value) => dispatch(setFilters({ field: 'byQueue', value: value }))}
                             extraClass={"max-h-9"}
                         />
-                        <div className={"px-2.5 flex justify-center items-center"}>
-                            <p className={"text-xs font-medium text-[#9B9FAD]"}>Найдено: 215</p>
+                        <div className={"flex bg-[#F5F5F5] rounded-primary"}>
+                            <Switch
+                                firstChild={<ChairExistsImg className={`${filters.isChair && "grey-fill"}`} />}
+                                secondChild={<ChairAwayImg className={`${!filters.isChair ? "grey-fill" : "black-fill"}`} />}
+                                isSelected={filters.isChair}
+                                setter={(value) => dispatch(setFilters({ field: 'isChair', value: value }))}
+                                extraClass={"max-h-9"}
+                            />
+                            <div className={"px-2.5 flex justify-center items-center"}>
+                                <p className={"text-xs font-medium text-[#9B9FAD]"}>Найдено: 215</p>
+                            </div>
                         </div>
+                        <Checker title="Только прямые" active={filters.NoTransfer} change={(value: boolean) => { dispatch(setFilters({ field: 'NoTransfer', value: value })) }} />
+                        <Checker title="Дешевле" active={filters.Cheaper} change={(value: boolean) => { dispatch(setFilters({ field: 'Cheaper', value: value })) }} />
+                        <Checker title="Быстрее" active={filters.Faster} change={(value: boolean) => { dispatch(setFilters({ field: 'Faster', value: value })) }} />
                     </div>
-                    <TagFilter tags={tags} setter={setTags} extraClass={"max-h-9"} />
                     <div
-                        className={`px-2.5 py-2 max-h-9 flex items-center justify-between gap-1 rounded-primary cursor-pointer ml-auto ${showedGraph ? "bg-secondary" : "bg-primary border-solid border-secondary border-[1px]"}`}
+                        className={`px-2.5 py-2 max-h-9 flex items-center justify-between gap-1 rounded-primary cursor-pointer ${showedGraph ? "bg-secondary" : "bg-primary border-solid border-secondary border-[1px]"}`}
                         onClick={() => setShowedGraph(prev => prev ? null : "graph")}>
                         <GraphImg className={"min-w-5 min-h-5"} />
                         <p className={"text-xs select-none"}>График цен</p>

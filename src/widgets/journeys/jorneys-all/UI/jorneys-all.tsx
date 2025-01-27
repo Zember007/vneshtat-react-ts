@@ -11,7 +11,11 @@ const JorneysAll = () => {
 
     const [search, setSearch] = useState<string | null>(null)
     const [activeFilter, setActiveFilter] = useState<boolean>(false)
-    const [tags, setTags] = useState<Tag>({ tags: ["Ближайшие", "По дате создания", "По статусу"], selectedTags: [] });
+    const [tags, setTags] = useState<Tag>({ tags: [        
+        {value: 'Ближайшие', code: 'early', id: 0},
+        {value: "По дате создания", code: 'date', id: 1},
+        {value: 'По статусу', code: 'Status', id: 2},
+    ], selectedTags: [] });
 
     return (
         <>

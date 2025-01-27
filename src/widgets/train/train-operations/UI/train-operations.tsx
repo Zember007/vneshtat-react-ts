@@ -10,6 +10,7 @@ import { JourneyDecor } from "./journey-decor";
 import { JourneyAdd } from "./journey-add";
 import { JourneyFilter } from "./journey-filter";
 import { JourneyPassenger } from "./journey-passenger";
+import SimpleBar from "simplebar-react";
 
 const TrainOperations = ({ activeOperation, setActiveOperation }: { activeOperation: string, setActiveOperation: Function }) => {
 
@@ -44,11 +45,16 @@ const TrainOperations = ({ activeOperation, setActiveOperation }: { activeOperat
                     <AddImg className={`${activeOperation === "add" ? "white-fill" : undefined} min-h-5 min-w-5`} />
                 </button>
             </div>
-            {activeOperation === "route" && <JourneyRoute />}
-            {activeOperation === "passengers" && <JourneyPassenger />}
-            {activeOperation === "filter" && <JourneyFilter />}
-            {activeOperation === "decor" && <JourneyDecor />}
-            {activeOperation === "add" && <JourneyAdd />}
+            <SimpleBar className=' max-h-[calc(100vh-342px)] '>
+                <div className="flex flex-col gap-5">
+                    {activeOperation === "route" && <JourneyRoute />}
+                    {activeOperation === "passengers" && <JourneyPassenger />}
+                    {activeOperation === "filter" && <JourneyFilter />}
+                    {activeOperation === "decor" && <JourneyDecor />}
+                    {activeOperation === "add" && <JourneyAdd />}
+                </div>
+            </SimpleBar>
+
         </div>
 
     )

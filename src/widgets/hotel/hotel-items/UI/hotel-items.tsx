@@ -13,14 +13,14 @@ const HotelItems = () => {
                 <Switch
                     firstChild={<BurgerImg className={"h-5 w-5"}/>}
                     secondChild={
-                        <div className={"relative flex items-start justify-end"}>
+                        <div className={"relative"}>
                             <HeartImg className={"h-5 w-5"}/>
                             <span className="absolute h-[5px] w-[5px] rounded-[100%] bg-red left-4 bottom-4"/>
                         </div>
                     }
                     isSelected={byQueue}
                     setter={setByQueue}
-                    extraChildClass={"px-[3px] py-[3px]"}
+                    extraChildClass={"!p-[4px]"}
                     extraClass={"max-h-9 w-26"}
                 />
                 <div className={"flex items-center gap-[5px]"}>
@@ -29,7 +29,7 @@ const HotelItems = () => {
                 </div>
             </div>
             <label className={"flex items-center justify-start w-full relative"}>
-                <Input placeholder={"Поиск отеля по названию"} extraClass={"pl-7 text-[12px]"} withEraser={false}/>
+                <Input placeholder={"Поиск отеля по названию"} extraClass={"pl-7 !text-[12px]"} withEraser={false}/>
                 <SearchImg className={"absolute min-h-4 min-w-4 left-2"}/>
             </label>
             <div>

@@ -8,6 +8,12 @@ export interface TagFilterProps {
 }
 
 export interface Tag {
-    tags: string[],
-    selectedTags: string[]
+    tags: TagItem[],
+    selectedTags: TagItem[]
+}
+
+export interface TagItem {
+    id: number
+    value: string
+    code: string
 }

@@ -16,3 +16,5 @@ export {InputTime} from "./input-time/input-time";
 export {SearchInput} from "./search/SearchInput";
 export {PassengerItem} from "./passenger-item/passenger-item";
 export {ModalRight} from "./modals/modal-right";
+export {Checker} from "./checker/checker";
+export {TiketDropdown} from "./tiket-dropdown/tiket-dropdown";

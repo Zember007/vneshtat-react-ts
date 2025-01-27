@@ -7,7 +7,7 @@ import PlaneImg from "@/assets/icons/plane.svg?react";
 import BusImg from "@/assets/icons/bus.svg?react";
 import KeyImg from "@/assets/icons/key.svg?react";
 import CopyImg from "@/assets/icons/copy.svg?react";
-import { useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { Tag } from "@/shared/UI/tag-filter/tag-filter.props";
 import { Checkbox, InputCity, InputDate, TagFilter } from "@/shared/UI";
 import {
@@ -18,17 +18,31 @@ import {
 } from "../../hotel-operations/model/hotel.store";
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+/* import { hotels } from "../utils";
+import { create } from "domain"; */
 
 const HotelMap = ({ isSearched }: {
     isSearched: boolean,
 }) => {
     const { dateTo, dateBack, cityName } = useSelector((state: RootState) => state.hotel);
     const [tags, setTags] = useState<Tag>({
-        tags: ["RO", "BB", "HB", "FB", "AI"],
+        tags: [
+            { value: "RO", code: 'RO', id: 0 },
+            { value: "BB", code: 'BB', id: 1 },
+            { value: "HB", code: 'HB', id: 2 },
+            { value: "FB", code: 'FB', id: 3 },
+            { value: "AI", code: 'AI', id: 4 },
+        ],
         selectedTags: []
     });
     const [stars, setStars] = useState<Tag>({
-        tags: ["Без звёзд", "2 звезды", "3 звезды", "4 звезды", "5 звёзд"],
+        tags: [
+            { value: "Без звёзд", code: '0', id: 0 },
+            { value: "2 звезды", code: '2', id: 1 },
+            { value: "3 звезды", code: '3', id: 2 },
+            { value: "4 звезды", code: '4', id: 3 },
+            { value: "5 звёзд", code: '5', id: 4 },
+        ],
         selectedTags: []
     })
     const isFreeCancel = useSelector((state: RootState) => state.hotel.isFreeCancel);
@@ -44,8 +58,32 @@ const HotelMap = ({ isSearched }: {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
 
+    /*     const templateMarker = (value: string) => {
+            return `<svg width="82" height="39" viewBox="0 0 82 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M23.0107 32L23 32L57.9969 32C52.5542 32 47.4232 34.1327 43.6809 37.7923C42.0343 39.4026 38.9626 39.4026 37.316 37.7923C33.5762 34.1351 28.4495 32.0028 23.0107 32Z" fill="#121212"/>
+    <rect width="82" height="32" rx="13" fill="#121212"/>
+    <rect x="2" y="2" width="78" height="28" rx="11.4511" fill="#FAFAFA"/>
+    </svg>
+    <span class="text-[12px] font-medium absolute top-[7px] left-[50%] translate-x-[-50%] whitespace-nowrap">
+        ${value}
+    </span>
+    `
+        }
+    
+        const renderMarkers = () => {
+            const zoom = mapRef.current?.getZoom() ?? 0
+            hotels.forEach((item, index) => {
+                const item_next = hotels[index + 1]
+                if (item_next) {
+                    const distance = Math.sqrt((item.coordinate[0] - item_next.coordinate[0]) ** 2 + (item.coordinate[1] - item_next.coordinate[1]) ** 2)
+                    const res = distance * 2 ** zoom
+                    console.log(res);
+                }
+            })
+        } */
+
     useEffect(() => {
-        if (mapContainerRef.current && !mapRef.current) {
+        if (mapContainerRef.current && !mapRef.current && isSearched) {
             mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
             mapRef.current = new mapboxgl.Map({
@@ -53,6 +91,169 @@ const HotelMap = ({ isSearched }: {
                 center: [37.6206, 55.7578],
                 zoom: 12,
             });
+
+
+
+            if (mapRef.current) {
+                mapRef.current.on('load', () => {
+                    mapRef.current?.addSource('earthquakes', {
+                        type: 'geojson',
+                        data: {
+                            "type": "FeatureCollection",
+                            
+                            "features": [
+                                {
+                                    "type": "Feature",
+                                    "properties": {
+                                        "id": "ak16994521",
+                                        "mag": 2.3,
+                                        "time": 1507425650893,
+                                        "felt": null,
+                                        "tsunami": 0
+                                    },
+                                    "geometry": {
+                                        "type": "Point",
+                                        "coordinates": [37.6206, 55.7578]
+                                    }
+                                },
+                                {
+                                    "type": "Feature",
+                                    "properties": {
+                                        "id": "ak16994519",
+                                        "mag": 1.7,
+                                        "time": 1507425289659,
+                                        "felt": null,
+                                        "tsunami": 0
+                                    },
+                                    "geometry": {
+                                        "type": "Point",
+                                        "coordinates": [37.6106, 55.7578]
+                                    }
+                                },
+                                {
+                                    "type": "Feature",
+                                    "properties": {
+                                        "id": "ak16994517",
+                                        "mag": 1.6,
+                                        "time": 1507424832518,
+                                        "felt": null,
+                                        "tsunami": 0
+                                    },
+                                    "geometry": {
+                                        "type": "Point",
+                                        "coordinates": [37.6206, 55.7678]
+                                    }
+                                }]
+                        },
+                        cluster: true,
+                        clusterMaxZoom: 14,
+                        clusterRadius: 50
+                    });
+
+                    mapRef.current?.addLayer({
+                        id: 'clusters',
+                        type: 'circle',
+                        source: 'earthquakes',
+                        filter: ['has', 'point_count'],
+                        paint: {
+                            'circle-color': [
+                                'step',
+                                ['get', 'point_count'],
+                                '#51bbd6',
+                                100,
+                                '#f1f075',
+                                750,
+                                '#f28cb1'
+                            ],
+                            'circle-radius': [
+                                'step',
+                                ['get', 'point_count'],
+                                20,
+                                100,
+                                30,
+                                750,
+                                40
+                            ]
+                        }
+                    });
+
+                    mapRef.current?.addLayer({
+                        id: 'cluster-count',
+                        type: 'symbol',
+                        source: 'earthquakes',
+                        filter: ['has', 'point_count'],
+                        layout: {
+                            'text-field': ['get', 'point_count_abbreviated'],
+                            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                            'text-size': 12
+                        }
+                    });
+
+                    mapRef.current?.addLayer({
+                        id: 'unclustered-point',
+                        type: 'circle',
+                        source: 'earthquakes',
+                        filter: ['!', ['has', 'point_count']],
+                        paint: {
+                            'circle-color': '#51bbd6',
+                            'circle-radius': 4,
+                            'circle-stroke-width': 1,
+                            'circle-stroke-color': '#fff'
+                        }
+                    });
+
+
+                    mapRef.current?.on('click', 'clusters', (e) => {
+                        const features: any = mapRef.current?.queryRenderedFeatures(e.point, {
+                            layers: ['clusters']
+                        });
+                        const source: any = mapRef.current?.getSource('earthquakes')
+                        if (features && source) {
+                            const clusterId = features[0].properties?.cluster_id;
+                            source.getClusterExpansionZoom(clusterId, (err: any, zoom: any) => {
+                                if (err) return;
+
+                                mapRef.current?.easeTo({
+                                    center: features[0].geometry.coordinates,
+                                    zoom: zoom
+                                });
+                            });
+                        }
+                    });
+
+
+                    mapRef.current?.on('click', 'unclustered-point', (e) => {
+                        console.log(e);
+
+                        /* const coordinates = e.features[0].geometry.coordinates.slice();
+                        const mag = e.features[0].properties.mag;
+                        const tsunami = e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
+
+                        // Ensure that if the map is zoomed out such that
+                        // multiple copies of the feature are visible, the
+                        // popup appears over the copy being pointed to.
+                        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                        }
+
+                        new mapboxgl.Popup()
+                            .setLngLat(coordinates)
+                            .setHTML(`magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`)
+                            .addTo(mapRef.current); */
+                    });
+
+                    mapRef.current?.on('mouseenter', 'clusters', () => {
+                        if (mapRef.current) {
+                            mapRef.current.getCanvas().style.cursor = 'pointer';
+                        }
+                    });
+                    mapRef.current?.on('mouseleave', 'clusters', () => {
+                        if (mapRef.current) {
+                            mapRef.current.getCanvas().style.cursor = '';
+                        }
+                    });
+                });
+            }
         }
     }, [mapContainerRef.current, mapRef.current, isSearched]);
 
@@ -83,8 +284,8 @@ const HotelMap = ({ isSearched }: {
     };
 
     return (
-        <div className={"w-full flex flex-col"} ref={scrollRef}>
-            <div className={`bg-primary px-5 ${!isSearched && dateBack && dateTo ? "pt-5 rounded-t-[26px]" : "py-5 rounded-[26px]"}`}>
+        <div className={"w-full flex flex-col h-full"} ref={scrollRef}>
+            <div className={`bg-primary h-full px-5 ${!isSearched && dateBack && dateTo ? "pt-5 rounded-t-[26px]" : "py-5 rounded-[26px]"}`}>
                 <div className={"flex flex-col gap-4"}>
                     <div className={"flex flex-row items-center gap-2.5"}>
                         <div
@@ -142,7 +343,7 @@ const HotelMap = ({ isSearched }: {
                         />
                     </div>
                     {isSearched ? (
-                        <div className="h-[calc(100vh-230px)]">
+                        <div className="h-[calc(100vh-230px)] rounded-[13px] overflow-hidden">
                             <div
                                 style={{ height: '100%' }}
                                 ref={mapContainerRef}
@@ -151,7 +352,7 @@ const HotelMap = ({ isSearched }: {
                         </div>
                     ) : (
                         <>
-                            <div className={"flex flex-row items-center gap-2.5"}>
+                            <div className={"flex flex-row items-center flex-wrap gap-2.5"}>
                                 <TagFilter tags={tags} setter={setTags} extraClass={"max-h-8"} />
                                 <span className={"h-7 bg-[#E5E7EA] w-[1px] rounded-[1px]"} />
                                 <TagFilter tags={stars} setter={setStars} extraClass={"max-h-8"} />

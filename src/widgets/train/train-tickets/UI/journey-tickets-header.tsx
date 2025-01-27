@@ -25,12 +25,12 @@ const JourneyTicketsHeader = () => {
         cityTo,
         cityFrom
     } = useSelector((state: RootState) => state.journey);
-    const [go, setGo] = useState(true);
-    const [byQueue, setByQueue] = useState(true);
-    const [isChair, setIsChair] = useState(true);
+    const [go, setGo] = useState(false);
+    const [byQueue, setByQueue] = useState(false);
+    const [isChair, setIsChair] = useState(false);
     const [dates, setDates] = useState<Date[]>([]);
     const [tags, setTags] = useState<Tag>({
-        tags: ["Дешевле", "Быстрее"],
+        tags: [{id:2,value: "Дешевле", code: 'Cheaper'}, {id:3,value: "Быстрее", code: 'Faster'}],
         selectedTags: []
     });
     const dispatch = useDispatch();
@@ -138,8 +138,8 @@ const JourneyTicketsHeader = () => {
             </div>
             <div className={"flex flex-row items-center gap-2.5"}>
                 <Switch
-                    firstChild={<p className={`text-sm font-medium ${go && "text-primary"}`}>Туда</p>}
-                    secondChild={<p className={`text-sm font-medium ${!go && "text-primary"}`}>Обратно</p>}
+                    firstChild={<p className={`text-sm font-medium ${!go && "text-primary"}`}>Туда</p>}
+                    secondChild={<p className={`text-sm font-medium ${go && "text-primary"}`}>Обратно</p>}
                     isSelected={go}
                     setter={setGo}
                     selectedBg={"#121212"}
@@ -155,8 +155,8 @@ const JourneyTicketsHeader = () => {
                 />
                 <div className={"flex bg-[#F5F5F5] rounded-primary"}>
                     <Switch
-                        firstChild={<ChairExistsImg className={`${!isChair && "grey-fill"}`} />}
-                        secondChild={<ChairAwayImg className={`${isChair ? "grey-fill" : "black-fill"}`} />}
+                        firstChild={<ChairExistsImg className={`${isChair && "grey-fill"}`} />}
+                        secondChild={<ChairAwayImg className={`${!isChair ? "grey-fill" : "black-fill"}`} />}
                         isSelected={isChair}
                         setter={setIsChair}
                         extraChildClass={"py-1 px-1.5"}

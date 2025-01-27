@@ -16,3 +16,31 @@ export const classes: CheckboxItem[] = [
     {content: "Комфорт+", isSelected: false, id: 3},
     {content: "Бизнес", isSelected: false, id: 4},
 ]
+
+interface time {
+    time: string
+    date: string
+}
+
+interface jorney {
+    duration: string
+    timeFrom: time
+    timeTo: time
+    transfer: boolean
+}
+
+export interface jorneys {
+    id: number
+    items: jorney[]
+    price: number
+    like: boolean
+    pin: boolean
+}
+
+export interface filters {
+    byQueue: boolean,
+    isChair: boolean,
+    NoTransfer: boolean,
+    Cheaper: boolean,
+    Faster: boolean    
+}

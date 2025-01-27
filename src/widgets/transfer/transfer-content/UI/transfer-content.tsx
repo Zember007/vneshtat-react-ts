@@ -14,6 +14,7 @@ import mapboxgl from "mapbox-gl";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Link } from "react-router-dom";
 
+
 const TransferContent = () => {
     const { date, time, cityFromName, cityToName, cityFrom, cityTo } = useSelector((state: RootState) => state.transfer);
     const dispatch = useDispatch();

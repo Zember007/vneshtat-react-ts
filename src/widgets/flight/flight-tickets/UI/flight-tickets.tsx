@@ -5,17 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/config/store";
 import { useEffect, useRef, useState } from "react";
 import { handleScrollToTop } from "@/shared/utils";
-import { FlightTicket, FlightTicketPreload } from "@/entities/flight-ticket";
+import { FlightTicket } from "@/entities/flight-ticket";
 import { setCityFrom, setCityTo } from "@/widgets/flight/flight-operations/model/flight.store";
 import { FlightTicketsHeader } from "@/widgets/flight/flight-tickets/UI/flight-tickets-header";
 import { FlightChart } from "@/widgets/flight/flight-tickets/UI/flight-chart";
 import { PriceData } from "../utils";
 import SimpleBar from "simplebar-react";
+import { jorneys } from "../../flight-operations/utils";
 
 export type ShowedGraph = "graph" | "dashboard" | null;
 
 const FlightTickets = ({ template }: { template?: boolean }) => {
-    const { flights } = useSelector((state: RootState) => state.flight);
+    const { flights, tikets, filters } = useSelector((state: RootState) => state.flight);
     const firstFlight = flights[0];
     const tickets = 1;
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const FlightTickets = ({ template }: { template?: boolean }) => {
     const [activeRate, setActiveRate] = useState<PriceData | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
     const [showedGraph, setShowedGraph] = useState<ShowedGraph>(null);
+    const [tiketsView, setTiketsView] = useState<jorneys[]>([])
 
     useEffect(() => {
         const handleScroll = (event: WheelEvent) => {
@@ -75,6 +77,29 @@ const FlightTickets = ({ template }: { template?: boolean }) => {
         }
     }, [firstFlight?.arrivalCity]);
 
+    useEffect(() => {
+
+        let result = tikets.filter(item => (item.like === filters.byQueue || !filters.byQueue)).sort((a, b) => ((a === b) ? 0 : a.pin? -1 : 1))
+
+        if(filters.Cheaper) {
+            result = result.sort((a,b) => (a.price >= b.price ? 1 : -1))
+        }
+
+        if(filters.NoTransfer) {
+            result = result.filter(item => {
+                const search = item.items.filter(item => !item.transfer)
+                if(search.length < item.items.length) {
+                    return false
+                } else {
+                    return true
+                }
+            })
+        }
+
+        setTiketsView(result)
+
+    }, [filters, tikets])
+
     return (
         <div ref={scrollRef} className={"w-full flex flex-col bg-primary rounded-[26px]"}>
             <FlightTicketsHeader template={template} setShowedGraph={setShowedGraph} showedGraph={showedGraph} activeRate={activeRate} setActiveRate={setActiveRate} />
@@ -86,7 +111,7 @@ const FlightTickets = ({ template }: { template?: boolean }) => {
                     <>
                         {tickets ? (
                             <SimpleBar scrollableNodeProps={{ ref: ticketContainerRef }} className="h-[calc(100vh-320px)]">
-                                <div                                    
+                                <div
                                     className="flex flex-col gap-4 p-5   relative">
                                     {showScrollButton && (
                                         <button
@@ -99,12 +124,10 @@ const FlightTickets = ({ template }: { template?: boolean }) => {
                                             <ArrowImg className="-rotate-90" />
                                         </button>
                                     )}
-                                    <FlightTicketPreload />
-                                    <FlightTicket />
-                                    <FlightTicket />
-                                    <FlightTicket />
-                                    <FlightTicket />
-                                    <FlightTicket />
+                                   {/*  <FlightTicketPreload /> */}
+                                    {tiketsView.map(item => (
+                                        <FlightTicket jorneys={item} key={item.id} />
+                                    ))}
                                 </div>
                             </SimpleBar>
                         ) : (
