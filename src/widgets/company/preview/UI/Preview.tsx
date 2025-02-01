@@ -1,14 +1,12 @@
 import Layout from '@/app/layouts/layout';
 import ImgWrite from '@/assets/img/company/write.webp'
-import ImgContract from '@/assets/img/company/contract.webp'
-
 import { useState } from 'react';
 import Infornation from '@/widgets/jobs/UI/Infornation';
 import Modal from '@/widgets/jobs/UI/Modal';
 import clsx from 'clsx';
-import ImgTravels from '@/assets/img/company/travels.webp'
 import { Link } from 'react-router-dom';
-
+import WalletImg from '@/assets/icons/wallet.svg?react'
+import AdvanceImg from '@/assets/icons/extra_advance.svg?react'
 
 interface company {
     LegalName: string;
@@ -37,7 +35,7 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
                 component={
 
                     <>
-                        <div className="  h-full bg-[#FAFAFA] rounded-[26px] ">
+                        <div className="  h-full bg-[#FAFAFA] rounded-[40px] ">
                             {!companyInformation &&
                                 <div className='text-center py-[50px] flex items-center justify-center flex-col gap-[15px]'>
                                     <span className='text-[44px] font-medium'>Добро пожаловать во Внештат!</span>
@@ -64,35 +62,77 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
                             }
                         </div>
 
-                        <div className="bg-[#FAFAFA] relative rounded-[26px] ">
-                            {!tariffInformation &&
-                                <div className="pt-[36px] pb-[16px] flex items-center justify-center">
-                                    <img src={ImgTravels} alt="travels" />
-                                    <div className="absolute top-[0] right-[0] left-[0] bottom-[0] flex items-center justify-center flex-col gap-[15px]">
-                                        <span className='text-[44px] font-medium'>Подключайтесь и путешествуйте!</span>
-                                        <Link to={'/jobs/company/tariffs'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Смотреть тарифы</Link>
-                                    </div>
+                        <div className="bg-black p-[40px] rounded-[40px] relative flex gap-[15px]">
+                            <div className="flex flex-col gap-[15px] grow">
+                                <div className="flex flex-col gap-[5px]">
+                                    <span className="text-[24px] font-medium text-[#9B9FAD] leading-[1.2]">Статус</span>
+                                    <span className="text-[40px] font-medium text-[#9B9FAD] leading-[1.2]">Standart</span>
                                 </div>
-                            }
-                            {typeof tariffInformation !== 'boolean' &&
-                                <div className='py-[30px] px-[35px] flex items-center justify-between'>
-                                    <div className="flex flex-col gap-[30px] items-start">
-                                        <div className="flex flex-col gap-[10px]">
-                                            <span className='text-[25px] font-medium text-[#9B9FAD]'>У вас подключен тариф</span>
-                                            <h2 className='text-[44px] font-medium text-[#000000]'>Фикс Стандарт</h2>
-                                            <p className='text-[18px] text-[#9B9FAD]'>Бронирование билетов и отелей - бесплатно.</p>
-                                        </div>
-                                        <div className="flex items-center gap-[20px]">
-                                            <div className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium mt-[10px]'>15 000 ₽/месяц</div>
-                                            <Link to={'/jobs/company/tariffs'} className='text-[#9B9FAD] font-medium'>Подробнее</Link>
+                                <div className="flex flex-col gap-[5px]">
+                                    <div className="rounded-[20px] bg-[#252D35] p-[5px]">
+                                        <div className="h-[42px] flex justify-between">
+                                            <div className="bg-[#333D47] rounded-[16px] h-full px-[22px] flex items-center">
+                                                <div className="h-[8px] w-[8px] rounded-[50%] bg-primary"></div>
+                                            </div>
+
+                                            <div className="grow h-full"></div>
+
+                                            <div className=" rounded-[16px] h-full px-[22px] flex items-center">
+                                                <div className="h-[8px] w-[8px] rounded-[50%] bg-[#8C909C]"></div>
+                                            </div>
+
+                                            <div className="grow h-full"></div>
+
+                                            <div className=" rounded-[16px] h-full px-[22px] flex items-center">
+                                                <div className="h-[8px] w-[8px] rounded-[50%] bg-[#8C909C]"></div>
+                                            </div>
+
+                                            <div className="grow h-full"></div>
+
+                                            <div className=" rounded-[16px] h-full px-[22px] flex items-center">
+                                                <div className="h-[8px] w-[8px] rounded-[50%] bg-[#8C909C]"></div>
+                                            </div>
+
+                                            <div className="grow h-full"></div>
+
+                                            <div className=" rounded-[16px] h-full px-[22px] flex items-center">
+                                                <div className="h-[8px] w-[8px] rounded-[50%] bg-[#8C909C]"></div>
+                                            </div>
+
+                                            <div className="grow h-full"></div>
+
+                                            <div className=" rounded-[16px] h-full px-[22px] flex items-center">
+                                                <div className="h-[8px] w-[8px] rounded-[50%] bg-[#8C909C]"></div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-center w-1/2">
-                                        <img src={ImgContract} alt="write" className="max-w-[100%]" />
+                                    <Link to={'/jobs/company/tariffs'} className="rounded-[20px] bg-[#252D35] w-full py-[15px] text-center font-medium text-primary">
+                                        Осталось 10 поездок до повышения
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-[14px] p-[20px] rounded-[26px] bg-[#252D35]">
+                                <div className="flex flex-col">
+                                    <span className=" font-medium text-[#9B9FAD] leading-[1.2] text-[20px]">Лимиты</span>
+                                    <span className=" font-medium text-[#9B9FAD] leading-[1.2] text-[14px]">Для оплаты счетов</span>
+                                </div>
+
+                                <div className="flex h-full grow flex-col gap-[5px] justify-between">
+                                    <div className="flex items-center gap-[13px]">
+                                        <WalletImg className='h-[25px] w-auto mx-[4.5px]'/>
+                                        <span className='text-[#787B86] font-medium'>Не ограничен</span>
+                                    </div>
+                                    <div className="flex items-center gap-[13px]">
+                                        <AdvanceImg className='h-[25px] w-auto'/>
+                                        <span className='text-[#787B86] font-medium'>До 90 000 ₽</span>
+                                    </div>
+                                    <div className="flex items-center gap-[13px]">
+                                        <AdvanceImg className='h-[25px] w-auto'/>
+                                        <span className='text-[#787B86] font-medium'>До 50 000 ₽</span>
                                     </div>
                                 </div>
-                            }
+                            </div>
                         </div>
 
                     </>
@@ -106,6 +146,8 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
                         {viewInfornation && (<Infornation close={setViewInfornation} />)}
                     </>
                 }
+
+                extraClassInformation='bg-[transparent]'
 
                 navigation={
 

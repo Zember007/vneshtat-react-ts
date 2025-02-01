@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-const Layout = ({ component, information, navigation, links, extraClassBar }: { links?: ReactNode; component?: ReactNode, information?: ReactNode, navigation?: ReactNode, extraClassBar?: string }) => {
+const Layout = ({ component, information, navigation, links, extraClassBar, extraClassInformation }: { links?: ReactNode; component?: ReactNode, information?: ReactNode, navigation?: ReactNode, extraClassBar?: string , extraClassInformation?:string}) => {
     return (
         <main className='flex gap-[15px] h-full grow'>
             <div className={"flex flex-col gap-[15px] h-full grow"}>
@@ -15,7 +15,7 @@ const Layout = ({ component, information, navigation, links, extraClassBar }: { 
                 ) : component}
             </div>
             <aside className={"flex flex-col gap-[15px] justify-between w-[300px] min-w-[300px] " + extraClassBar}>
-                <div className={clsx('grow rounded-[26px] bg-[#FAFAFA]', typeof information == 'string' && 'flex items-center justify-center')}>
+                <div className={clsx('grow rounded-[26px] bg-[#FAFAFA]', typeof information == 'string' && 'flex items-center justify-center', extraClassInformation)}>
                     {information}
                 </div>
                 {typeof navigation === 'undefined' ? <div className={'h-[50px] rounded-[18px] bg-[#FAFAFA]'}></div> : navigation}

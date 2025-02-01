@@ -40,6 +40,7 @@ const company = () => {
             const data = await res.json();
             if (data.status === "error") {
                 console.log("error", data);
+                setCompanyInformation(false)
             }
 
             if (data.status === "success" && data.data) {
@@ -50,6 +51,7 @@ const company = () => {
         } catch (error) {
 
             console.log(error);
+            setCompanyInformation(false)
 
         }
 
@@ -69,6 +71,7 @@ const company = () => {
             const data = await res.json();
             if (data.status === "error") {
                 console.log("error", data);
+                setTariffActive(false)
             }
 
             if (data.status === "success" && data.data) {
@@ -79,6 +82,7 @@ const company = () => {
         } catch (error) {
 
             console.log(error);
+            setTariffActive(false)
 
         }
 

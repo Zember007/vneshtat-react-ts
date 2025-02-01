@@ -16,7 +16,7 @@ const Tariffs = ({ tariffActive }: { tariffActive: tariff | boolean }) => {
 
     const [active, setActive] = useState<string>('fix')
     const [tariffs, setTariffs] = useState<any[]>([])
-    const [status, setStatus] = useState<any>()
+    const [status, setStatus] = useState<any>(true)
 
     const tariffSelect = tariffs.find(item => item.TariffName === active)
 

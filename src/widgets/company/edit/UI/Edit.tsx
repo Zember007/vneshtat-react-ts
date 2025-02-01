@@ -18,7 +18,7 @@ const Edit = ({activeCompany}:{activeCompany: company | boolean}) => {
 
     const [active, setActive] = useState<string>('inn')
 
-    const [companyInformation, setCompanyInformation] = useState()
+    const [companyInformation, setCompanyInformation] = useState<any>()
     const [bills, setBills] = useState()
     const [contractStatus, setContractStatus] = useState<string>()
 
@@ -147,7 +147,7 @@ const Edit = ({activeCompany}:{activeCompany: company | boolean}) => {
                 <div className="flex flex-col gap-[15px]">
                     <button onClick={() => setActive('inn')} className={clsx('rounded-[26px] mr-[25px] px-[30px] py-[17px] font-medium text-[25px] bg-[#ECEEF1] leading-[1.3] text-left transition-all duration-300  border border-[#E5E7EA] border-solid flex items-center justify-between', active === 'inn' && '!bg-primary !mr-[0]')}>
                         <span>Данные</span>
-                        {companyInformation && <div className="w-[21px] h-[21px] rounded-[50%] bg-[#007BFB] flex items-center justify-center">
+                        {companyInformation && companyInformation.FIO && <div className="w-[21px] h-[21px] rounded-[50%] bg-[#007BFB] flex items-center justify-center">
                             <CheckIcon />
                         </div>}
                     </button>
