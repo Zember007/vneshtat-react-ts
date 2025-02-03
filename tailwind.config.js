@@ -49,7 +49,7 @@ export default {
       section: "#f5f5f5",
       black: "#121212",
       blue: "#007bfb",
-      red: "#ff866e"
+      red: "#ff866e",      
     }
   },
   plugins: [],

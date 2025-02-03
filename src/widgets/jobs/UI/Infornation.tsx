@@ -1,12 +1,9 @@
 import WalletImg from '@/assets/icons/wallet.svg?react'
 import TimeImg from '@/assets/icons/time.svg?react'
-interface props {
-    close: any;
-}
 
 
 
-const Infornation = ({ close }: props) => {
+const Infornation = () => {
 
 
 

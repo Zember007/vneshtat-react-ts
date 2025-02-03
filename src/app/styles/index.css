@@ -422,3 +422,7 @@ a {
   .select-aeroMap-route-top .route_top-text {
     fill: #ED1C24;
   }
+
+  .sliderLinear {
+    background: linear-gradient(90deg, #007BFB 0%, #9761FF 100%);
+  }

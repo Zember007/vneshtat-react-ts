@@ -16,7 +16,7 @@ interface tariff {
     id: number;
 }
 
-const company = () => {
+const Company = () => {
 
     const location = useLocation().pathname
 
@@ -93,7 +93,7 @@ const company = () => {
         getInformation()
         getTariff()
     }, [])
-    
+
 
 
     return (
@@ -101,7 +101,7 @@ const company = () => {
 
             {(location === '/jobs/company' || location === '/jobs/company/') && (
 
-                <Preview companyInformation={companyInformation} tariffInformation={tariffActive}/>
+                <Preview companyInformation={companyInformation} tariffInformation={tariffActive} />
 
             )}
 
@@ -109,7 +109,7 @@ const company = () => {
 
             {(location == '/jobs/company/edit' || location == '/jobs/company/edit/') && (
 
-                <Edit activeCompany={companyInformation}/>
+                <Edit activeCompany={companyInformation} />
 
             )}
 
@@ -124,4 +124,4 @@ const company = () => {
     );
 };
 
-export default company;
+export default Company;

@@ -1,12 +1,16 @@
 import Layout from '@/app/layouts/layout';
-import ImgWrite from '@/assets/img/company/write.webp'
 import { useState } from 'react';
 import Infornation from '@/widgets/jobs/UI/Infornation';
 import Modal from '@/widgets/jobs/UI/Modal';
+import { ModalRight } from '@/shared/UI';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import WalletImg from '@/assets/icons/wallet.svg?react'
 import AdvanceImg from '@/assets/icons/extra_advance.svg?react'
+import SizeImg from '@/assets/icons/img-size.svg?react'
+import TypeImg from '@/assets/icons/img-type.svg?react'
+import ImgWrite from '@/assets/img/company/write.webp'
+
 
 interface company {
     LegalName: string;
@@ -20,12 +24,12 @@ interface tariff {
 }
 
 
-const Preview = ({ companyInformation, tariffInformation }: { companyInformation: company | boolean; tariffInformation: tariff | boolean }) => {
+const Preview = ({ companyInformation }: { companyInformation: company | boolean; tariffInformation: tariff | boolean }) => {
 
 
 
-    const [viewInfornation, setViewInfornation] = useState<boolean>(true)
     const [viewContracts, setViewContracts] = useState<boolean>(false)
+    const [changeLogo, setChangeLogo] = useState<boolean>(false)
 
     return (
         <>
@@ -37,12 +41,18 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
                     <>
                         <div className="  h-full bg-[#FAFAFA] rounded-[40px] ">
                             {!companyInformation &&
-                                <div className='text-center py-[50px] flex items-center justify-center flex-col gap-[15px]'>
-                                    <span className='text-[44px] font-medium'>Добро пожаловать во Внештат!</span>
-                                    <Link to={'/jobs/company/edit'} className='bg-[#292933] px-[60px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Заполнить данные компании</Link>
-                                    <p className='text-[#787B86] mt-[5px]'>
-                                        Чтобы получить полный доступ к сервису, нужно заполнить<br /> данные вашей компании, подписать договор и выбрать тариф
-                                    </p>
+                                <div className='p-[35px] flex items-center justify-between gap-[20px]'>
+                                    <div className="flex flex-col gap-[16px] max-w-[380px]">
+                                        <span className="text-[24px] font-medium text-[#9B9FAD]">Договор не подписан</span>
+                                        <p className="text-[30px] font-medium text-[#000]">
+                                            Подпишите договор, чтобы получить доступ
+                                            ко всем функциям.
+                                        </p>
+                                        <Link to={'/jobs/company/edit'} className='self-start bg-[#007BFB] text-center w-[320px] py-[15px] rounded-[16px] text-primary text-[18px] font-medium'>Ввести данные</Link>
+                                    </div>
+                                    <div className="max-w-full">
+                                        <img src={ImgWrite} alt="write" className="max-w-[100%]" />
+                                    </div>
                                 </div>
                             }
                             {typeof companyInformation !== 'boolean' &&
@@ -120,15 +130,15 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
 
                                 <div className="flex h-full grow flex-col gap-[5px] justify-between">
                                     <div className="flex items-center gap-[13px]">
-                                        <WalletImg className='h-[25px] w-auto mx-[4.5px]'/>
+                                        <WalletImg className='h-[25px] w-auto mx-[4.5px]' />
                                         <span className='text-[#787B86] font-medium'>Не ограничен</span>
                                     </div>
                                     <div className="flex items-center gap-[13px]">
-                                        <AdvanceImg className='h-[25px] w-auto'/>
+                                        <AdvanceImg className='h-[25px] w-auto' />
                                         <span className='text-[#787B86] font-medium'>До 90 000 ₽</span>
                                     </div>
                                     <div className="flex items-center gap-[13px]">
-                                        <AdvanceImg className='h-[25px] w-auto'/>
+                                        <AdvanceImg className='h-[25px] w-auto' />
                                         <span className='text-[#787B86] font-medium'>До 50 000 ₽</span>
                                     </div>
                                 </div>
@@ -143,7 +153,7 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
 
                 information={
                     <>
-                        {viewInfornation && (<Infornation close={setViewInfornation} />)}
+                       <Infornation />
                     </>
                 }
 
@@ -155,7 +165,9 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
                         <div className="h-[145px] w-[145px] rounded-[50%] border border-[#BDBFC7] border-solid flex items-center justify-center">
                             <span className='text-[#787B86] text-[48px] font-medium'>АБ</span>
                         </div>
-                        <button className='w-full py-[15px] bg-[#ECEEF1] rounded-[16px] text-center'>
+                        <button
+                            onClick={() => setChangeLogo(true)}
+                            className='w-full py-[15px] bg-[#ECEEF1] rounded-[16px] text-center'>
                             <span className='text-[#787B86] text-[18px] font-medium '>Изменить логотип</span>
                         </button>
                     </div>
@@ -176,6 +188,55 @@ const Preview = ({ companyInformation, tariffInformation }: { companyInformation
                         </div>
                     }></Modal>
             </div>
+
+            <ModalRight
+                action={() => { }}
+                button={
+                    <>
+                        <div className="flex gap-[10px] mt-[10px]">
+                            <button className='bg-[#ECEEF1] w-full rounded-[16px] py-[14px] text-[18px] text-[#787B86] font-medium'>
+                                Отмена
+                            </button>
+                            <button className='bg-[#ECEEF1] w-full rounded-[16px] py-[14px] text-[18px] text-[#787B86] font-medium'>
+                                Сохранить
+                            </button>
+                        </div>
+                    </>
+                }
+                active={changeLogo}
+                close={() => setChangeLogo(false)}
+                title='Логотип компании'
+                description='Сотрудники с уровнем доступа Менеджер+ могут установить логотип компании. Он будет отображаться в разделе “О компании”, а также при входе в сервис.'
+            >
+                <div className="flex flex-col grow">
+                    <div className="py-[25px] px-[32px] bg-[#ECEEF1] rounded-[23px] flex flex-col gap-[12px]">
+                        <div className="flex items-center gap-[17px]">
+                            <SizeImg />
+                            <div className="flex gap-[13px] items-center">
+                                <p className='text-[20px] font-medium'>800х800 px</p>
+                                <p className='text-[14px] font-medium text-[#787B86]'>рекомендуемое разрешение</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-[17px]">
+                            <TypeImg />
+                            <div className="flex gap-[13px] items-center">
+                                <p className='text-[20px] font-medium'>JPG, GIF, PNG, HEIC</p>
+                                <p className='text-[14px] font-medium text-[#787B86]'>формат файла</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grow flex items-center justify-center">
+                        <div className="w-[260px] h-[260px] rounded-[20px] border border-solid border-[#E5E7EA] flex items-center p-[23px]">
+                            <button className='bg-black w-full rounded-[16px] py-[14.5px] text-[18px] text-primary font-medium'>
+                                Выбрать файл
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr className='h-[1px] w-full bg-[#E5E7EA]' />
+                </div>
+            </ModalRight>
 
         </>
     );
